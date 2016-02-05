@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+version = '0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.apache.logging.log4j:log4j-api:2.5')
+    compile('org.apache.logging.log4j:log4j-core:2.5')
+    compile('org.springframework:spring-core:4.2.4.RELEASE')
+    compile('org.springframework:spring-context:4.2.4.RELEASE')
+
+    testCompile('junit:junit:4.12')
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.10'
+}
+
