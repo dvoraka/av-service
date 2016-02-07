@@ -13,4 +13,14 @@ public class AppConfig {
     public AVService avService() {
         return null;
     }
+
+    @Bean
+    public AVProgram avProgram() {
+        return null;
+    }
+
+    @Bean
+    public AVServer avServer() {
+        return null;
+    }
 }
