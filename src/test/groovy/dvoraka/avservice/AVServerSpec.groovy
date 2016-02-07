@@ -13,6 +13,10 @@ class AVServerSpec extends Specification {
     @Autowired
     AVServer avServer
 
+    def setup() {
+        // stop server
+    }
+
     def "default test"() {
         expect:
         true
@@ -21,5 +25,21 @@ class AVServerSpec extends Specification {
     def "AV server loading"() {
         expect:
         avServer != null
+    }
+
+    def "status after start"() {
+        when:
+        avServer.start()
+
+        then:
+        avServer.isStarted()
+    }
+
+    def "status after stop"() {
+        when:
+        avServer.stop()
+
+        then:
+        avServer.isStopped()
     }
 }

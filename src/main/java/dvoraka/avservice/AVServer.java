@@ -33,4 +33,9 @@ public interface AVServer {
      * Restarts server.
      */
     void restart();
+
+    /**
+     * Check server status.
+     */
+    boolean isRunning();
 }

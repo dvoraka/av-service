@@ -13,6 +13,9 @@ class AVProgramSpec extends Specification {
     @Autowired
     AVProgram avProgram;
 
+    def setup() {
+    }
+
     def "default test"() {
         expect:
         true
@@ -21,5 +24,16 @@ class AVProgramSpec extends Specification {
     def "AV program loading"() {
         expect:
         avProgram != null
+    }
+
+    def "scan normal bytes"() {
+        setup:
+        byte[] bytes = "aaaaa".getBytes()
+
+        when:
+        boolean shouldBeFalse = avProgram.scanStream(bytes)
+
+        then:
+        !shouldBeFalse
     }
 }

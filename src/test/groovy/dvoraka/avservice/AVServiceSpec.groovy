@@ -22,4 +22,26 @@ class AVServiceSpec extends Specification {
         expect:
         avService != null
     }
+
+    def "scan normal bytes"() {
+        setup:
+        byte[] bytes = "aaaaa".getBytes()
+
+        when:
+        boolean shouldBeFalse = avService.scanStream(bytes)
+
+        then:
+        !shouldBeFalse
+    }
+
+    def "scan normal file"() {
+        setup:
+        File file = File.createTempFile("avtempfile", ".tmp")
+
+        when:
+        boolean shouldBeFalse = avService.scanFile(file)
+
+        then:
+        !shouldBeFalse
+    }
 }
