@@ -33,7 +33,8 @@ public class ClamAVProgram implements AVProgram {
         try (
                 Socket socket = new Socket(socketHost, socketPort);
                 PrintWriter out = new PrintWriter(socket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                InputStreamReader inReader = new InputStreamReader(socket.getInputStream());
+                BufferedReader in = new BufferedReader(inReader)
         ) {
             out.println("nPING");
             out.flush();
