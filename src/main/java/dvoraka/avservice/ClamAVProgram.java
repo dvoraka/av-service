@@ -1,11 +1,15 @@
 package dvoraka.avservice;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -13,6 +17,8 @@ import java.nio.ByteOrder;
  * ClamAV wrapper.
  */
 public class ClamAVProgram implements AVProgram {
+
+    private static final Logger log = LogManager.getLogger(ClamAVProgram.class.getName());
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 3310;
@@ -24,6 +30,10 @@ public class ClamAVProgram implements AVProgram {
     public static void main(String[] args) throws IOException {
 
         ClamAVProgram prog = new ClamAVProgram();
+        System.out.println("Connection test");
+        System.out.println(prog.testConnection());
+        System.out.println("Stats");
+        System.out.println(prog.stats());
         System.out.println("Clamav ping test");
         System.out.println("Result: " + prog.ping());
         System.out.println("Clamav version");
@@ -108,5 +118,57 @@ public class ClamAVProgram implements AVProgram {
         }
 
         return version;
+    }
+
+    public String stats() {
+
+        String stats = null;
+        try (
+                Socket socket = new Socket(socketHost, socketPort);
+                PrintWriter out = new PrintWriter(socket.getOutputStream());
+                InputStreamReader inReader = new InputStreamReader(socket.getInputStream());
+                BufferedReader in = new BufferedReader(inReader)
+        ) {
+            out.println("nSTATS");
+            out.flush();
+            stats = in.readLine();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return stats;
+    }
+
+    /**
+     * Tests connection.
+     *
+     * @return the result
+     */
+    public boolean testConnection() {
+        boolean success = false;
+        Socket socket = null;
+        try {
+            socket = new Socket(socketHost, socketPort);
+            success = true;
+        } catch (UnknownHostException e) {
+            log.warn("Unknown host.", e);
+        } catch (IOException e) {
+            log.warn("Cannot connect to the socket.", e);
+        } catch (SecurityException e) {
+            log.warn("Security problem.", e);
+        } catch (IllegalArgumentException e) {
+            log.warn("Illegal socket parameters.", e);
+        } finally {
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    log.warn("Error while closing socket.", e);
+                }
+            }
+        }
+
+        return (success && ping());
     }
 }
