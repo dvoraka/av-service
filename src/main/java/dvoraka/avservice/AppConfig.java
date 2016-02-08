@@ -16,7 +16,7 @@ public class AppConfig {
 
     @Bean
     public AVProgram avProgram() {
-        return null;
+        return new ClamAVProgram();
     }
 
     @Bean

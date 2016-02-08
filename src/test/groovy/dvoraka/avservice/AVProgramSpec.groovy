@@ -2,6 +2,7 @@ package dvoraka.avservice
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -9,6 +10,9 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [AppConfig])
 class AVProgramSpec extends Specification {
+
+    @Shared
+    String eicarString = 'X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'
 
     @Autowired
     AVProgram avProgram;
@@ -28,12 +32,23 @@ class AVProgramSpec extends Specification {
 
     def "scan normal bytes"() {
         setup:
-        byte[] bytes = "aaaaa".getBytes()
+        byte[] bytes = "No virus here".getBytes("UTF-8")
 
         when:
         boolean shouldBeFalse = avProgram.scanStream(bytes)
 
         then:
         !shouldBeFalse
+    }
+
+    def "scan eicar bytes"() {
+        setup:
+        byte[] bytes = eicarString.getBytes("UTF-8")
+
+        when:
+        boolean shouldBeTrue = avProgram.scanStream(bytes)
+
+        then:
+        shouldBeTrue
     }
 }
