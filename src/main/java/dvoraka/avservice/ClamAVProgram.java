@@ -11,8 +11,11 @@ import java.net.Socket;
  */
 public class ClamAVProgram implements AVProgram {
 
-    private String socketHost = "localhost";
-    private int socketPort = 3310;
+    private static final String DEFAULT_HOST = "localhost";
+    private static final int DEFAULT_PORT = 3310;
+
+    private String socketHost;
+    private int socketPort;
 
 
     public static void main(String[] args) throws IOException {
@@ -20,6 +23,15 @@ public class ClamAVProgram implements AVProgram {
         ClamAVProgram prog = new ClamAVProgram();
         System.out.println("Clamav ping test");
         System.out.println("Result: " + prog.ping());
+    }
+
+    public ClamAVProgram() {
+        this(DEFAULT_HOST, DEFAULT_PORT);
+    }
+
+    public ClamAVProgram(String socketHost, int socketPort) {
+        this.socketHost = socketHost;
+        this.socketPort = socketPort;
     }
 
     @Override
@@ -44,6 +56,6 @@ public class ClamAVProgram implements AVProgram {
             e.printStackTrace();
         }
 
-        return ("PONG".equals(response));
+        return "PONG".equals(response);
     }
 }
