@@ -23,6 +23,7 @@ public class ClamAVProgram implements AVProgram {
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 3310;
     private static final String CLEAN_STREAM_RESPONSE = "stream: OK";
+    private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
 
     private String socketHost;
     private int socketPort;
@@ -43,7 +44,8 @@ public class ClamAVProgram implements AVProgram {
         System.out.println("Result: " + prog.scanStream("aaa".getBytes()));
         System.out.println("Clamav checking data");
         System.out.println("Result: " + prog.scanStream(
-                "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*".getBytes()));
+                "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
+                        .getBytes()));
     }
 
     public ClamAVProgram() {
@@ -66,13 +68,15 @@ public class ClamAVProgram implements AVProgram {
                 BufferedReader in = new BufferedReader(inReader)
         ) {
             // send bytes
-            byte[] lenghtBytes = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN).putInt(bytes.length).array();
+            byte[] lenghtBytes = ByteBuffer.allocate(CHUNK_LENGTH_BYTE_SIZE)
+                    .order(ByteOrder.BIG_ENDIAN).putInt(bytes.length).array();
             outStream.write("nINSTREAM\n".getBytes("UTF-8"));
             outStream.write(lenghtBytes);
             outStream.write(bytes);
 
             // terminate stream with zero length chunk
-            byte[] zeroLengthBytes = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN).putInt(0).array();
+            byte[] zeroLengthBytes = ByteBuffer.allocate(CHUNK_LENGTH_BYTE_SIZE)
+                    .order(ByteOrder.BIG_ENDIAN).putInt(0).array();
             outStream.write(zeroLengthBytes);
             outStream.flush();
 
