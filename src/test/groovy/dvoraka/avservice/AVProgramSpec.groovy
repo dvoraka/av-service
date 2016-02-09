@@ -2,6 +2,7 @@ package dvoraka.avservice
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -58,6 +59,7 @@ class AVProgramSpec extends Specification {
         shouldBeTrue
     }
 
+    @Ignore
     @Unroll
     def "stream length test: #size bytes"() {
         setup:
