@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * Specification class for AVProgram.
@@ -55,5 +56,21 @@ class AVProgramSpec extends Specification {
 
         then:
         shouldBeTrue
+    }
+
+    @Unroll
+    def "stream length test: #size bytes"() {
+        setup:
+        byte[] bytes = new byte[size];
+
+        expect:
+        !avProgram.scanStream(bytes)
+
+        where:
+        size << [100, 1000, 10_000, 100_000, 1000_000, 10_000_000]
+    }
+
+    def "parallel scan"() {
+
     }
 }
