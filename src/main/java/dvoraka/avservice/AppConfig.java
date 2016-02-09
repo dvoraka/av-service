@@ -11,7 +11,7 @@ public class AppConfig {
 
     @Bean
     public AVService avService() {
-        return null;
+        return new DefaultAVService();
     }
 
     @Bean
@@ -21,6 +21,6 @@ public class AppConfig {
 
     @Bean
     public AVServer avServer() {
-        return null;
+        return new AmqpAVServer();
     }
 }
