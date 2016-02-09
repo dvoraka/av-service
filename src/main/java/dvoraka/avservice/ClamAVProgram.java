@@ -60,7 +60,6 @@ public class ClamAVProgram implements AVProgram {
     @Override
     public boolean scanStream(byte[] bytes) {
 
-        String response = null;
         try (
                 Socket socket = new Socket(socketHost, socketPort);
                 OutputStream outStream = socket.getOutputStream();
@@ -81,7 +80,7 @@ public class ClamAVProgram implements AVProgram {
             outStream.flush();
 
             // read check result
-            response = in.readLine();
+            String response = in.readLine();
 
             if (response.equals(CLEAN_STREAM_RESPONSE)) {
                 return false;
@@ -94,7 +93,13 @@ public class ClamAVProgram implements AVProgram {
             log.warn("Scanning problem.", e);
         }
 
-        return false;
+        // in case of any error return true
+        return true;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return testConnection();
     }
 
     public boolean ping() {
@@ -163,6 +168,7 @@ public class ClamAVProgram implements AVProgram {
      * @return the result
      */
     public boolean testConnection() {
+
         boolean success = false;
         Socket socket = null;
         try {

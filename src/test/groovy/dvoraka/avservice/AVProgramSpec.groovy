@@ -30,6 +30,11 @@ class AVProgramSpec extends Specification {
         avProgram != null
     }
 
+    def "Is program running?"() {
+        expect:
+        avProgram.isRunning()
+    }
+
     def "scan normal bytes"() {
         setup:
         byte[] bytes = "No virus here".getBytes("UTF-8")

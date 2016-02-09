@@ -6,4 +6,6 @@ package dvoraka.avservice;
 public interface AVProgram {
 
     boolean scanStream(byte[] bytes);
+
+    boolean isRunning();
 }
