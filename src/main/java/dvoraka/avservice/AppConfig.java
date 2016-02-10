@@ -23,4 +23,9 @@ public class AppConfig {
     public AVServer avServer() {
         return new AmqpAVServer();
     }
+
+    @Bean
+    public MessageProcessor messageProcessor() {
+        return null;
+    }
 }

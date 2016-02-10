@@ -1,6 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
-apply plugin: 'checkstyle'
+//apply plugin: 'checkstyle'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -27,9 +27,9 @@ dependencies {
     testCompile("org.spockframework:spock-core:${spockVersion}")
 }
 
-checkstyle {
-    toolVersion = "6.5"
-}
+//checkstyle {
+//    toolVersion = "6.5"
+//}
 
 test {
     testLogging {
