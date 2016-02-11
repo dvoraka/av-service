@@ -1,6 +1,8 @@
 package dvoraka.avservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,41 +16,45 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
     @Autowired
     private MessageProcessor messageProcessor;
 
+    @Autowired
+    private ListeningStrategy listeningStrategy;
+
+    private ExecutorService executorService;
+
+
+    public AmqpAVServer() {
+
+        executorService = Executors.newFixedThreadPool(2);
+    }
+
 
     public static void main(String[] args) {
+
         System.out.println("AMQP server");
 
-        AmqpAVServer server = new AmqpAVServer();
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        AmqpAVServer server = context.getBean(AmqpAVServer.class);
 
-        Runnable listenJob = server::listen;
-        Runnable responseJob = server::response;
+        server.startListening();
 
-        ExecutorService pool = Executors.newFixedThreadPool(2);
-        pool.execute(listenJob);
-        pool.execute(responseJob);
-        pool.shutdown();
+        System.out.println("After start.");
         try {
-            pool.awaitTermination(10L, TimeUnit.SECONDS);
+            Thread.sleep(10_000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         server.stop();
+        context.close();
+    }
+
+    private void startListening() {
+        Runnable listening = this::listen;
+        executorService.execute(listening);
     }
 
     private void listen() {
-        while (true) {
-            if (isStopped()) {
-                break;
-            }
-
-            System.out.println("Listening...");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        listeningStrategy.listen();
     }
 
     private void response() {
@@ -74,6 +80,15 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
     @Override
     public void stop() {
         setStopped();
+
+        listeningStrategy.stop();
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

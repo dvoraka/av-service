@@ -34,6 +34,11 @@ public class AppConfig {
         return null;
     }
 
+    @Bean
+    public ListeningStrategy listeningStrategy() {
+        return new SimpleAmqpListeningStrategy();
+    }
+
     //// AMQP beans
     @Bean
     public ConnectionFactory connectionFactory() {
