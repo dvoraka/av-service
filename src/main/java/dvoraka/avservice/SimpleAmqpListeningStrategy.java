@@ -29,6 +29,7 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
         while (isRunning()) {
             log.debug("Waiting for a message...");
             System.out.println(rabbitTemplate.receive());
+            log.debug("Message received.");
 
             messageProcessor.sendMessage(new AVMessage() {
                 @Override
@@ -51,8 +52,6 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
                     return null;
                 }
             });
-
-            log.debug("Message received.");
         }
 
         log.debug("Listening stopped.");
