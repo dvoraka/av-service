@@ -89,6 +89,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
         setStopped();
 
         listeningStrategy.stop();
+        messageProcessor.stop();
 
         executorService.shutdown();
         try {

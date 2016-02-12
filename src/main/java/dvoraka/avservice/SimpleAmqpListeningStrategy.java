@@ -25,7 +25,7 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
     public void listen() {
         log.debug("Listening...");
         setRunning(true);
-        rabbitTemplate.setReceiveTimeout(2000);
+        rabbitTemplate.setReceiveTimeout(500);
         while (isRunning()) {
             log.debug("Waiting for a message...");
             System.out.println(rabbitTemplate.receive());

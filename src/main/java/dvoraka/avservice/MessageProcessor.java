@@ -10,4 +10,6 @@ public interface MessageProcessor {
     boolean hasProcessedMessage();
 
     AVMessage getProcessedMessage();
+
+    void stop();
 }
