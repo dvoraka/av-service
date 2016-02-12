@@ -59,7 +59,7 @@ public class ClamAVProgram implements AVProgram {
 
     @Override
     public boolean scanStream(byte[] bytes) {
-
+        log.debug("Scanning stream...");
         try (
                 Socket socket = new Socket(socketHost, socketPort);
                 OutputStream outStream = socket.getOutputStream();
@@ -82,15 +82,16 @@ public class ClamAVProgram implements AVProgram {
             // read check result
             String response = in.readLine();
 
+            log.debug("scanning done.");
             if (response.equals(CLEAN_STREAM_RESPONSE)) {
                 return false;
             } else {
-                log.info("Virus found: " + response);
+                log.debug("Virus found: " + response);
                 return true;
             }
 
         } catch (IOException e) {
-            log.warn("Scanning problem.", e);
+            log.warn("Scanning problem!", e);
         }
 
         // in case of any error return true
@@ -168,7 +169,7 @@ public class ClamAVProgram implements AVProgram {
      * @return the result
      */
     public boolean testConnection() {
-
+        log.debug("Testing connection...");
         boolean success = false;
         Socket socket = null;
         try {
