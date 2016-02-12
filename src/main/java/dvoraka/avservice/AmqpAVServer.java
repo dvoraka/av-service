@@ -1,5 +1,7 @@
 package dvoraka.avservice;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -18,6 +20,8 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
 
     @Autowired
     private ListeningStrategy listeningStrategy;
+
+    private static final Logger log = LogManager.getLogger(AmqpAVServer.class.getName());
 
     private ExecutorService executorService;
 
@@ -54,6 +58,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
     }
 
     private void listen() {
+        log.debug("Starting listening...");
         listeningStrategy.listen();
     }
 
@@ -74,11 +79,13 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
 
     @Override
     public void start() {
+        log.debug("Server start.");
         setStarted();
     }
 
     @Override
     public void stop() {
+        log.debug("Server stop.");
         setStopped();
 
         listeningStrategy.stop();

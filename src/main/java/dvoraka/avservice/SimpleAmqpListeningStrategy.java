@@ -1,5 +1,7 @@
 package dvoraka.avservice;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,24 +16,28 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
     @Autowired
     private MessageProcessor messageProcessor;
 
+    private static final Logger log = LogManager.getLogger(SimpleAmqpListeningStrategy.class.getName());
+
     private boolean running;
 
 
     @Override
     public void listen() {
-
+        log.debug("Listening...");
         setRunning(true);
         rabbitTemplate.setReceiveTimeout(2000);
         while (isRunning()) {
-            System.out.println("Listening...");
+            log.debug("Waiting for a message...");
             System.out.println(rabbitTemplate.receive());
+            log.debug("Message received.");
         }
 
-        System.out.println("Stopping listening...");
+        log.debug("Listening stopped.");
     }
 
     @Override
     public void stop() {
+        log.debug("Stop listening.");
         setRunning(false);
     }
 
