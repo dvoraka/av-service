@@ -27,7 +27,6 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
 
 
     public AmqpAVServer() {
-
         executorService = Executors.newFixedThreadPool(2);
     }
 
@@ -40,6 +39,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
         AmqpAVServer server = context.getBean(AmqpAVServer.class);
 
         server.startListening();
+        server.startResponding();
 
         System.out.println("After start.");
         try {
@@ -57,20 +57,28 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
         executorService.execute(listening);
     }
 
+    private void startResponding() {
+        Runnable responding = this::response;
+        executorService.execute(responding);
+    }
+
     private void listen() {
         log.debug("Starting listening...");
         listeningStrategy.listen();
     }
 
     private void response() {
+        log.debug("Starting responding...");
         while (true) {
             if (isStopped()) {
                 break;
             }
 
-            System.out.println("Sending...");
+            if (messageProcessor.hasProcessedMessage()) {
+                log.debug("Processed message: " + messageProcessor.getProcessedMessage());
+            }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

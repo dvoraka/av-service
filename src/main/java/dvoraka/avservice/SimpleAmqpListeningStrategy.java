@@ -51,6 +51,10 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
                 public AVMessageType getType() {
                     return null;
                 }
+
+                public String toString() {
+                    return "Message";
+                }
             });
         }
 

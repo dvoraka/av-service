@@ -33,19 +33,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
     @Override
 
     public void sendMessage(AVMessage message) {
-
         setRunning(true);
 
         log.debug("Processing message...");
-        Runnable process = new Runnable() {
-            @Override
-            public void run() {
-                processMessage(message);
-            }
-        };
-
+        Runnable process = () -> processMessage(message);
         executorService.execute(process);
-        log.debug("Message processed.");
+        log.debug("Message sent.");
     }
 
     private void processMessage(AVMessage message) {
@@ -83,7 +76,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void stop() {
-
         setRunning(false);
 
         executorService.shutdown();
