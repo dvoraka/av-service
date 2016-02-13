@@ -3,7 +3,7 @@
 Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
 Load results for the old service (retested):
-#### Load tests
+
 Load tests with debug output on server. Client, message broker, server and anti-virus program are on the same machine. Sending file is EICAR.
 
 * Receiver: AVReceiver
