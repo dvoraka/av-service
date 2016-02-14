@@ -49,10 +49,6 @@ test {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
-}
-
 task run(type: JavaExec) {
     main = 'dvoraka.avservice.checker.App'
     classpath = sourceSets.main.runtimeClasspath
