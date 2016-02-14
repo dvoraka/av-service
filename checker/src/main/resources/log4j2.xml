@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <File name="FILE" fileName="checker.log" append="true">
+           <PatternLayout pattern="%d %p %C{1}: %m%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.apache.log4j.xml" level="debug">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="FILE"/>
+        </Root>
+    </Loggers>
+</Configuration>

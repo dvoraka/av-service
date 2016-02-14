@@ -1,0 +1,69 @@
+apply plugin: 'shadow'
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+version = '0.2-SNAPSHOT'
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'dvoraka.avservice.checker.App',
+                'Built-By': 'dvoraka',
+        )
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile('com.rabbitmq:amqp-client:3.5.0')
+    compile('org.apache.logging.log4j:log4j-api:2.1')
+    compile('org.apache.logging.log4j:log4j-core:2.1')
+    compile('org.codehaus.groovy:groovy-all:2.3.10')
+    compile('org.springframework:spring-core:4.2.2.RELEASE')
+    compile('org.springframework:spring-context:4.2.2.RELEASE')
+    compile('org.springframework.amqp:spring-amqp:1.5.1.RELEASE')
+
+    testCompile('junit:junit:4.12')
+    testCompile('org.mockito:mockito-core:1.10.19')
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.3')
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
+    }
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+task run(type: JavaExec) {
+    main = 'dvoraka.avservice.checker.App'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runCli(type: JavaExec) {
+    main = 'dvoraka.avservice.checker.Cli'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task loadTest(type: JavaExec) {
+    main = 'dvoraka.avservice.checker.LoadTester'
+    classpath = sourceSets.main.runtimeClasspath
+}
