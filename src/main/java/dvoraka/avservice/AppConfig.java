@@ -7,11 +7,13 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * App configuration.
  */
 @Configuration
+@EnableAspectJAutoProxy
 public class AppConfig {
 
     @Bean
@@ -65,4 +67,9 @@ public class AppConfig {
         return template;
     }
     //////////////////////////
+
+    @Bean
+    public SpringAopTest springAopTest() {
+        return new SpringAopTest();
+    }
 }
