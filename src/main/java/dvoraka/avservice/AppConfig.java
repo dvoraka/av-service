@@ -1,5 +1,6 @@
 package dvoraka.avservice;
 
+import dvoraka.avservice.aop.SpringAopTest;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
