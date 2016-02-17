@@ -16,28 +16,28 @@ Load test end
 Duration: 13 s
 ```
 ```
-Load test start for 10000 messages...
+Load test start for 10 000 messages...
 Load test end
 Duration: 98 s
 ```
 ```
-Load test start for 100000 messages...
+Load test start for 100 000 messages...
 Load test end
 Duration: 895 s
 ```
-##### Synchronous variant
+##### Send and receive
 ```
 Load test start for 1000 messages...
 Load test end
 Duration: 19 s
 ```
 ```
-Load test start for 10000 messages...
+Load test start for 10 000 messages...
 Load test end
 Duration: 156 s
 ```
 ```
-Load test start for 100000 messages...
+Load test start for 100 000 messages...
 Load test end
 Duration: 1903 s
 ```
