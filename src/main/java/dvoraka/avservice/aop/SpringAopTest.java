@@ -21,7 +21,7 @@ public class SpringAopTest {
 //    }
 
     @Around("execution(* dvoraka.avservice.AVService.*(..))")
-    public boolean logTime(ProceedingJoinPoint pjp) {
+    public boolean printInfo(ProceedingJoinPoint pjp) {
 
         long start = System.currentTimeMillis();
         String threadName = Thread.currentThread().getName();
@@ -35,16 +35,9 @@ public class SpringAopTest {
         }
         long elapsedTime = System.currentTimeMillis() - start;
 
-        System.out.println("T: " + threadName + ", M: " + methodName + ", S: " + (start / 1000) + ", Duration: " + elapsedTime);
+        System.out.println("T: " + threadName + ", M: " + methodName
+                + ", S: " + (start / 1000) + ", Duration: " + elapsedTime);
 
         return returnValue;
     }
-
-//    long start = System.currentTimeMillis();
-//                System.out.println("Going to call the method.");
-//                Object output = pjp.proceed();
-//                System.out.println("Method execution completed.");
-//                long elapsedTime = System.currentTimeMillis() - start;
-//                System.out.println("Method execution time: " + elapsedTime + " milliseconds.");
-//                return output;
 }
