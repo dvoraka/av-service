@@ -45,7 +45,7 @@ Duration: 1903 s
 ## Planned features
 * Highly scalable architecture
 * Robust design
-* Communication over AMQP, JMS and REST
+* Communication over AMQP 0.9.1, JMS and REST
 
 ## Installation
 ### ClamAV
@@ -54,3 +54,9 @@ Duration: 1903 s
 # apt-get install clamav
 ```
 Official [installation](http://www.clamav.net/documents/installing-clamav) for other systems.
+
+### RabbitMQ
+#### Debian
+```
+# apt-get install rabbitmq-server
+```
