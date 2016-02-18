@@ -2,6 +2,10 @@ package dvoraka.avservice;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.core.MessagePropertiesBuilder;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -17,11 +21,14 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
 
     @Autowired
     private MessageProcessor messageProcessor;
-
     @Autowired
     private ListeningStrategy listeningStrategy;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     private static final Logger log = LogManager.getLogger(AmqpAVServer.class.getName());
+
+    private static final String RESPONSE_EXCHANGE = "check-result";
 
     private ExecutorService executorService;
 
@@ -75,7 +82,13 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
             }
 
             if (messageProcessor.hasProcessedMessage()) {
-                log.debug("Processed message: " + messageProcessor.getProcessedMessage());
+                AVMessage message = messageProcessor.getProcessedMessage();
+                log.debug("Processed message: " + message);
+
+                // TODO: convert message back
+                Message response = new Message(message.getData(), new MessageProperties());
+                // send response
+                rabbitTemplate.send(RESPONSE_EXCHANGE, "dfdfdfdf", response);
             }
             try {
                 Thread.sleep(1500);
