@@ -12,4 +12,6 @@ public interface AVMessage {
     byte[] getData();
 
     AVMessageType getType();
+
+    AVMessage createResponse(boolean virus);
 }

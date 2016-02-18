@@ -33,31 +33,10 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
             Message message = rabbitTemplate.receive();
             log.debug("Message received.");
 
-            messageProcessor.sendMessage(new AVMessage() {
-                @Override
-                public String getId() {
-                    return "testId";
-                }
-
-                @Override
-                public String getCorrelationId() {
-                    return "XXX";
-                }
-
-                @Override
-                public byte[] getData() {
-                    return new byte[100];
-                }
-
-                @Override
-                public AVMessageType getType() {
-                    return null;
-                }
-
-                public String toString() {
-                    return "Message";
-                }
-            });
+            if (message != null) {
+                AVMessage avMessage = AVMessageMapper.transform(message);
+                messageProcessor.sendMessage(avMessage);
+            }
         }
 
         log.debug("Listening stopped.");
