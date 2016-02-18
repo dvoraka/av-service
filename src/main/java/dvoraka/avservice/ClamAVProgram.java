@@ -58,14 +58,8 @@ public class ClamAVProgram implements AVProgram {
     }
 
     @Override
-    public synchronized boolean scanStream(byte[] bytes) {
+    public boolean scanStream(byte[] bytes) {
         log.debug("Scanning stream...");
-        // add some delay
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         try (
                 Socket socket = new Socket(socketHost, socketPort);

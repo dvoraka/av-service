@@ -43,7 +43,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
 
         System.out.println("After start.");
         try {
-            Thread.sleep(10_000);
+            Thread.sleep(15_000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

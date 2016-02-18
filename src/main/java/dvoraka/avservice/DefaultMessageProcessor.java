@@ -22,12 +22,14 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private Queue<AVMessage> processedMessages = new LinkedBlockingQueue<>(10);
     private ExecutorService executorService;
+    private int threadCount;
 
     private boolean running;
 
 
     public DefaultMessageProcessor() {
-        executorService = Executors.newFixedThreadPool(10);
+        threadCount = 5;
+        executorService = Executors.newFixedThreadPool(threadCount);
     }
 
     @Override
