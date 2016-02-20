@@ -1,5 +1,7 @@
 package dvoraka.avservice;
 
+import dvoraka.avservice.data.AVMessage;
+import dvoraka.avservice.data.DefaultAVMessage;
 import org.springframework.amqp.core.Message;
 
 /**

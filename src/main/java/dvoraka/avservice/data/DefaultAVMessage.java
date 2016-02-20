@@ -1,4 +1,6 @@
-package dvoraka.avservice;
+package dvoraka.avservice.data;
+
+import dvoraka.avservice.AVMessageType;
 
 /**
  * Default AV message implementation.
@@ -6,8 +8,9 @@ package dvoraka.avservice;
 public class DefaultAVMessage implements AVMessage {
 
     private byte[] data;
-    private boolean virus;
-    AVMessageType type;
+    private String serviceId;
+    private String virusInfo;
+    private AVMessageType type;
 
 
     public DefaultAVMessage(byte[] data) {
@@ -37,6 +40,16 @@ public class DefaultAVMessage implements AVMessage {
     @Override
     public AVMessageType getType() {
         return null;
+    }
+
+    @Override
+    public String getServiceId() {
+        return serviceId;
+    }
+
+    @Override
+    public String getVirusInfo() {
+        return virusInfo;
     }
 
     @Override
