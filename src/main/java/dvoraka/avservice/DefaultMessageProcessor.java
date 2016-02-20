@@ -49,11 +49,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
         log.debug("Waiting queue size: " + processedMessages.size());
 
         log.debug("Scanning thread: " + Thread.currentThread().getName());
-        avService.scanStream(message.getData());
+        boolean infected = avService.scanStream(message.getData());
 
         while (isRunning()) {
             try {
-                processedMessages.add(message);
+                processedMessages.add(message.createResponse(infected));
                 break;
             } catch (IllegalStateException e) {
                 log.warn("Processed queue for thread "

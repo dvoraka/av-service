@@ -85,8 +85,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
                 AVMessage message = messageProcessor.getProcessedMessage();
                 log.debug("Processed message: " + message);
 
-                // TODO: convert message back
-                Message response = new Message(message.getData(), new MessageProperties());
+                Message response = AVMessageMapper.transform(message);
                 // send response
                 rabbitTemplate.send(RESPONSE_EXCHANGE, "dfdfdfdf", response);
             }
