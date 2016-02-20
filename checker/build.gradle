@@ -2,9 +2,9 @@ apply plugin: 'shadow'
 apply plugin: 'java'
 apply plugin: 'groovy'
 
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
-version = '0.2-SNAPSHOT'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+version = '0.1-SNAPSHOT'
 
 jar {
     manifest {
