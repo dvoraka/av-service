@@ -2,11 +2,15 @@ package dvoraka.avservice.data;
 
 import dvoraka.avservice.AVMessageType;
 
+import java.util.UUID;
+
 /**
  * Default AV message implementation.
  */
 public class DefaultAVMessage implements AVMessage {
 
+    private String id;
+    private String correlationId;
     private byte[] data;
     private String serviceId;
     private String virusInfo;
@@ -14,6 +18,8 @@ public class DefaultAVMessage implements AVMessage {
 
 
     private DefaultAVMessage(Builder builder) {
+        this.id = builder.id;
+        this.correlationId = builder.correlationId;
         this.data = builder.data;
         this.serviceId = builder.serviceId;
         this.virusInfo = builder.virusInfo;
@@ -27,12 +33,12 @@ public class DefaultAVMessage implements AVMessage {
 
     @Override
     public String getId() {
-        return null;
+        return id;
     }
 
     @Override
     public String getCorrelationId() {
-        return null;
+        return correlationId;
     }
 
     @Override
@@ -57,8 +63,9 @@ public class DefaultAVMessage implements AVMessage {
 
     @Override
     public AVMessage createResponse(boolean virus) {
-        return new Builder("dfdfdfd")
+        return new Builder(null)
                 .correlationId(this.getId())
+                .virusInfo(virus + "")
                 .build();
     }
 
@@ -73,6 +80,8 @@ public class DefaultAVMessage implements AVMessage {
         public Builder(String id) {
             if (id != null) {
                 this.id = id;
+            } else {
+                this.id = UUID.randomUUID().toString();
             }
         }
 

@@ -21,7 +21,7 @@ public class AVMessageMapper {
     public static Message transform(AVMessage msg) {
         MessageProperties props = new MessageProperties();
         props.setMessageId(msg.getId());
-//        props.setCorrelationId(msg.getCorrelationId().getBytes());
+        props.setCorrelationId(msg.getCorrelationId().getBytes());
         props.setAppId("antivirus");
 
         props.setHeader("isClean", 0);
