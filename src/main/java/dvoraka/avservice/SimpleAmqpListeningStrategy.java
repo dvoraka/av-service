@@ -32,9 +32,9 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
 
             log.debug("Waiting for a message...");
             Message message = rabbitTemplate.receive();
-            log.debug("Message received.");
 
             if (message != null) {
+                log.debug("Message received.");
                 AVMessage avMessage = AVMessageMapper.transform(message);
                 messageProcessor.sendMessage(avMessage);
             }
