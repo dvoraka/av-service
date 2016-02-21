@@ -1,6 +1,7 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.AppConfig;
+import dvoraka.avservice.MapperException;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.AVMessageMapper;
@@ -87,9 +88,13 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
                 AVMessage message = messageProcessor.getProcessedMessage();
                 log.debug("Processed message: " + message);
 
-                Message response = AVMessageMapper.transform(message);
-                // send response
-                rabbitTemplate.send(RESPONSE_EXCHANGE, "dfdfdfdf", response);
+                try {
+                    Message response = AVMessageMapper.transform(message);
+                    rabbitTemplate.send(RESPONSE_EXCHANGE, "ROUTINGKEY", response);
+                } catch (MapperException e) {
+                    log.warn("Message problem!", e);
+                    // TODO: send error response
+                }
             }
             try {
                 Thread.sleep(1500);
