@@ -1,10 +1,12 @@
-package dvoraka.avservice;
+package dvoraka.avservice.server;
 
+import dvoraka.avservice.AppConfig;
+import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.data.AVMessage;
+import dvoraka.avservice.data.AVMessageMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

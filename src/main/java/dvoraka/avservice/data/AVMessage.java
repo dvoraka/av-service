@@ -1,7 +1,5 @@
 package dvoraka.avservice.data;
 
-import dvoraka.avservice.AVMessageType;
-
 /**
  * Data structure for the whole AV service.
  * <br>

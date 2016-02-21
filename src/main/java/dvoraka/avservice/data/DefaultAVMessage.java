@@ -1,7 +1,5 @@
 package dvoraka.avservice.data;
 
-import dvoraka.avservice.AVMessageType;
-
 import java.util.UUID;
 
 /**

@@ -1,4 +1,4 @@
-package dvoraka.avservice;
+package dvoraka.avservice.server;
 
 /**
  * Abstract AV server.

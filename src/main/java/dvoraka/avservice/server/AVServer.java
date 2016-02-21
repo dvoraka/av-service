@@ -1,4 +1,4 @@
-package dvoraka.avservice;
+package dvoraka.avservice.server;
 
 /**
  * Anti-virus server interface.

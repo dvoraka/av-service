@@ -1,6 +1,7 @@
 package dvoraka.avservice;
 
 import dvoraka.avservice.data.AVMessage;
+import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

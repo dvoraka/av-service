@@ -1,6 +1,10 @@
 package dvoraka.avservice;
 
 import dvoraka.avservice.aop.SpringAopTest;
+import dvoraka.avservice.server.AVServer;
+import dvoraka.avservice.server.AmqpAVServer;
+import dvoraka.avservice.server.ListeningStrategy;
+import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
