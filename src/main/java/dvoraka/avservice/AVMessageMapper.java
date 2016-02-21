@@ -15,6 +15,7 @@ public class AVMessageMapper {
 
         return new DefaultAVMessage.Builder(msgProps.getMessageId())
                 .data(msg.getBody())
+//                .type(AVMessageType.valueOf(msgProps.getType()))
                 .build();
     }
 
@@ -23,6 +24,7 @@ public class AVMessageMapper {
         props.setMessageId(msg.getId());
         props.setCorrelationId(msg.getCorrelationId().getBytes());
         props.setAppId("antivirus");
+        props.setType(msg.getType().toString());
 
         props.setHeader("isClean", 0);
 

@@ -26,11 +26,6 @@ public class DefaultAVMessage implements AVMessage {
         this.type = builder.type;
     }
 
-    public DefaultAVMessage(byte[] data, AVMessageType type) {
-        this.data = data;
-        this.type = type;
-    }
-
     @Override
     public String getId() {
         return id;
@@ -48,7 +43,7 @@ public class DefaultAVMessage implements AVMessage {
 
     @Override
     public AVMessageType getType() {
-        return null;
+        return type;
     }
 
     @Override
@@ -66,6 +61,7 @@ public class DefaultAVMessage implements AVMessage {
         return new Builder(null)
                 .correlationId(this.getId())
                 .virusInfo(virus + "")
+                .type(AVMessageType.RESPONSE)
                 .build();
     }
 
