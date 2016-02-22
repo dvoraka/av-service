@@ -53,7 +53,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
 
         System.out.println("After start.");
         try {
-            Thread.sleep(60_000);
+            Thread.sleep(600_000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -95,11 +95,12 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
                     log.warn("Message problem!", e);
                     // TODO: send error response
                 }
-            }
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } else {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -22,7 +22,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(SimpleAmqpListeningStrategy.class.getName());
 
-    private Queue<AVMessage> processedMessages = new LinkedBlockingQueue<>(10);
+    private static final int QUEUE_SIZE = 100;
+    private Queue<AVMessage> processedMessages = new LinkedBlockingQueue<>(QUEUE_SIZE);
     private ExecutorService executorService;
     private int threadCount;
 
@@ -35,7 +36,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     @Override
-
     public void sendMessage(AVMessage message) {
         setRunning(true);
 
