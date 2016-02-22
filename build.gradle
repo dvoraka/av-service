@@ -43,3 +43,8 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.11'
 }
 
+task runServer(type: JavaExec) {
+    main = 'dvoraka.avservice.server.AmqpAVServer'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
