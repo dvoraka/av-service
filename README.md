@@ -9,22 +9,6 @@ Load tests with debug output on server. Client, message broker, server and anti-
 * Receiver: AVReceiver
 * Sender: AVSender
 
-##### Sending only
-```
-Load test start for 1000 messages...
-Load test end
-Duration: 13 s
-```
-```
-Load test start for 10 000 messages...
-Load test end
-Duration: 98 s
-```
-```
-Load test start for 100 000 messages...
-Load test end
-Duration: 895 s
-```
 ##### Send and receive
 ```
 Load test start for 1000 messages...
