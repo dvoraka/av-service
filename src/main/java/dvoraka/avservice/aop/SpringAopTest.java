@@ -40,4 +40,25 @@ public class SpringAopTest {
 
         return returnValue;
     }
+
+    @Around("execution(* org.springframework.amqp.rabbit.core.RabbitTemplate.receive(..))")
+    public Object printRabbitReceiveInfo(ProceedingJoinPoint pjp) {
+
+        long start = System.currentTimeMillis();
+        String threadName = Thread.currentThread().getName();
+        String methodName = pjp.getSignature().getName();
+
+        Object returnValue = null;
+        try {
+            returnValue = pjp.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        long elapsedTime = System.currentTimeMillis() - start;
+
+        System.out.println("T: " + threadName + ", M: " + methodName
+                + ", S: " + (start / 1000) + ", Duration: " + elapsedTime);
+
+        return returnValue;
+    }
 }
