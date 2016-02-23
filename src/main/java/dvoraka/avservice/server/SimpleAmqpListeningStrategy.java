@@ -11,13 +11,12 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Simple AQMP strategy for messages receiving.
+ * Simple AMQP strategy for messages receiving.
  */
 public class SimpleAmqpListeningStrategy implements ListeningStrategy {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-
     @Autowired
     private MessageProcessor messageProcessor;
 
@@ -60,7 +59,7 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
         return running;
     }
 
-    public void setRunning(boolean running) {
+    private void setRunning(boolean running) {
         this.running = running;
     }
 }
