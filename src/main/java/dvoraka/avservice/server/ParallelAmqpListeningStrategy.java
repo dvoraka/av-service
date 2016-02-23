@@ -12,9 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Simple AQMP strategy for messages receiving.
+ * Parallel AMQP strategy prototype for messages receiving.
  */
 public class ParallelAmqpListeningStrategy implements ListeningStrategy {
 
@@ -27,11 +28,12 @@ public class ParallelAmqpListeningStrategy implements ListeningStrategy {
     private static final Logger log = LogManager.getLogger(ParallelAmqpListeningStrategy.class.getName());
 
     private boolean running;
-    private int listeners = 4;
+    private int listeners;
     private ExecutorService executorService;
 
 
-    public ParallelAmqpListeningStrategy() {
+    public ParallelAmqpListeningStrategy(int listeners) {
+        this.listeners = listeners;
         executorService = Executors.newFixedThreadPool(listeners);
     }
 
@@ -70,13 +72,24 @@ public class ParallelAmqpListeningStrategy implements ListeningStrategy {
     public void stop() {
         log.debug("Stop listening.");
         setRunning(false);
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            log.warn("Stopping problem!", e);
+        }
     }
 
     public boolean isRunning() {
         return running;
     }
 
-    public void setRunning(boolean running) {
+    private void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public int getListenersCount() {
+        return listeners;
     }
 }
