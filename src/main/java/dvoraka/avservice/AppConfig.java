@@ -4,6 +4,7 @@ import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.AmqpAVServer;
 import dvoraka.avservice.server.ListeningStrategy;
+import dvoraka.avservice.server.ParallelAmqpListeningStrategy;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -18,7 +19,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * App configuration.
  */
 @Configuration
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfig {
 
     @Bean
@@ -44,6 +45,7 @@ public class AppConfig {
     @Bean
     public ListeningStrategy listeningStrategy() {
         return new SimpleAmqpListeningStrategy();
+//        return new ParallelAmqpListeningStrategy();
     }
 
     //// AMQP beans
@@ -66,6 +68,8 @@ public class AppConfig {
     @Bean
     public RabbitTemplate amqpTemplate() {
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
+        // wait forever
+        template.setReceiveTimeout(-1);
         template.setRoutingKey("test");
         template.setQueue("clamav-check");
 
