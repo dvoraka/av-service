@@ -14,4 +14,6 @@ public interface MessageProcessor {
     AVMessage getProcessedMessage();
 
     void stop();
+
+    void addAVMessageListener(AVMessageListener listener);
 }

@@ -6,6 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,14 +26,14 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private static final int QUEUE_SIZE = 100;
     private Queue<AVMessage> processedMessages = new LinkedBlockingQueue<>(QUEUE_SIZE);
+    private List<AVMessageListener> observers = new ArrayList<>();
     private ExecutorService executorService;
     private int threadCount;
-
     private boolean running;
 
 
-    public DefaultMessageProcessor() {
-        threadCount = 5;
+    public DefaultMessageProcessor(int threadCount) {
+        this.threadCount = threadCount;
         executorService = Executors.newFixedThreadPool(threadCount);
     }
 
@@ -54,7 +56,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         while (isRunning()) {
             try {
-                processedMessages.add(message.createResponse(infected));
+                AVMessage avMessage = message.createResponse(infected);
+                notifyObservers(avMessage);
+//                processedMessages.add(avMessage);
                 break;
             } catch (IllegalStateException e) {
                 log.warn("Processed queue for thread "
@@ -90,11 +94,26 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
+    @Override
+    public void addAVMessageListener(AVMessageListener listener) {
+        observers.add(listener);
+    }
+
+    private void notifyObservers(AVMessage avMessage) {
+        for (AVMessageListener listener : observers) {
+            listener.onAVMessage(avMessage);
+        }
+    }
+
     public boolean isRunning() {
         return running;
     }
 
-    public void setRunning(boolean running) {
+    private void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public int getThreadCount() {
+        return threadCount;
     }
 }

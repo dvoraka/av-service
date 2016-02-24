@@ -39,7 +39,7 @@ public class AppConfig {
 
     @Bean
     public MessageProcessor messageProcessor() {
-        return new DefaultMessageProcessor();
+        return new DefaultMessageProcessor(4);
     }
 
     @Bean

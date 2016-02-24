@@ -1,5 +1,6 @@
 package dvoraka.avservice.server;
 
+import dvoraka.avservice.AVMessageListener;
 import dvoraka.avservice.AppConfig;
 import dvoraka.avservice.MapperException;
 import dvoraka.avservice.MessageProcessor;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * AMQP AV server.
  */
-public class AmqpAVServer extends AbstractAVServer implements AVServer {
+public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessageListener {
 
     @Autowired
     private MessageProcessor messageProcessor;
@@ -43,15 +44,11 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
 
     public static void main(String[] args) {
 
-        System.out.println("AMQP server");
-
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         AmqpAVServer server = context.getBean(AmqpAVServer.class);
 
-        server.startListening();
-        server.startResponding();
+        server.start();
 
-        System.out.println("After start.");
         try {
             Thread.sleep(600_000);
         } catch (InterruptedException e) {
@@ -86,15 +83,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
 
             if (messageProcessor.hasProcessedMessage()) {
                 AVMessage message = messageProcessor.getProcessedMessage();
-                log.debug("Processed message: " + message);
-
-                try {
-                    Message response = AVMessageMapper.transform(message);
-                    rabbitTemplate.send(RESPONSE_EXCHANGE, "ROUTINGKEY", response);
-                } catch (MapperException e) {
-                    log.warn("Message problem!", e);
-                    // TODO: send error response
-                }
+                processResponse(message);
             } else {
                 try {
                     Thread.sleep(100);
@@ -105,10 +94,32 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer {
         }
     }
 
+    private void processResponse(AVMessage message) {
+        log.debug("Processed message: " + message);
+
+        try {
+            Message response = AVMessageMapper.transform(message);
+            rabbitTemplate.send(RESPONSE_EXCHANGE, "ROUTINGKEY", response);
+        } catch (MapperException e) {
+            log.warn("Message problem!", e);
+            // TODO: send error response
+        }
+    }
+
+    @Override
+    public void onAVMessage(AVMessage message) {
+        processResponse(message);
+    }
+
     @Override
     public void start() {
         log.debug("Server start.");
         setStarted();
+
+        messageProcessor.addAVMessageListener(this);
+
+        startListening();
+        startResponding();
     }
 
     @Override
