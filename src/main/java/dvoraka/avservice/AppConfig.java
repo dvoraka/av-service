@@ -34,7 +34,7 @@ public class AppConfig {
 
     @Bean
     public AVServer avServer() {
-        return new AmqpAVServer();
+        return new AmqpAVServer(ReceivingType.LISTENER);
     }
 
     @Bean

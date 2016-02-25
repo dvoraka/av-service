@@ -57,8 +57,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
         while (isRunning()) {
             try {
                 AVMessage avMessage = message.createResponse(infected);
-                notifyObservers(avMessage);
-//                processedMessages.add(avMessage);
+                if (observers.size() == 0) {
+                    processedMessages.add(avMessage);
+                } else {
+                    notifyObservers(avMessage);
+                }
                 break;
             } catch (IllegalStateException e) {
                 log.warn("Processed queue for thread "

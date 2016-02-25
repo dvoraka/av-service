@@ -4,6 +4,7 @@ import dvoraka.avservice.AVMessageListener;
 import dvoraka.avservice.AppConfig;
 import dvoraka.avservice.MapperException;
 import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.ReceivingType;
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.AVMessageMapper;
 import org.apache.logging.log4j.LogManager;
@@ -35,10 +36,12 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
     private static final String RESPONSE_EXCHANGE = "check-result";
 
     private ExecutorService executorService;
+    private ReceivingType receivingType;
 
 
-    public AmqpAVServer() {
+    public AmqpAVServer(ReceivingType receivingType) {
         executorService = Executors.newFixedThreadPool(2);
+        this.receivingType = receivingType;
     }
 
 
@@ -95,7 +98,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
     }
 
     private void processResponse(AVMessage message) {
-        log.debug("Processed message: " + message);
+        log.debug("Processed message: " + message.getId());
 
         try {
             Message response = AVMessageMapper.transform(message);
@@ -116,10 +119,13 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
         log.debug("Server start.");
         setStarted();
 
-        messageProcessor.addAVMessageListener(this);
+        if (getReceivingType() == ReceivingType.POLLING) {
+            startResponding();
+        } else if (getReceivingType() == ReceivingType.LISTENER) {
+            messageProcessor.addAVMessageListener(this);
+        }
 
         startListening();
-        startResponding();
     }
 
     @Override
@@ -141,5 +147,9 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
     @Override
     public void restart() {
 
+    }
+
+    public ReceivingType getReceivingType() {
+        return receivingType;
     }
 }
