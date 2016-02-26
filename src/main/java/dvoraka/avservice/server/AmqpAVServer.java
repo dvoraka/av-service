@@ -1,7 +1,7 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.AVMessageListener;
-import dvoraka.avservice.AppConfig;
+import dvoraka.avservice.configuration.AppConfig;
 import dvoraka.avservice.MapperException;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ReceivingType;
