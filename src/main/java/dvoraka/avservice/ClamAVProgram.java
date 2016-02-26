@@ -57,6 +57,30 @@ public class ClamAVProgram implements AVProgram {
         this.socketPort = socketPort;
     }
 
+    /**
+     * Scans the stream of bytes.
+     *
+     * @param bytes the bytes to scan
+     * @return infection found
+     * <p/>
+     * <p>
+     * <b>Clamd documentation:</b>
+     * </p>
+     * INSTREAM
+     * <br>
+     * It is mandatory to prefix this command with n or z.
+     * Scan a stream of data. The stream is sent to  clamd  in  chunks,
+     * after  INSTREAM,  on  the  same  socket on which the command was
+     * sent.  This avoids the overhead of establishing new TCP  connec‐
+     * tions  and  problems  with  NAT.  The  format  of  the chunk is:
+     * '<length><data>' where <length> is the  size  of  the  following
+     * data  in bytes expressed as a 4 byte unsigned integer in network
+     * byte order and <data> is the actual chunk. Streaming  is  termi‐
+     * nated  by  sending  a  zero-length  chunk.  Note:  do not exceed
+     * StreamMaxLength as defined in clamd.conf, otherwise  clamd  will
+     * reply  with  INSTREAM  size limit exceeded and close the connec‐
+     * tion.
+     */
     @Override
     public boolean scanStream(byte[] bytes) {
         log.debug("Scanning stream...");
