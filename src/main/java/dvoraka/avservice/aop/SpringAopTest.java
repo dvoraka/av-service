@@ -20,7 +20,7 @@ public class SpringAopTest {
 //        System.out.println("After");
 //    }
 
-    @Around("execution(* dvoraka.avservice.AVService.*(..))")
+    @Around("execution(* dvoraka.avservice.service.AVService.*(..))")
     public boolean printInfo(ProceedingJoinPoint pjp) {
 
         long start = System.currentTimeMillis();
