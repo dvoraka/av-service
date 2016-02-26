@@ -1,9 +1,9 @@
 package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.AVProgram;
-import dvoraka.avservice.AVService;
+import dvoraka.avservice.service.AVService;
 import dvoraka.avservice.ClamAVProgram;
-import dvoraka.avservice.DefaultAVService;
+import dvoraka.avservice.service.DefaultAVService;
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ReceivingType;
