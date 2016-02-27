@@ -49,6 +49,10 @@ test {
     }
 }
 
+tasks.withType(JavaExec) {
+    systemProperties System.properties
+}
+
 task run(type: JavaExec) {
     main = 'dvoraka.avservice.checker.App'
     classpath = sourceSets.main.runtimeClasspath
