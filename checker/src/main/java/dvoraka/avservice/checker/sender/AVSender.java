@@ -1,8 +1,7 @@
 package dvoraka.avservice.checker.sender;
 
 import com.rabbitmq.client.*;
-import dvoraka.avservice.checker.Printer;
-import dvoraka.avservice.checker.sender.Sender;
+import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

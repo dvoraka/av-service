@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.checker.utils;
 
 import com.rabbitmq.client.AMQP;
 import org.apache.logging.log4j.LogManager;

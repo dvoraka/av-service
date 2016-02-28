@@ -4,6 +4,7 @@ import dvoraka.avservice.checker.receiver.AVReceiver;
 import dvoraka.avservice.checker.receiver.Receiver;
 import dvoraka.avservice.checker.sender.AVSender;
 import dvoraka.avservice.checker.sender.Sender;
+import dvoraka.avservice.checker.utils.AVUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
