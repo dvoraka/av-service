@@ -11,6 +11,12 @@ Client is on different machine.
 * Receiver: AVReceiver
 * Sender: AVSender
 
+##### How to run load test
+```
+$ ./gradlew loadTest
+```
+Configuration file is loadTest.xml in resources directory.
+
 ##### Load tests
 ```
 Load test start for 1000 messages...
