@@ -16,16 +16,19 @@ Client is on different machine.
 Load test start for 1000 messages...
 Load test end
 Duration: 20 s
+Messages: 50/s
 ```
 ```
 Load test start for 10 000 messages...
 Load test end
 Duration: 178 s
+Messages: 56/s
 ```
 ```
 Load test start for 100 000 messages...
 Load test end
 Duration: 1800 s
+Messages: 56/s
 ```
 
 ## Planned features
