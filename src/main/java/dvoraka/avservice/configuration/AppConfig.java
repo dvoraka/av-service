@@ -15,13 +15,14 @@ import dvoraka.avservice.service.DefaultAVService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 
 /**
  * App Spring configuration.
  */
 @Configuration
-@EnableAspectJAutoProxy(proxyTargetClass = true)
-//@Import(AmqpConfig.class)
+//@EnableAspectJAutoProxy(proxyTargetClass = true)
+@Import(AmqpConfig.class)
 public class AppConfig {
 
     @Bean
