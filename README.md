@@ -13,7 +13,7 @@ Client is on different machine.
 
 ##### How to run load test
 ```
-$ ./gradlew :checker:loadTest
+$ ./gradlew loadTest
 ```
 Configuration file is loadTest.xml in resources directory.
 
