@@ -4,26 +4,28 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
 #### Load results for the old service (retested):
 
-Load tests with debug output on server. Client, message broker, server and anti-virus program are on the same machine. Sending file is EICAR.
+Message broker, server and anti-virus program are on the same machine. Sending file is EICAR.
+
+Client is on different machine.
 
 * Receiver: AVReceiver
 * Sender: AVSender
 
-##### Send and receive
+##### Load tests
 ```
 Load test start for 1000 messages...
 Load test end
-Duration: 19 s
+Duration: 20 s
 ```
 ```
 Load test start for 10 000 messages...
 Load test end
-Duration: 156 s
+Duration: 178 s
 ```
 ```
 Load test start for 100 000 messages...
 Load test end
-Duration: 1903 s
+Duration: 1800 s
 ```
 
 ## Planned features
