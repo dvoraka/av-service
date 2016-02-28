@@ -1,4 +1,8 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.checker.receiver;
+
+import dvoraka.avservice.checker.exception.BadExchangeException;
+import dvoraka.avservice.checker.exception.LastMessageException;
+import dvoraka.avservice.checker.exception.ProtocolException;
 
 import java.io.IOException;
 
@@ -15,7 +19,7 @@ public interface Receiver {
      * @param corrId parent message ID
      * @throws IOException
      * @throws InterruptedException
-     * @throws dvoraka.avservice.checker.BadExchangeException
+     * @throws BadExchangeException
      */
     boolean receive(String corrId) throws
             java.io.IOException,

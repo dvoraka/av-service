@@ -1,9 +1,14 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.checker.receiver;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
+import dvoraka.avservice.checker.ErrorMessage;
+import dvoraka.avservice.checker.Printer;
+import dvoraka.avservice.checker.exception.LastMessageException;
+import dvoraka.avservice.checker.exception.ProtocolException;
+import dvoraka.avservice.checker.receiver.Receiver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

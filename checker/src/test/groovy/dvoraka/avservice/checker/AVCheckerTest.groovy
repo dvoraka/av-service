@@ -1,5 +1,7 @@
 package dvoraka.avservice.checker
 
+import dvoraka.avservice.checker.receiver.Receiver
+import dvoraka.avservice.checker.sender.Sender
 import spock.lang.*;
 
 

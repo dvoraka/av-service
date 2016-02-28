@@ -1,5 +1,6 @@
 package dvoraka.avservice.checker;
 
+import dvoraka.avservice.checker.receiver.AVReceiver;
 import org.junit.After;
 import org.junit.Before;
 

@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.checker.exception;
 
 /**
  * Exception class for messages with bad app-id.

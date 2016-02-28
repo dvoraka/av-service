@@ -1,5 +1,9 @@
 package dvoraka.avservice.checker;
 
+import dvoraka.avservice.checker.exception.BadExchangeException;
+import dvoraka.avservice.checker.exception.ProtocolException;
+import dvoraka.avservice.checker.exception.UnknownProtocolException;
+
 /**
  * Object representation for AMQP anti-virus error message.
  *

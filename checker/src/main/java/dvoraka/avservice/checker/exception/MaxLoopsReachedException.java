@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.checker.exception;
 
 /**
  * @author dvoraka

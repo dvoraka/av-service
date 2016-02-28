@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.checker.sender;
 
 import java.io.IOException;
 
