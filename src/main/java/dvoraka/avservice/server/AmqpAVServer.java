@@ -1,6 +1,7 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.AVMessageListener;
+import dvoraka.avservice.CustomThreadFactory;
 import dvoraka.avservice.configuration.AppConfig;
 import dvoraka.avservice.MapperException;
 import dvoraka.avservice.MessageProcessor;
@@ -17,6 +18,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,12 +42,20 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
 
 
     public AmqpAVServer(ReceivingType receivingType) {
-        executorService = Executors.newFixedThreadPool(2);
+        ThreadFactory threadFactory = new CustomThreadFactory("server-pool-");
+        executorService = Executors.newFixedThreadPool(2, threadFactory);
         this.receivingType = receivingType;
     }
 
 
     public static void main(String[] args) {
+
+        // waiting before start
+//        try {
+//            Thread.sleep(20_000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         AmqpAVServer server = context.getBean(AmqpAVServer.class);

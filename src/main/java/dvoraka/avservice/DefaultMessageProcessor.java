@@ -13,6 +13,7 @@ import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,7 +36,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     public DefaultMessageProcessor(int threadCount) {
         this.threadCount = threadCount;
-        executorService = Executors.newFixedThreadPool(threadCount);
+        ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
+        executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
     }
 
     @Override
