@@ -33,6 +33,22 @@ dependencies {
 //    toolVersion = "6.5"
 //}
 
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
 test {
     testLogging {
         exceptionFormat = 'full'
@@ -43,8 +59,16 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.11'
 }
 
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+
 task runServer(type: JavaExec) {
     main = 'dvoraka.avservice.server.AmqpAVServer'
     classpath = sourceSets.main.runtimeClasspath
 }
 
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
