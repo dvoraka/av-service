@@ -1,10 +1,15 @@
-apply plugin: 'java'
-apply plugin: 'groovy'
-//apply plugin: 'checkstyle'
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'groovy'
+//    apply plugin: 'checkstyle'
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-version = '0.1-SNAPSHOT'
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    version = '0.1-SNAPSHOT'
+}
+
+subprojects {
+}
 
 ext {
     springVersion = '4.2.4.RELEASE'
