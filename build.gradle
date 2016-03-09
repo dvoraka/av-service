@@ -1,3 +1,5 @@
+apply plugin: 'jetty'
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'groovy'
@@ -25,6 +27,7 @@ dependencies {
     compile('org.apache.logging.log4j:log4j-core:2.5')
     compile("org.springframework:spring-core:${springVersion}")
     compile("org.springframework:spring-context:${springVersion}")
+    compile("org.springframework:spring-webmvc:${springVersion}")
     compile("org.springframework:spring-aspects:${springVersion}")
     compile('org.springframework.amqp:spring-rabbit:1.5.3.RELEASE')
 

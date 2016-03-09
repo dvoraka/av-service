@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
-@Import(AmqpConfig.class)
+@Import({AmqpConfig.class, SpringWebConfig.class})
 public class AppConfig {
 
     @Bean
