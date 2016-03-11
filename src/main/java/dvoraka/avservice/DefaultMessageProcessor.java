@@ -50,6 +50,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
         log.debug("Message sent.");
     }
 
+    @Override
+    public MessageStatus messageStatus(String id) {
+        return MessageStatus.UNKNOWN;
+    }
+
     private void processMessage(AVMessage message) {
 
         log.debug("Waiting queue size: " + processedMessages.size());
