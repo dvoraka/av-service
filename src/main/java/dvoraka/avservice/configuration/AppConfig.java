@@ -1,10 +1,6 @@
 package dvoraka.avservice.configuration;
 
-import dvoraka.avservice.AVProgram;
-import dvoraka.avservice.ClamAVProgram;
-import dvoraka.avservice.DefaultMessageProcessor;
-import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.ReceivingType;
+import dvoraka.avservice.*;
 import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.AmqpAVServer;
@@ -53,5 +49,10 @@ public class AppConfig {
     @Bean
     public SpringAopTest springAopTest() {
         return new SpringAopTest();
+    }
+
+    @Bean
+    public RestStrategy restStrategy() {
+        return new DirectRestStrategy();
     }
 }
