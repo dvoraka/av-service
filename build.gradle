@@ -1,4 +1,8 @@
-apply plugin: 'jetty'
+plugins {
+    id "org.akhikhl.gretty" version "1.2.4"
+}
+
+apply plugin: "org.akhikhl.gretty"
 
 allprojects {
     apply plugin: 'java'
@@ -75,6 +79,10 @@ task integrationTest(type: Test) {
 task runServer(type: JavaExec) {
     main = 'dvoraka.avservice.server.AmqpAVServer'
     classpath = sourceSets.main.runtimeClasspath
+}
+
+gretty {
+    jvmArgs = ['-Dspring.profiles.active=rest']
 }
 
 check.dependsOn integrationTest
