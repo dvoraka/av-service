@@ -23,19 +23,46 @@ class DefaultMessageProcessorSpec extends Specification {
         String testId = "testId"
 
         AVService avService = Stub()
-        avService.scanStream() >> {
+        avService.scanStream(_) >> {
             sleep(1000)
             return false
         }
 
         processor = new DefaultMessageProcessor(2);
-        // TODO: improve it
-        processor.avService = avService
+        processor.setAvService(avService)
 
         when:
         processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
 
         then:
         processor.messageStatus(testId) == MessageStatus.PROCESSING
+    }
+
+    def "processed message status"() {
+        setup:
+        String testId = "testId"
+
+        AVService avService = Stub()
+        processor = new DefaultMessageProcessor(2);
+        processor.setAvService(avService)
+
+        when:
+        processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
+        sleep(1000)
+
+        then:
+        processor.messageStatus(testId) == MessageStatus.PROCESSED
+    }
+
+    def "unknown message status"() {
+        setup:
+        String testId = "testId"
+
+        AVService avService = Stub()
+        processor = new DefaultMessageProcessor(2);
+        processor.setAvService(avService)
+
+        expect:
+        processor.messageStatus(testId) == MessageStatus.UNKNOWN
     }
 }

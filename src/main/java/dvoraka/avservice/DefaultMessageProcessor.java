@@ -62,6 +62,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public MessageStatus messageStatus(String id) {
+        log.debug("Message status from: " + Thread.currentThread().getName());
         if (processedMessages.containsKey(id)) {
             return MessageStatus.PROCESSED;
         } else if (processingMessages.containsKey(id)) {
@@ -77,6 +78,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         log.debug("Scanning thread: " + Thread.currentThread().getName());
         boolean infected = avService.scanStream(message.getData());
+        log.debug("Scanning done in: " + Thread.currentThread().getName());
 
         while (isRunning()) {
             try {
@@ -146,5 +148,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     public int getThreadCount() {
         return threadCount;
+    }
+
+    public void setAvService(AVService avService) {
+        this.avService = avService;
     }
 }
