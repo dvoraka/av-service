@@ -8,4 +8,8 @@ import dvoraka.avservice.data.MessageStatus;
 public interface RestStrategy {
 
     MessageStatus messageStatus(String id);
+
+    MessageStatus messageStatus(String id, String serviceId);
+
+    String messageServiceId(String id);
 }

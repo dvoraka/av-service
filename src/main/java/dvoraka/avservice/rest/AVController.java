@@ -38,6 +38,16 @@ public class AVController {
         return restService.messageStatus(id);
     }
 
+    @RequestMapping(value = "/msg-status/{id}/{serviceId}", method = RequestMethod.GET)
+    public MessageStatus messageStatus(@PathVariable String id, @PathVariable String serviceId) {
+        return restService.messageStatus(id);
+    }
+
+    @RequestMapping(value = "/msg-service-id/{id}", method = RequestMethod.GET)
+    public String messageServiceId(@PathVariable String id) {
+        return restService.messageServiceId(id);
+    }
+
     /**
      * Generates testing AV message.
      *

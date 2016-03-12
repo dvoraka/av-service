@@ -16,4 +16,14 @@ public class DefaultRestService implements RestService {
     public MessageStatus messageStatus(String id) {
         return restStrategy.messageStatus(id);
     }
+
+    @Override
+    public MessageStatus messageStatus(String id, String serviceId) {
+        return restStrategy.messageStatus(id, serviceId);
+    }
+
+    @Override
+    public String messageServiceId(String id) {
+        return restStrategy.messageServiceId(id);
+    }
 }
