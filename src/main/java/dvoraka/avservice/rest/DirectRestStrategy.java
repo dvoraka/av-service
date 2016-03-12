@@ -19,7 +19,7 @@ public class DirectRestStrategy implements RestStrategy {
 
     @Override
     public MessageStatus messageStatus(String id, String serviceId) {
-        return messageProcessor.messageStatus(id, serviceId);
+        return messageStatus(id);
     }
 
     @Override

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -28,7 +30,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private static final Logger log = LogManager.getLogger(SimpleAmqpListeningStrategy.class.getName());
 
     private static final int QUEUE_SIZE = 100;
-    private Queue<AVMessage> processedMessages = new LinkedBlockingQueue<>(QUEUE_SIZE);
+
+    private Map<String, Long> processingMessages = new ConcurrentHashMap<>(QUEUE_SIZE);
+    private Map<String, Long> processedMessages = new ConcurrentHashMap<>(QUEUE_SIZE);
+
+    private Queue<AVMessage> processedMessagesQueue = new LinkedBlockingQueue<>(QUEUE_SIZE);
     private List<AVMessageListener> observers = new ArrayList<>();
     private ExecutorService executorService;
     private int threadCount;
@@ -43,9 +49,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void sendMessage(AVMessage message) {
+
         setRunning(true);
 
         log.debug("Processing message...");
+        processingMessages.put(message.getId(), System.currentTimeMillis());
+
         Runnable process = () -> processMessage(message);
         executorService.execute(process);
         log.debug("Message sent.");
@@ -53,17 +62,18 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        return MessageStatus.UNKNOWN;
-    }
-
-    @Override
-    public MessageStatus messageStatus(String id, String serviceId) {
-        return MessageStatus.UNKNOWN;
+        if (processedMessages.containsKey(id)) {
+            return MessageStatus.PROCESSED;
+        } else if (processingMessages.containsKey(id)) {
+            return MessageStatus.PROCESSING;
+        } else {
+            return MessageStatus.UNKNOWN;
+        }
     }
 
     private void processMessage(AVMessage message) {
 
-        log.debug("Waiting queue size: " + processedMessages.size());
+        log.debug("Waiting queue size: " + processedMessagesQueue.size());
 
         log.debug("Scanning thread: " + Thread.currentThread().getName());
         boolean infected = avService.scanStream(message.getData());
@@ -72,7 +82,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
             try {
                 AVMessage avMessage = message.createResponse(infected);
                 if (observers.size() == 0) {
-                    processedMessages.add(avMessage);
+                    processedMessagesQueue.add(avMessage);
+
+                    // TODO: Delete after some time?
+                    processedMessages.put(message.getId(), System.currentTimeMillis());
+                    processingMessages.remove(message.getId());
                 } else {
                     notifyObservers(avMessage);
                 }
@@ -91,12 +105,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public boolean hasProcessedMessage() {
-        return !processedMessages.isEmpty();
+        return !processedMessagesQueue.isEmpty();
     }
 
     @Override
     public AVMessage getProcessedMessage() {
-        return processedMessages.poll();
+        return processedMessagesQueue.poll();
     }
 
     @Override
@@ -107,7 +121,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         try {
             executorService.awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.warn("Stopping thread pool failed!", e);
         }
     }
 

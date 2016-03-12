@@ -18,8 +18,6 @@ public interface MessageProcessor {
      */
     MessageStatus messageStatus(String id);
 
-    MessageStatus messageStatus(String id, String serviceId);
-
     /**
      * Returns true if any message is prepared.
      *
