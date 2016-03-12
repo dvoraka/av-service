@@ -79,10 +79,11 @@ task integrationTest(type: Test) {
 task runServer(type: JavaExec) {
     main = 'dvoraka.avservice.server.AmqpAVServer'
     classpath = sourceSets.main.runtimeClasspath
+    environment('spring.profiles.active', 'amqp')
 }
 
 gretty {
-    jvmArgs = ['-Dspring.profiles.active=rest']
+    jvmArgs = ['-Dspring.profiles.active=rest,amqp']
 }
 
 check.dependsOn integrationTest
