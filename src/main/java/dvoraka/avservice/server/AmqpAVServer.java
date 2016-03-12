@@ -5,7 +5,6 @@ import dvoraka.avservice.CustomThreadFactory;
 import dvoraka.avservice.configuration.AppConfig;
 import dvoraka.avservice.MapperException;
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.ReceivingType;
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.AVMessageMapper;
 import org.apache.logging.log4j.LogManager;

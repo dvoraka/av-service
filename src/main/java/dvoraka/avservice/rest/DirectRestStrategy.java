@@ -1,5 +1,7 @@
-package dvoraka.avservice;
+package dvoraka.avservice.rest;
 
+import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.data.MessageStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

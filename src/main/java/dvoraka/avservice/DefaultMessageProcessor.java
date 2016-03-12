@@ -1,6 +1,7 @@
 package dvoraka.avservice;
 
 import dvoraka.avservice.data.AVMessage;
+import dvoraka.avservice.data.MessageStatus;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import dvoraka.avservice.service.AVService;
 import org.apache.logging.log4j.LogManager;

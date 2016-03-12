@@ -1,6 +1,7 @@
 package dvoraka.avservice;
 
 import dvoraka.avservice.data.AVMessage;
+import dvoraka.avservice.data.MessageStatus;
 
 /**
  * Abstraction for message processing.

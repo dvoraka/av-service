@@ -1,4 +1,6 @@
-package dvoraka.avservice;
+package dvoraka.avservice.rest;
+
+import dvoraka.avservice.data.MessageStatus;
 
 /**
  * Base for the REST strategy.

@@ -1,5 +1,6 @@
-package dvoraka.avservice;
+package dvoraka.avservice.rest;
 
+import dvoraka.avservice.data.MessageStatus;
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.AVMessageType;
 import dvoraka.avservice.data.DefaultAVMessage;

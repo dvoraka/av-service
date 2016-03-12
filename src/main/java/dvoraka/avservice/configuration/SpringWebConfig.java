@@ -1,6 +1,6 @@
 package dvoraka.avservice.configuration;
 
-import dvoraka.avservice.AVController;
+import dvoraka.avservice.rest.AVController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
