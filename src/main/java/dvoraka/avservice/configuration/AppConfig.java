@@ -8,6 +8,8 @@ import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import dvoraka.avservice.service.AVService;
 import dvoraka.avservice.service.DefaultAVService;
+import dvoraka.avservice.service.DefaultRestService;
+import dvoraka.avservice.service.RestService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -49,6 +51,11 @@ public class AppConfig {
     @Bean
     public SpringAopTest springAopTest() {
         return new SpringAopTest();
+    }
+
+    @Bean
+    public RestService restService() {
+        return new DefaultRestService();
     }
 
     @Bean

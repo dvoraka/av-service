@@ -9,4 +9,9 @@ public class DirectRestStrategy implements RestStrategy {
 
     @Autowired
     private MessageProcessor messageProcessor;
+
+    @Override
+    public MessageStatus messageStatus(String id) {
+        return messageProcessor.messageStatus(id);
+    }
 }
