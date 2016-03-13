@@ -46,9 +46,21 @@ Messages: 56/s
 ### ClamAV
 #### Debian
 ```
-# apt-get install clamav
+# apt-get install clamav-daemon
 ```
 Official [installation](http://www.clamav.net/documents/installing-clamav) for other systems.
+
+##### Configuration
+For Jessie it is better to use `dpkg-reconfigure clamav-daemon` and enable TCP socket there because of systemd integration.
+
+OR
+
+Manually change the configuration file `/etc/clamav/clamd.conf`:
+```
+TCPSocket 3310
+TCPAddr 127.0.0.1
+```
+This is for enabling TCP socket on a default port and localhost.
 
 ### RabbitMQ
 #### Debian
