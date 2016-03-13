@@ -62,7 +62,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        log.debug("Message status from: " + Thread.currentThread().getName());
+        log.debug("Message status call from: " + Thread.currentThread().getName());
 
         if (processedMessages.containsKey(id)) {
             return MessageStatus.PROCESSED;
@@ -85,27 +85,30 @@ public class DefaultMessageProcessor implements MessageProcessor {
         addProcessedMessage(message.getId());
         removeProcessingMessage(message.getId());
 
-        // TODO: move into method
-        // TODO: change exception catching
-        // send response
-        while (isRunning()) {
-            try {
-                AVMessage avMessage = message.createResponse(infected);
-                if (observers.size() == 0) {
-                    processedMessagesQueue.add(avMessage);
-                } else {
-                    notifyObservers(avMessage);
-                }
+        sendResponse(message, infected);
+    }
 
-                break;
-            } catch (IllegalStateException e) {
-                log.warn("Processed queue for thread "
-                        + Thread.currentThread().getName() + " is full");
+    private void sendResponse(AVMessage message, boolean infected) {
+        while (isRunning()) {
+            AVMessage avMessage = message.createResponse(infected);
+
+            if (observers.size() == 0) {
                 try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                    // add message to the queue
+                    processedMessagesQueue.add(avMessage);
+                    break;
+                } catch (IllegalStateException e) {
+                    // full queue
+                    log.warn("Processed queue for thread " + Thread.currentThread().getName() + " is full");
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e1) {
+                        log.warn("Waiting interruped!", e);
+                    }
                 }
+            } else {
+                notifyObservers(avMessage);
+                break;
             }
         }
     }
