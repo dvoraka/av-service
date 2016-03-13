@@ -1,10 +1,15 @@
 package dvoraka.avservice.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
  * Default AV message implementation.
  */
+@JsonDeserialize(builder = DefaultAVMessage.Builder.class)
 public class DefaultAVMessage implements AVMessage {
 
     private String id;
@@ -63,6 +68,18 @@ public class DefaultAVMessage implements AVMessage {
                 .build();
     }
 
+    @Override
+    public String toString() {
+        return "DefaultAVMessage {" +
+                "id='" + id + '\'' +
+                ", correlationId='" + correlationId + '\'' +
+                ", data=" + Arrays.toString(data) +
+                ", serviceId='" + serviceId + '\'' +
+                ", virusInfo='" + virusInfo + '\'' +
+                ", type=" + type +
+                '}';
+    }
+
     public static class Builder {
         private String id;
         private String correlationId;
@@ -71,7 +88,7 @@ public class DefaultAVMessage implements AVMessage {
         private String serviceId;
         private String virusInfo;
 
-        public Builder(String id) {
+        public Builder(@JsonProperty("id") String id) {
             if (id != null) {
                 this.id = id;
             } else {
