@@ -30,6 +30,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private static final Logger log = LogManager.getLogger(SimpleAmqpListeningStrategy.class.getName());
 
     private static final int QUEUE_SIZE = 100;
+    private static final long POOL_TERM_TIME_S = 20;
 
     private Map<String, Long> processingMessages = new ConcurrentHashMap<>(QUEUE_SIZE);
     private Map<String, Long> processedMessages = new ConcurrentHashMap<>(QUEUE_SIZE);
@@ -99,11 +100,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
                     break;
                 } catch (IllegalStateException e) {
                     // full queue
-                    log.warn("Processed queue for thread " + Thread.currentThread().getName() + " is full");
+                    log.warn("Processed queue for the thread " + Thread.currentThread().getName() + " is full");
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e1) {
-                        log.warn("Waiting interruped!", e);
+                        log.warn("Waiting interrupted!", e);
                     }
                 }
             } else {
@@ -129,9 +130,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(10, TimeUnit.SECONDS);
+            executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            log.warn("Stopping thread pool failed!", e);
+            log.warn("Stopping the thread pool failed!", e);
         }
     }
 

@@ -31,19 +31,19 @@ public class ClamAVProgram implements AVProgram {
 
     public static void main(String[] args) throws IOException {
 
-        ClamAVProgram prog = new ClamAVProgram();
+        ClamAVProgram program = new ClamAVProgram();
         System.out.println("Connection test");
-        System.out.println(prog.testConnection());
+        System.out.println(program.testConnection());
         System.out.println("Stats");
-        System.out.println(prog.stats());
+        System.out.println(program.stats());
         System.out.println("Clamav ping test");
-        System.out.println("Result: " + prog.ping());
+        System.out.println("Result: " + program.ping());
         System.out.println("Clamav version");
-        System.out.println("Result: " + prog.version());
+        System.out.println("Result: " + program.version());
         System.out.println("Clamav checking data");
-        System.out.println("Result: " + prog.scanStream("aaa".getBytes()));
+        System.out.println("Result: " + program.scanStream("aaa".getBytes()));
         System.out.println("Clamav checking data");
-        System.out.println("Result: " + prog.scanStream(
+        System.out.println("Result: " + program.scanStream(
                 "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
                         .getBytes()));
     }
@@ -92,10 +92,10 @@ public class ClamAVProgram implements AVProgram {
                 BufferedReader in = new BufferedReader(inReader)
         ) {
             // send bytes
-            byte[] lenghtBytes = ByteBuffer.allocate(CHUNK_LENGTH_BYTE_SIZE)
+            byte[] lengthBytes = ByteBuffer.allocate(CHUNK_LENGTH_BYTE_SIZE)
                     .order(ByteOrder.BIG_ENDIAN).putInt(bytes.length).array();
             outStream.write("nINSTREAM\n".getBytes("UTF-8"));
-            outStream.write(lenghtBytes);
+            outStream.write(lengthBytes);
             outStream.write(bytes);
 
             // terminate stream with zero length chunk
@@ -119,6 +119,7 @@ public class ClamAVProgram implements AVProgram {
             log.warn("Scanning problem!", e);
         }
 
+        // TODO: throw exception
         // in case of any error return true
         return true;
     }
