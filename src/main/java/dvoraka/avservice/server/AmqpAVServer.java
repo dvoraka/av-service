@@ -46,7 +46,6 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
         this.receivingType = receivingType;
     }
 
-
     public static void main(String[] args) {
 
         // waiting before start

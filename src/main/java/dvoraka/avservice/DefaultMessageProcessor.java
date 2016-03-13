@@ -2,6 +2,7 @@ package dvoraka.avservice;
 
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.MessageStatus;
+import dvoraka.avservice.server.ReceivingType;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import dvoraka.avservice.service.AVService;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +39,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private Queue<AVMessage> processedMessagesQueue = new LinkedBlockingQueue<>(QUEUE_SIZE);
     private List<AVMessageListener> observers = new ArrayList<>();
     private ExecutorService executorService;
+    private ReceivingType serverReceivingType = ReceivingType.POLLING;
+
     private int threadCount;
     private boolean running;
 
@@ -86,14 +89,18 @@ public class DefaultMessageProcessor implements MessageProcessor {
         addProcessedMessage(message.getId());
         removeProcessingMessage(message.getId());
 
-        sendResponse(message, infected);
+        prepareResponse(message, infected);
     }
 
-    private void sendResponse(AVMessage message, boolean infected) {
-        while (isRunning()) {
-            AVMessage avMessage = message.createResponse(infected);
+    private void prepareResponse(AVMessage message, boolean infected) {
+        AVMessage avMessage = message.createResponse(infected);
 
-            if (observers.size() == 0) {
+        // TODO: move into methods
+        if (getServerReceivingType() == ReceivingType.LISTENER) {
+            notifyObservers(avMessage);
+
+        } else if (getServerReceivingType() == ReceivingType.POLLING) {
+            while (isRunning()) {
                 try {
                     // add message to the queue
                     processedMessagesQueue.add(avMessage);
@@ -107,9 +114,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
                         log.warn("Waiting interrupted!", e);
                     }
                 }
-            } else {
-                notifyObservers(avMessage);
-                break;
             }
         }
     }
@@ -138,6 +142,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void addAVMessageListener(AVMessageListener listener) {
+        setServerReceivingType(ReceivingType.LISTENER);
         observers.add(listener);
     }
 
@@ -177,5 +182,13 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     public void setAvService(AVService avService) {
         this.avService = avService;
+    }
+
+    private void setServerReceivingType(ReceivingType type) {
+        serverReceivingType = type;
+    }
+
+    public ReceivingType getServerReceivingType() {
+        return serverReceivingType;
     }
 }
