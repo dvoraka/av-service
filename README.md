@@ -2,7 +2,38 @@
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
-#### Load results for the old service (retested):
+## Planned features
+* Highly scalable architecture
+* Robust design
+* Communication over AMQP 0.9.1, JMS and REST
+
+## Installation
+### ClamAV
+#### Debian
+```
+# apt-get install clamav-daemon
+```
+Official [installation](http://www.clamav.net/documents/installing-clamav) for other systems.
+
+##### Configuration
+For Jessie it is better to use `dpkg-reconfigure clamav-daemon` and enable TCP socket there because of systemd integration.
+
+OR
+
+Manually change the configuration file `/etc/clamav/clamd.conf`:
+```
+TCPSocket 3310
+TCPAddr 127.0.0.1
+```
+This is for enabling TCP socket on a default port and localhost.
+
+### RabbitMQ
+#### Debian
+```
+# apt-get install rabbitmq-server
+```
+
+## Load results for the old service (retested):
 
 Message broker, server and anti-virus program are on the same machine. Sending file is EICAR.
 
@@ -35,35 +66,4 @@ Load test start for 100 000 messages...
 Load test end
 Duration: 1800 s
 Messages: 56/s
-```
-
-## Planned features
-* Highly scalable architecture
-* Robust design
-* Communication over AMQP 0.9.1, JMS and REST
-
-## Installation
-### ClamAV
-#### Debian
-```
-# apt-get install clamav-daemon
-```
-Official [installation](http://www.clamav.net/documents/installing-clamav) for other systems.
-
-##### Configuration
-For Jessie it is better to use `dpkg-reconfigure clamav-daemon` and enable TCP socket there because of systemd integration.
-
-OR
-
-Manually change the configuration file `/etc/clamav/clamd.conf`:
-```
-TCPSocket 3310
-TCPAddr 127.0.0.1
-```
-This is for enabling TCP socket on a default port and localhost.
-
-### RabbitMQ
-#### Debian
-```
-# apt-get install rabbitmq-server
 ```
