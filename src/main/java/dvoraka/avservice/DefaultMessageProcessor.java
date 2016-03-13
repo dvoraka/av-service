@@ -53,16 +53,17 @@ public class DefaultMessageProcessor implements MessageProcessor {
         setRunning(true);
 
         log.debug("Processing message...");
-        processingMessages.put(message.getId(), System.currentTimeMillis());
+        addProcessingMessage(message.getId());
 
         Runnable process = () -> processMessage(message);
         executorService.execute(process);
-        log.debug("Message sent.");
+        log.debug("Message accepted.");
     }
 
     @Override
     public MessageStatus messageStatus(String id) {
         log.debug("Message status from: " + Thread.currentThread().getName());
+
         if (processedMessages.containsKey(id)) {
             return MessageStatus.PROCESSED;
         } else if (processingMessages.containsKey(id)) {
@@ -75,23 +76,27 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private void processMessage(AVMessage message) {
 
         log.debug("Waiting queue size: " + processedMessagesQueue.size());
-
         log.debug("Scanning thread: " + Thread.currentThread().getName());
+
         boolean infected = avService.scanStream(message.getData());
         log.debug("Scanning done in: " + Thread.currentThread().getName());
 
+        // TODO: Delete after some time?
+        addProcessedMessage(message.getId());
+        removeProcessingMessage(message.getId());
+
+        // TODO: move into method
+        // TODO: change exception catching
+        // send response
         while (isRunning()) {
             try {
                 AVMessage avMessage = message.createResponse(infected);
                 if (observers.size() == 0) {
                     processedMessagesQueue.add(avMessage);
-
-                    // TODO: Delete after some time?
-                    processedMessages.put(message.getId(), System.currentTimeMillis());
-                    processingMessages.remove(message.getId());
                 } else {
                     notifyObservers(avMessage);
                 }
+
                 break;
             } catch (IllegalStateException e) {
                 log.warn("Processed queue for thread "
@@ -148,6 +153,22 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     public int getThreadCount() {
         return threadCount;
+    }
+
+    private void addProcessingMessage(String id) {
+        processingMessages.put(id, System.currentTimeMillis());
+    }
+
+    private void addProcessedMessage(String id) {
+        processedMessages.put(id, System.currentTimeMillis());
+    }
+
+    private void removeProcessingMessage(String id) {
+        processingMessages.remove(id);
+    }
+
+    private void removeProcessedMessage(String id) {
+        processedMessages.remove(id);
     }
 
     public void setAvService(AVService avService) {
