@@ -1,5 +1,6 @@
 package dvoraka.avservice.rest;
 
+import dvoraka.avservice.data.AVMessageType;
 import dvoraka.avservice.data.DefaultAVMessage;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,8 +17,11 @@ public class RestClient {
         System.out.println(message);
 
         DefaultAVMessage msgToUpload = new DefaultAVMessage.Builder("TESTING-REQUEST")
-                .data(new byte[10])
                 .serviceId("SERVICE1")
+                .virusInfo("UNKNOWN")
+                .correlationId("1-2-3")
+                .data(new byte[20])
+                .type(AVMessageType.REQUEST)
                 .build();
         System.out.println("Sent msg: " + msgToUpload);
         restTemplate.postForObject(url + "/msg-check", msgToUpload, DefaultAVMessage.class);

@@ -2,6 +2,7 @@ package dvoraka.avservice.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -80,6 +81,7 @@ public class DefaultAVMessage implements AVMessage {
                 '}';
     }
 
+    @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private String id;
         private String correlationId;
