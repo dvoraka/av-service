@@ -16,7 +16,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 Official [installation](http://www.clamav.net/documents/installing-clamav) for other systems.
 
 ##### Configuration
-For Jessie it is better to use `dpkg-reconfigure clamav-daemon` and enable TCP socket there because of systemd integration.
+For Jessie it is better to use `dpkg-reconfigure clamav-daemon` and enable TCP socket there because of systemd integration. Don't use names (e.g., **localhost**) as the address.
 
 OR
 
