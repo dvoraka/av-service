@@ -79,6 +79,11 @@ task wrapper(type: Wrapper) {
 task integrationTest(type: Test) {
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath = sourceSets.integrationTest.runtimeClasspath
+
+    testLogging {
+        // show events - "PASSED", "STARTED", "FAILED", "SKIPPED"
+        events "PASSED", "FAILED", "SKIPPED"
+    }
 }
 
 task runServer(type: JavaExec) {
