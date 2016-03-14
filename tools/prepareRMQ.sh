@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# prepares basic RabbitMQ structure
+# Prepares basic RabbitMQ structure
 #
 
 # add user guest with password guest
