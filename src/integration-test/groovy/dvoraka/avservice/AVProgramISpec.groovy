@@ -9,10 +9,10 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
- * Specification class for AVProgram.
+ * AVProgram test.
  */
 @ContextConfiguration(classes = [AppConfig])
-class AVProgramSpec extends Specification {
+class AVProgramISpec extends Specification {
 
     @Shared
     String eicarString = 'X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'
@@ -21,11 +21,6 @@ class AVProgramSpec extends Specification {
     AVProgram avProgram;
 
     def setup() {
-    }
-
-    def "default test"() {
-        expect:
-        true
     }
 
     def "AV program loading"() {

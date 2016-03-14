@@ -1,5 +1,10 @@
 package dvoraka.avservice.configuration;
 
+import dvoraka.avservice.server.AVServer;
+import dvoraka.avservice.server.AmqpAVServer;
+import dvoraka.avservice.server.ListeningStrategy;
+import dvoraka.avservice.server.ReceivingType;
+import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -15,6 +20,16 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("amqp")
 public class AmqpConfig {
+
+    @Bean
+    public AVServer avServer() {
+        return new AmqpAVServer(ReceivingType.LISTENER);
+    }
+
+    @Bean
+    public ListeningStrategy listeningStrategy() {
+        return new SimpleAmqpListeningStrategy();
+    }
 
     @Bean
     public ConnectionFactory connectionFactory() {
