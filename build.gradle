@@ -89,6 +89,7 @@ task runServer(type: JavaExec) {
 
 gretty {
     jvmArgs = ['-Dspring.profiles.active=rest,amqp']
+    integrationTestTask = "none"
 }
 
 check.dependsOn integrationTest
