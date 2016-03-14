@@ -32,6 +32,8 @@ This is for enabling TCP socket on a default port and localhost.
 ```
 # apt-get install rabbitmq-server
 ```
+##### Configuration
+You can use the script `tools/prepareRMQ.sh` to create the basic configuration. It creates a new virtual host called **antivirus** and adds permissions for **guest** user.
 
 ## Load results for the old service (retested):
 
