@@ -17,6 +17,7 @@ class AmqpAVServerISpec extends Specification {
     @Autowired
     AVServer avServer
 
+
     def setup() {
         // stop server
     }

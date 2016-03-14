@@ -4,21 +4,21 @@ import dvoraka.avservice.configuration.AppConfig
 import dvoraka.avservice.service.AVService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Shared
 import spock.lang.Specification
 
 /**
  * Specification class for AVService.
  */
 @ContextConfiguration(classes = [AppConfig])
-class AVServiceSpec extends Specification {
+class AVServiceISpec extends Specification {
+
+    @Shared
+    String eicarString = 'X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'
 
     @Autowired
     AVService avService;
 
-    def "default test"() {
-        expect:
-        true
-    }
 
     def "AV service loading"() {
         expect:
@@ -34,6 +34,17 @@ class AVServiceSpec extends Specification {
 
         then:
         !shouldBeFalse
+    }
+
+    def "scan infected bytes"() {
+        setup:
+        byte[] bytes = eicarString.getBytes()
+
+        when:
+        boolean shouldBeTrue = avService.scanStream(bytes)
+
+        then:
+        shouldBeTrue
     }
 
     def "scan normal file"() {

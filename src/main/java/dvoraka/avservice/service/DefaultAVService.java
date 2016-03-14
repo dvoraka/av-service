@@ -18,8 +18,9 @@ public class DefaultAVService implements AVService {
         return avProgram.scanStream(bytes);
     }
 
+    // TODO: implement
     @Override
     public boolean scanFile(File file) {
-        return false;
+        return true;
     }
 }
