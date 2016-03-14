@@ -3,25 +3,22 @@ package dvoraka.avservice
 import dvoraka.avservice.configuration.AppConfig
 import dvoraka.avservice.server.AVServer
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 /**
- * Specification class for AVPServer.
+ * AMQP AV server test.
  */
 @ContextConfiguration(classes = [AppConfig])
-class AVServerSpec extends Specification {
+@ActiveProfiles("amqp")
+class AmqpAVServerISpec extends Specification {
 
     @Autowired
     AVServer avServer
 
     def setup() {
         // stop server
-    }
-
-    def "default test"() {
-        expect:
-        true
     }
 
     def "AV server loading"() {
