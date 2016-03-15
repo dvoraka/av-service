@@ -100,30 +100,35 @@ public class DefaultMessageProcessor implements MessageProcessor {
         addProcessedMessage(message.getId());
         removeProcessingMessage(message.getId());
 
-        prepareResponse(message, infected);
+        sendResponse(prepareResponse(message, infected));
     }
 
-    private void prepareResponse(AVMessage message, boolean infected) {
-        AVMessage avMessage = message.createResponse(infected);
+    private AVMessage prepareResponse(AVMessage message, boolean infected) {
 
-        // TODO: move into methods
+        return message.createResponse(infected);
+    }
+
+    private void sendResponse(AVMessage message) {
         if (getServerReceivingType() == ReceivingType.LISTENER) {
-            notifyObservers(avMessage);
-
+            notifyObservers(message);
         } else if (getServerReceivingType() == ReceivingType.POLLING) {
-            while (isRunning()) {
+            saveMessage(message);
+        }
+    }
+
+    private void saveMessage(AVMessage message) {
+        while (isRunning()) {
+            try {
+                // add message to the queue
+                processedMessagesQueue.add(message);
+                break;
+            } catch (IllegalStateException e) {
+                // full queue
+                log.warn("Processed queue for the thread " + Thread.currentThread().getName() + " is full");
                 try {
-                    // add message to the queue
-                    processedMessagesQueue.add(avMessage);
-                    break;
-                } catch (IllegalStateException e) {
-                    // full queue
-                    log.warn("Processed queue for the thread " + Thread.currentThread().getName() + " is full");
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e1) {
-                        log.warn("Waiting interrupted!", e);
-                    }
+                    Thread.sleep(500);
+                } catch (InterruptedException e1) {
+                    log.warn("Waiting interrupted!", e);
                 }
             }
         }
