@@ -13,5 +13,5 @@ before_install:
 before_script:
   - ./tools/prepareRMQ.sh
   - rabbitmqctl list_users
-  - rabbitmqctl list_vhosts
+  - sudo rabbitmqctl list_vhosts
 
