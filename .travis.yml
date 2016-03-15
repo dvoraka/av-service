@@ -4,6 +4,14 @@ sudo: required
 jdk:
   - oraclejdk8
 
+services:
+  - rabbitmq
+
 before_install:
   - ./dependencies.sh
+
+before_script:
+  - ./tools/prepareRMQ.sh
+  - rabbitmqctl list_users
+  - rabbitmqctl list_vhosts
 
