@@ -30,25 +30,36 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(SimpleAmqpListeningStrategy.class.getName());
 
-    private static final int QUEUE_SIZE = 100;
+    private static final int DEFAULT_QUEUE_SIZE = 100;
     private static final long POOL_TERM_TIME_S = 20;
 
-    private Map<String, Long> processingMessages = new ConcurrentHashMap<>(QUEUE_SIZE);
-    private Map<String, Long> processedMessages = new ConcurrentHashMap<>(QUEUE_SIZE);
+    private Map<String, Long> processingMessages;
+    private Map<String, Long> processedMessages;
 
-    private Queue<AVMessage> processedMessagesQueue = new LinkedBlockingQueue<>(QUEUE_SIZE);
+    private Queue<AVMessage> processedMessagesQueue;
     private List<AVMessageListener> observers = new ArrayList<>();
     private ExecutorService executorService;
     private ReceivingType serverReceivingType = ReceivingType.POLLING;
 
     private int threadCount;
     private boolean running;
+    private int queueSize;
 
 
     public DefaultMessageProcessor(int threadCount) {
+        this(threadCount, DEFAULT_QUEUE_SIZE);
+    }
+
+    public DefaultMessageProcessor(int threadCount, int queueSize) {
         this.threadCount = threadCount;
+        this.queueSize = queueSize;
+
         ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
+
+        processingMessages = new ConcurrentHashMap<>(queueSize);
+        processedMessages = new ConcurrentHashMap<>(queueSize);
+        processedMessagesQueue = new LinkedBlockingQueue<>(queueSize);
     }
 
     @Override
@@ -190,5 +201,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     public ReceivingType getServerReceivingType() {
         return serverReceivingType;
+    }
+
+    public int getQueueSize() {
+        return queueSize;
     }
 }
