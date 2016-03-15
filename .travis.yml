@@ -8,7 +8,9 @@ services:
   - rabbitmq
 
 before_install:
-  - ./dependencies.sh
+  - sudo ./dependencies.sh
+  - sudo service clamav-daemon restart
+  - sudo cat /etc/clamav/clamd.conf
 
 before_script:
   - ./tools/prepareRMQ.sh
