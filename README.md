@@ -36,11 +36,23 @@ This is for enabling TCP socket on a default port and localhost.
 ##### Configuration
 You can use the script `tools/prepareRMQ.sh` to create the basic configuration. It creates a new virtual host called **antivirus** and adds permissions for **guest** user.
 
-## Load results for the old service (retested):
+## Run service
+Currently everything is rather in a prototype phase.
+
+### AMQP
+```
+$ ./gradlew runAmqpServer
+```
+### REST
+```
+$ ./gradlew appStart
+```
+
+## Load results for the old service (retested February 20, 2016):
 
 Message broker, server and anti-virus program are on the same machine. Sending file is EICAR.
 
-Client is on different machine.
+Client is on a different machine.
 
 * Receiver: AVReceiver
 * Sender: AVSender
