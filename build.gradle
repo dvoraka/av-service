@@ -87,7 +87,7 @@ task integrationTest(type: Test) {
 
     testLogging {
         // show events - "PASSED", "STARTED", "FAILED", "SKIPPED"
-        events "PASSED", "FAILED", "SKIPPED"
+        events "PASSED", "FAILED"
     }
 }
 
