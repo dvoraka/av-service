@@ -6,6 +6,9 @@ import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.server.ReceivingType;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -26,6 +29,8 @@ public class AmqpConfig {
     String virtualHost = "antivirus";
     String checkQueueName = "av-check";
     String resultQueueName = "av-result";
+    String checkExchangeName = "check";
+    String resultExchangeName = "result";
 
     String userName = "guest";
     String userPassword = "guest";
@@ -75,5 +80,25 @@ public class AmqpConfig {
     @Bean
     public Queue resultQueue() {
         return new Queue(resultQueueName);
+    }
+
+    @Bean
+    public FanoutExchange checkExchange() {
+        return new FanoutExchange(checkExchangeName);
+    }
+
+    @Bean
+    public FanoutExchange resultExchange() {
+        return new FanoutExchange(resultExchangeName);
+    }
+
+    @Bean
+    Binding bindingCheck(Queue checkQueue, FanoutExchange checkExchange) {
+        return BindingBuilder.bind(checkQueue).to(checkExchange);
+    }
+
+    @Bean
+    Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
+        return BindingBuilder.bind(resultQueue).to(resultExchange);
     }
 }
