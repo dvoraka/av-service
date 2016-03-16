@@ -10,10 +10,10 @@ services:
 before_install:
   - sudo ./travis-install-deps.sh
   - sudo ./travis-config-deps.sh
-  - sudo service clamav-daemon restart
+  - sudo freshclam
+  - sudo service clamav-daemon stop
+  - sudo service clamav-daemon start
   - sudo cat /etc/clamav/clamd.conf
-  - sudo cat /var/log/clamav/clamav.log
-  - sudo tail /var/log/syslog
   - sudo netstat -46lp
 
 before_script:
