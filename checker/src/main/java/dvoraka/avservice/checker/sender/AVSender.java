@@ -51,17 +51,14 @@ public class AVSender implements Sender {
 
 
     public AVSender(String host) {
-
         this(host, true);
     }
 
     public AVSender(String host, boolean verboseOutput) {
-
         this(host, verboseOutput, "1");
     }
 
     public AVSender(String host, boolean verboseOutput, String protocolVersion) {
-
         this(host, verboseOutput, protocolVersion, "antivirus", "test3", "check-result", "check");
     }
 
@@ -89,14 +86,8 @@ public class AVSender implements Sender {
     }
 
     public String getHost() {
-
         return host;
     }
-
-//    public void setHost(String host) {
-//
-//        this.host = host;
-//    }
 
     /**
      * Sends testing file through AMQP.
@@ -127,16 +118,16 @@ public class AVSender implements Sender {
 
             // TODO: move into method
             // create request exchange
-            channel.exchangeDeclare(getRequestExchange(), "fanout", true);
+            // channel.exchangeDeclare(getRequestExchange(), "fanout", true);
             // create result exchange
-            channel.exchangeDeclare(getResponseExchange(), "fanout", true);
+            // channel.exchangeDeclare(getResponseExchange(), "fanout", true);
 
             setChannelConfirming(channel);
 
             // create and bind queue for response
-            if (!isResponseQueueCreated()) {
-                createAndBindResponseQueue(channel);
-            }
+//            if (!isResponseQueueCreated()) {
+//                createAndBindResponseQueue(channel);
+//            }
 
             channel.basicPublish(getRequestExchange(), "", props, bytes);
             channel.waitForConfirmsOrDie();
