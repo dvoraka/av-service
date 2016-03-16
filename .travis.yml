@@ -12,8 +12,6 @@ before_install:
   - sudo ./travis-config-deps.sh
   - sudo freshclam
   - sudo service clamav-daemon start
-  - sudo cat /etc/clamav/clamd.conf
-  - sudo netstat -46lp
 
 before_script:
   - sudo ./tools/prepareRMQ.sh
