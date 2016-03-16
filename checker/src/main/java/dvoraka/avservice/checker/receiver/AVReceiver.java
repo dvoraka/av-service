@@ -23,18 +23,20 @@ public class AVReceiver implements Receiver {
 
     private static Logger logger = LogManager.getLogger();
 
+    private static final String DEFAULT_VHOST = "antivirus";
+    private static final String DEFAULT_QUEUE = "av-result";
+
     private String host;
     private String virtualHost;
     private boolean verboseOutput;
 
 
     public AVReceiver(String host) {
-
         this(host, true);
     }
 
     public AVReceiver(String host, boolean verboseOutput) {
-        this(host, "antivirus", verboseOutput);
+        this(host, DEFAULT_VHOST, verboseOutput);
     }
 
     public AVReceiver(String host, String virtualHost, boolean verboseOutput) {
@@ -53,8 +55,8 @@ public class AVReceiver implements Receiver {
 
     private Channel prepareChannel(Connection conn) throws IOException {
         Channel channel = conn.createChannel();
-        channel.queueDeclare("test3", true, false, false, null);
-        channel.queueBind("test3", "check-result", "");
+//        channel.queueDeclare("test3", true, false, false, null);
+//        channel.queueBind("test3", "check-result", "");
 
         return channel;
     }
@@ -105,7 +107,6 @@ public class AVReceiver implements Receiver {
         Connection connection = null;
         Channel channel = null;
         boolean virus = true;
-
         try {
             connection = factory.newConnection();
             channel = prepareChannel(connection);
@@ -116,7 +117,7 @@ public class AVReceiver implements Receiver {
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
             // no ack before check
-            channel.basicConsume("test3", false, consumer);
+            channel.basicConsume(DEFAULT_QUEUE, false, consumer);
 
             QueueingConsumer.Delivery delivery = null;
             long dTag;
