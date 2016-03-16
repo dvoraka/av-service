@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <loadTest>
     <host>localhost</host>
-    <virtualHost>antivir</virtualHost>
+    <virtualHost>antivirus</virtualHost>
     <appId>antivirus</appId>
-    <destinationQueue>test3</destinationQueue>
+    <destinationQueue>av-result</destinationQueue>
     <messageCount>10000</messageCount>
     <synchronous>true</synchronous>
     <sendOnly>false</sendOnly>

@@ -60,8 +60,9 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
 
         server.start();
 
+        // TODO: create management interface
         try {
-            Thread.sleep(600_000);
+            Thread.sleep(6_000_000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
