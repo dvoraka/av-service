@@ -31,7 +31,7 @@ public class AppConfig {
 
     @Bean
     public MessageProcessor messageProcessor() {
-        return new DefaultMessageProcessor(2);
+        return new DefaultMessageProcessor(20);
     }
 
     @Bean
