@@ -103,22 +103,10 @@ public class AVSender implements Sender {
         try {
             connection = conFactory.newConnection();
             channel = connection.createChannel();
-
-            // TODO: move into method
-            // create request exchange
-            // channel.exchangeDeclare(getRequestExchange(), "fanout", true);
-            // create result exchange
-            // channel.exchangeDeclare(getResponseExchange(), "fanout", true);
-
-            setChannelConfirming(channel);
-
-            // create and bind queue for response
-//            if (!isResponseQueueCreated()) {
-//                createAndBindResponseQueue(channel);
-//            }
+//            setChannelConfirming(channel);
 
             channel.basicPublish(getRequestExchange(), "", props, bytes);
-            channel.waitForConfirmsOrDie();
+//            channel.waitForConfirmsOrDie();
 
             if (isVerboseOutput()) {
                 System.out.println("-------------");
@@ -128,8 +116,8 @@ public class AVSender implements Sender {
         } catch (IOException e) {
             logger.warn("Connection problem - send", e);
             throw e;
-        } catch (InterruptedException e) {
-            logger.warn("Connection problem - send interrupted", e);
+//        } catch (InterruptedException e) {
+//            logger.warn("Connection problem - send interrupted", e);
         } finally {
             if (channel != null) {
                 channel.close();
@@ -185,7 +173,7 @@ public class AVSender implements Sender {
      * @return AMQP properties
      */
     private AMQP.BasicProperties prepareProperties(String appId, String messageId) {
-        AMQP.BasicProperties props = new AMQP.BasicProperties.Builder()
+        return new AMQP.BasicProperties.Builder()
                 .appId(appId)
                 .contentEncoding("binary")
                 .contentType("application/octet-stream")
@@ -194,8 +182,6 @@ public class AVSender implements Sender {
                 .type("request")
                 .headers(prepareHeaders())
                 .build();
-
-        return props;
     }
 
     /**
@@ -203,13 +189,12 @@ public class AVSender implements Sender {
      */
     @Override
     public void purgeQueue(String queueName) throws IOException {
+
         Connection connection = null;
         Channel channel = null;
         try {
-
             connection = conFactory.newConnection();
             channel = connection.createChannel();
-
             channel.queuePurge(queueName);
         } catch (IOException e) {
             logger.warn("Connection problem - purge queue", e);
@@ -248,7 +233,6 @@ public class AVSender implements Sender {
 
         byte[] bytes;
         if (virus) {
-
             // read EICAR
             InputStream in = getClass().getResourceAsStream("/eicar");
             if (in == null) {
@@ -257,13 +241,11 @@ public class AVSender implements Sender {
             }
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
             byte[] buf = new byte[10];
             try {
                 for (int readNum; (readNum = in.read(buf)) != -1; ) {
                     bos.write(buf, 0, readNum);
                 }
-
             } catch (IOException e) {
                 logger.warn("Virus file problem.", e);
             }
@@ -313,5 +295,4 @@ public class AVSender implements Sender {
     public void setRequestExchange(String requestExchange) {
         this.requestExchange = requestExchange;
     }
-
 }
