@@ -8,13 +8,14 @@ services:
   - rabbitmq
 
 before_install:
-  - sudo ./install-deps.sh
-  - sudo ./config-deps.sh
+  - sudo ./travis-install-deps.sh
+  - sudo ./travis-config-deps.sh
   - sudo service clamav-daemon restart
+  - sudo cat /etc/clamav/clamd.conf
+  - sudo cat /var/log/clamav/clamav.log
+  - sudo tail /var/log/syslog
   - sudo netstat -46lp
 
 before_script:
   - sudo ./tools/prepareRMQ.sh
-  - sudo rabbitmqctl list_users
-  - sudo rabbitmqctl list_vhosts
 
