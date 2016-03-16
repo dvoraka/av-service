@@ -91,7 +91,7 @@ task integrationTest(type: Test) {
     }
 }
 
-task runServer(type: JavaExec) {
+task runAmqpServer(type: JavaExec) {
     main = 'dvoraka.avservice.server.AmqpAVServer'
     classpath = sourceSets.main.runtimeClasspath
     environment('spring.profiles.active', 'amqp')
