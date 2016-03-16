@@ -19,6 +19,10 @@ import java.util.UUID;
 public class AVSender implements Sender {
 
     private static Logger logger = LogManager.getLogger();
+
+    private final static String DEFAULT_VHOST = "antivirus";
+    private final static String DEFAULT_CHECK_EXCHANGE = "check";
+
     /**
      * AMQP message broker host
      */
@@ -32,21 +36,10 @@ public class AVSender implements Sender {
      */
     private boolean verboseOutput;
     /**
-     * Response queue name
-     */
-    private String responseQueue;
-    /**
-     * Response queue created flag
-     */
-    private boolean responseQueueCreated;
-    /**
-     * Response exchange name
-     */
-    private String responseExchange;
-    /**
      * Request exchange name
      */
     private String requestExchange;
+
     private ConnectionFactory conFactory;
 
 
@@ -59,7 +52,7 @@ public class AVSender implements Sender {
     }
 
     public AVSender(String host, boolean verboseOutput, String protocolVersion) {
-        this(host, verboseOutput, protocolVersion, "antivirus", "test3", "check-result", "check");
+        this(host, verboseOutput, protocolVersion, DEFAULT_VHOST, DEFAULT_CHECK_EXCHANGE);
     }
 
     public AVSender(
@@ -67,17 +60,12 @@ public class AVSender implements Sender {
             boolean verboseOutput,
             String protocolVersion,
             String virtualHost,
-            String responseQueue,
-            String responseExchange,
             String requestExchange) {
 
         this.host = host;
         this.verboseOutput = verboseOutput;
         this.protocolVersion = protocolVersion;
 
-        this.responseQueue = responseQueue;
-        this.responseQueueCreated = false;
-        this.responseExchange = responseExchange;
         this.requestExchange = requestExchange;
 
         conFactory = new ConnectionFactory();
@@ -154,12 +142,12 @@ public class AVSender implements Sender {
         return messageId;
     }
 
-    private void createAndBindResponseQueue(Channel channel) throws IOException {
-        channel.queueDeclare(getResponseQueue(), true, false, false, null);
-        channel.queueBind(getResponseQueue(), getResponseExchange(), "");
-
-        setResponseQueueCreated(true);
-    }
+//    private void createAndBindResponseQueue(Channel channel) throws IOException {
+//        channel.queueDeclare(getResponseQueue(), true, false, false, null);
+//        channel.queueBind(getResponseQueue(), getResponseExchange(), "");
+//
+//        setResponseQueueCreated(true);
+//    }
 
     private void setChannelConfirming(Channel channel) throws IOException {
         channel.addConfirmListener(new ConfirmListener() {
@@ -318,22 +306,6 @@ public class AVSender implements Sender {
         this.verboseOutput = verboseOutput;
     }
 
-    public String getResponseQueue() {
-        return responseQueue;
-    }
-
-    public void setResponseQueue(String responseQueue) {
-        this.responseQueue = responseQueue;
-    }
-
-    public String getResponseExchange() {
-        return responseExchange;
-    }
-
-    public void setResponseExchange(String responseExchange) {
-        this.responseExchange = responseExchange;
-    }
-
     public String getRequestExchange() {
         return requestExchange;
     }
@@ -342,11 +314,4 @@ public class AVSender implements Sender {
         this.requestExchange = requestExchange;
     }
 
-    public boolean isResponseQueueCreated() {
-        return responseQueueCreated;
-    }
-
-    public void setResponseQueueCreated(boolean responseQueueCreated) {
-        this.responseQueueCreated = responseQueueCreated;
-    }
 }
