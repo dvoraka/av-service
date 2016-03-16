@@ -9,11 +9,13 @@ services:
 
 before_install:
   - sudo ./install-deps.sh
+  - sudo ./config-deps.sh
   - sudo service clamav-daemon restart
+  - sudo netstat -46l
   - sudo cat /etc/clamav/clamd.conf
 
 before_script:
   - ./tools/prepareRMQ.sh
-  - rabbitmqctl list_users
+  - sudo rabbitmqctl list_users
   - sudo rabbitmqctl list_vhosts
 
