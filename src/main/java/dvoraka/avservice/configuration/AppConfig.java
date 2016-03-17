@@ -10,11 +10,14 @@ import dvoraka.avservice.service.DefaultAVService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * App Spring configuration.
  */
 @Configuration
+@PropertySource("classpath:avservice.properties")
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Import({AmqpConfig.class, SpringWebConfig.class})
 public class AppConfig {
@@ -37,5 +40,10 @@ public class AppConfig {
     @Bean
     public SpringAopTest springAopTest() {
         return new SpringAopTest();
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 }
