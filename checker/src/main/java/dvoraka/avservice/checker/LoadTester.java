@@ -17,10 +17,11 @@ import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Class for AMQP anti-virus load testing.
+ * AMQP anti-virus load tester.
  * <p>
  * Created by dvoraka on 17.4.14.
  */
+// TODO: Spring
 public class LoadTester implements Tester {
 
     private static Logger logger = LogManager.getLogger();
@@ -66,18 +67,15 @@ public class LoadTester implements Tester {
 
     public static void main(String[] args) throws IOException {
         LoadTestProperties ltp = new BasicProperties();
-        //ltp.setMsgCount(1000);
-        //ltp.setSynchronous(true);
-
         Tester lt = new LoadTester(ltp);
         lt.startTest();
     }
 
     public Collection<String> sendMessages() throws IOException {
-        Collection<String> messageIDs = new HashSet<>(props.getMsgCount() / 2);
+        Collection<String> messageIDs = new HashSet<>(getProps().getMsgCount() / 2);
 
-        for (int i = 0; i < props.getMsgCount(); i++) {
-            messageIDs.add(sender.sendFile(true, props.getAppId()));
+        for (int i = 0; i < getProps().getMsgCount(); i++) {
+            messageIDs.add(getSender().sendFile(true, getProps().getAppId()));
         }
 
         return messageIDs;
@@ -97,7 +95,7 @@ public class LoadTester implements Tester {
             while (it.hasNext()) {
                 try {
                     String item = it.next();
-                    boolean virus = receiver.receive(item);
+                    boolean virus = getReceiver().receive(item);
                     it.remove();
                     //System.out.println("remove " + item + ": " + virus);
                 } catch (InterruptedException e) {
@@ -128,13 +126,13 @@ public class LoadTester implements Tester {
 
     @Override
     public void startTest() throws IOException {
-        System.out.println("Load test start for " + props.getMsgCount() + " messages...");
+        System.out.println("Load test start for " + getProps().getMsgCount() + " messages...");
         long begin = System.currentTimeMillis();
 
         // purge queue before test start
-        sender.purgeQueue(props.getDestinationQueue());
+        getSender().purgeQueue(getProps().getDestinationQueue());
 
-        if (props.isSynchronous()) {
+        if (getProps().isSynchronous()) {
             synchronousTest();
         } else {
             asynchronousTest(begin);
@@ -146,9 +144,11 @@ public class LoadTester implements Tester {
     private void printTestingTime(long begin) {
         // print summary
         long end = System.currentTimeMillis();
+        long duration = end - begin;
         System.out.println("");
         System.out.println("Load test end");
-        System.out.println("Duration: " + ((end - begin) / 1000) + " s");
+        System.out.println("Duration: " + (duration / 1000) + " s");
+        System.out.println("Messages: " + getProps().getMsgCount() / (duration / 1000) + "/s");
     }
 
     private void synchronousTest() throws IOException {
@@ -156,10 +156,10 @@ public class LoadTester implements Tester {
 
         Collection<String> skippedMessages = new HashSet<>();
         String msgId = null;
-        for (int i = 0; i < props.getMsgCount(); i++) {
+        for (int i = 0; i < getProps().getMsgCount(); i++) {
             try {
-                msgId = sender.sendFile(true, props.getAppId());
-                receiver.receive(msgId);
+                msgId = getSender().sendFile(true, getProps().getAppId());
+                getReceiver().receive(msgId);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ProtocolException e) {
@@ -184,7 +184,7 @@ public class LoadTester implements Tester {
             Iterator<String> it = skippedMessages.iterator();
             while (it.hasNext()) {
                 try {
-                    receiver.receive(it.next());
+                    getReceiver().receive(it.next());
                     it.remove();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -207,7 +207,7 @@ public class LoadTester implements Tester {
 
         printSendingTime(begin);
 
-        if (!props.isSendOnly()) {
+        if (!getProps().isSendOnly()) {
             // receive messages
             System.out.println("Receiving responses...");
 
@@ -226,5 +226,29 @@ public class LoadTester implements Tester {
         System.out.println("All messages sent");
         System.out.println("Time: " + ((afterSend - begin) / 1000) + " s");
         System.out.println("");
+    }
+
+    public LoadTestProperties getProps() {
+        return props;
+    }
+
+    public void setProps(LoadTestProperties props) {
+        this.props = props;
+    }
+
+    public Sender getSender() {
+        return sender;
+    }
+
+    public void setSender(Sender sender) {
+        this.sender = sender;
+    }
+
+    public Receiver getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
     }
 }
