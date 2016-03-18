@@ -97,7 +97,6 @@ public class LoadTester implements Tester {
                     String item = it.next();
                     boolean virus = getReceiver().receive(item);
                     it.remove();
-                    //System.out.println("remove " + item + ": " + virus);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ProtocolException e) {
@@ -142,9 +141,7 @@ public class LoadTester implements Tester {
     }
 
     private void printTestingTime(long begin) {
-        // print summary
-        long end = System.currentTimeMillis();
-        long duration = end - begin;
+        long duration = System.currentTimeMillis() - begin;
         System.out.println("");
         System.out.println("Load test end");
         System.out.println("Duration: " + (duration / 1000) + " s");
