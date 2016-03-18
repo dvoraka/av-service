@@ -1,5 +1,6 @@
 package dvoraka.avservice
 
+import dvoraka.avservice.common.Utils
 import dvoraka.avservice.configuration.AppConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -15,7 +16,7 @@ import spock.lang.Unroll
 class AVProgramISpec extends Specification {
 
     @Shared
-    String eicarString = 'X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'
+    String eicarString = Utils.EICAR;
 
     @Autowired
     AVProgram avProgram;
