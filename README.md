@@ -8,6 +8,10 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 * Robust design
 * Communication over AMQP 0.9.1, JMS and REST
 
+**Later:**
+* AMQP 1.0
+* Message tracking DB service (usefull for bigger deployments)
+
 ## Used components
  * **ClamaAV** - open source anti-virus engine
  * **RabbitMQ** - message broker for AMQP
