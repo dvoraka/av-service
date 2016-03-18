@@ -1,7 +1,8 @@
 package dvoraka.avservice.rest;
 
-import dvoraka.avservice.data.AVMessageType;
+import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.DefaultAVMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -9,21 +10,23 @@ import org.springframework.web.client.RestTemplate;
  */
 public class RestClient {
 
-    public static void main(String[] args) {
+    @Autowired
+    private RestTemplate restTemplate;
 
-        String url = "http://localhost:8080/av-service";
-        RestTemplate restTemplate = new RestTemplate();
-        DefaultAVMessage message = restTemplate.getForObject(url + "/gen-msg.json", DefaultAVMessage.class);
-        System.out.println(message);
+    private String baseUrl;
 
-        DefaultAVMessage msgToUpload = new DefaultAVMessage.Builder("TESTING-REQUEST")
-                .serviceId("SERVICE1")
-                .virusInfo("UNKNOWN")
-                .correlationId("1-2-3")
-                .data(new byte[20])
-                .type(AVMessageType.REQUEST)
-                .build();
-        System.out.println("Sent msg: " + msgToUpload);
-        restTemplate.postForObject(url + "/msg-check", msgToUpload, DefaultAVMessage.class);
+
+    public RestClient(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public void postMessage(AVMessage message, String service) {
+
+        restTemplate.postForObject(baseUrl + service, message, DefaultAVMessage.class);
+    }
+
+    public AVMessage getTestMessage(String service) {
+
+        return restTemplate.getForObject(baseUrl + service, DefaultAVMessage.class);
     }
 }

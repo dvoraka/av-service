@@ -85,7 +85,7 @@ public class AVController {
     public AVMessage generateMessage() {
 
         return new DefaultAVMessage.Builder(null)
-                .serviceId("test-service")
+                .serviceId("testing-service")
                 .virusInfo("bad")
                 .correlationId("corrId")
                 .data(new byte[10])

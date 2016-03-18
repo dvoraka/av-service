@@ -11,11 +11,12 @@ public class Utils {
 
     public static final String EICAR =
             "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
+    public static final String SERVICE_ID = "UTILS-SERVICE";
 
 
     public static AVMessage genNormalMessage() {
         return new DefaultAVMessage.Builder(null)
-                .serviceId("TEST-SERVICE1")
+                .serviceId(SERVICE_ID)
                 .virusInfo("UNKNOWN")
                 .correlationId("1-2-3")
                 .data(new byte[20])
@@ -25,7 +26,7 @@ public class Utils {
 
     public static AVMessage genInfectedMessage() {
         return new DefaultAVMessage.Builder(null)
-                .serviceId("TEST-SERVICE1")
+                .serviceId(SERVICE_ID)
                 .virusInfo("UNKNOWN")
                 .correlationId("1-2-3")
                 .data(EICAR.getBytes())
