@@ -52,6 +52,11 @@ public class DefaultRestService implements RestService {
     }
 
     @Override
+    public AVMessage getResponse(String id) {
+        return restStrategy.getResponse(id);
+    }
+
+    @Override
     public void stop() {
         restStrategy.stop();
     }

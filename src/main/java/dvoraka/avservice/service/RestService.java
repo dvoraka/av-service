@@ -16,5 +16,7 @@ public interface RestService {
 
     void messageCheck(AVMessage message);
 
+    AVMessage getResponse(String id);
+
     void stop();
 }

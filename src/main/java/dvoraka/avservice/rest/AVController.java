@@ -1,9 +1,9 @@
 package dvoraka.avservice.rest;
 
-import dvoraka.avservice.data.MessageStatus;
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.AVMessageType;
 import dvoraka.avservice.data.DefaultAVMessage;
+import dvoraka.avservice.data.MessageStatus;
 import dvoraka.avservice.service.RestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +55,7 @@ public class AVController {
      */
     @RequestMapping(value = "/msg-status/{id}/{serviceId}", method = RequestMethod.GET)
     public MessageStatus messageStatus(@PathVariable String id, @PathVariable String serviceId) {
-        return restService.messageStatus(id);
+        return restService.messageStatus(id, serviceId);
     }
 
     /**
@@ -75,6 +75,11 @@ public class AVController {
         restService.messageCheck(message);
 
         return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(value = "/get-response/{id}", method = RequestMethod.GET)
+    public AVMessage getResponse(@PathVariable String id) {
+        return restService.getResponse(id);
     }
 
     /**

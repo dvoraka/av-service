@@ -35,6 +35,16 @@ public class DirectRestStrategy implements RestStrategy {
     }
 
     @Override
+    public AVMessage getResponse(String id) {
+        // TODO: check ID
+        if (messageProcessor.hasProcessedMessage()) {
+            return messageProcessor.getProcessedMessage();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public void stop() {
         messageProcessor.stop();
     }
