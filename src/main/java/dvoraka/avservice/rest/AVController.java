@@ -72,7 +72,8 @@ public class AVController {
     @RequestMapping(value = "/msg-check", method = RequestMethod.POST)
     public ResponseEntity<String> messageCheck(@RequestBody DefaultAVMessage message) {
 
-        System.out.println(message);
+        restService.messageCheck(message);
+
         return new ResponseEntity<String>(HttpStatus.ACCEPTED);
     }
 

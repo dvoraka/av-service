@@ -1,6 +1,7 @@
 package dvoraka.avservice.rest;
 
 import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.MessageStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,6 +12,7 @@ public class DirectRestStrategy implements RestStrategy {
 
     @Autowired
     private MessageProcessor messageProcessor;
+
 
     @Override
     public MessageStatus messageStatus(String id) {
@@ -25,5 +27,10 @@ public class DirectRestStrategy implements RestStrategy {
     @Override
     public String messageServiceId(String id) {
         return null;
+    }
+
+    @Override
+    public void messageCheck(AVMessage message) {
+        messageProcessor.sendMessage(message);
     }
 }
