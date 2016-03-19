@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -119,8 +120,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private void saveMessage(AVMessage message) {
         while (isRunning()) {
             try {
-                // add message to the queue
+                log.debug("Saving message to the queue...");
                 processedMessagesQueue.add(message);
+                log.debug("Saved.");
                 break;
             } catch (IllegalStateException e) {
                 // full queue
@@ -146,11 +148,13 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void stop() {
+        log.debug("Stopping thread pool...");
         setRunning(false);
 
         executorService.shutdown();
         try {
             executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS);
+            log.debug("Stopping done.");
         } catch (InterruptedException e) {
             log.warn("Stopping the thread pool failed!", e);
         }
@@ -210,5 +214,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     public int getQueueSize() {
         return queueSize;
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        if (isRunning()) {
+            stop();
+        }
     }
 }

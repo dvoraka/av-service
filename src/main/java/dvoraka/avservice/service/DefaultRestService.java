@@ -50,4 +50,9 @@ public class DefaultRestService implements RestService {
         processingMessages.add(message.getId());
         restStrategy.messageCheck(message);
     }
+
+    @Override
+    public void stop() {
+        restStrategy.stop();
+    }
 }

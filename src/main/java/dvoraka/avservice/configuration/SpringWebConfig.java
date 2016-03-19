@@ -22,10 +22,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Profile("rest")
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
-    @Value("${avservice.rest.url}")
-    String restUrl;
-
-
     @Bean
     public AVController avController() {
         return new AVController();
@@ -39,15 +35,5 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public RestStrategy restStrategy() {
         return new DirectRestStrategy();
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
-    public RestClient restClient() {
-        return new RestClient(restUrl);
     }
 }

@@ -15,4 +15,6 @@ public interface RestStrategy {
     String messageServiceId(String id);
 
     void messageCheck(AVMessage message);
+
+    void stop();
 }

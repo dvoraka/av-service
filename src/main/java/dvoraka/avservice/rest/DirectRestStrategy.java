@@ -33,4 +33,9 @@ public class DirectRestStrategy implements RestStrategy {
     public void messageCheck(AVMessage message) {
         messageProcessor.sendMessage(message);
     }
+
+    @Override
+    public void stop() {
+        messageProcessor.stop();
+    }
 }

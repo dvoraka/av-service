@@ -79,8 +79,7 @@ public class AmqpConfig {
     @Bean
     public RabbitTemplate amqpTemplate() {
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
-        // wait forever
-        template.setReceiveTimeout(-1);
+        template.setReceiveTimeout(4000);
         template.setRoutingKey("test");
         template.setQueue(checkQueue);
 

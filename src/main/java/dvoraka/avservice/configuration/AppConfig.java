@@ -5,13 +5,16 @@ import dvoraka.avservice.ClamAVProgram;
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.aop.SpringAopTest;
+import dvoraka.avservice.rest.RestClient;
 import dvoraka.avservice.service.AVService;
 import dvoraka.avservice.service.DefaultAVService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * App Spring configuration.
@@ -21,6 +24,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Import({AmqpConfig.class, SpringWebConfig.class})
 public class AppConfig {
+
+    @Value("${avservice.rest.url}")
+    String restUrl;
+
 
     @Bean
     public AVService avService() {
@@ -45,5 +52,15 @@ public class AppConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public RestClient restClient() {
+        return new RestClient(restUrl);
     }
 }

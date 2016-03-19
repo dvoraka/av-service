@@ -15,4 +15,6 @@ public interface RestService {
     String messageServiceId(String id);
 
     void messageCheck(AVMessage message);
+
+    void stop();
 }
