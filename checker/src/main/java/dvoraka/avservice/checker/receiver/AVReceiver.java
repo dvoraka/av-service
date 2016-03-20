@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Default AV receiver implementation.
@@ -158,9 +159,15 @@ public class AVReceiver implements Receiver {
         } catch (IOException e) {
             logger.warn("Connection problem - receive", e);
             throw e;
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         } finally {
             if (channel != null) {
-                channel.close();
+                try {
+                    channel.close();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
             }
             if (connection != null) {
                 connection.close();

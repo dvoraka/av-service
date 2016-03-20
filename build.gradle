@@ -6,6 +6,7 @@ apply plugin: "org.akhikhl.gretty"
 
 ext {
     springVersion = '4.2.4.RELEASE'
+    groovyVersion = '2.4.1'
     spockVersion = '1.0-groovy-2.4'
 }
 
@@ -23,10 +24,19 @@ allprojects {
     }
 
     dependencies {
+        // log4j
+        compile('org.apache.logging.log4j:log4j-api:2.5')
+        compile('org.apache.logging.log4j:log4j-core:2.5')
+        // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
+        compile('org.springframework.amqp:spring-rabbit:1.5.3.RELEASE')
+        // Groovy
+        compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
 
+        // Spring test
         testCompile("org.springframework:spring-test:${springVersion}")
+        // Spock
         testCompile("org.spockframework:spock-spring:${spockVersion}")
         testCompile("org.spockframework:spock-core:${spockVersion}")
     }
@@ -57,14 +67,9 @@ sourceSets {
 }
 
 dependencies {
-    compile('org.apache.logging.log4j:log4j-api:2.5')
-    compile('org.apache.logging.log4j:log4j-core:2.5')
     compile("org.springframework:spring-webmvc:${springVersion}")
     compile("org.springframework:spring-aspects:${springVersion}")
-    compile('org.springframework.amqp:spring-rabbit:1.5.3.RELEASE')
     compile('org.ehcache:ehcache:3.0.0.rc1')
-
-    testCompile('junit:junit:4.12')
 }
 
 //checkstyle {

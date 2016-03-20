@@ -14,11 +14,6 @@ repositories {
 }
 
 dependencies {
-    compile('com.rabbitmq:amqp-client:3.5.0')
-    compile('org.apache.logging.log4j:log4j-api:2.1')
-    compile('org.apache.logging.log4j:log4j-core:2.1')
-    compile('org.codehaus.groovy:groovy-all:2.3.10')
-    compile('org.springframework.amqp:spring-amqp:1.5.1.RELEASE')
 }
 
 buildscript {
@@ -27,12 +22,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
-    }
-}
-
-test {
-    testLogging {
-        exceptionFormat = 'full'
     }
 }
 

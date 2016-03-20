@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Anti-virus file sender class
@@ -118,9 +119,15 @@ public class AVSender implements Sender {
             throw e;
 //        } catch (InterruptedException e) {
 //            logger.warn("Connection problem - send interrupted", e);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         } finally {
             if (channel != null) {
-                channel.close();
+                try {
+                    channel.close();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
             }
             if (connection != null) {
                 connection.close();
@@ -198,9 +205,15 @@ public class AVSender implements Sender {
             channel.queuePurge(queueName);
         } catch (IOException e) {
             logger.warn("Connection problem - purge queue", e);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         } finally {
             if (channel != null) {
-                channel.close();
+                try {
+                    channel.close();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
             }
             if (connection != null) {
                 connection.close();
