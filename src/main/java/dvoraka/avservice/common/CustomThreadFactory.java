@@ -1,4 +1,4 @@
-package dvoraka.avservice;
+package dvoraka.avservice.common;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;

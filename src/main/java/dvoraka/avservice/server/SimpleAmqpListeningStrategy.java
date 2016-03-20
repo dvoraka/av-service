@@ -1,6 +1,6 @@
 package dvoraka.avservice.server;
 
-import dvoraka.avservice.MapperException;
+import dvoraka.avservice.exception.MapperException;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.AVMessageMapper;

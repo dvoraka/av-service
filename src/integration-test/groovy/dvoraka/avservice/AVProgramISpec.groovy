@@ -1,5 +1,6 @@
 package dvoraka.avservice
 
+import dvoraka.avservice.avprogram.AVProgram
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.configuration.AppConfig
 import org.springframework.beans.factory.annotation.Autowired

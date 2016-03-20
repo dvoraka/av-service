@@ -1,7 +1,7 @@
 package dvoraka.avservice.configuration;
 
-import dvoraka.avservice.AVProgram;
-import dvoraka.avservice.ClamAVProgram;
+import dvoraka.avservice.avprogram.AVProgram;
+import dvoraka.avservice.avprogram.ClamAVProgram;
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.aop.SpringAopTest;

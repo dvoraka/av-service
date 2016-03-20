@@ -1,9 +1,9 @@
 package dvoraka.avservice.server;
 
-import dvoraka.avservice.AVMessageListener;
-import dvoraka.avservice.CustomThreadFactory;
+import dvoraka.avservice.common.AVMessageListener;
+import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.configuration.AppConfig;
-import dvoraka.avservice.MapperException;
+import dvoraka.avservice.exception.MapperException;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.AVMessageMapper;

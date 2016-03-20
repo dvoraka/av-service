@@ -1,5 +1,6 @@
 package dvoraka.avservice
 
+import dvoraka.avservice.avprogram.AVProgram
 import dvoraka.avservice.configuration.AppConfig
 import dvoraka.avservice.server.AVServer
 import dvoraka.avservice.service.AVService

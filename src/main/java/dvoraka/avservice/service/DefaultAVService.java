@@ -1,6 +1,6 @@
 package dvoraka.avservice.service;
 
-import dvoraka.avservice.AVProgram;
+import dvoraka.avservice.avprogram.AVProgram;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
