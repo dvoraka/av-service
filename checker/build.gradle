@@ -1,11 +1,11 @@
 apply plugin: 'shadow'
 
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'dvoraka.avservice.checker.App',
-                'Built-By': 'dvoraka',
-        )
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
     }
 }
 
@@ -16,12 +16,12 @@ repositories {
 dependencies {
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'dvoraka.avservice.checker.App',
+                'Built-By': 'dvoraka',
+        )
     }
 }
 
