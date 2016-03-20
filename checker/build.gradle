@@ -29,15 +29,15 @@ tasks.withType(JavaExec) {
     systemProperties System.properties
 }
 
-task run(type: JavaExec) {
+task amqpCheck(type: JavaExec) {
     main = 'dvoraka.avservice.checker.App'
     classpath = sourceSets.main.runtimeClasspath
 }
 
-task runCli(type: JavaExec) {
-    main = 'dvoraka.avservice.checker.Cli'
-    classpath = sourceSets.main.runtimeClasspath
-}
+//task runCli(type: JavaExec) {
+//    main = 'dvoraka.avservice.checker.Cli'
+//    classpath = sourceSets.main.runtimeClasspath
+//}
 
 task loadTest(type: JavaExec) {
     main = 'dvoraka.avservice.checker.LoadTester'
