@@ -1,0 +1,24 @@
+plugins {
+    id "org.akhikhl.gretty" version "1.2.4"
+}
+
+apply plugin: "org.akhikhl.gretty"
+
+dependencies {
+    compile("org.springframework:spring-webmvc:${springVersion}")
+    compile("org.springframework:spring-aspects:${springVersion}")
+    compile('org.ehcache:ehcache:3.0.0.rc1')
+}
+
+task runAmqpServer(type: JavaExec) {
+    main = 'dvoraka.avservice.server.AmqpAVServer'
+    classpath = sourceSets.main.runtimeClasspath
+    environment('spring.profiles.active', 'amqp')
+}
+
+gretty {
+    jvmArgs = ['-Dspring.profiles.active=rest,amqp']
+    integrationTestTask = 'integrationTest'
+    servletContainer = 'jetty9'
+    contextPath = 'av-service'
+}

@@ -1,9 +1,3 @@
-plugins {
-    id "org.akhikhl.gretty" version "1.2.4"
-}
-
-apply plugin: "org.akhikhl.gretty"
-
 ext {
     springVersion = '4.2.4.RELEASE'
     groovyVersion = '2.4.1'
@@ -11,6 +5,9 @@ ext {
 }
 
 allprojects {
+}
+
+subprojects {
     apply plugin: 'java'
     apply plugin: 'groovy'
 //    apply plugin: 'checkstyle'
@@ -21,6 +18,27 @@ allprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    sourceSets {
+        integrationTest {
+            java {
+                compileClasspath += main.output + test.output
+                runtimeClasspath += main.output + test.output
+                srcDir file('src/integration-test/java')
+            }
+            groovy {
+                compileClasspath += main.output + test.output
+                runtimeClasspath += main.output + test.output
+                srcDir file('src/integration-test/groovy')
+            }
+            resources.srcDir file('src/integration-test/resources')
+        }
+    }
+
+    configurations {
+        integrationTestCompile.extendsFrom testCompile
+        integrationTestRuntime.extendsFrom testRuntime
     }
 
     dependencies {
@@ -40,78 +58,36 @@ allprojects {
         testCompile("org.spockframework:spock-spring:${spockVersion}")
         testCompile("org.spockframework:spock-core:${spockVersion}")
     }
-}
 
-subprojects {
-}
-
-configurations {
-    integrationTestCompile.extendsFrom testCompile
-    integrationTestRuntime.extendsFrom testRuntime
-}
-
-sourceSets {
-    integrationTest {
-        java {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            srcDir file('src/integration-test/java')
+    test {
+        testLogging {
+            exceptionFormat = 'full'
         }
-        groovy {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            srcDir file('src/integration-test/groovy')
+    }
+
+    task integrationTest(type: Test) {
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
+
+        testLogging {
+            // show events - "PASSED", "STARTED", "FAILED", "SKIPPED"
+            events "PASSED", "FAILED"
         }
-        resources.srcDir file('src/integration-test/resources')
     }
-}
 
-dependencies {
-    compile("org.springframework:spring-webmvc:${springVersion}")
-    compile("org.springframework:spring-aspects:${springVersion}")
-    compile('org.ehcache:ehcache:3.0.0.rc1')
-}
+//    checkstyle {
+//        toolVersion = "6.5"
+//    }
 
-//checkstyle {
-//    toolVersion = "6.5"
-//}
-
-// set reporting HTML output directory
-tasks.withType(Test) {
-    reports.html.destination = file("${reporting.baseDir}/${name}")
-}
-
-test {
-    testLogging {
-        exceptionFormat = 'full'
+    // set reporting HTML output directory
+    tasks.withType(Test) {
+        reports.html.destination = file("${reporting.baseDir}/${name}")
     }
+
+    check.dependsOn integrationTest
+    integrationTest.mustRunAfter test
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12-rc-1'
 }
-
-task integrationTest(type: Test) {
-    testClassesDir = sourceSets.integrationTest.output.classesDir
-    classpath = sourceSets.integrationTest.runtimeClasspath
-
-    testLogging {
-        // show events - "PASSED", "STARTED", "FAILED", "SKIPPED"
-        events "PASSED", "FAILED"
-    }
-}
-
-task runAmqpServer(type: JavaExec) {
-    main = 'dvoraka.avservice.server.AmqpAVServer'
-    classpath = sourceSets.main.runtimeClasspath
-    environment('spring.profiles.active', 'amqp')
-}
-
-gretty {
-    jvmArgs = ['-Dspring.profiles.active=rest,amqp']
-    integrationTestTask = 'integrationTest'
-    servletContainer = 'jetty9'
-}
-
-check.dependsOn integrationTest
-integrationTest.mustRunAfter test
