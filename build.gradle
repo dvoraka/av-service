@@ -4,6 +4,11 @@ plugins {
 
 apply plugin: "org.akhikhl.gretty"
 
+ext {
+    springVersion = '4.2.4.RELEASE'
+    spockVersion = '1.0-groovy-2.4'
+}
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'groovy'
@@ -12,18 +17,22 @@ allprojects {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
     version = '0.1-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile("org.springframework:spring-core:${springVersion}")
+        compile("org.springframework:spring-context:${springVersion}")
+
+        testCompile("org.springframework:spring-test:${springVersion}")
+        testCompile("org.spockframework:spock-spring:${spockVersion}")
+        testCompile("org.spockframework:spock-core:${spockVersion}")
+    }
 }
 
 subprojects {
-}
-
-ext {
-    springVersion = '4.2.4.RELEASE'
-    spockVersion = '1.0-groovy-2.4'
-}
-
-repositories {
-    mavenCentral()
 }
 
 configurations {
@@ -50,17 +59,12 @@ sourceSets {
 dependencies {
     compile('org.apache.logging.log4j:log4j-api:2.5')
     compile('org.apache.logging.log4j:log4j-core:2.5')
-    compile("org.springframework:spring-core:${springVersion}")
-    compile("org.springframework:spring-context:${springVersion}")
     compile("org.springframework:spring-webmvc:${springVersion}")
     compile("org.springframework:spring-aspects:${springVersion}")
     compile('org.springframework.amqp:spring-rabbit:1.5.3.RELEASE')
     compile('org.ehcache:ehcache:3.0.0.rc1')
 
     testCompile('junit:junit:4.12')
-    testCompile("org.springframework:spring-test:${springVersion}")
-    testCompile("org.spockframework:spock-spring:${spockVersion}")
-    testCompile("org.spockframework:spock-core:${spockVersion}")
 }
 
 //checkstyle {
