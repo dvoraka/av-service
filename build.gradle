@@ -55,6 +55,7 @@ dependencies {
     compile("org.springframework:spring-webmvc:${springVersion}")
     compile("org.springframework:spring-aspects:${springVersion}")
     compile('org.springframework.amqp:spring-rabbit:1.5.3.RELEASE')
+    compile('org.ehcache:ehcache:3.0.0.rc1')
 
     testCompile('junit:junit:4.12')
     testCompile("org.springframework:spring-test:${springVersion}")
