@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -135,21 +136,32 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
         }
 
         startListening();
+        setRunning(true);
     }
 
+    @PreDestroy
     @Override
     public void stop() {
-        log.debug("Server stop.");
-        setStopped();
+        if (isRunning()) {
+            log.debug("Server stop.");
+            setStopped();
 
-        listeningStrategy.stop();
-        messageProcessor.stop();
+            listeningStrategy.stop();
+            messageProcessor.stop();
+            setRunning(false);
+        } else {
+            log.debug("Server is not running.");
+        }
 
-        executorService.shutdown();
-        try {
-            executorService.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (!executorService.isTerminated()) {
+
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(10, TimeUnit.SECONDS);
+                log.debug("Server pool stopped.");
+            } catch (InterruptedException e) {
+                log.warn("Pool shutdown failed!", e);
+            }
         }
     }
 

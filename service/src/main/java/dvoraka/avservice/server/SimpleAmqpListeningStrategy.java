@@ -10,6 +10,8 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PreDestroy;
+
 /**
  * Simple AMQP strategy for messages receiving.
  */
@@ -49,10 +51,13 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
         log.debug("Listening stopped.");
     }
 
+    @PreDestroy
     @Override
     public void stop() {
-        log.debug("Stop listening.");
-        setRunning(false);
+        if (isRunning()) {
+            log.debug("Stop listening.");
+            setRunning(false);
+        }
     }
 
     public boolean isRunning() {
