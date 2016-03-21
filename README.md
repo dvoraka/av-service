@@ -58,6 +58,43 @@ $ ./gradlew runAmqpServer
 $ ./gradlew appStart
 ```
 
+### AMQP checker
+
+Utility for testing AMQP infrastructure.
+#### Run
+```
+./gradlew amqpCheck
+```
+And output should be:
+```
+...
+Test OK
+
+BUILD SUCCESSFUL
+
+Total time: 3.6 secs
+```
+#### Create jar with dependencies
+```
+./gradlew :checker:shadowJar
+```
+And the full jar will be in `checker/build/libs/` directory.
+
+#### Run jar
+Built jar is executable.
+##### Properties:
+* host - message broker host
+* dirty - virus flag
+* appid - application ID string
+```
+$ java -Dhost=localhost -jar checker-0.1-SNAPSHOT-all.jar
+```
+And output should be:
+```
+...
+Test OK
+```
+
 ## Load results for the old service (retested February 20, 2016):
 
 Message broker, server and anti-virus program are on the same machine. Sending file is EICAR.
