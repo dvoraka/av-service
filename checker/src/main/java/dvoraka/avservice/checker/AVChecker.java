@@ -45,7 +45,9 @@ public class AVChecker {
 
             if (isDirtyFile() == receiver.receive(messageId)) {
                 // check OK
+                System.out.println("Test OK");
             } else {
+                System.out.println("Test failed");
                 logger.warn("Check problem - bad response");
             }
         } catch (ConnectException e) {
