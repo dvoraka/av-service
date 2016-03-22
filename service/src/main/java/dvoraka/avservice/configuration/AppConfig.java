@@ -6,6 +6,7 @@ import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.rest.RestClient;
+import dvoraka.avservice.server.ReceivingType;
 import dvoraka.avservice.service.AVService;
 import dvoraka.avservice.service.DefaultAVService;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,11 @@ public class AppConfig {
 
     @Bean
     public MessageProcessor messageProcessor() {
+        return new DefaultMessageProcessor(20, ReceivingType.LISTENER, 0);
+    }
+
+    @Bean
+    public MessageProcessor restMessageProcessor() {
         return new DefaultMessageProcessor(20);
     }
 

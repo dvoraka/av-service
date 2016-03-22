@@ -35,6 +35,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private static final int DEFAULT_QUEUE_SIZE = 100;
     private static final long POOL_TERM_TIME_S = 20;
+    private static final ReceivingType DEFAULT_RECEIVING_TYPE = ReceivingType.POLLING;
 
     private Map<String, Long> processingMessages;
     private Map<String, Long> processedMessages;
@@ -42,7 +43,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private Queue<AVMessage> processedMessagesQueue;
     private List<AVMessageListener> observers = new ArrayList<>();
     private ExecutorService executorService;
-    private ReceivingType serverReceivingType = ReceivingType.POLLING;
+    private ReceivingType serverReceivingType;
 
     private int threadCount;
     private boolean running;
@@ -50,10 +51,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
 
     public DefaultMessageProcessor(int threadCount) {
-        this(threadCount, DEFAULT_QUEUE_SIZE);
+        this(threadCount, DEFAULT_RECEIVING_TYPE, DEFAULT_QUEUE_SIZE);
     }
 
-    public DefaultMessageProcessor(int threadCount, int queueSize) {
+    public DefaultMessageProcessor(int threadCount, ReceivingType serverReceivingType, int queueSize) {
+
         this.threadCount = threadCount;
         this.queueSize = queueSize;
 
@@ -62,7 +64,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         processingMessages = new ConcurrentHashMap<>(queueSize);
         processedMessages = new ConcurrentHashMap<>(queueSize);
-        processedMessagesQueue = new LinkedBlockingQueue<>(queueSize);
+
+        this.serverReceivingType = serverReceivingType;
+        if (serverReceivingType == ReceivingType.POLLING) {
+            processedMessagesQueue = new LinkedBlockingQueue<>(queueSize);
+        }
     }
 
     @Override
@@ -92,8 +98,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     private void processMessage(AVMessage message) {
-
-        log.debug("Waiting queue size: " + processedMessagesQueue.size());
         log.debug("Scanning thread: " + Thread.currentThread().getName());
 
         boolean infected = avService.scanStream(message.getData());
@@ -140,12 +144,20 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public boolean hasProcessedMessage() {
-        return !processedMessagesQueue.isEmpty();
+        if (serverReceivingType == ReceivingType.POLLING) {
+            return !processedMessagesQueue.isEmpty();
+        } else {
+            throw new UnsupportedOperationException("Supported for POLLING type only.");
+        }
     }
 
     @Override
     public AVMessage getProcessedMessage() {
-        return processedMessagesQueue.poll();
+        if (serverReceivingType == ReceivingType.POLLING) {
+            return processedMessagesQueue.poll();
+        } else {
+            throw new UnsupportedOperationException("Supported for POLLING type only.");
+        }
     }
 
     @Override
@@ -164,8 +176,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void addAVMessageListener(AVMessageListener listener) {
-        setServerReceivingType(ReceivingType.LISTENER);
-        observers.add(listener);
+        if (serverReceivingType == ReceivingType.LISTENER) {
+            observers.add(listener);
+        } else {
+            throw new UnsupportedOperationException("Supported for LISTENER type only.");
+        }
     }
 
     private void notifyObservers(AVMessage avMessage) {

@@ -28,7 +28,7 @@ public class DirectRestStrategy implements RestStrategy {
     private static final Logger log = LogManager.getLogger(DirectRestStrategy.class.getName());
 
     @Autowired
-    private MessageProcessor messageProcessor;
+    private MessageProcessor restMessageProcessor;
 
     private ExecutorService executorService;
 
@@ -57,10 +57,9 @@ public class DirectRestStrategy implements RestStrategy {
     }
 
     private void updateCache() {
-
         while (cacheUpdating) {
-            if (messageProcessor.hasProcessedMessage()) {
-                AVMessage message = messageProcessor.getProcessedMessage();
+            if (restMessageProcessor.hasProcessedMessage()) {
+                AVMessage message = restMessageProcessor.getProcessedMessage();
                 messageCache.put(message.getCorrelationId(), message);
                 log.debug("Saving message: " + message.getId());
             } else {
@@ -75,7 +74,7 @@ public class DirectRestStrategy implements RestStrategy {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        return messageProcessor.messageStatus(id);
+        return restMessageProcessor.messageStatus(id);
     }
 
     @Override
@@ -90,7 +89,7 @@ public class DirectRestStrategy implements RestStrategy {
 
     @Override
     public void messageCheck(AVMessage message) {
-        messageProcessor.sendMessage(message);
+        restMessageProcessor.sendMessage(message);
     }
 
     @Override
@@ -111,7 +110,7 @@ public class DirectRestStrategy implements RestStrategy {
     @PreDestroy
     public void stop() {
         cacheUpdating = false;
-        messageProcessor.stop();
+        restMessageProcessor.stop();
         executorService.shutdown();
         cacheManager.close();
     }
