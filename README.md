@@ -1,5 +1,5 @@
 # Anti-virus service
-[![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
+[![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service) (Error means CI server error :))
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
