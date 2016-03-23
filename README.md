@@ -63,7 +63,7 @@ $ ./gradlew appStart
 Utility for testing AMQP infrastructure.
 #### Run
 ```
-./gradlew amqpCheck
+$ ./gradlew amqpCheck
 ```
 And output should be:
 ```
@@ -76,7 +76,7 @@ Total time: 3.6 secs
 ```
 #### Create jar with dependencies
 ```
-./gradlew :checker:shadowJar
+$ ./gradlew :checker:shadowJar
 ```
 And the full jar will be in `checker/build/libs/` directory.
 
