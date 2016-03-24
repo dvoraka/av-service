@@ -2,10 +2,6 @@ plugins {
     id "com.github.johnrengelman.shadow" version "1.2.3"
 }
 
-repositories {
-    jcenter()
-}
-
 dependencies {
 }
 
@@ -16,10 +12,6 @@ jar {
                 'Built-By': 'dvoraka',
         )
     }
-}
-
-tasks.withType(JavaExec) {
-    systemProperties System.properties
 }
 
 task amqpCheck(type: JavaExec) {
