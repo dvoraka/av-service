@@ -84,7 +84,7 @@ And the full jar will be in `checker/build/libs/` directory.
 Built jar is executable.
 ##### Properties:
 * host - message broker host
-* dirty - virus flag
+* infected - infection flag
 * appid - application ID string
 ```
 $ java -Dhost=localhost -jar checker-0.1-SNAPSHOT-all.jar

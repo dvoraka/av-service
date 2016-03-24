@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
- * Created by dvoraka on 10/26/15.
+ * Spring configuration for the main application.
  */
 @Configuration
 public class AppConfig {
@@ -19,8 +19,8 @@ public class AppConfig {
     @Value("${host:localhost}")
     private String host;
 
-    @Value("${dirty:true}")
-    private boolean dirtyFlag;
+    @Value("${infected:true}")
+    private boolean infected;
 
     @Value("${appid:antivirus}")
     private String appId;
@@ -42,7 +42,7 @@ public class AppConfig {
 
     @Bean
     public AVChecker checker() {
-        return new AVChecker(sender(), receiver(), dirtyFlag, appId);
+        return new AVChecker(sender(), receiver(), infected, appId);
     }
 
     @Bean
