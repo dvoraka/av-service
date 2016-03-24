@@ -62,9 +62,11 @@ public class DefaultAVMessage implements AVMessage {
 
     @Override
     public AVMessage createResponse(boolean virus) {
+        String virusInfo = virus ? "virus info" : "";
+
         return new Builder(null)
                 .correlationId(this.getId())
-                .virusInfo(virus + "")
+                .virusInfo(virusInfo)
                 .type(AVMessageType.RESPONSE)
                 .build();
     }

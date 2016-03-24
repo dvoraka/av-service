@@ -25,7 +25,9 @@ public class AVMessageMapper {
         props.setAppId("antivirus");
         props.setType(msg.getType().toString());
 
-        props.setHeader("isClean", 0);
+        int oldReply = msg.getVirusInfo().equals("") ? 1 : 0;
+        props.setHeader("isClean", oldReply);
+        props.setHeader("virusInfo", msg.getVirusInfo());
 
         return new Message(msg.getData(), props);
     }
