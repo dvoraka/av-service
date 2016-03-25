@@ -10,7 +10,8 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'groovy'
-//    apply plugin: 'checkstyle'
+    apply plugin: 'checkstyle'
+    apply plugin: 'findbugs'
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -75,10 +76,19 @@ subprojects {
         }
     }
 
-//    checkstyle {
-//        toolVersion = "6.5"
-//        configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
-//    }
+    checkstyle {
+        toolVersion = "6.5"
+        configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+        reportsDir = file("${project.rootDir}/reports/checkstyle")
+
+        ignoreFailures = true
+    }
+
+    findbugs {
+        reportsDir = file("${project.rootDir}/reports/findbugsReports")
+
+        ignoreFailures = true
+    }
 
     // set reporting HTML output directory
     tasks.withType(Test) {
