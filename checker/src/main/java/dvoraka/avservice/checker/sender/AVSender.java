@@ -1,6 +1,10 @@
 package dvoraka.avservice.checker.sender;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.ConfirmListener;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,8 +25,8 @@ public class AVSender implements Sender {
 
     private static Logger logger = LogManager.getLogger();
 
-    private final static String DEFAULT_VHOST = "antivirus";
-    private final static String DEFAULT_CHECK_EXCHANGE = "check";
+    private static final String DEFAULT_VHOST = "antivirus";
+    private static final String DEFAULT_CHECK_EXCHANGE = "check";
 
     /**
      * AMQP message broker host

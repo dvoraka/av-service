@@ -77,6 +77,7 @@ subprojects {
 
 //    checkstyle {
 //        toolVersion = "6.5"
+//        configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
 //    }
 
     // set reporting HTML output directory

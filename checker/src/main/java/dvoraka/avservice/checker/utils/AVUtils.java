@@ -7,7 +7,6 @@ import dvoraka.avservice.checker.receiver.AVReceiver;
 import dvoraka.avservice.checker.receiver.Receiver;
 import dvoraka.avservice.checker.sender.AVSender;
 import dvoraka.avservice.checker.sender.Sender;
-import dvoraka.avservice.checker.utils.AmqpUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,7 +1,5 @@
 package dvoraka.avservice.checker.exception;
 
-import dvoraka.avservice.checker.exception.ProtocolException;
-
 /**
  * Exception class for messages with unknown error message.
  *

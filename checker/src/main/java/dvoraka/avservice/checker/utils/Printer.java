@@ -11,10 +11,13 @@ import java.util.Map;
  *
  * @author dvoraka
  */
-public class Printer {
+public final class Printer {
 
     private static Logger logger = LogManager.getLogger();
 
+
+    private Printer() {
+    }
 
     /**
      * Prints AMQP properties on stdout.

@@ -8,9 +8,13 @@ import org.springframework.context.support.AbstractApplicationContext;
 /**
  * Testing utility for AMQP anti-virus module.
  */
-public class CheckerApp {
+public final class CheckerApp {
 
     private static Logger logger = LogManager.getLogger();
+
+
+    private CheckerApp() {
+    }
 
     public static void printHeader() {
         System.out.println("AV checker");
