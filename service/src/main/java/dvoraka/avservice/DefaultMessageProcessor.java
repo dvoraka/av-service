@@ -4,6 +4,7 @@ import dvoraka.avservice.common.AVMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.MessageStatus;
+import dvoraka.avservice.exception.ScanErrorException;
 import dvoraka.avservice.server.ReceivingType;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import dvoraka.avservice.service.AVService;
@@ -100,7 +101,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private void processMessage(AVMessage message) {
         log.debug("Scanning thread: " + Thread.currentThread().getName());
 
-        boolean infected = avService.scanStream(message.getData());
+        boolean infected = false;
+        try {
+            infected = avService.scanStream(message.getData());
+        } catch (ScanErrorException e) {
+            log.warn("Scanning error!", e);
+        }
         log.debug("Scanning done in: " + Thread.currentThread().getName());
 
         // TODO: Delete after some time?

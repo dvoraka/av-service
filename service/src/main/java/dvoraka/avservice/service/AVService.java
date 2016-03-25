@@ -10,7 +10,7 @@ import java.io.File;
  */
 public interface AVService {
 
-    boolean scanStream(byte[] bytes);
+    boolean scanStream(byte[] bytes) throws ScanErrorException;
 
     String scanStreamWithInfo(byte[] bytes);
 

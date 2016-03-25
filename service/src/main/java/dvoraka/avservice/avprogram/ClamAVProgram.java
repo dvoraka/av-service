@@ -1,5 +1,6 @@
 package dvoraka.avservice.avprogram;
 
+import dvoraka.avservice.exception.ScanErrorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,25 +29,6 @@ public class ClamAVProgram implements AVProgram {
     private String socketHost;
     private int socketPort;
 
-
-    public static void main(String[] args) throws IOException {
-
-        ClamAVProgram program = new ClamAVProgram();
-        System.out.println("Connection test");
-        System.out.println(program.testConnection());
-        System.out.println("Stats");
-        System.out.println(program.stats());
-        System.out.println("Clamav ping test");
-        System.out.println("Result: " + program.ping());
-        System.out.println("Clamav version");
-        System.out.println("Result: " + program.version());
-        System.out.println("Clamav checking data");
-        System.out.println("Result: " + program.scanStream("aaa".getBytes()));
-        System.out.println("Clamav checking data");
-        System.out.println("Result: " + program.scanStream(
-                "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
-                        .getBytes()));
-    }
 
     public ClamAVProgram() {
         this(DEFAULT_HOST, DEFAULT_PORT);
@@ -82,7 +64,7 @@ public class ClamAVProgram implements AVProgram {
      * tion.
      */
     @Override
-    public boolean scanStream(byte[] bytes) {
+    public boolean scanStream(byte[] bytes) throws ScanErrorException {
         log.debug("Scanning stream...");
 
         try (
@@ -117,11 +99,8 @@ public class ClamAVProgram implements AVProgram {
 
         } catch (IOException e) {
             log.warn("Scanning problem!", e);
+            throw new ScanErrorException("Scanning problem.", e);
         }
-
-        // TODO: throw exception
-        // in case of any error return true
-        return true;
     }
 
     @Override

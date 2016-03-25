@@ -38,7 +38,7 @@ public class DefaultAVService implements AVService {
     }
 
     @Override
-    public boolean scanStream(byte[] bytes) {
+    public boolean scanStream(byte[] bytes) throws ScanErrorException {
         return avProgram.scanStream(bytes);
     }
 
