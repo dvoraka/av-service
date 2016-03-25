@@ -12,6 +12,7 @@ subprojects {
     apply plugin: 'groovy'
     apply plugin: 'checkstyle'
     apply plugin: 'findbugs'
+    apply plugin: 'pmd'
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -86,6 +87,12 @@ subprojects {
 
     findbugs {
         reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
+
+        ignoreFailures = true
+    }
+
+    pmd {
+        reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
 
         ignoreFailures = true
     }
