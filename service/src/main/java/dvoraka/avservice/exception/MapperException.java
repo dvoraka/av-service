@@ -1,9 +1,9 @@
 package dvoraka.avservice.exception;
 
 /**
- * Mapper exception
+ * Mapper exception.
  */
-public class MapperException extends Exception {
+public class MapperException extends AVException {
 
     public MapperException(String msg) {
         super(msg);

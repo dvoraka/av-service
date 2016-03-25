@@ -1,5 +1,7 @@
 package dvoraka.avservice.service;
 
+import dvoraka.avservice.exception.ScanErrorException;
+
 import java.io.File;
 
 /**
@@ -9,5 +11,5 @@ public interface AVService {
 
     boolean scanStream(byte[] bytes);
 
-    boolean scanFile(File file);
+    boolean scanFile(File file) throws ScanErrorException;
 }

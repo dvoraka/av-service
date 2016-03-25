@@ -1,6 +1,7 @@
 package dvoraka.avservice.service;
 
 import dvoraka.avservice.avprogram.AVProgram;
+import dvoraka.avservice.exception.ScanErrorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +27,21 @@ public class DefaultAVService implements AVService {
     }
 
     @Override
-    public boolean scanFile(File file) {
+    public boolean scanFile(File file) throws ScanErrorException {
         // TODO: check file size
         byte[] bytes = null;
         try {
             bytes = Files.readAllBytes(file.toPath());
         } catch (IOException e) {
-            // TODO: throw exception
             log.warn("File error!", e);
+            throw new ScanErrorException("File error.", e);
         }
 
-        boolean result = false;
         if (bytes != null) {
-            result = scanStream(bytes);
+            return scanStream(bytes);
         } else {
-            // TODO: throw exception
+            log.warn("File bytes are null!");
+            throw new ScanErrorException("File reading error.");
         }
-
-        return result;
     }
 }
