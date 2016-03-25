@@ -125,6 +125,12 @@ public class ClamAVProgram implements AVProgram {
     }
 
     @Override
+    public String scanStreamWithInfo(byte[] bytes) {
+        // TODO: implement
+        return "info";
+    }
+
+    @Override
     public boolean isRunning() {
         return testConnection();
     }
