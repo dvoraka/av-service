@@ -8,14 +8,14 @@ dependencies {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'dvoraka.avservice.checker.App',
+                'Main-Class': 'dvoraka.avservice.checker.CheckerApp',
                 'Built-By': 'dvoraka',
         )
     }
 }
 
 task amqpCheck(type: JavaExec) {
-    main = 'dvoraka.avservice.checker.App'
+    main = 'dvoraka.avservice.checker.CheckerApp'
     classpath = sourceSets.main.runtimeClasspath
 }
 

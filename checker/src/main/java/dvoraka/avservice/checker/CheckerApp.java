@@ -2,13 +2,13 @@ package dvoraka.avservice.checker;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 
 /**
- * Testing utility for anti-virus module.
+ * Testing utility for AMQP anti-virus module.
  */
-public class App {
+public class CheckerApp {
 
     private static Logger logger = LogManager.getLogger();
 
@@ -21,7 +21,8 @@ public class App {
 
         printHeader();
 
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        context.registerShutdownHook();
 
         // protocol negotiation
 //        String[] protocols = {"0.1", "1.0"};
