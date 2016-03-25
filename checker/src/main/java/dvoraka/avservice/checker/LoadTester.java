@@ -26,6 +26,10 @@ public class LoadTester implements Tester {
 
     private static Logger logger = LogManager.getLogger();
 
+    private static final int MAX_MSG_EXCEPTIONS = 3;
+    private static final int MAX_LOOPS = 10;
+    private static final int MS_PER_SECOND = 1000;
+
     private LoadTestProperties props;
     private Sender sender;
     private Receiver receiver;
@@ -61,8 +65,8 @@ public class LoadTester implements Tester {
             this.receiver = receiver;
         }
 
-        this.maxLoops = 10;
-        this.maxMsgExceptions = 3;
+        this.maxLoops = MAX_LOOPS;
+        this.maxMsgExceptions = MAX_MSG_EXCEPTIONS;
     }
 
     public static void main(String[] args) throws IOException {
@@ -114,7 +118,8 @@ public class LoadTester implements Tester {
             logger.debug(loopCounter + ". loop");
 
             try {
-                TimeUnit.MILLISECONDS.sleep(1000);
+                final long sleepTime = 1000;
+                TimeUnit.MILLISECONDS.sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -144,8 +149,8 @@ public class LoadTester implements Tester {
         long duration = System.currentTimeMillis() - begin;
         System.out.println("");
         System.out.println("Load test end");
-        System.out.println("Duration: " + (duration / 1000) + " s");
-        System.out.println("Messages: " + getProps().getMsgCount() / (duration / 1000) + "/s");
+        System.out.println("Duration: " + (duration / MS_PER_SECOND) + " s");
+        System.out.println("Messages: " + getProps().getMsgCount() / (duration / MS_PER_SECOND) + "/s");
     }
 
     private void synchronousTest() throws IOException {
@@ -221,7 +226,7 @@ public class LoadTester implements Tester {
     private void printSendingTime(long begin) {
         long afterSend = System.currentTimeMillis();
         System.out.println("All messages sent");
-        System.out.println("Time: " + ((afterSend - begin) / 1000) + " s");
+        System.out.println("Time: " + ((afterSend - begin) / MS_PER_SECOND) + " s");
         System.out.println("");
     }
 

@@ -258,9 +258,11 @@ public class AVSender implements Sender {
             }
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte[] buf = new byte[10];
+            final int bufferSize = 10;
+            byte[] buf = new byte[bufferSize];
             try {
-                for (int readNum; (readNum = in.read(buf)) != -1; ) {
+                int readNum;
+                while ((readNum = in.read(buf)) != -1) {
                     bos.write(buf, 0, readNum);
                 }
             } catch (IOException e) {

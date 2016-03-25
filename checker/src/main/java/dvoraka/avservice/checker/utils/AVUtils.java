@@ -103,7 +103,7 @@ public class AVUtils implements AmqpUtils {
 
         String protocol;
         int loop = 0;
-        int maxLoops = 20;
+        final int maxLoops = 20;
         for (int i = protocols.length; i > 0; i--) {
             protocol = protocols[i - 1];
             // System.out.println("Trying " + protocol + "...");

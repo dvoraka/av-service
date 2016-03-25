@@ -78,7 +78,8 @@ public class AVReceiver implements Receiver {
     private QueueingConsumer.Delivery nextDelivery(QueueingConsumer consumer)
             throws InterruptedException, LastMessageException {
 
-        QueueingConsumer.Delivery delivery = consumer.nextDelivery(100L);
+        final long timeout = 100L;
+        QueueingConsumer.Delivery delivery = consumer.nextDelivery(timeout);
         if (delivery == null) {
             throw new LastMessageException();
         }
