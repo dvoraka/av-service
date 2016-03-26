@@ -14,7 +14,7 @@ import javax.jms.Session;
 public class JmsClient {
 
     @Autowired
-    JmsTemplate jmsTemplate;
+    private JmsTemplate jmsTemplate;
 
 
     public void sendTestMessage() {

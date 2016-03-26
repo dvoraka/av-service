@@ -89,12 +89,12 @@ public class AVController {
      */
     @RequestMapping(value = "/gen-msg")
     public AVMessage generateMessage() {
-
+        final int dataSize = 10;
         return new DefaultAVMessage.Builder(null)
                 .serviceId("testing-service")
                 .virusInfo("bad")
                 .correlationId("corrId")
-                .data(new byte[10])
+                .data(new byte[dataSize])
                 .type(AVMessageType.RESPONSE)
                 .build();
     }

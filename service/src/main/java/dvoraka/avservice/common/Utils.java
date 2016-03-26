@@ -7,19 +7,23 @@ import dvoraka.avservice.data.DefaultAVMessage;
 /**
  * Utility class.
  */
-public class Utils {
+public final class Utils {
 
     public static final String EICAR =
             "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
     public static final String SERVICE_ID = "UTILS-SERVICE";
 
 
+    private Utils() {
+    }
+
     public static AVMessage genNormalMessage() {
+        final int dataSize = 20;
         return new DefaultAVMessage.Builder(null)
                 .serviceId(SERVICE_ID)
                 .virusInfo("UNKNOWN")
                 .correlationId("1-2-3")
-                .data(new byte[20])
+                .data(new byte[dataSize])
                 .type(AVMessageType.REQUEST)
                 .build();
     }

@@ -139,8 +139,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
             } catch (IllegalStateException e) {
                 // full queue
                 log.warn("Processed queue for the thread " + Thread.currentThread().getName() + " is full");
+                final long sleepTime = 500;
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e1) {
                     log.warn("Waiting interrupted!", e);
                 }

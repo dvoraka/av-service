@@ -34,7 +34,7 @@ public class DirectRestStrategy implements RestStrategy {
 
     private CacheManager cacheManager;
     private Cache<String, AVMessage> messageCache;
-    boolean cacheUpdating;
+    private boolean cacheUpdating;
 
 
     public DirectRestStrategy() {
@@ -44,10 +44,11 @@ public class DirectRestStrategy implements RestStrategy {
     }
 
     private void initializeCache() {
+        final long expirationTime = 10_000;
         CacheConfiguration<String, AVMessage> configuration = CacheConfigurationBuilder
                 .newCacheConfigurationBuilder(String.class, AVMessage.class)
                 .withExpiry(Expirations.timeToLiveExpiration(
-                        new Duration(10_000, TimeUnit.MILLISECONDS)))
+                        new Duration(expirationTime, TimeUnit.MILLISECONDS)))
                 .build();
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("restCache", configuration)
@@ -63,8 +64,9 @@ public class DirectRestStrategy implements RestStrategy {
                 messageCache.put(message.getCorrelationId(), message);
                 log.debug("Saving message: " + message.getId());
             } else {
+                final long sleepTime = 200;
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

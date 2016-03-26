@@ -11,7 +11,7 @@ import java.util.UUID;
  * Default AV message implementation.
  */
 @JsonDeserialize(builder = DefaultAVMessage.Builder.class)
-public class DefaultAVMessage implements AVMessage {
+public final class DefaultAVMessage implements AVMessage {
 
     private String id;
     private String correlationId;
@@ -73,14 +73,14 @@ public class DefaultAVMessage implements AVMessage {
 
     @Override
     public String toString() {
-        return "DefaultAVMessage {" +
-                "id='" + id + '\'' +
-                ", correlationId='" + correlationId + '\'' +
-                ", data=" + Arrays.toString(data) +
-                ", serviceId='" + serviceId + '\'' +
-                ", virusInfo='" + virusInfo + '\'' +
-                ", type=" + type +
-                '}';
+        return "DefaultAVMessage {"
+                + "id='" + id + '\''
+                + ", correlationId='" + correlationId + '\''
+                + ", data=" + Arrays.toString(data)
+                + ", serviceId='" + serviceId + '\''
+                + ", virusInfo='" + virusInfo + '\''
+                + ", type=" + type
+                + '}';
     }
 
     @JsonPOJOBuilder(withPrefix = "")

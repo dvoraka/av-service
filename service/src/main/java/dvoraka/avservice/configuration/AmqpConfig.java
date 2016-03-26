@@ -27,27 +27,27 @@ import org.springframework.context.annotation.Profile;
 public class AmqpConfig {
 
     @Value("${avservice.amqp.host:localhost}")
-    String host;
+    private String host;
 
     @Value("${avservice.amqp.vhost:antivirus}")
-    String virtualHost;
+    private String virtualHost;
 
     @Value("${avservice.amqp.checkQueue:av-check}")
-    String checkQueue;
+    private String checkQueue;
 
     @Value("${avservice.amqp.resultQueue:av-result}")
-    String resultQueue;
+    private String resultQueue;
 
     @Value("${avservice.amqp.checkExchange:check}")
-    String checkExchange;
+    private String checkExchange;
 
     @Value("${avservice.amqp.resultExchange:result}")
-    String resultExchange;
+    private String resultExchange;
 
     @Value("${avservice.amqp.user:guest}")
-    String userName;
+    private String userName;
     @Value("${avservice.amqp.pass:guest}")
-    String userPassword;
+    private String userPassword;
 
 
     @Bean
@@ -78,8 +78,9 @@ public class AmqpConfig {
 
     @Bean
     public RabbitTemplate amqpTemplate() {
+        final long timeout = 4000;
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
-        template.setReceiveTimeout(4000);
+        template.setReceiveTimeout(timeout);
         template.setRoutingKey("test");
         template.setQueue(checkQueue);
 

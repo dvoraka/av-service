@@ -7,7 +7,11 @@ import org.springframework.amqp.core.MessageProperties;
 /**
  * AVMessage mapper
  */
-public class AVMessageMapper {
+public final class AVMessageMapper {
+
+
+    private AVMessageMapper() {
+    }
 
     public static AVMessage transform(Message msg) throws MapperException {
         MessageProperties msgProps = msg.getMessageProperties();

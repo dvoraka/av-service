@@ -27,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 public class AppConfig {
 
     @Value("${avservice.rest.url}")
-    String restUrl;
+    private String restUrl;
 
 
     @Bean
@@ -42,12 +42,14 @@ public class AppConfig {
 
     @Bean
     public MessageProcessor messageProcessor() {
-        return new DefaultMessageProcessor(20, ReceivingType.LISTENER, 0);
+        final int threads = 20;
+        return new DefaultMessageProcessor(threads, ReceivingType.LISTENER, 0);
     }
 
     @Bean
     public MessageProcessor restMessageProcessor() {
-        return new DefaultMessageProcessor(20);
+        final int threads = 20;
+        return new DefaultMessageProcessor(threads);
     }
 
     @Bean
