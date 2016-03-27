@@ -86,7 +86,7 @@ subprojects {
         configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
         reportsDir = file("${project.rootDir}/reports/checkstyle/${project.name}")
 
-        ignoreFailures = true
+        ignoreFailures = false
     }
 
     findbugs {

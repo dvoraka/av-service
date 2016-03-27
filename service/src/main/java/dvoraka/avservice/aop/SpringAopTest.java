@@ -35,8 +35,9 @@ public class SpringAopTest {
         }
         long elapsedTime = System.currentTimeMillis() - start;
 
+        final long msPerSec = 1000;
         System.out.println("T: " + threadName + ", M: " + methodName
-                + ", S: " + (start / 1000) + ", Duration: " + elapsedTime);
+                + ", S: " + (start / msPerSec) + ", Duration: " + elapsedTime);
 
         return returnValue;
     }
@@ -56,8 +57,9 @@ public class SpringAopTest {
         }
         long elapsedTime = System.currentTimeMillis() - start;
 
+        final long msPerSec = 1000;
         System.out.println("T: " + threadName + ", M: " + methodName
-                + ", S: " + (start / 1000) + ", Duration: " + elapsedTime);
+                + ", S: " + (start / msPerSec) + ", Duration: " + elapsedTime);
 
         return returnValue;
     }

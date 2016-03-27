@@ -28,6 +28,9 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
 
     private static final Logger log = LogManager.getLogger(AmqpAVServer.class.getName());
 
+    private static final long POOL_TERM_TIME_S = 10;
+
+
     @Autowired
     private MessageProcessor messageProcessor;
     @Autowired
@@ -61,9 +64,10 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
 
         server.start();
 
+        final long runTime = 6_000_000;
         // TODO: create management interface
         try {
-            Thread.sleep(6_000_000);
+            Thread.sleep(runTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -98,8 +102,9 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
                 AVMessage message = messageProcessor.getProcessedMessage();
                 processResponse(message);
             } else {
+                final long sleepTime = 100;
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -157,7 +162,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
 
             executorService.shutdown();
             try {
-                executorService.awaitTermination(10, TimeUnit.SECONDS);
+                executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS);
                 log.debug("Server pool stopped.");
             } catch (InterruptedException e) {
                 log.warn("Pool shutdown failed!", e);
