@@ -24,11 +24,6 @@ task amqpCheck(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
-//task runCli(type: JavaExec) {
-//    main = 'dvoraka.avservice.checker.Cli'
-//    classpath = sourceSets.main.runtimeClasspath
-//}
-
 task loadTest(type: JavaExec) {
     description = 'Run AMQP load test'
     group = "${taskGroupName}"
