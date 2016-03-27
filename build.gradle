@@ -92,7 +92,7 @@ subprojects {
     findbugs {
         reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
 
-        ignoreFailures = true
+        ignoreFailures = false
     }
 
     tasks.withType(FindBugs) {

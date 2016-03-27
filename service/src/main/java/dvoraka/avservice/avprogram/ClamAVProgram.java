@@ -94,11 +94,16 @@ public class ClamAVProgram implements AVProgram {
             String response = in.readLine();
 
             log.debug("scanning done.");
-            if (response.equals(CLEAN_STREAM_RESPONSE)) {
-                return false;
+            if (response != null) {
+                if (response.equals(CLEAN_STREAM_RESPONSE)) {
+                    return false;
+                } else {
+                    log.debug("Virus found: " + response);
+                    return true;
+                }
             } else {
-                log.debug("Virus found: " + response);
-                return true;
+                log.warn("Response reading problem!");
+                throw new ScanErrorException("Scanning problem.");
             }
 
         } catch (IOException e) {

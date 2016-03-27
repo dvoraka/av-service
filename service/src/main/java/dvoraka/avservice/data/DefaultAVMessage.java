@@ -42,7 +42,10 @@ public final class DefaultAVMessage implements AVMessage {
 
     @Override
     public byte[] getData() {
-        return data;
+        if (data != null) {
+            return data.clone();
+        }
+        return null;
     }
 
     @Override
@@ -106,7 +109,9 @@ public final class DefaultAVMessage implements AVMessage {
         }
 
         public Builder data(byte[] data) {
-            this.data = data;
+            if (data != null) {
+                this.data = data.clone();
+            }
             return this;
         }
 

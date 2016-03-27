@@ -49,7 +49,7 @@ public class DefaultAVService implements AVService {
 
     @Override
     public boolean scanFile(File file) throws ScanErrorException, FileSizeException {
-        byte[] bytes = null;
+        byte[] bytes;
         try {
             long size = Files.size(file.toPath());
             if (size > getMaxFileSize()) {
@@ -58,16 +58,11 @@ public class DefaultAVService implements AVService {
                         "File is too big: " + size + " bytes, max is: " + getMaxFileSize());
             }
             bytes = Files.readAllBytes(file.toPath());
+
+            return scanStream(bytes);
         } catch (IOException e) {
             log.warn("File error!", e);
             throw new ScanErrorException("File error.", e);
-        }
-
-        if (bytes != null) {
-            return scanStream(bytes);
-        } else {
-            log.warn("File bytes are null!");
-            throw new ScanErrorException("File reading error.");
         }
     }
 

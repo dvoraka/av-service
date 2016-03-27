@@ -10,11 +10,16 @@ import spock.lang.Specification
  */
 class DefaultMessageProcessorSpec extends Specification {
 
-    DefaultMessageProcessor processor = null;
+    DefaultMessageProcessor processor = null
+
+
+    def setup() {
+        processor = new DefaultMessageProcessor(2)
+    }
 
     def cleanup() {
         if (processor != null) {
-            processor.stop();
+            processor.stop()
         }
     }
 
@@ -28,7 +33,6 @@ class DefaultMessageProcessorSpec extends Specification {
             return false
         }
 
-        processor = new DefaultMessageProcessor(2);
         processor.setAvService(avService)
 
         when:
@@ -43,7 +47,6 @@ class DefaultMessageProcessorSpec extends Specification {
         String testId = "testId"
 
         AVService avService = Stub()
-        processor = new DefaultMessageProcessor(2);
         processor.setAvService(avService)
 
         when:
@@ -59,7 +62,6 @@ class DefaultMessageProcessorSpec extends Specification {
         String testId = "testId"
 
         AVService avService = Stub()
-        processor = new DefaultMessageProcessor(2);
         processor.setAvService(avService)
 
         expect:
