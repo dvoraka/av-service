@@ -4,6 +4,8 @@ import dvoraka.avservice.exception.MapperException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * AVMessage mapper
  */
@@ -25,7 +27,7 @@ public final class AVMessageMapper {
     public static Message transform(AVMessage msg) throws MapperException {
         MessageProperties props = new MessageProperties();
         props.setMessageId(msg.getId());
-        props.setCorrelationId(msg.getCorrelationId().getBytes());
+        props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
         props.setAppId("antivirus");
         props.setType(msg.getType().toString());
 

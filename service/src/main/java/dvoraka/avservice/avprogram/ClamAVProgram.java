@@ -8,11 +8,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * ClamAV wrapper.
@@ -25,6 +28,7 @@ public class ClamAVProgram implements AVProgram {
     private static final int DEFAULT_PORT = 3310;
     private static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private String socketHost;
     private int socketPort;
@@ -70,7 +74,7 @@ public class ClamAVProgram implements AVProgram {
         try (
                 Socket socket = new Socket(socketHost, socketPort);
                 OutputStream outStream = socket.getOutputStream();
-                InputStreamReader inReader = new InputStreamReader(socket.getInputStream());
+                InputStreamReader inReader = new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
                 BufferedReader in = new BufferedReader(inReader)
         ) {
             // send bytes
@@ -114,64 +118,36 @@ public class ClamAVProgram implements AVProgram {
         return testConnection();
     }
 
-    public boolean ping() {
-
-        String response = null;
+    private String command(String command) {
+        String result = null;
         try (
                 Socket socket = new Socket(socketHost, socketPort);
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
-                InputStreamReader inReader = new InputStreamReader(socket.getInputStream());
+                PrintWriter out = new PrintWriter(
+                        new OutputStreamWriter(socket.getOutputStream(), DEFAULT_CHARSET));
+                InputStreamReader inReader = new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
                 BufferedReader in = new BufferedReader(inReader)
         ) {
-            out.println("nPING");
+            out.println("n" + command);
             out.flush();
-            response = in.readLine();
+            result = in.readLine();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn("ClamAV problem!", e);
         }
 
-        return "PONG".equals(response);
+        return result;
+    }
+
+    public boolean ping() {
+        return "PONG".equals(command("PING"));
     }
 
     public String version() {
-
-        String version = null;
-        try (
-                Socket socket = new Socket(socketHost, socketPort);
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
-                InputStreamReader inReader = new InputStreamReader(socket.getInputStream());
-                BufferedReader in = new BufferedReader(inReader)
-        ) {
-            out.println("nVERSION");
-            out.flush();
-            version = in.readLine();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return version;
+        return command("VERSION");
     }
 
     public String stats() {
-
-        String stats = null;
-        try (
-                Socket socket = new Socket(socketHost, socketPort);
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
-                InputStreamReader inReader = new InputStreamReader(socket.getInputStream());
-                BufferedReader in = new BufferedReader(inReader)
-        ) {
-            out.println("nSTATS");
-            out.flush();
-            stats = in.readLine();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return stats;
+        return command("STATS");
     }
 
     /**

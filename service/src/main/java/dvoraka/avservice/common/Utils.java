@@ -4,6 +4,8 @@ import dvoraka.avservice.data.AVMessage;
 import dvoraka.avservice.data.AVMessageType;
 import dvoraka.avservice.data.DefaultAVMessage;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Utility class.
  */
@@ -33,7 +35,7 @@ public final class Utils {
                 .serviceId(SERVICE_ID)
                 .virusInfo("UNKNOWN")
                 .correlationId("1-2-3")
-                .data(EICAR.getBytes())
+                .data(EICAR.getBytes(StandardCharsets.UTF_8))
                 .type(AVMessageType.REQUEST)
                 .build();
     }
