@@ -243,15 +243,22 @@ public class AVSender implements Sender {
      *
      * @param virus include virus flag
      * @return file as bytes
-     * @throws FileNotFoundException if the virus file is not found
      */
-    public byte[] readTestFile(boolean virus)
-            throws FileNotFoundException {
-
+    public byte[] readTestFile(boolean virus) {
         byte[] bytes;
         if (virus) {
-            // read EICAR
-            InputStream in = getClass().getResourceAsStream("/eicar");
+            bytes = infectedTestFileBytes();
+        } else {
+            bytes = cleanTestFileBytes();
+        }
+
+        return bytes;
+    }
+
+    private byte[] infectedTestFileBytes() {
+        byte[] bytes = null;
+        // read EICAR
+        try (InputStream in = getClass().getResourceAsStream("/eicar")) {
             if (in == null) {
                 logger.warn("Virus file not found.");
                 throw new FileNotFoundException();
@@ -259,23 +266,26 @@ public class AVSender implements Sender {
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             final int bufferSize = 10;
-            byte[] buf = new byte[bufferSize];
-            try {
-                int readNum;
-                while ((readNum = in.read(buf)) != -1) {
-                    bos.write(buf, 0, readNum);
-                }
-            } catch (IOException e) {
-                logger.warn("Virus file problem.", e);
+            byte[] buffer = new byte[bufferSize];
+
+            int readNum;
+            while ((readNum = in.read(buffer)) != -1) {
+                bos.write(buffer, 0, readNum);
             }
 
             bytes = bos.toByteArray();
-        } else {
-            String testStr = "Test string!!!";
-            bytes = testStr.getBytes();
+
+        } catch (IOException e) {
+            logger.warn("Virus file problem!", e);
         }
 
         return bytes;
+    }
+
+    private byte[] cleanTestFileBytes() {
+        String testStr = "Test string!!!";
+
+        return testStr.getBytes();
     }
 
     /**

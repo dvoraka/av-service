@@ -95,6 +95,13 @@ subprojects {
         ignoreFailures = true
     }
 
+    tasks.withType(FindBugs) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
     pmd {
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
 
