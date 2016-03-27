@@ -35,22 +35,15 @@ public class LoadTestConfigParser extends DefaultHandler {
 
     public void parseFileSax(String filename) {
         SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser saxParser = null;
+        SAXParser saxParser;
 
         try {
             saxParser = factory.newSAXParser();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-
-        try {
             saxParser.parse(filename, this);
-        } catch (SAXException e) {
-            e.printStackTrace();
+        } catch (ParserConfigurationException | SAXException e) {
+            logger.warn("Parser problem!", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("File problem!", e);
         }
     }
 
