@@ -63,40 +63,43 @@ public class AVUtils implements AmqpUtils {
         receiver.setVerboseOutput(receiverOutput);
     }
 
-    /**
-     * Tries concrete protocol version.
-     *
-     * @param protocolVersion the protocol version
-     * @return result
-     */
-    public boolean tryProtocol(String protocolVersion) {
-        String result = findProtocol(new String[]{protocolVersion});
+    // TODO: redesign
+//    /**
+//     * Tries concrete protocol version.
+//     *
+//     * @param protocolVersion the protocol version
+//     * @return result
+//     */
+//    public boolean tryProtocol(String protocolVersion) {
+//        String result = findProtocol(new String[]{protocolVersion});
+//
+//        return !(result == null);
+//    }
 
-        return !(result == null);
-    }
+//    /**
+//     * Finds first possible protocol version. Starts from the protocols array
+//     * end.
+//     *
+//     * @param protocols the protocols array
+//     * @return the protocol version
+//     */
+    // TODO: redesign
+//    public String findProtocol(String[] protocols) {
+//        disableOutputFlags();
+//
+//        String procotolVersion = null;
+//        try {
+//            procotolVersion = negotiateProtocol(protocols);
+//        } catch (UnknownProtocolException e) {
+//            // e.printStackTrace();
+//        }
+//
+//        resetOutputFlags();
+//
+//        return procotolVersion;
+//    }
 
-    /**
-     * Finds first possible protocol version. Starts from the protocols array
-     * end.
-     *
-     * @param protocols the protocols array
-     * @return the protocol version
-     */
-    public String findProtocol(String[] protocols) {
-        disableOutputFlags();
-
-        String procotolVersion = null;
-        try {
-            procotolVersion = negotiateProtocol(protocols);
-        } catch (UnknownProtocolException e) {
-            // e.printStackTrace();
-        }
-
-        resetOutputFlags();
-
-        return procotolVersion;
-    }
-
+    // TODO: improve
     @Override
     public String negotiateProtocol(String[] protocols)
             throws UnknownProtocolException {
@@ -117,7 +120,7 @@ public class AVUtils implements AmqpUtils {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ProtocolException e) {
-                // e.printStackTrace();
+                 e.printStackTrace();
             } catch (LastMessageException e) {
                 // try again
                 i++;

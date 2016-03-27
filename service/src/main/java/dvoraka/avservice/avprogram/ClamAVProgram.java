@@ -185,6 +185,6 @@ public class ClamAVProgram implements AVProgram {
             }
         }
 
-        return (success && ping());
+        return success && ping();
     }
 }

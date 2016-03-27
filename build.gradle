@@ -105,7 +105,7 @@ subprojects {
     pmd {
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
 
-        ignoreFailures = true
+        ignoreFailures = false
     }
 
     // set reporting HTML output directory
