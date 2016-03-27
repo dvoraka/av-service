@@ -12,6 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
@@ -26,6 +28,7 @@ public class AVReceiver implements Receiver {
 
     private static final String DEFAULT_VHOST = "antivirus";
     private static final String DEFAULT_QUEUE = "av-result";
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private String host;
     private String virtualHost;
@@ -63,7 +66,7 @@ public class AVReceiver implements Receiver {
     }
 
     private void printReceiveInfo(QueueingConsumer.Delivery delivery) {
-        String message = new String(delivery.getBody());
+        String message = new String(delivery.getBody(), DEFAULT_CHARSET);
 
         System.out.println("-------------");
         System.out.println(" [x] Received '" + message + "'");

@@ -13,6 +13,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +29,8 @@ public class AVSender implements Sender {
 
     private static final String DEFAULT_VHOST = "antivirus";
     private static final String DEFAULT_CHECK_EXCHANGE = "check";
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+
 
     /**
      * AMQP message broker host
@@ -285,7 +289,7 @@ public class AVSender implements Sender {
     private byte[] cleanTestFileBytes() {
         String testStr = "Test string!!!";
 
-        return testStr.getBytes();
+        return testStr.getBytes(DEFAULT_CHARSET);
     }
 
     /**
