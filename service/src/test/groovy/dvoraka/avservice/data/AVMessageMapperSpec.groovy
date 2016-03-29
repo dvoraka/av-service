@@ -11,29 +11,49 @@ class AVMessageMapperSpec extends Specification {
 
     String testId = 'TEST-ID'
     String testAppId = 'TEST-APP-ID'
+    String testVirusInfo = 'TEST-INFO'
+    String testServiceId = 'TEST-SERVICE-1'
     int dataSize = 10
 
 
-    def "Message -> AVMessage"() {
+    def "AMQP Message -> AVMessage, v1"() {
         setup:
         MessageProperties props = new MessageProperties()
+
+        // PROPERTIES
+        // id
         props.setMessageId(testId)
+        // appId
         props.setAppId(testAppId)
+        // type
         props.setType(AVMessageType.REQUEST.toString())
 
-        byte[] body = new byte[dataSize]
-        Message message = new Message(body, props)
+        // HEADERS
+        // virusInfo
+        props.setHeader("virusInfo", testVirusInfo)
+        // serviceId
+        props.setHeader("serviceId", testServiceId)
 
+        // BODY
+        // data
+        byte[] body = new byte[dataSize]
+
+        // create AMQP message
+        Message message = new Message(body, props)
+        // transform to AVMessage
         AVMessage avMessage = AVMessageMapper.transform(message)
 
         expect:
         avMessage.getId().equals(testId)
-//        avMessage.getType().equals(AVMessageType.REQUEST)
+        avMessage.getType().equals(AVMessageType.REQUEST)
+
+//        avMessage.getVirusInfo().equals(testVirusInfo)
+//        avMessage.getServiceId().equals(testServiceId)
 
         avMessage.getData().length == dataSize
     }
 
-    def "AVMessage -> Message"() {
+    def "AVMessage -> AMQP Message"() {
 
     }
 }

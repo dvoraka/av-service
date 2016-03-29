@@ -11,16 +11,22 @@ import java.nio.charset.StandardCharsets;
  */
 public final class AVMessageMapper {
 
+    public static final String VIRUS_INFO_KEY = "virusInfo";
+    public static final String DEFAULT_VIRUS_INFO = "noinfo";
+
 
     private AVMessageMapper() {
     }
 
     public static AVMessage transform(Message msg) throws MapperException {
         MessageProperties msgProps = msg.getMessageProperties();
+        // TODO: map headers
+//        Map<String, Object> headers = msgProps.getHeaders();
 
         return new DefaultAVMessage.Builder(msgProps.getMessageId())
                 .data(msg.getBody())
-//                .type(AVMessageType.valueOf(msgProps.getType()))
+                .type(AVMessageType.valueOf(msgProps.getType()))
+//                .virusInfo()
                 .build();
     }
 
