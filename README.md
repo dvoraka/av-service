@@ -17,13 +17,18 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
  * **RabbitMQ** - message broker for AMQP
  * **ActiveMQ** - message broker for JMS
 
-#### Frameworks and libraries
+##### Frameworks and libraries
  * **Spring**
  * **Spring REST** - REST
  * **Spring AMQP** - AMQP
  * **Spring JMS** - JMS
  * **Spock** - testing
  * **Log4j 2** - logging
+
+##### Code quality
+ * **Checkstyle**
+ * **FindBugs**
+ * **PMD**
 
 ## Installation
 ### ClamAV
