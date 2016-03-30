@@ -30,9 +30,9 @@ class AVMessageMapperSpec extends Specification {
 
         // HEADERS
         // virusInfo
-        props.setHeader("virusInfo", testVirusInfo)
+        props.setHeader(AVMessageMapper.VIRUS_INFO_KEY, testVirusInfo)
         // serviceId
-        props.setHeader("serviceId", testServiceId)
+        props.setHeader(AVMessageMapper.SERVICE_ID_KEY, testServiceId)
 
         // BODY
         // data
@@ -47,8 +47,8 @@ class AVMessageMapperSpec extends Specification {
         avMessage.getId().equals(testId)
         avMessage.getType().equals(AVMessageType.REQUEST)
 
-//        avMessage.getVirusInfo().equals(testVirusInfo)
-//        avMessage.getServiceId().equals(testServiceId)
+        avMessage.getVirusInfo().equals(testVirusInfo)
+        avMessage.getServiceId().equals(testServiceId)
 
         avMessage.getData().length == dataSize
     }
