@@ -43,9 +43,10 @@ public final class AVMessageMapper {
             serviceId = DEFAULT_SERVICE_ID;
         }
 
+        // TODO: check message type
         return new DefaultAVMessage.Builder(msgProps.getMessageId())
                 .data(msg.getBody())
-                .type(AVMessageType.valueOf(msgProps.getType()))
+                .type(AVMessageType.valueOf(msgProps.getType().toUpperCase()))
                 .virusInfo(virusInfo)
                 .serviceId(serviceId)
                 .build();
