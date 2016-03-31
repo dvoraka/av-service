@@ -44,6 +44,9 @@ public class AmqpConfig {
     @Value("${avservice.amqp.resultExchange:result}")
     private String resultExchange;
 
+    @Value("${avservice.amqp.listeningTimeout:4000}")
+    private long listeningTimeout;
+
     @Value("${avservice.amqp.user:guest}")
     private String userName;
     @Value("${avservice.amqp.pass:guest}")
@@ -57,7 +60,7 @@ public class AmqpConfig {
 
     @Bean
     public ListeningStrategy listeningStrategy() {
-        return new SimpleAmqpListeningStrategy();
+        return new SimpleAmqpListeningStrategy(listeningTimeout);
     }
 
     @Bean
@@ -78,9 +81,8 @@ public class AmqpConfig {
 
     @Bean
     public RabbitTemplate amqpTemplate() {
-        final long timeout = 4000;
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
-        template.setReceiveTimeout(timeout);
+        template.setReceiveTimeout(listeningTimeout);
         template.setRoutingKey("test");
         template.setQueue(checkQueue);
 

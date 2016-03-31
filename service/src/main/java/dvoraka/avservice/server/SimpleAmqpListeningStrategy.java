@@ -11,6 +11,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PreDestroy;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Simple AMQP strategy for messages receiving.
@@ -25,7 +26,12 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
     private static final Logger log = LogManager.getLogger(SimpleAmqpListeningStrategy.class.getName());
 
     private boolean running;
+    private long listeningTimeout;
 
+
+    public SimpleAmqpListeningStrategy(long listeningTimeout) {
+        this.listeningTimeout = listeningTimeout;
+    }
 
     @Override
     public void listen() {
@@ -57,6 +63,12 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
         if (isRunning()) {
             log.debug("Stop listening.");
             setRunning(false);
+
+            try {
+                TimeUnit.MILLISECONDS.sleep(getListeningTimeout());
+            } catch (InterruptedException e) {
+                log.warn("Stopping problem!", e);
+            }
         }
     }
 
@@ -66,5 +78,9 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
 
     private void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public long getListeningTimeout() {
+        return listeningTimeout;
     }
 }
