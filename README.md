@@ -75,16 +75,12 @@ $ ./gradlew appStart
 Utility for testing AMQP infrastructure.
 #### Run
 ```
-$ ./gradlew amqpCheck
+$ ./gradlew -q amqpCheck
 ```
 And output should be:
 ```
 ...
 Test OK
-
-BUILD SUCCESSFUL
-
-Total time: 3.6 secs
 ```
 #### Create jar with dependencies
 ```
