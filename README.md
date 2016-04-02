@@ -14,14 +14,15 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
 ## Used components
  * **ClamaAV** - open source anti-virus engine
- * **RabbitMQ** - message broker for AMQP
- * **ActiveMQ** - message broker for JMS
+ * **RabbitMQ** - open source message broker for AMQP
+ * **ActiveMQ** - open source message broker for JMS
 
 ##### Frameworks and libraries
  * **Spring**
  * **Spring REST** - REST
  * **Spring AMQP** - AMQP
  * **Spring JMS** - JMS
+ * **Ehcache 3** - caching
  * **Spock** - testing
  * **Log4j 2** - logging
 
