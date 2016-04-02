@@ -1,6 +1,6 @@
 package dvoraka.avservice.common;
 
-import dvoraka.avservice.data.AVMessage;
+import dvoraka.avservice.common.data.AVMessage;
 
 /**
  * AV message listener.

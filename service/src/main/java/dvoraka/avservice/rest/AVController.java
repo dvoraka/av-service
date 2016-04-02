@@ -1,9 +1,9 @@
 package dvoraka.avservice.rest;
 
-import dvoraka.avservice.data.AVMessage;
-import dvoraka.avservice.data.AVMessageType;
-import dvoraka.avservice.data.DefaultAVMessage;
-import dvoraka.avservice.data.MessageStatus;
+import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AVMessageType;
+import dvoraka.avservice.common.data.DefaultAVMessage;
+import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.service.RestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

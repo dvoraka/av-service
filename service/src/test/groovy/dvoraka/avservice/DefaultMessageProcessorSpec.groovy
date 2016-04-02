@@ -1,7 +1,7 @@
 package dvoraka.avservice
 
-import dvoraka.avservice.data.DefaultAVMessage
-import dvoraka.avservice.data.MessageStatus
+import dvoraka.avservice.common.data.DefaultAVMessage
+import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.service.AVService
 import spock.lang.Specification
 

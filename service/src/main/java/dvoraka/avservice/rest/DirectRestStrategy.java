@@ -1,8 +1,8 @@
 package dvoraka.avservice.rest;
 
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.data.AVMessage;
-import dvoraka.avservice.data.MessageStatus;
+import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.MessageStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;

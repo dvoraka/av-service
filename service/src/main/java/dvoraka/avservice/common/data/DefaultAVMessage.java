@@ -1,4 +1,4 @@
-package dvoraka.avservice.data;
+package dvoraka.avservice.common.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

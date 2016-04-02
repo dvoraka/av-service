@@ -1,7 +1,7 @@
 package dvoraka.avservice.service;
 
-import dvoraka.avservice.data.AVMessage;
-import dvoraka.avservice.data.MessageStatus;
+import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.MessageStatus;
 
 /**
  * REST service.

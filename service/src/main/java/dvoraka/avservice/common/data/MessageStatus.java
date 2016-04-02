@@ -1,4 +1,4 @@
-package dvoraka.avservice.data;
+package dvoraka.avservice.common.data;
 
 /**
  * Message status.

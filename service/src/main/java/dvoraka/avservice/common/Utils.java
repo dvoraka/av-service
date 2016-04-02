@@ -1,8 +1,8 @@
 package dvoraka.avservice.common;
 
-import dvoraka.avservice.data.AVMessage;
-import dvoraka.avservice.data.AVMessageType;
-import dvoraka.avservice.data.DefaultAVMessage;
+import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AVMessageType;
+import dvoraka.avservice.common.data.DefaultAVMessage;
 
 import java.nio.charset.StandardCharsets;
 
