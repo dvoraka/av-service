@@ -2,7 +2,9 @@
 *.log
 *.gradle/
 
+# Idea
 *.idea/
 *.iml
 
 build/
+reports/
