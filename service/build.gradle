@@ -15,7 +15,7 @@ dependencies {
     compile("org.springframework:spring-jms")
     compile("org.apache.activemq:activemq-broker")
     // Ehcache
-    compile('org.ehcache:ehcache:3.0.0.rc1')
+    compile('org.ehcache:ehcache:3.0.0.rc2')
 }
 
 task runAmqpServer(type: JavaExec) {
