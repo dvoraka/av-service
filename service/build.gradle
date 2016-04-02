@@ -5,6 +5,9 @@ plugins {
 description = 'Anti-virus service'
 
 dependencies {
+
+    compile project(':common')
+
     // Spring
     compile("org.springframework:spring-webmvc:${springVersion}")
     compile("org.springframework:spring-aspects:${springVersion}")
