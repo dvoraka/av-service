@@ -32,4 +32,6 @@ gretty {
     integrationTestTask = 'integrationTest'
     servletContainer = 'jetty9'
     contextPath = 'av-service'
+//    loggingLevel = 'DEBUG'
+    fileLogEnabled = false
 }
