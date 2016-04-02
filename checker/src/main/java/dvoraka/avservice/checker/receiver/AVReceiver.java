@@ -5,9 +5,9 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 import dvoraka.avservice.checker.ErrorMessage;
-import dvoraka.avservice.checker.utils.Printer;
 import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.ProtocolException;
+import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

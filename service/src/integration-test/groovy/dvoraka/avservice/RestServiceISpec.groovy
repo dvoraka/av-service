@@ -1,10 +1,10 @@
 package dvoraka.avservice
 
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.configuration.AppConfig
 import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.AVMessageType
 import dvoraka.avservice.common.data.MessageStatus
+import dvoraka.avservice.configuration.AppConfig
 import dvoraka.avservice.rest.RestClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
