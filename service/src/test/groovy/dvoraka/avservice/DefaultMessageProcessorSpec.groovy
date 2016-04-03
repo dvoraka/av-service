@@ -10,7 +10,7 @@ import spock.lang.Specification
  */
 class DefaultMessageProcessorSpec extends Specification {
 
-    DefaultMessageProcessor processor = null
+    DefaultMessageProcessor processor
 
 
     def setup() {

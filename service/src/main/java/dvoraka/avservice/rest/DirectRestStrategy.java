@@ -116,4 +116,8 @@ public class DirectRestStrategy implements RestStrategy {
         executorService.shutdown();
         cacheManager.close();
     }
+
+    public void setRestMessageProcessor(MessageProcessor restMessageProcessor) {
+        this.restMessageProcessor = restMessageProcessor;
+    }
 }
