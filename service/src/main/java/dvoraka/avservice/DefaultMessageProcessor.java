@@ -34,9 +34,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(SimpleAmqpListeningStrategy.class.getName());
 
-    private static final int DEFAULT_QUEUE_SIZE = 100;
+    public static final int DEFAULT_QUEUE_SIZE = 100;
+    public static final ReceivingType DEFAULT_RECEIVING_TYPE = ReceivingType.POLLING;
     private static final long POOL_TERM_TIME_S = 20;
-    private static final ReceivingType DEFAULT_RECEIVING_TYPE = ReceivingType.POLLING;
 
     private Map<String, Long> processingMessages;
     private Map<String, Long> processedMessages;
