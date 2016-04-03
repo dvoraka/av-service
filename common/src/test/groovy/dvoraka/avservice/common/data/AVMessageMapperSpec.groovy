@@ -1,8 +1,5 @@
-package dvoraka.avservice.data
+package dvoraka.avservice.common.data
 
-import dvoraka.avservice.common.data.AVMessage
-import dvoraka.avservice.common.data.AVMessageMapper
-import dvoraka.avservice.common.data.AVMessageType
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import spock.lang.Specification
