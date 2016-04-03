@@ -73,4 +73,8 @@ public class DefaultAVService implements AVService {
     public void setMaxFileSize(long maxFileSize) {
         this.maxFileSize = maxFileSize;
     }
+
+    public void setAvProgram(AVProgram program) {
+        this.avProgram = program;
+    }
 }
