@@ -22,6 +22,7 @@ class DirectRestStrategySpec extends Specification {
     }
 
     def cleanup() {
+        strategy.stop()
     }
 
     def "unknown message status"() {
