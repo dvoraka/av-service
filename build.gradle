@@ -17,6 +17,7 @@ subprojects {
     apply plugin: 'checkstyle'
     apply plugin: 'findbugs'
     apply plugin: 'pmd'
+    apply plugin: 'jacoco'
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -110,6 +111,10 @@ subprojects {
         ignoreFailures = false
     }
 
+    jacoco {
+        reportsDir = file("${project.rootDir}/reports/jacoco/${project.name}")
+    }
+
     // set reporting HTML output directory
     tasks.withType(Test) {
         reports.html.destination = file("${project.rootDir}/reports/test/${project.name}")
@@ -121,6 +126,7 @@ subprojects {
 
     check.dependsOn integrationTest
     integrationTest.mustRunAfter test
+    check.dependsOn jacocoTestReport
 }
 
 task wrapper(type: Wrapper) {
