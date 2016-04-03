@@ -50,7 +50,8 @@ class AVServiceISpec extends Specification {
 
     def "scan normal file"() {
         setup:
-        File file = File.createTempFile("avtempfile", ".tmp")
+        File file = File.createTempFile("test-avtempfile", ".tmp")
+        file.deleteOnExit()
 
         when:
         boolean shouldBeFalse = avService.scanFile(file)

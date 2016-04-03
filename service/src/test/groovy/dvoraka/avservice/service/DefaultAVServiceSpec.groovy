@@ -1,8 +1,12 @@
 package dvoraka.avservice.service
 
 import dvoraka.avservice.avprogram.AVProgram
+import dvoraka.avservice.exception.FileSizeException
 import dvoraka.avservice.exception.ScanErrorException
 import spock.lang.Specification
+
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption
 
 /**
  * Default AV service test.
@@ -17,6 +21,15 @@ class DefaultAVServiceSpec extends Specification {
     }
 
     void cleanup() {
+    }
+
+    def "constructor with max file size"() {
+        setup:
+        long maxFileSize = 100
+        service = new DefaultAVService(maxFileSize)
+
+        expect:
+        service.getMaxFileSize() == maxFileSize
     }
 
     def "scan stream"() {
@@ -43,7 +56,7 @@ class DefaultAVServiceSpec extends Specification {
         service.scanStreamWithInfo(new byte[10]).equals("INFO")
     }
 
-    def "scan file without file"() {
+    def "scan file without a file"() {
         setup:
         AVProgram program = Mock()
         service.setAvProgram(program)
@@ -53,5 +66,45 @@ class DefaultAVServiceSpec extends Specification {
 
         then:
         thrown(ScanErrorException)
+    }
+
+    def "scan file with a big file"() {
+        setup:
+        AVProgram program = Mock()
+        service.setAvProgram(program)
+
+        File bigTempFile = File.createTempFile("test-tempfile", ".tmp");
+        bigTempFile.deleteOnExit()
+
+        long maxFileSize = service.getMaxFileSize()
+
+        byte[] buffer = new byte[1000]
+        long actualSize = 0
+        while (!(actualSize > maxFileSize)) {
+            Files.write(bigTempFile.toPath(), buffer, StandardOpenOption.APPEND)
+            actualSize = Files.size(bigTempFile.toPath())
+        }
+
+        when:
+        service.scanFile(bigTempFile)
+
+        then:
+        actualSize > maxFileSize
+        thrown(FileSizeException)
+    }
+
+    def "scan file with a file"() {
+        setup:
+        AVProgram program = Mock()
+        service.setAvProgram(program)
+
+        File tempFile = File.createTempFile("test-tempfile", ".tmp");
+        tempFile.deleteOnExit()
+
+        when:
+        service.scanFile(tempFile)
+
+        then:
+        1 * program.scanStream(_)
     }
 }
