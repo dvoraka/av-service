@@ -115,6 +115,10 @@ subprojects {
         reportsDir = file("${project.rootDir}/reports/jacoco/${project.name}")
     }
 
+    jacocoTestReport {
+        executionData = fileTree(dir: 'build/jacoco', include: '**/*.exec')
+    }
+
     // set reporting HTML output directory
     tasks.withType(Test) {
         reports.html.destination = file("${project.rootDir}/reports/test/${project.name}")
