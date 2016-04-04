@@ -39,4 +39,20 @@ class ClamAVProgramISpec extends Specification {
         expect:
         program.scanStream(eicarString.getBytes())
     }
+
+    def "get version"() {
+        setup:
+        String stats = program.version()
+
+        expect:
+        stats
+    }
+
+    def "get stats"() {
+        setup:
+        String stats = program.stats()
+
+        expect:
+        stats
+    }
 }
