@@ -19,6 +19,7 @@ class AVControllerSpec extends Specification {
 
     MockMvc mockMvc;
 
+
     def setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(new AVController()).build()
     }
@@ -45,12 +46,51 @@ class AVControllerSpec extends Specification {
         String messageId = 'TID'
         ResultActions response = mockMvc.perform(get("/msg-status/${messageId}"))
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper()
         String expectedContent = mapper.writeValueAsString(messageStatus)
 
         expect:
         response
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedContent))
+    }
+
+    def "test mesageStatus(String, String)"() {
+        setup:
+        MessageStatus messageStatus = MessageStatus.WAITING
+        RestService service = Stub()
+        service.messageStatus(_, _) >> messageStatus
+
+        mockMvc = MockMvcBuilders.standaloneSetup(
+                new AVController(restService: service)).build()
+
+        String messageId = 'TID'
+        ResultActions response = mockMvc.perform(get("/msg-status/${messageId}"))
+
+        ObjectMapper mapper = new ObjectMapper()
+        String expectedContent = mapper.writeValueAsString(messageStatus)
+
+        expect:
+        response
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedContent))
+    }
+
+    def "test messageServiceId(String)"() {
+        setup:
+        String serviceId = "TEST-SERVICE"
+        RestService service = Stub()
+        service.messageServiceId(_) >> serviceId
+
+        mockMvc = MockMvcBuilders.standaloneSetup(
+                new AVController(restService: service)).build()
+
+        String messageId = 'TID'
+        ResultActions response = mockMvc.perform(get("/msg-service-id/${messageId}"))
+
+        expect:
+        response
+                .andExpect(status().isOk())
+                .andExpect(content().string(serviceId))
     }
 }
