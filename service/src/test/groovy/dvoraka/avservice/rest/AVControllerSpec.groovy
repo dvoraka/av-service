@@ -145,4 +145,15 @@ class AVControllerSpec extends Specification {
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedContent))
     }
+
+    def "test generateMessage"() {
+        setup:
+        ResultActions response = mockMvc.perform(
+                get("/gen-msg"))
+
+        expect:
+        response
+                .andExpect(status().isOk())
+
+    }
 }
