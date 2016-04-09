@@ -39,7 +39,7 @@ class AVControllerSpec extends Specification {
                 .andExpect(content().string("AV service"))
     }
 
-    def "test mesageStatus(String)"() {
+    def "test messageStatus(String)"() {
         setup:
         MessageStatus messageStatus = MessageStatus.WAITING
         String messageId = 'TID'
@@ -61,9 +61,9 @@ class AVControllerSpec extends Specification {
                 .andExpect(content().string(expectedContent))
     }
 
-    def "test mesageStatus(String, String)"() {
+    def "test messageStatus(String, String)"() {
         setup:
-        MessageStatus messageStatus = MessageStatus.WAITING
+        MessageStatus messageStatus = MessageStatus.PROCESSING
         String messageId = 'TID'
         String serviceId = "SID"
         RestService service = Stub()
