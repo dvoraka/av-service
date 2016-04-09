@@ -41,7 +41,7 @@ class AVControllerSpec extends Specification {
 
     def "test messageStatus(String)"() {
         setup:
-        MessageStatus messageStatus = MessageStatus.WAITING
+        MessageStatus messageStatus = MessageStatus.PROCESSED
         String messageId = 'TID'
         RestService service = Stub()
         service.messageStatus(messageId) >> messageStatus
@@ -86,14 +86,14 @@ class AVControllerSpec extends Specification {
 
     def "test messageServiceId(String)"() {
         setup:
-        String serviceId = "TEST-SERVICE"
+        String messageId = 'TID'
+        String serviceId = "SID"
         RestService service = Stub()
-        service.messageServiceId(_) >> serviceId
+        service.messageServiceId(messageId) >> serviceId
 
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new AVController(restService: service)).build()
 
-        String messageId = 'TID'
         ResultActions response = mockMvc.perform(
                 get("/msg-service-id/${messageId}"))
 
@@ -126,7 +126,7 @@ class AVControllerSpec extends Specification {
 
     def "test getResponse(String)"() {
         setup:
-        String messageId = "TEST-ID"
+        String messageId = "TID"
         AVMessage responseMsg = Utils.genNormalMessage()
         RestService service = Stub()
         service.getResponse(messageId) >> responseMsg
