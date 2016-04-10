@@ -118,6 +118,10 @@ subprojects {
 
     jacocoTestReport {
         executionData = fileTree(dir: 'build/jacoco', include: '**/*.exec')
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
     }
 
     // set reporting HTML output directory
