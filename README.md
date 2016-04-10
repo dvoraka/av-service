@@ -30,6 +30,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
  * **Checkstyle**
  * **FindBugs**
  * **PMD**
+ * **JaCoCo**
 
 ## Installation
 ### ClamAV
