@@ -68,6 +68,10 @@ subprojects {
         testCompile("org.spockframework:spock-core:${spockVersion}")
     }
 
+    jar {
+        baseName = "dvoraka.avservice.${project.name}"
+    }
+
     test {
         testLogging {
             exceptionFormat = 'full'
