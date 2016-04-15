@@ -1,3 +1,7 @@
+plugins {
+    id "org.sonarqube" version "1.2"
+}
+
 ext {
     taskGroupName = 'AV-service'
 
@@ -125,6 +129,13 @@ subprojects {
         reports {
             xml.enabled = true
             html.enabled = true
+        }
+    }
+
+    sonarqube {
+        properties {
+            property 'sonar.jacoco.reportPath', "${buildDir}/jacoco/test.exec"
+            property 'sonar.jacoco.itReportPath', "${buildDir}/jacoco/integrationTest.exec"
         }
     }
 
