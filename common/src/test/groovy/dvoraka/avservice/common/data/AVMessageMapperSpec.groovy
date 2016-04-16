@@ -5,12 +5,15 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import spock.lang.Specification
 
+import java.nio.charset.StandardCharsets
+
 /**
  * AVMessage mapper test.
  */
 class AVMessageMapperSpec extends Specification {
 
     String testId = 'TEST-ID'
+    String testCorrId = 'TEST-CORR-ID'
     String testAppId = 'TEST-APP-ID'
     String testVirusInfo = 'TEST-INFO'
     String testServiceId = 'TEST-SERVICE-1'
@@ -126,7 +129,38 @@ class AVMessageMapperSpec extends Specification {
         notThrown(MapperException)
     }
 
-    def "AVMessage -> AMQP Message"() {
+    def "AVMessage -> AMQP Message, v1"() {
+        setup:
+        AVMessage avMessage = new DefaultAVMessage.Builder(testId)
+                .correlationId(testCorrId)
+                .data(new byte[dataSize])
+                .type(AVMessageType.REQUEST)
+                .serviceId(testServiceId)
+                .virusInfo(testVirusInfo)
+                .build()
 
+        // transform to Message
+        Message message = AVMessageMapper.transform(avMessage)
+        MessageProperties props = message.getMessageProperties()
+        Map<String, Object> headers = props.getHeaders()
+
+        expect:
+        // PROPERTIES
+        // id
+        props.getMessageId().equals(testId)
+        // appId
+//        props.getAppId().equals(testAppId)
+        // correlation ID
+        Arrays.equals(props.getCorrelationId(), testCorrId.getBytes(StandardCharsets.UTF_8))
+        // type
+        props.getType().equals(AVMessageType.REQUEST.toString())
+
+        // HEADERS
+        // serviceId
+        headers.get(AVMessageMapper.SERVICE_ID_KEY).equals(testServiceId)
+        // virusInfo
+        headers.get(AVMessageMapper.VIRUS_INFO_KEY).equals(testVirusInfo)
+
+        message.getBody().length == dataSize
     }
 }

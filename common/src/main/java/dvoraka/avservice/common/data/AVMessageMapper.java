@@ -63,12 +63,19 @@ public final class AVMessageMapper {
         MessageProperties props = new MessageProperties();
         props.setMessageId(msg.getId());
         props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
-        props.setAppId("antivirus");
         props.setType(msg.getType().toString());
 
+        props.setAppId("antivirus");
+
+        // for old clients
         int oldReply = msg.getVirusInfo().equals("") ? 1 : 0;
         props.setHeader("isClean", oldReply);
-        props.setHeader("virusInfo", msg.getVirusInfo());
+
+        // service ID
+        props.setHeader(SERVICE_ID_KEY, msg.getServiceId());
+
+        // virus info
+        props.setHeader(VIRUS_INFO_KEY, msg.getVirusInfo());
 
         return new Message(msg.getData(), props);
     }
