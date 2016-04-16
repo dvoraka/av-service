@@ -30,12 +30,24 @@ class DefaultAVMessageSpec extends Specification {
         message.getVirusInfo().equals(testString)
     }
 
-    def "create response test"() {
+    def "create normal response test"() {
         setup:
         DefaultAVMessage message = new DefaultAVMessage.Builder('TEST-ID').build()
         String expCorrId = message.getId()
 
         AVMessage response = message.createResponse(false)
+
+        expect:
+        response.getCorrelationId().equals(expCorrId)
+        response.getType().equals(AVMessageType.RESPONSE)
+    }
+
+    def "create infected response test"() {
+        setup:
+        DefaultAVMessage message = new DefaultAVMessage.Builder('TEST-ID').build()
+        String expCorrId = message.getId()
+
+        AVMessage response = message.createResponse(true)
 
         expect:
         response.getCorrelationId().equals(expCorrId)
