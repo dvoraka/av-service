@@ -29,6 +29,10 @@ public class AppConfig {
     @Value("${avservice.rest.url}")
     private String restUrl;
 
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Bean
     public AVService avService() {
@@ -55,11 +59,6 @@ public class AppConfig {
     @Bean
     public SpringAopTest springAopTest() {
         return new SpringAopTest();
-    }
-
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Bean

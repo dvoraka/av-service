@@ -34,10 +34,10 @@ public interface AVServer {
      */
     void restart();
 
-    void setRunning(boolean value);
-
     /**
      * Check server status.
      */
     boolean isRunning();
+
+    void setRunning(boolean value);
 }

@@ -26,6 +26,11 @@ public class AppConfig {
     private String appId;
 
     @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
     public Sender sender() {
         return new AVSender(host);
     }
@@ -43,10 +48,5 @@ public class AppConfig {
     @Bean
     public AVChecker checker() {
         return new AVChecker(sender(), receiver(), infected, appId);
-    }
-
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
     }
 }

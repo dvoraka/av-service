@@ -76,6 +76,6 @@ class RestServiceISpec extends Specification {
         expect:
         status == MessageStatus.PROCESSED
         response.type == AVMessageType.RESPONSE
-        ! response.getVirusInfo().equals("")
+        !response.getVirusInfo().equals("")
     }
 }

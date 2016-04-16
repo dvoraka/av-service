@@ -37,12 +37,12 @@ public abstract class AbstractAVServer implements AVServer {
     public abstract void restart();
 
     @Override
-    public void setRunning(boolean running) {
-        this.running = running;
+    public boolean isRunning() {
+        return running;
     }
 
     @Override
-    public boolean isRunning() {
-        return running;
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }
