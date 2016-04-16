@@ -116,15 +116,17 @@ public class AVUtils implements AmqpUtils {
                 receiver.receive(sender.sendFile(false, "antivirus"));
                 return protocol;
             } catch (ConnectException e) {
+                logger.debug(e);
                 throw new UnknownProtocolException();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.warn(e);
+                Thread.currentThread().interrupt();
             } catch (ProtocolException e) {
-                 e.printStackTrace();
+                 logger.info(e);
             } catch (LastMessageException e) {
                 // try again
                 i++;
-                e.printStackTrace();
+                logger.debug(e);
             } catch (IOException e) {
                 logger.warn("negotiation failed", e);
                 throw new UnknownProtocolException();
