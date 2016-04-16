@@ -122,7 +122,7 @@ public class AVUtils implements AmqpUtils {
                 logger.warn(e);
                 Thread.currentThread().interrupt();
             } catch (ProtocolException e) {
-                 logger.info(e);
+                logger.info(e);
             } catch (LastMessageException e) {
                 // try again
                 i++;

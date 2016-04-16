@@ -6,12 +6,12 @@ package dvoraka.avservice.common.data;
  * <br>
  * Data:
  * <ul>
- *     <li>ID - message UUID</li>
- *     <li>correlationId - correlation UUID</li>
- *     <li>data - message data</li>
- *     <li>type - message type</li>
- *     <li>serviceId - service ID</li>
- *     <li>virusInfo - info about infection</li>
+ * <li>ID - message UUID</li>
+ * <li>correlationId - correlation UUID</li>
+ * <li>data - message data</li>
+ * <li>type - message type</li>
+ * <li>serviceId - service ID</li>
+ * <li>virusInfo - info about infection</li>
  * </ul>
  */
 public interface AVMessage {
