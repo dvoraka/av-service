@@ -26,7 +26,6 @@ public final class CheckerApp {
         printHeader();
 
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        context.registerShutdownHook();
 
         // protocol negotiation
 //        String[] protocols = {"0.1", "1.0"};
@@ -38,5 +37,7 @@ public final class CheckerApp {
         System.out.println("CHECK:");
         AVChecker avc = context.getBean(AVChecker.class);
         avc.check();
+
+        context.close();
     }
 }
