@@ -68,7 +68,8 @@ public class DirectRestStrategy implements RestStrategy {
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.warn("Sleeping interrupted!", e);
+                    Thread.currentThread().interrupt();
                 }
             }
         }

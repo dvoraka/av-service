@@ -67,7 +67,8 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
             try {
                 TimeUnit.MILLISECONDS.sleep(getListeningTimeout());
             } catch (InterruptedException e) {
-                log.warn("Stopping problem!", e);
+                log.warn("Stopping interrupted!", e);
+                Thread.currentThread().interrupt();
             }
         }
     }

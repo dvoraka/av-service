@@ -69,7 +69,8 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
         try {
             Thread.sleep(runTime);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.debug("Running interrupted!", e);
+            Thread.currentThread().interrupt();
         }
 
         server.stop();
@@ -106,7 +107,8 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.warn("Sleeping interrupted", e);
+                    Thread.currentThread().interrupt();
                 }
             }
         }
@@ -165,7 +167,9 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
                 executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS);
                 log.debug("Server pool stopped.");
             } catch (InterruptedException e) {
-                log.warn("Pool shutdown failed!", e);
+                log.warn("Pool shutdown interrupted!", e);
+                executorService.shutdownNow();
+                Thread.currentThread().interrupt();
             }
         }
     }

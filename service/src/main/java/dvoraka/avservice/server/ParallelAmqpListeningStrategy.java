@@ -78,7 +78,8 @@ public class ParallelAmqpListeningStrategy implements ListeningStrategy {
         try {
             executorService.awaitTermination(waitTime, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            log.warn("Stopping problem!", e);
+            log.warn("Stopping interrupted!", e);
+            Thread.currentThread().interrupt();
         }
     }
 
