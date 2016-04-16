@@ -25,6 +25,13 @@ public final class AVMessageMapper {
         MessageProperties msgProps = msg.getMessageProperties();
         Map<String, Object> headers = msgProps.getHeaders();
 
+        // checks for mandatory fields
+        if (msgProps.getMessageId() == null) {
+            throw new MapperException("Message ID can't be null");
+        } else if (msgProps.getType() == null) {
+            throw new MapperException("Message type can't be null");
+        }
+
         // virus info
         Object virusInfoObj = headers.get(VIRUS_INFO_KEY);
         String virusInfo;

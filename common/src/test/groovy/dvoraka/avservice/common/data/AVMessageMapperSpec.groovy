@@ -1,5 +1,6 @@
 package dvoraka.avservice.common.data
 
+import dvoraka.avservice.common.exception.MapperException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import spock.lang.Specification
@@ -51,6 +52,78 @@ class AVMessageMapperSpec extends Specification {
         avMessage.getServiceId().equals(testServiceId)
 
         avMessage.getData().length == dataSize
+    }
+
+    def "AMQP Message -> AVMessage, empty message"() {
+        setup:
+        MessageProperties props = new MessageProperties()
+
+        // PROPERTIES
+        // HEADERS
+        // BODY
+
+        Message message = new Message(null, props)
+
+        when:
+        AVMessage avMessage = AVMessageMapper.transform(message)
+
+        then:
+        thrown(MapperException)
+    }
+
+    def "AMQP Message -> AVMessage, ID only"() {
+        setup:
+        MessageProperties props = new MessageProperties()
+
+        // PROPERTIES
+        props.setMessageId(testId)
+        // HEADERS
+        // BODY
+
+        Message message = new Message(null, props)
+
+        when:
+        AVMessage avMessage = AVMessageMapper.transform(message)
+
+        then:
+        thrown(MapperException)
+    }
+
+    def "AMQP Message -> AVMessage, message type only"() {
+        setup:
+        MessageProperties props = new MessageProperties()
+
+        // PROPERTIES
+        props.setType(AVMessageType.REQUEST.toString())
+        // HEADERS
+        // BODY
+
+        Message message = new Message(null, props)
+
+        when:
+        AVMessage avMessage = AVMessageMapper.transform(message)
+
+        then:
+        thrown(MapperException)
+    }
+
+    def "AMQP Message -> AVMessage, message ID and type"() {
+        setup:
+        MessageProperties props = new MessageProperties()
+
+        // PROPERTIES
+        props.setMessageId(testId)
+        props.setType(AVMessageType.REQUEST.toString())
+        // HEADERS
+        // BODY
+
+        Message message = new Message(null, props)
+
+        when:
+        AVMessage avMessage = AVMessageMapper.transform(message)
+
+        then:
+        notThrown(MapperException)
     }
 
     def "AVMessage -> AMQP Message"() {
