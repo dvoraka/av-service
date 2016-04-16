@@ -32,6 +32,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
  * **FindBugs**
  * **PMD**
  * **JaCoCo**
+ * **SonarQube**
 
 ## Installation
 ### ClamAV
