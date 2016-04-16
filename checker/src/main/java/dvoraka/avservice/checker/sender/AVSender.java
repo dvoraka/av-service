@@ -128,17 +128,21 @@ public class AVSender implements Sender {
 //        } catch (InterruptedException e) {
 //            logger.warn("Connection problem - send interrupted", e);
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            logger.warn(e);
         } finally {
             if (channel != null) {
                 try {
                     channel.close();
-                } catch (TimeoutException e) {
-                    e.printStackTrace();
+                } catch (TimeoutException | IOException e) {
+                    logger.warn(e);
                 }
             }
             if (connection != null) {
-                connection.close();
+                try {
+                    connection.close();
+                } catch (IOException e) {
+                    logger.warn(e);
+                }
             }
         }
 
@@ -204,7 +208,6 @@ public class AVSender implements Sender {
      */
     @Override
     public void purgeQueue(String queueName) throws IOException {
-
         Connection connection = null;
         Channel channel = null;
         try {
@@ -214,17 +217,21 @@ public class AVSender implements Sender {
         } catch (IOException e) {
             logger.warn("Connection problem - purge queue", e);
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            logger.warn(e);
         } finally {
             if (channel != null) {
                 try {
                     channel.close();
-                } catch (TimeoutException e) {
-                    e.printStackTrace();
+                } catch (TimeoutException | IOException e) {
+                    logger.warn(e);
                 }
             }
             if (connection != null) {
-                connection.close();
+                try {
+                    connection.close();
+                } catch (IOException e) {
+                    logger.warn(e);
+                }
             }
         }
     }

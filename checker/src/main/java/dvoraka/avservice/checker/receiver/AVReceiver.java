@@ -164,13 +164,13 @@ public class AVReceiver implements Receiver {
             logger.warn("Connection problem - receive", e);
             throw e;
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            logger.warn(e);
         } finally {
             if (channel != null) {
                 try {
                     channel.close();
                 } catch (TimeoutException e) {
-                    e.printStackTrace();
+                    logger.warn(e);
                 }
             }
             if (connection != null) {
