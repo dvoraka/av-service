@@ -1,5 +1,7 @@
 package dvoraka.avservice.aop;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,6 +11,8 @@ import org.aspectj.lang.annotation.Aspect;
  */
 @Aspect
 public class SpringAopTest {
+
+    private static final Logger log = LogManager.getLogger(SpringAopTest.class.getName());
 
 //    @Before("execution(* dvoraka.avservice.MessageProcessor.*(..))")
 //    public void logBefore(JoinPoint joinPoint) {
@@ -31,7 +35,7 @@ public class SpringAopTest {
         try {
             returnValue = (Boolean) pjp.proceed();
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            log.warn(throwable);
         }
         long elapsedTime = System.currentTimeMillis() - start;
 
@@ -53,7 +57,7 @@ public class SpringAopTest {
         try {
             returnValue = pjp.proceed();
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            log.warn(throwable);
         }
         long elapsedTime = System.currentTimeMillis() - start;
 

@@ -6,7 +6,6 @@ import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.exception.ScanErrorException;
 import dvoraka.avservice.server.ReceivingType;
-import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import dvoraka.avservice.service.AVService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +31,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     @Autowired
     private AVService avService;
 
-    private static final Logger log = LogManager.getLogger(SimpleAmqpListeningStrategy.class.getName());
+    private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class.getName());
 
     public static final int DEFAULT_QUEUE_SIZE = 100;
     public static final ReceivingType DEFAULT_RECEIVING_TYPE = ReceivingType.POLLING;
