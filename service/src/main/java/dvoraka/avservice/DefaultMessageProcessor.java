@@ -144,6 +144,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e1) {
                     log.warn("Waiting interrupted!", e);
+                    Thread.currentThread().interrupt();
                 }
             }
         }
@@ -177,7 +178,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
             executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS);
             log.debug("Stopping done.");
         } catch (InterruptedException e) {
-            log.warn("Stopping the thread pool failed!", e);
+            executorService.shutdownNow();
+            log.warn("Stopping the thread pool interrupted!", e);
+            Thread.currentThread().interrupt();
         }
     }
 
