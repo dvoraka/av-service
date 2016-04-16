@@ -26,11 +26,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessageListener {
 
-    private static final Logger log = LogManager.getLogger(AmqpAVServer.class.getName());
-
-    private static final long POOL_TERM_TIME_S = 10;
-
-
     @Autowired
     private MessageProcessor messageProcessor;
     @Autowired
@@ -38,6 +33,9 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    private static final Logger log = LogManager.getLogger(AmqpAVServer.class.getName());
+
+    private static final long POOL_TERM_TIME_S = 10;
     private static final String RESPONSE_EXCHANGE = "result";
 
     private ExecutorService executorService;

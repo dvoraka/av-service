@@ -21,7 +21,6 @@ public class ParallelAmqpListeningStrategy implements ListeningStrategy {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-
     @Autowired
     private MessageProcessor messageProcessor;
 

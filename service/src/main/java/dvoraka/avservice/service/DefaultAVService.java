@@ -16,6 +16,9 @@ import java.nio.file.Files;
  */
 public class DefaultAVService implements AVService {
 
+    @Autowired
+    private AVProgram avProgram;
+
     private static final Logger log = LogManager.getLogger(DefaultAVService.class.getName());
 
     /**
@@ -24,9 +27,6 @@ public class DefaultAVService implements AVService {
     private static final long DEFAULT_MAX_FILE_SIZE = 10_000_000;
 
     private long maxFileSize;
-
-    @Autowired
-    private AVProgram avProgram;
 
 
     public DefaultAVService() {

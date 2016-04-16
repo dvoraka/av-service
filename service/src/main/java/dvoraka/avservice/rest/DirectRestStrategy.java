@@ -25,10 +25,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class DirectRestStrategy implements RestStrategy {
 
-    private static final Logger log = LogManager.getLogger(DirectRestStrategy.class.getName());
-
     @Autowired
     private MessageProcessor restMessageProcessor;
+
+    private static final Logger log = LogManager.getLogger(DirectRestStrategy.class.getName());
 
     private ExecutorService executorService;
 
