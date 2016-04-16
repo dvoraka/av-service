@@ -38,7 +38,7 @@ public class BasicProperties implements LoadTestProperties {
         try {
             loadPropertiesFromXML();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("XML file problem!", e);
         }
     }
 

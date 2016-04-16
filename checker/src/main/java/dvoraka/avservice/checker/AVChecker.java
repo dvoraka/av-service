@@ -56,7 +56,7 @@ public class AVChecker {
         } catch (IOException | InterruptedException | ProtocolException e) {
             logger.warn("Check problem.", e);
         } catch (LastMessageException e) {
-            e.printStackTrace();
+            logger.info(e);
         }
     }
 

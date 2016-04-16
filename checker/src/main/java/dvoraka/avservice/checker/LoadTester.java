@@ -102,9 +102,10 @@ public class LoadTester implements Tester {
                     boolean virus = getReceiver().receive(item);
                     it.remove();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    logger.warn("Receiving interrupted!");
+                    Thread.currentThread().interrupt();
                 } catch (ProtocolException e) {
-                    e.printStackTrace();
+                    logger.info(e);
                 } catch (LastMessageException e) {
                     logger.warn("", e);
                     if (exceptionCounter < this.maxMsgExceptions) {
@@ -121,7 +122,8 @@ public class LoadTester implements Tester {
                 final long sleepTime = 1000;
                 TimeUnit.MILLISECONDS.sleep(sleepTime);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.warn("Sleeping interrupted!");
+                Thread.currentThread().interrupt();
             }
 
             loopCounter++;
@@ -163,9 +165,10 @@ public class LoadTester implements Tester {
                 msgId = getSender().sendFile(true, getProps().getAppId());
                 getReceiver().receive(msgId);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.warn("Receiving interrupted!");
+                Thread.currentThread().interrupt();
             } catch (ProtocolException e) {
-                e.printStackTrace();
+                logger.info(e);
             } catch (LastMessageException e) {
                 skippedMessages.add(msgId);
                 logger.debug("receiving failed", e);
@@ -189,9 +192,10 @@ public class LoadTester implements Tester {
                     getReceiver().receive(it.next());
                     it.remove();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    logger.warn("Receiving interrupted!");
+                    Thread.currentThread().interrupt();
                 } catch (ProtocolException e) {
-                    e.printStackTrace();
+                    logger.info(e);
                 } catch (LastMessageException e) {
                     logger.debug("receiving failed", e);
                 }
