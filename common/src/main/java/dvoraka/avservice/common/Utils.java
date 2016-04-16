@@ -23,7 +23,7 @@ public final class Utils {
         final int dataSize = 20;
         return new DefaultAVMessage.Builder(null)
                 .serviceId(SERVICE_ID)
-                .virusInfo("UNKNOWN")
+                .virusInfo("")
                 .correlationId("1-2-3")
                 .data(new byte[dataSize])
                 .type(AVMessageType.REQUEST)

@@ -1,5 +1,6 @@
 package dvoraka.avservice.common.data
 
+import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.MapperException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
@@ -162,5 +163,27 @@ class AVMessageMapperSpec extends Specification {
         headers.get(AVMessageMapper.VIRUS_INFO_KEY).equals(testVirusInfo)
 
         message.getBody().length == dataSize
+    }
+
+    def "AVMessage -> AMQP Message, with normal message for old clients"() {
+        setup:
+        AVMessage avMessage = Utils.genNormalMessage()
+
+        Message message = AVMessageMapper.transform(avMessage)
+        Map<String, Object> headers = message.getMessageProperties().getHeaders()
+
+        expect:
+        headers.get('isClean').equals(1)
+    }
+
+    def "AVMessage -> AMQP Message, with infected message for old clients"() {
+        setup:
+        AVMessage avMessage = Utils.genInfectedMessage()
+
+        Message message = AVMessageMapper.transform(avMessage)
+        Map<String, Object> headers = message.getMessageProperties().getHeaders()
+
+        expect:
+        headers.get('isClean').equals(0)
     }
 }
