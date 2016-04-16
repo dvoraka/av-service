@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets
 /**
  * Utils test.
  */
-class UtilsSpeck extends Specification {
+class UtilsSpec extends Specification {
 
 
     def "generate normal message"() {
