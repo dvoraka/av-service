@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.DefaultAVMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.exception.ScanErrorException
+import dvoraka.avservice.server.ReceivingType
 import dvoraka.avservice.service.AVService
 import spock.lang.Specification
 
@@ -38,6 +39,22 @@ class DefaultMessageProcessorSpec extends Specification {
                 DefaultMessageProcessor.DEFAULT_RECEIVING_TYPE
     }
 
+    def "constructor (thread count, rec. type, queue size)"() {
+        setup:
+        int threadCount = 5
+        ReceivingType receivingType = ReceivingType.LISTENER
+        int queueSize = 10
+        processor = new DefaultMessageProcessor(
+                threadCount,
+                receivingType,
+                queueSize)
+
+        expect:
+        processor.getThreadCount() == threadCount
+        processor.getServerReceivingType() == receivingType
+        processor.getQueueSize() == queueSize
+    }
+
     def "send normal message"() {
         setup:
         AVService service = Stub()
@@ -53,6 +70,30 @@ class DefaultMessageProcessorSpec extends Specification {
         expect:
         processor.hasProcessedMessage()
         processor.getProcessedMessage().getCorrelationId().equals(message.getId())
+    }
+
+    def "send message with a full queue"() {
+        setup:
+        AVService service = Stub()
+        service.scanStream(_) >> false
+
+        processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1)
+        processor.setAvService(service)
+
+        AVMessage message1 = Utils.genNormalMessage()
+        processor.sendMessage(message1)
+        AVMessage message2 = Utils.genNormalMessage()
+        processor.sendMessage(message2)
+
+        sleep(1000)
+
+        expect:
+        processor.hasProcessedMessage()
+        processor.getProcessedMessage()
+        and:
+        sleep(1000)
+        processor.hasProcessedMessage()
+        processor.getProcessedMessage()
     }
 
     def "send message (with a service error)"() {
