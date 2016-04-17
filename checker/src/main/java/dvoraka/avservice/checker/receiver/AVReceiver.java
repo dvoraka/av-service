@@ -66,16 +66,18 @@ public class AVReceiver implements Receiver {
     }
 
     private void printReceiveInfo(QueueingConsumer.Delivery delivery) {
-        String message = new String(delivery.getBody(), DEFAULT_CHARSET);
+        if (isVerboseOutput()) {
+            String message = new String(delivery.getBody(), DEFAULT_CHARSET);
 
-        System.out.println("-------------");
-        System.out.println(" [x] Received '" + message + "'");
-        System.out.println("-------------");
-        System.out.println("receive properties:\n" + delivery
-                .getProperties());
-        Printer.printProperties(delivery.getProperties());
-        System.out.println("receive headers:\n" + delivery
-                .getProperties().getHeaders());
+            System.out.println("-------------");
+            System.out.println(" [x] Received '" + message + "'");
+            System.out.println("-------------");
+            System.out.println("receive properties:\n" + delivery
+                    .getProperties());
+            Printer.printProperties(delivery.getProperties());
+            System.out.println("receive headers:\n" + delivery
+                    .getProperties().getHeaders());
+        }
     }
 
     private QueueingConsumer.Delivery nextDelivery(QueueingConsumer consumer)
@@ -104,7 +106,6 @@ public class AVReceiver implements Receiver {
     @Override
     public boolean receive(String corrId) throws
             IOException,
-            InterruptedException,
             ProtocolException,
             LastMessageException {
 
@@ -116,48 +117,29 @@ public class AVReceiver implements Receiver {
             connection = factory.newConnection();
             channel = prepareChannel(connection);
 
-            if (isVerboseOutput()) {
-                System.out.println(" [*] Waiting for messages...");
-            }
-
+            printMessage(" [*] Waiting for messages...");
             QueueingConsumer consumer = new QueueingConsumer(channel);
             // no ack before check
             channel.basicConsume(DEFAULT_QUEUE, false, consumer);
 
-            QueueingConsumer.Delivery delivery = null;
+            QueueingConsumer.Delivery delivery;
             long dTag;
             while (true) {
                 delivery = nextDelivery(consumer);
+                printReceiveInfo(delivery);
                 dTag = delivery.getEnvelope().getDeliveryTag();
-                if (isVerboseOutput()) {
-                    printReceiveInfo(delivery);
-                }
 
-                Map<String, Object> headers = delivery.getProperties().getHeaders();
+                Map<String, Object> headers = extractHeaders(delivery);
                 virus = isCleanHeaderValue(headers);
 
-                if (isVerboseOutput()) {
-                    Printer.printHeaders(headers);
-                }
-
                 if (corrId.equals(delivery.getProperties().getCorrelationId())) {
-                    if (isVerboseOutput()) {
-                        System.out.println("Correlation ID match.");
-                    }
-
+                    printMessage("Correlation ID match.");
                     channel.basicAck(dTag, false);
-
-                    if (delivery.getProperties().getType().equals("response-error")) {
-                        String errorMsg = headers.get("errorMsg").toString();
-                        checkError(new ErrorMessage(errorMsg));
-                    }
+                    findError(delivery, headers);
 
                     break;
-
                 } else {
-                    if (isVerboseOutput()) {
-                        System.out.println("Message skipped.");
-                    }
+                    printMessage("Message skipped.");
                 }
             }
         } catch (IOException e) {
@@ -165,20 +147,49 @@ public class AVReceiver implements Receiver {
             throw e;
         } catch (TimeoutException e) {
             logger.warn(e);
+        } catch (InterruptedException e) {
+            logger.warn("Receiving interrupted!");
+            Thread.currentThread().interrupt();
         } finally {
             if (channel != null) {
                 try {
                     channel.close();
-                } catch (TimeoutException e) {
+                } catch (TimeoutException | IOException e) {
                     logger.warn(e);
                 }
             }
             if (connection != null) {
-                connection.close();
+                try {
+                    connection.close();
+                } catch (IOException e) {
+                    logger.warn(e);
+                }
             }
         }
 
         return virus;
+    }
+
+    private void findError(QueueingConsumer.Delivery delivery, Map<String, Object> headers) throws ProtocolException {
+        if ("response-error".equals(delivery.getProperties().getType())) {
+            String errorMsg = headers.get("errorMsg").toString();
+            checkError(new ErrorMessage(errorMsg));
+        }
+    }
+
+    private Map<String, Object> extractHeaders(QueueingConsumer.Delivery delivery) {
+        Map<String, Object> headers = delivery.getProperties().getHeaders();
+        if (isVerboseOutput()) {
+            Printer.printHeaders(headers);
+        }
+
+        return headers;
+    }
+
+    private void printMessage(String msg) {
+        if (isVerboseOutput()) {
+            System.out.println(msg);
+        }
     }
 
     private void checkError(ErrorMessage errorMessage) throws ProtocolException {
@@ -206,10 +217,12 @@ public class AVReceiver implements Receiver {
         return verboseOutput;
     }
 
+    @Override
     public boolean getVerboseOutput() {
         return verboseOutput;
     }
 
+    @Override
     public void setVerboseOutput(boolean verboseOutput) {
         this.verboseOutput = verboseOutput;
     }
