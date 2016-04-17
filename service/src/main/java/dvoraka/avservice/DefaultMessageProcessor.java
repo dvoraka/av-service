@@ -167,6 +167,10 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
+    public boolean isProcessedQueueFull() {
+        return processedMessagesQueue.size() == getQueueSize();
+    }
+
     @Override
     public void stop() {
         log.debug("Stopping thread pool...");

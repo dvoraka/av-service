@@ -74,6 +74,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "send message with a full queue"() {
         setup:
+        long time = 1000
         AVService service = Stub()
         service.scanStream(_) >> false
 
@@ -85,15 +86,19 @@ class DefaultMessageProcessorSpec extends Specification {
         AVMessage message2 = Utils.genNormalMessage()
         processor.sendMessage(message2)
 
-        sleep(1000)
+        sleep(time)
 
         expect:
+        processor.isProcessedQueueFull()
         processor.hasProcessedMessage()
         processor.getProcessedMessage()
+
         and:
-        sleep(1000)
+        sleep(time)
         processor.hasProcessedMessage()
         processor.getProcessedMessage()
+        sleep(time)
+        !processor.isProcessedQueueFull()
     }
 
     def "send message (with a service error)"() {
