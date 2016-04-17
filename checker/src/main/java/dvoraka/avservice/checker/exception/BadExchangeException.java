@@ -12,6 +12,7 @@ public class BadExchangeException extends ProtocolException {
      * detail message.
      */
     public BadExchangeException() {
+        super();
     }
 
     /**

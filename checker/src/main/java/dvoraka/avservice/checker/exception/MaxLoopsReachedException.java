@@ -10,6 +10,7 @@ public class MaxLoopsReachedException extends Exception {
      * detail message.
      */
     public MaxLoopsReachedException() {
+        super();
     }
 
     /**

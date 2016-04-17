@@ -12,6 +12,7 @@ public class ProtocolException extends Exception {
      * message.
      */
     public ProtocolException() {
+        super();
     }
 
     /**

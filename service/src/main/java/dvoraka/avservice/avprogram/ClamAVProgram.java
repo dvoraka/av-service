@@ -162,10 +162,9 @@ public class ClamAVProgram implements AVProgram {
      */
     public boolean testConnection() {
         log.debug("Testing connection...");
+
         boolean success = false;
-        Socket socket = null;
-        try {
-            socket = new Socket(socketHost, socketPort);
+        try (Socket socket = new Socket(socketHost, socketPort)) {
             success = true;
         } catch (UnknownHostException e) {
             log.warn("Unknown host.", e);
@@ -175,14 +174,6 @@ public class ClamAVProgram implements AVProgram {
             log.warn("Security problem.", e);
         } catch (IllegalArgumentException e) {
             log.warn("Illegal socket parameters.", e);
-        } finally {
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    log.warn("Error while closing socket.", e);
-                }
-            }
         }
 
         return success && ping();

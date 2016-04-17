@@ -31,7 +31,7 @@ public class ErrorMessage {
     }
 
     public void check() throws ProtocolException {
-        if (getErrorType().equals("bad app-id")) {
+        if ("bad app-id".equals(getErrorType())) {
             throw new BadExchangeException(getErrorText());
         } else {
             throw new UnknownProtocolException(getErrorText());

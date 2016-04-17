@@ -12,6 +12,7 @@ public class LastMessageException extends Exception {
      * message.
      */
     public LastMessageException() {
+        super();
     }
 
     /**

@@ -7,6 +7,7 @@ import java.io.IOException;
  * <p>
  * Created by dvoraka on 4/20/14.
  */
+@FunctionalInterface
 public interface TestProperties {
 
     void loadPropertiesFromXML() throws IOException;

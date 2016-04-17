@@ -12,6 +12,7 @@ public class UnknownProtocolException extends ProtocolException {
      * detail message.
      */
     public UnknownProtocolException() {
+        super();
     }
 
     /**
