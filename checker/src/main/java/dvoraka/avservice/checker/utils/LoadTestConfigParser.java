@@ -23,10 +23,10 @@ public class LoadTestConfigParser extends DefaultHandler {
     private static Logger logger = LogManager.getLogger();
 
     private Map<String, String> props = new HashMap<>();
-    private StringBuffer buffer = new StringBuffer();
+    private StringBuilder buffer = new StringBuilder();
 
     public LoadTestConfigParser() {
-
+        super();
     }
 
     public Map<String, String> getProperties() {
@@ -55,19 +55,19 @@ public class LoadTestConfigParser extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) {
-        if (qName.equalsIgnoreCase("host")) {
+        if ("host".equalsIgnoreCase(qName)) {
             props.put("host", buffer.toString());
-        } else if (qName.equalsIgnoreCase("virtualHost")) {
+        } else if ("virtualHost".equalsIgnoreCase(qName)) {
             props.put("virtualHost", buffer.toString());
-        } else if (qName.equalsIgnoreCase("appId")) {
+        } else if ("appId".equalsIgnoreCase(qName)) {
             props.put("appId", buffer.toString());
-        } else if (qName.equalsIgnoreCase("destinationQueue")) {
+        } else if ("destinationQueue".equalsIgnoreCase(qName)) {
             props.put("destinationQueue", buffer.toString());
-        } else if (qName.equalsIgnoreCase("messageCount")) {
+        } else if ("messageCount".equalsIgnoreCase(qName)) {
             props.put("messageCount", buffer.toString());
-        } else if (qName.equalsIgnoreCase("synchronous")) {
+        } else if ("synchronous".equalsIgnoreCase(qName)) {
             props.put("synchronous", buffer.toString());
-        } else if (qName.equalsIgnoreCase("sendOnly")) {
+        } else if ("sendOnly".equalsIgnoreCase(qName)) {
             props.put("sendOnly", buffer.toString());
         }
     }

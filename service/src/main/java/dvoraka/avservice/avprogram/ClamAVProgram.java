@@ -164,7 +164,7 @@ public class ClamAVProgram implements AVProgram {
         log.debug("Testing connection...");
 
         boolean success = false;
-        try (Socket socket = new Socket(socketHost, socketPort)) {
+        try (Socket ignored = new Socket(socketHost, socketPort)) {
             success = true;
         } catch (UnknownHostException e) {
             log.warn("Unknown host.", e);

@@ -34,9 +34,11 @@ public final class CheckerApp {
 //                + utils.findProtocol(protocols));
 
         // check
+        logger.debug("Start checking...");
         System.out.println("CHECK:");
         AVChecker avc = context.getBean(AVChecker.class);
         avc.check();
+        logger.debug("Check completed.");
 
         context.close();
     }

@@ -124,8 +124,6 @@ public class AVUtils implements AmqpUtils {
             } catch (ProtocolException e) {
                 logger.info(e);
             } catch (LastMessageException e) {
-                // try again
-                i++;
                 logger.debug(e);
             } catch (IOException e) {
                 logger.warn("negotiation failed", e);

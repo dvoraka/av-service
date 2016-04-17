@@ -88,18 +88,17 @@ public class LoadTester implements Tester {
     public void receiveMessages(Collection<String> messageIDs) throws IOException, MaxLoopsReachedException {
 
         int loopCounter = 1;
-        int exceptionCounter = 0;
         while (!messageIDs.isEmpty()) {
             if (loopCounter > maxLoops) {
                 throw new MaxLoopsReachedException();
             }
 
-            exceptionCounter = 0;
+            int exceptionCounter = 0;
             Iterator<String> it = messageIDs.iterator();
             while (it.hasNext()) {
                 try {
                     String item = it.next();
-                    boolean virus = getReceiver().receive(item);
+                    getReceiver().receive(item);
                     it.remove();
                 } catch (InterruptedException e) {
                     logger.warn("Receiving interrupted!");
@@ -111,7 +110,6 @@ public class LoadTester implements Tester {
                     if (exceptionCounter < this.maxMsgExceptions) {
                         exceptionCounter++;
                     } else {
-                        exceptionCounter = 0;
                         break;
                     }
                 }

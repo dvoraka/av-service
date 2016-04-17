@@ -1,8 +1,6 @@
 package dvoraka.avservice.checker.utils;
 
 import com.rabbitmq.client.AMQP;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
@@ -12,8 +10,6 @@ import java.util.Map;
  * @author dvoraka
  */
 public final class Printer {
-
-    private static Logger logger = LogManager.getLogger();
 
 
     private Printer() {
