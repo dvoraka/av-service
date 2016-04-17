@@ -70,6 +70,8 @@ subprojects {
         // Spock
         testCompile("org.spockframework:spock-spring:${spockVersion}")
         testCompile("org.spockframework:spock-core:${spockVersion}")
+        // Cglib
+        testCompile('cglib:cglib-nodep:3.2.2')
     }
 
     jar {

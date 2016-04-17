@@ -155,6 +155,10 @@ public class ClamAVProgram implements AVProgram {
         return command("STATS");
     }
 
+    protected Socket createSocket() throws IOException {
+        return new Socket(socketHost, socketPort);
+    }
+
     /**
      * Tests connection.
      *
@@ -164,7 +168,7 @@ public class ClamAVProgram implements AVProgram {
         log.debug("Testing connection...");
 
         boolean success = false;
-        try (Socket ignored = new Socket(socketHost, socketPort)) {
+        try (Socket ignored = createSocket()) {
             success = true;
         } catch (UnknownHostException e) {
             log.warn("Unknown host.", e);
