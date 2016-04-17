@@ -38,7 +38,6 @@ public class DirectRestStrategy implements RestStrategy {
 
 
     public DirectRestStrategy() {
-
         executorService = Executors.newSingleThreadExecutor();
         initializeCache();
     }
@@ -97,9 +96,7 @@ public class DirectRestStrategy implements RestStrategy {
 
     @Override
     public AVMessage getResponse(String id) {
-        AVMessage message = messageCache.get(id);
-
-        return message;
+        return messageCache.get(id);
     }
 
     @PostConstruct
