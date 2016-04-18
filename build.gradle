@@ -2,6 +2,8 @@ plugins {
     id "org.sonarqube" version "1.2"
 }
 
+apply plugin: 'distribution'
+
 ext {
     taskGroupName = 'AV-service'
 
@@ -11,6 +13,20 @@ ext {
 }
 
 description = 'Project for anti-virus service'
+
+distributions {
+    main {
+    }
+
+    checker {
+        baseName = 'checker'
+        contents {
+            from('checker/build/libs/') {
+                into 'libs/'
+            }
+        }
+    }
+}
 
 allprojects {
 }
@@ -159,6 +175,14 @@ subprojects {
     clean {
         delete "${project.rootDir}/reports/"
     }
+
+    task copyToLib(type: Copy) {
+        from(configurations.runtime) {
+        }
+        into "$buildDir/libs"
+    }
+
+    build.dependsOn copyToLib
 
     check.dependsOn integrationTest
     integrationTest.mustRunAfter test
