@@ -79,6 +79,11 @@ subprojects {
     }
 
     test {
+        maxParallelForks = 1
+
+        minHeapSize = '64m'
+        maxHeapSize = '64m'
+
         testLogging {
             exceptionFormat = 'full'
         }
@@ -87,6 +92,9 @@ subprojects {
     task integrationTest(type: Test) {
         testClassesDir = sourceSets.integrationTest.output.classesDir
         classpath = sourceSets.integrationTest.runtimeClasspath
+
+        minHeapSize = '32m'
+        maxHeapSize = '32m'
 
         testLogging {
             // show events - "PASSED", "STARTED", "FAILED", "SKIPPED"
@@ -104,6 +112,7 @@ subprojects {
 
     findbugs {
         reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
+        reportLevel = 'medium'
 
         ignoreFailures = false
     }
@@ -117,6 +126,7 @@ subprojects {
 
     pmd {
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
+        toolVersion = '5.4.1'
 
         ignoreFailures = false
     }
