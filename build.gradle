@@ -4,14 +4,6 @@ plugins {
 
 apply plugin: 'distribution'
 
-ext {
-    taskGroupName = 'AV-service'
-
-    springVersion = '4.2.4.RELEASE'
-    groovyVersion = '2.4.1'
-    spockVersion = '1.0-groovy-2.4'
-}
-
 description = 'Project for anti-virus service'
 
 distributions {
@@ -22,13 +14,29 @@ distributions {
         baseName = 'checker'
         contents {
             from('checker/build/libs/') {
-                into 'libs/'
+                into 'lib/'
+            }
+            from('checker/LICENSE') {
+                into ''
+            }
+            from('checker/bin') {
+                into 'bin/'
+            }
+            from('checker/src/main/resources/log4j2.xml') {
+                into 'conf/'
             }
         }
     }
 }
 
 allprojects {
+    ext {
+        taskGroupName = 'AV-service'
+
+        springVersion = '4.2.4.RELEASE'
+        groovyVersion = '2.4.1'
+        spockVersion = '1.0-groovy-2.4'
+    }
 }
 
 subprojects {
