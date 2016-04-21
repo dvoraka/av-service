@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  rabbitmq:
+    build: ./rabbitmq
+
+  clamavd:
+    build: ./clamavd
