@@ -6,3 +6,5 @@ services:
 
   clamavd:
     build: ./clamavd
+    ports:
+      - "3310:3310"
