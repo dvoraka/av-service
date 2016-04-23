@@ -9,4 +9,4 @@ RUN freshclam
 
 EXPOSE 3310
 
-CMD ["/etc/init.d/clamav-daemon", "start"]
+CMD ["clamd"]
