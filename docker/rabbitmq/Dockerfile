@@ -1,8 +1,9 @@
 FROM debian:jessie
 
-RUN apt-get -y update
-
-RUN apt-get -y install rabbitmq-server
+RUN apt-get update \
+    && apt-get -y install \
+        rabbitmq-server \
+    && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 15672
 

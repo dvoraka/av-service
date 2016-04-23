@@ -1,9 +1,11 @@
 FROM debian:jessie
 
-RUN apt-get -y update
+RUN apt-get update \
+    && apt-get -y install \
+        clamav-daemon \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get -y install clamav-daemon
-ADD conf/clamd.conf /etc/clamav/
+COPY conf/clamd.conf /etc/clamav/
 
 RUN freshclam
 
