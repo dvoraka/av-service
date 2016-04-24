@@ -4,21 +4,21 @@
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
-## Planned features
+### Planned features
 * Highly scalable architecture
 * Robust design
 * Communication over AMQP 0.9.1, JMS and REST
 
-**Later:**
+**Later**
 * AMQP 1.0
 * Message tracking DB service (usefull for bigger deployments)
 
-## Used components
+### Used components
  * **ClamaAV** - open source anti-virus engine
  * **RabbitMQ** - open source message broker for AMQP
  * **ActiveMQ** - open source message broker for JMS
 
-##### Frameworks and libraries
+**Frameworks and libraries**
  * **Spring**
  * **Spring REST** - REST
  * **Spring AMQP** - AMQP
@@ -27,15 +27,31 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
  * **Spock** - testing
  * **Log4j 2** - logging
 
-##### Code quality
+**Code quality**
  * **Checkstyle**
  * **FindBugs**
  * **PMD**
  * **JaCoCo**
  * **SonarQube**
 
-## Installation
-### ClamAV
+**Build**
+ * **Gradle** - build
+ * **Docker** - prepare environment
+
+### Installation
+You can use Docker to prepare necessary services.
+#### Docker style
+Change your working directory to _docker_:
+```
+$ cd docker/
+```
+And run ```docker-compose up``` command:
+```
+$ docker-compose up
+```
+It prepares services running on **localhost**.
+#### ClamAV
+Manual way.
 #### Debian
 ```
 # apt-get install clamav-daemon
@@ -54,7 +70,7 @@ TCPAddr 127.0.0.1
 ```
 This is for enabling TCP socket on a default port and localhost.
 
-### RabbitMQ
+#### RabbitMQ
 #### Debian
 ```
 # apt-get install rabbitmq-server
@@ -62,14 +78,14 @@ This is for enabling TCP socket on a default port and localhost.
 ##### Configuration
 You can use the script `tools/prepareRMQ.sh` to create the basic configuration. It creates a new virtual host called **antivirus** and adds permissions for **guest** user.
 
-## Run service
+### Run service
 Currently everything is rather in a prototype phase.
 
-### AMQP
+#### AMQP
 ```
 $ ./gradlew runAmqpServer
 ```
-### REST
+#### REST
 ```
 $ ./gradlew appStart
 ```
