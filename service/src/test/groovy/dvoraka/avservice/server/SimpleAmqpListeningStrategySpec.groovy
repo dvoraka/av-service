@@ -118,6 +118,49 @@ class SimpleAmqpListeningStrategySpec extends Specification {
         !strategy.isRunning()
     }
 
+    def "stopping test"() {
+        when:
+        RabbitTemplate template = Stub()
+        MessageProcessor processor = Stub()
+        strategy = new SimpleAmqpListeningStrategy(10_000L)
+
+        template.receive() >> {
+            sleep(100)
+        }
+
+        strategy.setRabbitTemplate(template)
+        strategy.setMessageProcessor(processor)
+
+        Thread listeningThread = new Thread(new Runnable() {
+            @Override
+            void run() {
+                strategy.listen()
+            }
+        })
+        listeningThread.start()
+        sleep(500)
+
+        then:
+        strategy.isRunning()
+
+        when:
+        Thread stoppingThread = new Thread(new Runnable() {
+            @Override
+            void run() {
+                strategy.stop()
+            }
+        })
+        stoppingThread.start()
+        stoppingThread.interrupt()
+        sleep(100)
+
+        then:
+        // TODO:
+        // stoppingThread.isInterrupted()
+        true
+
+    }
+
     def "get listening timeout"() {
         setup:
         long timeout = 2000L
