@@ -4,6 +4,8 @@ import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.AVMessageMapper
+import org.springframework.amqp.core.Message
+import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import spock.lang.Specification
 
@@ -56,7 +58,42 @@ class SimpleAmqpListeningStrategySpec extends Specification {
         MessageProcessor processor = Stub()
         AVMessage avMessage = Utils.genNormalMessage()
         template.receive() >> {
+            sleep(100)
             return AVMessageMapper.transform(avMessage)
+        }
+
+        strategy.setRabbitTemplate(template)
+        strategy.setMessageProcessor(processor)
+
+        new Thread(new Runnable() {
+            @Override
+            void run() {
+                strategy.listen()
+            }
+        }).start()
+        sleep(500)
+
+        then:
+        strategy.isRunning()
+
+        when:
+        strategy.stop()
+        sleep(1000)
+
+        then:
+        !strategy.isRunning()
+    }
+
+    def "listening test with a malformed message"() {
+        when:
+        RabbitTemplate template = Stub()
+        MessageProcessor processor = Stub()
+        AVMessage avMessage = Utils.genNormalMessage()
+        template.receive() >> {
+            sleep(100)
+            MessageProperties props = new MessageProperties()
+            Message message = new Message(null, props)
+            return message
         }
 
         strategy.setRabbitTemplate(template)
