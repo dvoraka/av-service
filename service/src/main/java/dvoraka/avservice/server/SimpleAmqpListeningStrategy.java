@@ -84,4 +84,12 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
     public long getListeningTimeout() {
         return listeningTimeout;
     }
+
+    protected void setRabbitTemplate(RabbitTemplate template) {
+        rabbitTemplate = template;
+    }
+
+    protected void setMessageProcessor(MessageProcessor processor) {
+        messageProcessor = processor;
+    }
 }
