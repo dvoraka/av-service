@@ -93,4 +93,12 @@ public class ParallelAmqpListeningStrategy implements ListeningStrategy {
     public int getListenersCount() {
         return listeners;
     }
+
+    protected void setRabbitTemplate(RabbitTemplate template) {
+        rabbitTemplate = template;
+    }
+
+    protected void setMessageProcessor(MessageProcessor processor) {
+        messageProcessor = processor;
+    }
 }

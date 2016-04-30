@@ -10,52 +10,27 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate
 import spock.lang.Specification
 
 /**
- * SimpleAmqpListeningStrategySpec test.
+ * Strategy test.
  */
-class SimpleAmqpListeningStrategySpec extends Specification {
+class ParallelAmqpListeningStrategySpec extends Specification {
 
-    SimpleAmqpListeningStrategy strategy
+    ParallelAmqpListeningStrategy strategy
 
+    def "constructor"() {
+        setup:
+        int listeners = 5
+        strategy = new ParallelAmqpListeningStrategy(listeners)
 
-    def setup() {
-        strategy = new SimpleAmqpListeningStrategy(500L)
+        expect:
+        strategy.getListenersCount() == listeners
     }
 
-    def "listening test without a message"() {
-        when:
+    def "test listening"() {
+        setup:
+        int listeners = 5
+        strategy = new ParallelAmqpListeningStrategy(listeners)
         RabbitTemplate template = Stub()
         MessageProcessor processor = Mock()
-
-        template.receive() >> {
-            sleep(500)
-        }
-
-        strategy.setRabbitTemplate(template)
-        strategy.setMessageProcessor(processor)
-
-        new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.listen()
-            }
-        }).start()
-        sleep(500)
-
-        then:
-        strategy.isRunning()
-
-        when:
-        strategy.stop()
-        sleep(1000)
-
-        then:
-        !strategy.isRunning()
-    }
-
-    def "listening test with a message"() {
-        when:
-        RabbitTemplate template = Stub()
-        MessageProcessor processor = Stub()
         AVMessage avMessage = Utils.genNormalMessage()
 
         template.receive() >> {
@@ -66,29 +41,23 @@ class SimpleAmqpListeningStrategySpec extends Specification {
         strategy.setRabbitTemplate(template)
         strategy.setMessageProcessor(processor)
 
-        new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.listen()
-            }
-        }).start()
-        sleep(500)
+        strategy.listen()
+        sleep(150)
 
-        then:
+        expect:
+        strategy.getListenersCount() == listeners
         strategy.isRunning()
 
-        when:
+        cleanup:
         strategy.stop()
-        sleep(1000)
-
-        then:
-        !strategy.isRunning()
     }
 
-    def "listening test with a malformed message"() {
-        when:
+    def "test listening with malformed messages"() {
+        setup:
+        int listeners = 5
+        strategy = new ParallelAmqpListeningStrategy(listeners)
         RabbitTemplate template = Stub()
-        MessageProcessor processor = Stub()
+        MessageProcessor processor = Mock()
 
         template.receive() >> {
             sleep(100)
@@ -100,30 +69,23 @@ class SimpleAmqpListeningStrategySpec extends Specification {
         strategy.setRabbitTemplate(template)
         strategy.setMessageProcessor(processor)
 
-        new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.listen()
-            }
-        }).start()
-        sleep(500)
+        strategy.listen()
+        sleep(150)
 
-        then:
+        expect:
+        strategy.getListenersCount() == listeners
         strategy.isRunning()
 
-        when:
+        cleanup:
         strategy.stop()
-        sleep(1000)
-
-        then:
-        !strategy.isRunning()
     }
 
     def "stopping test"() {
         when:
+        int listeners = 5
+        strategy = new ParallelAmqpListeningStrategy(listeners)
         RabbitTemplate template = Stub()
         MessageProcessor processor = Stub()
-        strategy = new SimpleAmqpListeningStrategy(10_000L)
 
         template.receive() >> {
             sleep(100)
@@ -157,17 +119,8 @@ class SimpleAmqpListeningStrategySpec extends Specification {
 
         then:
         // TODO:
-        // stoppingThread.isInterrupted()
+//         stoppingThread.isInterrupted()
         true
 
-    }
-
-    def "get listening timeout"() {
-        setup:
-        long timeout = 2000L
-        strategy = new SimpleAmqpListeningStrategy(timeout)
-
-        expect:
-        strategy.getListeningTimeout() == timeout
     }
 }
