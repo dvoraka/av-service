@@ -180,4 +180,12 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
     public ReceivingType getReceivingType() {
         return receivingType;
     }
+
+    protected void setMessageProcessor(MessageProcessor processor) {
+        messageProcessor = processor;
+    }
+
+    protected void setListeningStrategy(ListeningStrategy strategy) {
+        listeningStrategy = strategy;
+    }
 }
