@@ -1,6 +1,6 @@
 # Anti-virus service
 [![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
-[![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg?branch=master)](https://codecov.io/github/dvoraka/av-service?branch=master)
+[![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service/branch/master)
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
