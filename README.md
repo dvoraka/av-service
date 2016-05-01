@@ -1,6 +1,6 @@
 # Anti-virus service
 [![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
-[![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service?branch=master)
+[![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg?branch=master)](https://codecov.io/github/dvoraka/av-service?branch=master)
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
@@ -41,7 +41,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 ### Installation
 You can use Docker to prepare necessary services.
 #### Docker style
-Change your working directory to _docker_:
+Change your working directory to *docker*:
 ```
 $ cd docker/
 ```
@@ -50,6 +50,19 @@ And run ```docker-compose up``` command:
 $ docker-compose up
 ```
 It prepares services running on **localhost**.
+
+**Configuration:**
+
+For setting environment it is necessary to run a command from the **root** directory:
+
+change to root
+```
+$ cd ..
+```
+and
+```
+$ ./gradlew configureEvironment
+```
 #### ClamAV
 Manual way.
 #### Debian
