@@ -1,4 +1,4 @@
-package dvoraka.avservice
+package dvoraka.avservice.server
 
 import dvoraka.avservice.configuration.AppConfig
 import dvoraka.avservice.server.AVServer
