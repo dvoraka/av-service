@@ -27,6 +27,14 @@ task runAmqpServer(type: JavaExec) {
     environment('spring.profiles.active', 'amqp')
 }
 
+task configureEnvironment(type: JavaExec) {
+    description = 'Configure environment'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.EnvironmentConfigurator'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 gretty {
     jvmArgs = ['-Dspring.profiles.active=rest,amqp']
     integrationTestTask = 'integrationTest'

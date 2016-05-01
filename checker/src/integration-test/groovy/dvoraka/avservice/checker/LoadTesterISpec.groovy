@@ -1,12 +1,10 @@
 package dvoraka.avservice.checker
 
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * Run load test.
  */
-@Ignore
 class LoadTesterISpec extends Specification {
 
 

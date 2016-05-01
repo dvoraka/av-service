@@ -16,6 +16,10 @@ before_install:
 before_script:
   - sudo ./tools/prepareRMQ.sh
 
+script:
+  - ./gradlew configureEnvironment
+  - ./gradlew check
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
