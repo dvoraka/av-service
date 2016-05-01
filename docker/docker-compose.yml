@@ -5,12 +5,12 @@ services:
     build: ./rabbitmq
     image: "rabbitmq-server"
     network_mode: "host"
-    ports:
-      - "15672:15672"
+#    ports:
+#      - "5672:5672"
 
   clamavd:
     build: ./clamavd
     image: "clamav-daemon"
     network_mode: "host"
-    ports:
-      - "3310:3310"
+#    ports:
+#      - "3310:3310"

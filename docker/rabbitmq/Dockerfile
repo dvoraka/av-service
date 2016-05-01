@@ -5,6 +5,13 @@ RUN apt-get update \
         rabbitmq-server \
     && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 15672
+COPY conf/rabbitmq-env.conf /etc/rabbitmq/
+COPY bin/prepareRMQ.sh /root
+RUN rabbitmq-server -detached \
+    && sleep 10 \
+    && /root/prepareRMQ.sh \
+    && rabbitmqctl stop
+
+EXPOSE 5672
 
 CMD ["rabbitmq-server"]
