@@ -150,7 +150,11 @@ public class LoadTester implements Tester {
         System.out.println("");
         System.out.println("Load test end");
         System.out.println("Duration: " + (duration / MS_PER_SECOND) + " s");
-        System.out.println("Messages: " + getProps().getMsgCount() / (duration / MS_PER_SECOND) + "/s");
+        long durationSeconds = duration / MS_PER_SECOND;
+        if (durationSeconds == 0) {
+            durationSeconds = 1;
+        }
+        System.out.println("Messages: " + getProps().getMsgCount() / durationSeconds  + "/s");
     }
 
     private void synchronousTest() throws IOException {

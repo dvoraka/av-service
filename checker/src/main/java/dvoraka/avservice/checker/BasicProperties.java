@@ -159,6 +159,19 @@ public class BasicProperties implements LoadTestProperties {
         }
     }
 
+    @Override
+    public String toString() {
+        return "BasicProperties{"
+                + "host='" + host + '\''
+                + ", virtualHost='" + virtualHost + '\''
+                + ", appId='" + appId + '\''
+                + ", destinationQueue='" + destinationQueue + '\''
+                + ", msgCount=" + msgCount
+                + ", synchronous=" + synchronous
+                + ", sendOnly=" + sendOnly
+                + '}';
+    }
+
     public static class Builder {
 
         private String host;

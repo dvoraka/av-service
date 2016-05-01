@@ -12,7 +12,15 @@ class LoadTesterISpec extends Specification {
 
     def "run load test"() {
         setup:
-        LoadTestProperties props = new BasicProperties()
+        LoadTestProperties props = new BasicProperties.Builder()
+                .msgCount(5)
+                .virtualHost("antivirus")
+                .destinationQueue("av-result")
+                .appId("antivirus")
+                .synchronous(false)
+                .build()
+        props.setSendOnly(true)
+
         Tester tester = new LoadTester(props)
 
         when:
