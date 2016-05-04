@@ -2,7 +2,7 @@ package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.AmqpAVServer;
-import dvoraka.avservice.server.BasicAmqpAvServer;
+import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.server.ReceivingType;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
@@ -104,7 +104,7 @@ public class AmqpConfig {
 
     @Bean
     public MessageListener messageListener() {
-        return new BasicAmqpAvServer();
+        return new BasicAvServer();
     }
 
     @Bean
