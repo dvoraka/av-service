@@ -2,6 +2,7 @@ package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.AmqpAVServer;
+import dvoraka.avservice.server.BasicAmqpAvServer;
 import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.server.ReceivingType;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
@@ -9,11 +10,13 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,6 +62,16 @@ public class AmqpConfig {
     }
 
     @Bean
+    public SimpleMessageListenerContainer messageListenerContainer() {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory());
+        container.setQueueNames(checkQueue);
+        container.setMessageListener(messageListener());
+
+        return container;
+    }
+
+    @Bean
     public ListeningStrategy listeningStrategy() {
         return new SimpleAmqpListeningStrategy(listeningTimeout);
     }
@@ -87,6 +100,11 @@ public class AmqpConfig {
         template.setQueue(checkQueue);
 
         return template;
+    }
+
+    @Bean
+    public MessageListener messageListener() {
+        return new BasicAmqpAvServer();
     }
 
     @Bean
