@@ -1,6 +1,7 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.common.AVMessageListener;
+import dvoraka.avservice.common.ProcessedAVMessageListener;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.configuration.AppConfig;
 import dvoraka.avservice.service.ServiceManagement;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 /**
  * AMQP AV server implementation
  */
-public class BasicAvServer implements ServiceManagement, AVMessageListener {
+public class BasicAvServer implements ServiceManagement, AVMessageListener, ProcessedAVMessageListener {
 
     @Autowired
     private AVMessageReceiver avMessageReceiver;
@@ -48,5 +49,10 @@ public class BasicAvServer implements ServiceManagement, AVMessageListener {
     @Override
     public void onAVMessage(AVMessage message) {
         System.out.println("AVMessage: " + message);
+    }
+
+    @Override
+    public void onProcessedAVMessage(AVMessage message) {
+        System.out.println("Processed AVMessage: " + message);
     }
 }
