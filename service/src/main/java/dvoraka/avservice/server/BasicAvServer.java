@@ -1,7 +1,8 @@
 package dvoraka.avservice.server;
 
+import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.ProcessedAVMessageListener;
 import dvoraka.avservice.common.AVMessageListener;
-import dvoraka.avservice.common.ProcessedAVMessageListener;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.configuration.AppConfig;
 import dvoraka.avservice.service.ServiceManagement;
@@ -16,6 +17,8 @@ public class BasicAvServer implements ServiceManagement, AVMessageListener, Proc
 
     @Autowired
     private AVMessageReceiver avMessageReceiver;
+    @Autowired
+    private MessageProcessor messageProcessor;
 
 
     public static void main(String[] args) {
@@ -34,16 +37,18 @@ public class BasicAvServer implements ServiceManagement, AVMessageListener, Proc
     @Override
     public void start() {
         avMessageReceiver.addAVMessageListener(this);
+        messageProcessor.addProcessedAVMessageListener(this);
     }
 
     @Override
     public void stop() {
-
+        avMessageReceiver.removeAVMessageListener(this);
     }
 
     @Override
     public void restart() {
-
+        stop();
+        start();
     }
 
     @Override

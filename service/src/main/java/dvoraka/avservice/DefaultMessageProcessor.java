@@ -1,6 +1,5 @@
 package dvoraka.avservice;
 
-import dvoraka.avservice.common.AVMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.MessageStatus;
@@ -41,7 +40,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private Map<String, Long> processedMessages;
 
     private Queue<AVMessage> processedMessagesQueue;
-    private List<AVMessageListener> observers = new ArrayList<>();
+    private List<ProcessedAVMessageListener> observers = new ArrayList<>();
     private ExecutorService executorService;
     private ReceivingType serverReceivingType;
 
@@ -188,7 +187,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     @Override
-    public void addAVMessageListener(AVMessageListener listener) {
+    public void addProcessedAVMessageListener(ProcessedAVMessageListener listener) {
         if (serverReceivingType == ReceivingType.LISTENER) {
             observers.add(listener);
         } else {
@@ -196,9 +195,14 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
+    @Override
+    public void removeProcessedAVMessageListener(ProcessedAVMessageListener listener) {
+        // TODO: implement
+    }
+
     private void notifyObservers(AVMessage avMessage) {
-        for (AVMessageListener listener : observers) {
-            listener.onAVMessage(avMessage);
+        for (ProcessedAVMessageListener listener : observers) {
+            listener.onProcessedAVMessage(avMessage);
         }
     }
 

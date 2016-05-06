@@ -1,8 +1,8 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.common.AVMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
+import dvoraka.avservice.ProcessedAVMessageListener;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * AMQP AV server.
  */
-public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessageListener {
+public class AmqpAVServer extends AbstractAVServer implements AVServer, ProcessedAVMessageListener {
 
     @Autowired
     private MessageProcessor messageProcessor;
@@ -125,7 +125,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
     }
 
     @Override
-    public void onAVMessage(AVMessage message) {
+    public void onProcessedAVMessage(AVMessage message) {
         processResponse(message);
     }
 
@@ -137,7 +137,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, AVMessag
         if (getReceivingType() == ReceivingType.POLLING) {
             startResponding();
         } else if (getReceivingType() == ReceivingType.LISTENER) {
-            messageProcessor.addAVMessageListener(this);
+            messageProcessor.addProcessedAVMessageListener(this);
         }
 
         startListening();

@@ -1,4 +1,4 @@
-package dvoraka.avservice.common;
+package dvoraka.avservice;
 
 import dvoraka.avservice.common.data.AVMessage;
 
