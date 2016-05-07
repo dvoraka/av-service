@@ -116,7 +116,7 @@ public class AmqpConfig {
 
     @Bean
     public MessageListener messageListener() {
-        return new AmqpComponent();
+        return (MessageListener) avMessageReceiver();
     }
 
     @Bean

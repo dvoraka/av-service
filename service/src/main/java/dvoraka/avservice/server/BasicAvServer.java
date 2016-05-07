@@ -22,6 +22,10 @@ public class BasicAvServer implements AVServer, ServiceManagement, AVMessageList
     @Autowired
     private MessageProcessor messageProcessor;
 
+    private boolean started;
+    private boolean stopped;
+    private boolean running;
+
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -44,23 +48,27 @@ public class BasicAvServer implements AVServer, ServiceManagement, AVMessageList
 
     @Override
     public void start() {
+        setStarted(true);
         avMessageReceiver.addAVMessageListener(this);
         messageProcessor.addProcessedAVMessageListener(this);
+        setRunning(true);
     }
 
     @Override
     public void stop() {
+        setStopped(true);
         avMessageReceiver.removeAVMessageListener(this);
+        setRunning(false);
     }
 
     @Override
     public boolean isStarted() {
-        return false;
+        return started;
     }
 
     @Override
     public boolean isStopped() {
-        return false;
+        return stopped;
     }
 
     @Override
@@ -71,12 +79,12 @@ public class BasicAvServer implements AVServer, ServiceManagement, AVMessageList
 
     @Override
     public boolean isRunning() {
-        return false;
+        return running;
     }
 
     @Override
     public void setRunning(boolean value) {
-
+        this.running = value;
     }
 
     @Override
@@ -87,5 +95,13 @@ public class BasicAvServer implements AVServer, ServiceManagement, AVMessageList
     @Override
     public void onProcessedAVMessage(AVMessage message) {
         System.out.println("Processed AVMessage: " + message);
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
     }
 }
