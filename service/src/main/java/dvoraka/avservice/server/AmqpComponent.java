@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * WIP AMQP structure
  */
-public class AmqpComponent implements MessageListener {
+public class AmqpComponent implements MessageListener, AVMessageReceiver {
 
     private List<AVMessageListener> listeners = new ArrayList<>();
 
@@ -34,5 +34,10 @@ public class AmqpComponent implements MessageListener {
 
     public void addAVMessageListener(AVMessageListener listener) {
         listeners.add(listener);
+    }
+
+    @Override
+    public void removeAVMessageListener(AVMessageListener listener) {
+        // TODO: implement
     }
 }

@@ -1,6 +1,8 @@
 package dvoraka.avservice.common.data;
 
 import dvoraka.avservice.common.exception.MapperException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 
@@ -12,6 +14,8 @@ import java.util.Map;
  */
 public final class AVMessageMapper {
 
+    private static final Logger log = LogManager.getLogger(AVMessageMapper.class.getName());
+
     public static final String VIRUS_INFO_KEY = "virusInfo";
     public static final String DEFAULT_VIRUS_INFO = "noinfo";
     public static final String SERVICE_ID_KEY = "serviceId";
@@ -22,6 +26,8 @@ public final class AVMessageMapper {
     }
 
     public static AVMessage transform(Message msg) throws MapperException {
+        log.debug("Transform: " + msg);
+
         MessageProperties msgProps = msg.getMessageProperties();
         Map<String, Object> headers = msgProps.getHeaders();
 
@@ -60,6 +66,8 @@ public final class AVMessageMapper {
     }
 
     public static Message transform(AVMessage msg) throws MapperException {
+        log.debug("AVTransform: " + msg);
+
         MessageProperties props = new MessageProperties();
         props.setMessageId(msg.getId());
         props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));

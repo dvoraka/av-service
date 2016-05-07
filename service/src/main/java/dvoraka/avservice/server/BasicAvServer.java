@@ -10,10 +10,12 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * AMQP AV server implementation
  */
-public class BasicAvServer implements ServiceManagement, AVMessageListener, ProcessedAVMessageListener {
+public class BasicAvServer implements AVServer, ServiceManagement, AVMessageListener, ProcessedAVMessageListener {
 
     @Autowired
     private AVMessageReceiver avMessageReceiver;
@@ -21,7 +23,7 @@ public class BasicAvServer implements ServiceManagement, AVMessageListener, Proc
     private MessageProcessor messageProcessor;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles("amqp");
@@ -30,6 +32,12 @@ public class BasicAvServer implements ServiceManagement, AVMessageListener, Proc
 
         SimpleMessageListenerContainer container = context.getBean(SimpleMessageListenerContainer.class);
         container.start();
+
+        BasicAvServer server = context.getBean(BasicAvServer.class);
+        server.start();
+
+        final long runTime = 10;
+        TimeUnit.MINUTES.sleep(runTime);
 
         context.close();
     }
@@ -46,9 +54,29 @@ public class BasicAvServer implements ServiceManagement, AVMessageListener, Proc
     }
 
     @Override
+    public boolean isStarted() {
+        return false;
+    }
+
+    @Override
+    public boolean isStopped() {
+        return false;
+    }
+
+    @Override
     public void restart() {
         stop();
         start();
+    }
+
+    @Override
+    public boolean isRunning() {
+        return false;
+    }
+
+    @Override
+    public void setRunning(boolean value) {
+
     }
 
     @Override
