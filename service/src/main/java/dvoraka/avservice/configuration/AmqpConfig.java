@@ -1,12 +1,12 @@
 package dvoraka.avservice.configuration;
 
-import dvoraka.avservice.server.AVMessageReceiver;
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.AmqpAVServer;
 import dvoraka.avservice.server.AmqpComponent;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.server.ReceivingType;
+import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.SimpleAmqpListeningStrategy;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -69,11 +69,12 @@ public class AmqpConfig {
     }
 
     @Bean
-    public AVMessageReceiver avMessageReceiver() {
+    public ServerComponent serverComponent() {
         return new AmqpComponent();
     }
 
     @Bean
+    @Profile("amqp-async")
     public SimpleMessageListenerContainer messageListenerContainer() {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory());
@@ -116,7 +117,7 @@ public class AmqpConfig {
 
     @Bean
     public MessageListener messageListener() {
-        return (MessageListener) avMessageReceiver();
+        return serverComponent();
     }
 
     @Bean

@@ -4,8 +4,11 @@ import dvoraka.avservice.common.AVMessageListener;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +16,14 @@ import java.util.List;
 /**
  * WIP AMQP structure
  */
-public class AmqpComponent implements MessageListener, AVMessageReceiver {
+public class AmqpComponent implements ServerComponent {
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
+
+    private static final String RESPONSE_EXCHANGE = "result";
 
     private List<AVMessageListener> listeners = new ArrayList<>();
 
@@ -32,6 +42,7 @@ public class AmqpComponent implements MessageListener, AVMessageReceiver {
         }
     }
 
+    @Override
     public void addAVMessageListener(AVMessageListener listener) {
         listeners.add(listener);
     }
@@ -39,5 +50,16 @@ public class AmqpComponent implements MessageListener, AVMessageReceiver {
     @Override
     public void removeAVMessageListener(AVMessageListener listener) {
         // TODO: implement
+    }
+
+    @Override
+    public void sendMessage(AVMessage message) {
+        try {
+            Message response = AVMessageMapper.transform(message);
+            rabbitTemplate.send(RESPONSE_EXCHANGE, "ROUTINGKEY", response);
+        } catch (MapperException e) {
+            log.warn("Message problem!", e);
+            // TODO: send error response
+        }
     }
 }

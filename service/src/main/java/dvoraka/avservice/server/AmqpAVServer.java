@@ -1,8 +1,8 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.ProcessedAVMessageListener;
+import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
@@ -13,7 +13,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
 
 import javax.annotation.PreDestroy;
 import java.util.concurrent.ExecutorService;
@@ -57,9 +56,12 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, Processe
 //            e.printStackTrace();
 //        }
 
-        AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        AmqpAVServer server = context.getBean(AmqpAVServer.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.getEnvironment().setActiveProfiles("amqp");
+        context.register(AppConfig.class);
+        context.refresh();
 
+        AmqpAVServer server = context.getBean(AmqpAVServer.class);
         server.start();
 
         final long runTime = 6_000_000;
