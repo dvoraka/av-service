@@ -1,9 +1,10 @@
-package dvoraka.avservice.server;
+package dvoraka.avservice.server.amqp;
 
 import dvoraka.avservice.common.AVMessageListener;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
+import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * WIP AMQP structure
+ * AMQP component.
  */
 public class AmqpComponent implements ServerComponent {
 
@@ -23,10 +24,13 @@ public class AmqpComponent implements ServerComponent {
 
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
 
-    private static final String RESPONSE_EXCHANGE = "result";
-
+    private String responseExchange;
     private List<AVMessageListener> listeners = new ArrayList<>();
 
+
+    public AmqpComponent(String responseExchange) {
+        this.responseExchange = responseExchange;
+    }
 
     @Override
     public void onMessage(Message message) {
@@ -56,7 +60,7 @@ public class AmqpComponent implements ServerComponent {
     public void sendMessage(AVMessage message) {
         try {
             Message response = AVMessageMapper.transform(message);
-            rabbitTemplate.send(RESPONSE_EXCHANGE, "ROUTINGKEY", response);
+            rabbitTemplate.send(responseExchange, "ROUTINGKEY", response);
         } catch (MapperException e) {
             log.warn("Message problem!", e);
             // TODO: send error response

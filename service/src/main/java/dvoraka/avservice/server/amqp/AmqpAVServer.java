@@ -1,4 +1,4 @@
-package dvoraka.avservice.server;
+package dvoraka.avservice.server.amqp;
 
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessedAVMessageListener;
@@ -7,6 +7,10 @@ import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.configuration.AppConfig;
+import dvoraka.avservice.server.AVServer;
+import dvoraka.avservice.server.AbstractAVServer;
+import dvoraka.avservice.server.ListeningStrategy;
+import dvoraka.avservice.server.ReceivingType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;

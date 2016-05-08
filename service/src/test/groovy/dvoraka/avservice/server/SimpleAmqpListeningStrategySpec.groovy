@@ -4,6 +4,7 @@ import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.AVMessageMapper
+import dvoraka.avservice.server.amqp.SimpleAmqpListeningStrategy
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
