@@ -3,6 +3,7 @@ package dvoraka.avservice.server;
 /**
  * Abstract AV server.
  */
+@Deprecated
 public abstract class AbstractAVServer implements AVServer {
 
     private boolean started;

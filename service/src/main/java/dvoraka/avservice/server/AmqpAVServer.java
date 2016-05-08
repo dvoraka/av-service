@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * AMQP AV server.
  */
+@Deprecated
 public class AmqpAVServer extends AbstractAVServer implements AVServer, ProcessedAVMessageListener {
 
     @Autowired
