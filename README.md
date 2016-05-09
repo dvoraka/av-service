@@ -61,7 +61,7 @@ $ cd ..
 ```
 and
 ```
-$ ./gradlew configureEvironment
+$ ./gradlew configureEnvironment
 ```
 #### ClamAV
 Manual way.
