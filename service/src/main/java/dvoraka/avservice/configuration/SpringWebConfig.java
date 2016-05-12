@@ -7,6 +7,7 @@ import dvoraka.avservice.service.DefaultRestService;
 import dvoraka.avservice.service.RestService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 @Configuration
 @Profile("rest")
+@Import({RestSecurityConfig.class})
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
     @Bean

@@ -10,6 +10,8 @@ dependencies {
 
     // Spring
     compile("org.springframework:spring-webmvc:${springVersion}")
+    compile("org.springframework.security:spring-security-config:4.1.0.RELEASE")
+    compile("org.springframework.security:spring-security-web:4.1.0.RELEASE")
     compile("org.springframework:spring-aspects:${springVersion}")
     // Spring JMS
     compile("org.springframework:spring-jms")
