@@ -17,7 +17,10 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").access("hasRole('USER')");
+                .antMatchers("/").access("hasRole('USER')")
+                .and()
+                .csrf().disable()
+                .formLogin();
     }
 
     @Override
