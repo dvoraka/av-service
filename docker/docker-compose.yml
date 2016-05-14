@@ -1,21 +1,26 @@
 version: '2'
 
 services:
-  rabbitmq:
+  rabbitmq-dev:
     build: ./rabbitmq
-    image: "rabbitmq-server"
+    image: "rabbitmq-dev-server"
     network_mode: "host"
 #    ports:
 #      - "5672:5672"
 
-  clamavd:
+  clamavd-dev:
     build: ./clamavd
-    image: "clamav-daemon"
+    image: "clamav-dev-server"
     network_mode: "host"
 #    ports:
 #      - "3310:3310"
 
-  kibana:
+  kibana-dev:
     build: ./kibana
-    image: "kibana-server"
+    image: "kibana-dev-server"
+    network_mode: "host"
+
+  elasticsearch-dev:
+    build: ./elasticsearch
+    image: "elasticsearch-dev-server"
     network_mode: "host"
