@@ -80,6 +80,8 @@ subprojects {
         // log4j
         compile('org.apache.logging.log4j:log4j-api:2.5')
         compile('org.apache.logging.log4j:log4j-core:2.5')
+        compile('org.apache.logging.log4j:log4j-slf4j-impl:2.5')
+        compile('org.apache.logging.log4j:log4j-jcl:2.5')
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
