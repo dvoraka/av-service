@@ -25,6 +25,7 @@
         </Logger>
         <Root level="debug">
             <AppenderRef ref="File"/>
+            <AppenderRef ref="Logstash"/>
         </Root>
     </Loggers>
 </Configuration>
