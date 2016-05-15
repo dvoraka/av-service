@@ -24,3 +24,8 @@ services:
     build: ./elasticsearch
     image: "elasticsearch-dev-server"
     network_mode: "host"
+
+  logstash-dev:
+    build: ./logstash
+    image: "logstash-dev-server"
+    network_mode: "host"
