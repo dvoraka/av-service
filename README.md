@@ -38,6 +38,9 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
  * **Gradle** - build
  * **Docker** - prepare environment
 
+**Development**
+ * ELK Stack (Elasticsearch, Logstash, Kibana) - logs analyzing
+
 ### Installation
 You can use Docker to prepare necessary services.
 #### Docker style
