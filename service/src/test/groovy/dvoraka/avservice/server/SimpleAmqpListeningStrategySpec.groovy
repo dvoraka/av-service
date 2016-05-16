@@ -8,6 +8,7 @@ import dvoraka.avservice.server.amqp.SimpleAmqpListeningStrategy
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 
 /**
@@ -31,8 +32,8 @@ class SimpleAmqpListeningStrategySpec extends Specification {
             sleep(500)
         }
 
-        strategy.setRabbitTemplate(template)
-        strategy.setMessageProcessor(processor)
+        ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
+        ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
 
         new Thread(new Runnable() {
             @Override
@@ -64,8 +65,8 @@ class SimpleAmqpListeningStrategySpec extends Specification {
             return AVMessageMapper.transform(avMessage)
         }
 
-        strategy.setRabbitTemplate(template)
-        strategy.setMessageProcessor(processor)
+        ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
+        ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
 
         new Thread(new Runnable() {
             @Override
@@ -98,8 +99,8 @@ class SimpleAmqpListeningStrategySpec extends Specification {
             return message
         }
 
-        strategy.setRabbitTemplate(template)
-        strategy.setMessageProcessor(processor)
+        ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
+        ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
 
         new Thread(new Runnable() {
             @Override
@@ -130,8 +131,8 @@ class SimpleAmqpListeningStrategySpec extends Specification {
             sleep(100)
         }
 
-        strategy.setRabbitTemplate(template)
-        strategy.setMessageProcessor(processor)
+        ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
+        ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
 
         Thread listeningThread = new Thread(new Runnable() {
             @Override
