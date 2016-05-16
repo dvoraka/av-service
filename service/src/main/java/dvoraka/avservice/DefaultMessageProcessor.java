@@ -234,10 +234,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processedMessages.remove(id);
     }
 
-    public void setAvService(AVService avService) {
-        this.avService = avService;
-    }
-
     private void setServerReceivingType(ReceivingType type) {
         serverReceivingType = type;
     }

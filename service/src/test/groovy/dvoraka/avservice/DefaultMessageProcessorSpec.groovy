@@ -7,6 +7,7 @@ import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.exception.ScanErrorException
 import dvoraka.avservice.server.ReceivingType
 import dvoraka.avservice.service.AVService
+import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 
 /**
@@ -60,7 +61,7 @@ class DefaultMessageProcessorSpec extends Specification {
         AVService service = Stub()
         service.scanStream(_) >> false
 
-        processor.setAvService(service)
+        ReflectionTestUtils.setField(processor, null, service, AVService.class)
 
         AVMessage message = Utils.genNormalMessage()
         processor.sendMessage(message)
@@ -79,7 +80,7 @@ class DefaultMessageProcessorSpec extends Specification {
         service.scanStream(_) >> false
 
         processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1)
-        processor.setAvService(service)
+        ReflectionTestUtils.setField(processor, null, service, AVService.class)
 
         AVMessage message1 = Utils.genNormalMessage()
         processor.sendMessage(message1)
@@ -108,7 +109,7 @@ class DefaultMessageProcessorSpec extends Specification {
             throw new ScanErrorException("Service is dead")
         }
 
-        processor.setAvService(service)
+        ReflectionTestUtils.setField(processor, null, service, AVService.class)
         AVMessage message = Utils.genNormalMessage()
 
         processor.sendMessage(message)
@@ -124,13 +125,13 @@ class DefaultMessageProcessorSpec extends Specification {
         setup:
         String testId = "testId"
 
-        AVService avService = Stub()
-        avService.scanStream(_) >> {
+        AVService service = Stub()
+        service.scanStream(_) >> {
             sleep(1000)
             return false
         }
 
-        processor.setAvService(avService)
+        ReflectionTestUtils.setField(processor, null, service, AVService.class)
 
         when:
         processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
@@ -143,8 +144,8 @@ class DefaultMessageProcessorSpec extends Specification {
         setup:
         String testId = "testId"
 
-        AVService avService = Stub()
-        processor.setAvService(avService)
+        AVService service = Stub()
+        ReflectionTestUtils.setField(processor, null, service, AVService.class)
 
         when:
         processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
@@ -158,8 +159,8 @@ class DefaultMessageProcessorSpec extends Specification {
         setup:
         String testId = "testId"
 
-        AVService avService = Stub()
-        processor.setAvService(avService)
+        AVService service = Stub()
+        ReflectionTestUtils.setField(processor, null, service, AVService.class)
 
         expect:
         processor.messageStatus(testId) == MessageStatus.UNKNOWN
