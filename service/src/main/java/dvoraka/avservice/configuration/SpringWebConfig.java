@@ -1,5 +1,7 @@
 package dvoraka.avservice.configuration;
 
+import dvoraka.avservice.DefaultMessageProcessor;
+import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.rest.AVController;
 import dvoraka.avservice.rest.DirectRestStrategy;
 import dvoraka.avservice.rest.RestStrategy;
@@ -34,5 +36,11 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public RestStrategy restStrategy() {
         return new DirectRestStrategy();
+    }
+
+    @Bean
+    public MessageProcessor restMessageProcessor() {
+        final int threads = 20;
+        return new DefaultMessageProcessor(threads);
     }
 }

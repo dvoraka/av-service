@@ -38,7 +38,7 @@ task configureEnvironment(type: JavaExec) {
 }
 
 gretty {
-    jvmArgs = ['-Dspring.profiles.active=rest,amqp']
+    jvmArgs = ['-Dspring.profiles.active=rest']
     integrationTestTask = 'integrationTest'
     servletContainer = 'jetty9'
     contextPath = 'av-service'

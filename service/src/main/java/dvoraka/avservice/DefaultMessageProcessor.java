@@ -9,6 +9,8 @@ import dvoraka.avservice.service.AVService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedAttribute;
+import org.springframework.jmx.export.annotation.ManagedResource;
 
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
@@ -21,10 +23,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Main AV message processor.
  */
+@ManagedResource
 public class DefaultMessageProcessor implements MessageProcessor {
 
     @Autowired
@@ -38,6 +42,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private Map<String, Long> processingMessages;
     private Map<String, Long> processedMessages;
+    private AtomicLong receivedMsgCount = new AtomicLong();
+    private AtomicLong processedMsgCount = new AtomicLong();
 
     private Queue<AVMessage> processedMessagesQueue;
     private List<ProcessedAVMessageListener> observers = new ArrayList<>();
@@ -74,6 +80,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     public void sendMessage(AVMessage message) {
 
         setRunning(true);
+        receivedMsgCount.getAndIncrement();
 
         log.debug("Processing message...");
         addProcessingMessage(message.getId());
@@ -110,6 +117,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
         // TODO: Delete after some time?
         addProcessedMessage(message.getId());
         removeProcessingMessage(message.getId());
+
+        processedMsgCount.getAndIncrement();
 
         sendResponse(prepareResponse(message, infected));
     }
@@ -251,5 +260,15 @@ public class DefaultMessageProcessor implements MessageProcessor {
         if (isRunning()) {
             stop();
         }
+    }
+
+    @ManagedAttribute
+    public long getReceivedMsgCount() {
+        return receivedMsgCount.get();
+    }
+
+    @ManagedAttribute
+    public long getProcessedMsgCount() {
+        return processedMsgCount.get();
     }
 }

@@ -1,17 +1,15 @@
 package dvoraka.avservice.configuration;
 
-import dvoraka.avservice.DefaultMessageProcessor;
-import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.avprogram.AVProgram;
 import dvoraka.avservice.avprogram.ClamAVProgram;
 import dvoraka.avservice.rest.RestClient;
-import dvoraka.avservice.server.ReceivingType;
 import dvoraka.avservice.service.AVService;
 import dvoraka.avservice.service.DefaultAVService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -23,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @PropertySource("classpath:avservice.properties")
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableMBeanExport
 @Import({AmqpConfig.class, SpringWebConfig.class})
 public class AppConfig {
 
@@ -42,18 +41,6 @@ public class AppConfig {
     @Bean
     public AVProgram avProgram() {
         return new ClamAVProgram();
-    }
-
-    @Bean
-    public MessageProcessor messageProcessor() {
-        final int threads = 20;
-        return new DefaultMessageProcessor(threads, ReceivingType.LISTENER, 0);
-    }
-
-    @Bean
-    public MessageProcessor restMessageProcessor() {
-        final int threads = 20;
-        return new DefaultMessageProcessor(threads);
     }
 
     @Bean
