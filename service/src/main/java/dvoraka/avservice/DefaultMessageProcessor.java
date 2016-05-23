@@ -107,9 +107,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
         log.debug("Scanning thread: " + Thread.currentThread().getName());
 
         boolean infected = false;
+//        String error = null;
         try {
             infected = avService.scanStream(message.getData());
         } catch (ScanErrorException e) {
+//            error = e.getMessage();
             log.warn("Scanning error!", e);
         }
         log.debug("Scanning done in: " + Thread.currentThread().getName());
@@ -120,6 +122,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         processedMsgCount.getAndIncrement();
 
+        // TODO: error response
         sendResponse(prepareResponse(message, infected));
     }
 

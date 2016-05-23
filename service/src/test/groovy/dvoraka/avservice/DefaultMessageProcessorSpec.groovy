@@ -117,7 +117,6 @@ class DefaultMessageProcessorSpec extends Specification {
         sleep(1000)
 
         expect:
-        // TODO: catch an exception
         true
     }
 
