@@ -42,8 +42,7 @@ public abstract class AbstractAVServer implements AVServer {
         return running;
     }
 
-    @Override
-    public void setRunning(boolean running) {
+    protected void setRunning(boolean running) {
         this.running = running;
     }
 }

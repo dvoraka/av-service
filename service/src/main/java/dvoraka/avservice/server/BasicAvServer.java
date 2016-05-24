@@ -85,8 +85,7 @@ public class BasicAvServer implements AVServer, ServiceManagement, AVMessageList
         return running;
     }
 
-    @Override
-    public void setRunning(boolean value) {
+    private void setRunning(boolean value) {
         this.running = value;
     }
 

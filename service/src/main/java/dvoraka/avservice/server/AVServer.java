@@ -38,7 +38,4 @@ public interface AVServer {
      * Check server status.
      */
     boolean isRunning();
-
-    // TODO: is it necessary?
-    void setRunning(boolean value);
 }
