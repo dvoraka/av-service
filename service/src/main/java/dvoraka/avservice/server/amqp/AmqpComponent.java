@@ -38,7 +38,7 @@ public class AmqpComponent implements ServerComponent {
         try {
             avMessage = AVMessageMapper.transform(message);
         } catch (MapperException e) {
-            e.printStackTrace();
+            log.warn("Transformation error!", e);
         }
 
         for (AVMessageListener listener : listeners) {
@@ -53,7 +53,11 @@ public class AmqpComponent implements ServerComponent {
 
     @Override
     public void removeAVMessageListener(AVMessageListener listener) {
-        // TODO: implement
+        listeners.remove(listener);
+    }
+
+    public int listenersCount() {
+        return listeners.size();
     }
 
     @Override
