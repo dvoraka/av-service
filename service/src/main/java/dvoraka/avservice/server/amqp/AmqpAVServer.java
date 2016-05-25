@@ -70,7 +70,6 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, Processe
         server.start();
 
         final long runTime = 6_000_000;
-        // TODO: create management interface
         try {
             Thread.sleep(runTime);
         } catch (InterruptedException e) {
@@ -127,7 +126,6 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, Processe
             rabbitTemplate.send(RESPONSE_EXCHANGE, "ROUTINGKEY", response);
         } catch (MapperException e) {
             log.warn("Message problem!", e);
-            // TODO: send error response
         }
     }
 
