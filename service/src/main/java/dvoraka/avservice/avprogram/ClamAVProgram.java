@@ -69,8 +69,25 @@ public class ClamAVProgram implements AVProgram {
      */
     @Override
     public boolean scanStream(byte[] bytes) throws ScanErrorException {
-        log.debug("Scanning stream...");
+        String response;
+        try {
+            response = scanStreamWithInfo(bytes);
+        } catch (ScanErrorException e) {
+            log.warn("Scanning failed!", e);
+            throw new ScanErrorException("Scanning failed!", e);
+        }
 
+        if (response.equals(CLEAN_STREAM_RESPONSE)) {
+            return false;
+        } else {
+            log.debug("Virus found: " + response);
+            return true;
+        }
+    }
+
+    @Override
+    public String scanStreamWithInfo(byte[] bytes) throws ScanErrorException {
+        log.debug("Scanning stream...");
         try (
                 Socket socket = new Socket(socketHost, socketPort);
                 OutputStream outStream = socket.getOutputStream();
@@ -95,27 +112,15 @@ public class ClamAVProgram implements AVProgram {
 
             log.debug("scanning done.");
             if (response != null) {
-                if (response.equals(CLEAN_STREAM_RESPONSE)) {
-                    return false;
-                } else {
-                    log.debug("Virus found: " + response);
-                    return true;
-                }
+                return response;
             } else {
                 log.warn("Response reading problem!");
                 throw new ScanErrorException("Scanning problem.");
             }
-
         } catch (IOException e) {
             log.warn("Scanning problem!", e);
             throw new ScanErrorException("Scanning problem.", e);
         }
-    }
-
-    @Override
-    public String scanStreamWithInfo(byte[] bytes) {
-        // TODO: implement
-        return "info";
     }
 
     @Override

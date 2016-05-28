@@ -9,7 +9,7 @@ public interface AVProgram {
 
     boolean scanStream(byte[] bytes) throws ScanErrorException;
 
-    String scanStreamWithInfo(byte[] bytes);
+    String scanStreamWithInfo(byte[] bytes) throws ScanErrorException;
 
     boolean isRunning();
 }
