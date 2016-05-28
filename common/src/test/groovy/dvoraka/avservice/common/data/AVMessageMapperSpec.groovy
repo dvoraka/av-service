@@ -59,7 +59,7 @@ class AVMessageMapperSpec extends Specification {
     }
 
     def "AMQP Message -> AVMessage, empty message"() {
-        setup:
+        given:
         MessageProperties props = new MessageProperties()
 
         // PROPERTIES
@@ -69,14 +69,14 @@ class AVMessageMapperSpec extends Specification {
         Message message = new Message(null, props)
 
         when:
-        AVMessage avMessage = AVMessageMapper.transform(message)
+        AVMessageMapper.transform(message)
 
         then:
         thrown(MapperException)
     }
 
     def "AMQP Message -> AVMessage, ID only"() {
-        setup:
+        given:
         MessageProperties props = new MessageProperties()
 
         // PROPERTIES
@@ -87,14 +87,14 @@ class AVMessageMapperSpec extends Specification {
         Message message = new Message(null, props)
 
         when:
-        AVMessage avMessage = AVMessageMapper.transform(message)
+        AVMessageMapper.transform(message)
 
         then:
         thrown(MapperException)
     }
 
     def "AMQP Message -> AVMessage, message type only"() {
-        setup:
+        given:
         MessageProperties props = new MessageProperties()
 
         // PROPERTIES
@@ -105,14 +105,14 @@ class AVMessageMapperSpec extends Specification {
         Message message = new Message(null, props)
 
         when:
-        AVMessage avMessage = AVMessageMapper.transform(message)
+        AVMessageMapper.transform(message)
 
         then:
         thrown(MapperException)
     }
 
     def "AMQP Message -> AVMessage, message ID and type"() {
-        setup:
+        given:
         MessageProperties props = new MessageProperties()
 
         // PROPERTIES
@@ -124,10 +124,29 @@ class AVMessageMapperSpec extends Specification {
         Message message = new Message(null, props)
 
         when:
-        AVMessage avMessage = AVMessageMapper.transform(message)
+        AVMessageMapper.transform(message)
 
         then:
         notThrown(MapperException)
+    }
+
+    def "AMQP Message -> AVMessage, with bad message type"() {
+        given:
+        MessageProperties props = new MessageProperties()
+
+        // PROPERTIES
+        props.setMessageId(testId)
+        props.setType("X-BAD-TYPE-X")
+        // HEADERS
+        // BODY
+
+        Message message = new Message(null, props)
+
+        when:
+        AVMessageMapper.transform(message)
+
+        then:
+        thrown(MapperException)
     }
 
     def "AVMessage -> AMQP Message, v1"() {

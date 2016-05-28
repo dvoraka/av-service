@@ -56,10 +56,18 @@ public final class AVMessageMapper {
             serviceId = DEFAULT_SERVICE_ID;
         }
 
-        // TODO: check message type
+        // message type checking
+        String messageTypeStr = msgProps.getType().toUpperCase();
+        AVMessageType messageType;
+        try {
+            messageType = AVMessageType.valueOf(messageTypeStr);
+        } catch (IllegalArgumentException e) {
+            throw new MapperException("Unknown message type");
+        }
+
         return new DefaultAVMessage.Builder(msgProps.getMessageId())
                 .data(msg.getBody())
-                .type(AVMessageType.valueOf(msgProps.getType().toUpperCase()))
+                .type(messageType)
                 .virusInfo(virusInfo)
                 .serviceId(serviceId)
                 .build();
