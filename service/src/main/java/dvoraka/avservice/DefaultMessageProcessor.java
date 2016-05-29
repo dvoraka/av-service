@@ -107,11 +107,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
         log.debug("Scanning thread: " + Thread.currentThread().getName());
 
         boolean infected = false;
-//        String error = null;
+        String error = null;
         try {
             infected = avService.scanStream(message.getData());
         } catch (ScanErrorException e) {
-//            error = e.getMessage();
+            error = e.getMessage();
             log.warn("Scanning error!", e);
         }
         log.debug("Scanning done in: " + Thread.currentThread().getName());
@@ -122,13 +122,19 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         processedMsgCount.getAndIncrement();
 
-        // TODO: error response
-        sendResponse(prepareResponse(message, infected));
+        if (error == null) {
+            sendResponse(prepareResponse(message, infected));
+        } else {
+            sendResponse(prepareErrorResponse(message, error));
+        }
     }
 
     private AVMessage prepareResponse(AVMessage message, boolean infected) {
-
         return message.createResponse(infected);
+    }
+
+    private AVMessage prepareErrorResponse(AVMessage message, String errorMessage) {
+        return message.createErrorResponse(errorMessage);
     }
 
     private void sendResponse(AVMessage message) {
@@ -209,7 +215,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void removeProcessedAVMessageListener(ProcessedAVMessageListener listener) {
-        // TODO: implement
+        observers.remove(listener);
     }
 
     private void notifyObservers(AVMessage avMessage) {
