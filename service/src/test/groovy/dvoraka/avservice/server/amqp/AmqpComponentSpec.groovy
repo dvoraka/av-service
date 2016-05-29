@@ -72,7 +72,6 @@ class AmqpComponentSpec extends Specification {
         1 * rabbitTemplate.send(_, _, _)
     }
 
-    @Ignore
     def "send broken message"() {
         given:
         RabbitTemplate rabbitTemplate = Mock()
@@ -85,7 +84,7 @@ class AmqpComponentSpec extends Specification {
         component.sendMessage(message)
 
         then:
-        0 * rabbitTemplate.send(_, _, _)
+        1 * rabbitTemplate.send(_, _, _)
     }
 
     AVMessageListener getAVMessageListener() {

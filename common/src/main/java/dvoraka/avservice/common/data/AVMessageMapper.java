@@ -76,16 +76,30 @@ public final class AVMessageMapper {
     public static Message transform(AVMessage msg) throws MapperException {
         log.debug("AVTransform: " + msg);
 
-        // TODO: add checks for fields
+        // mandatory fields
+        if (msg.getId() == null) {
+            throw new MapperException("Message ID may not be null");
+        } else if (msg.getType() == null) {
+            throw new MapperException("Message type may not be null");
+        }
+
         MessageProperties props = new MessageProperties();
         props.setMessageId(msg.getId());
-        props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
         props.setType(msg.getType().toString());
+
+        if (msg.getCorrelationId() != null) {
+            props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
+        }
 
         props.setAppId("antivirus");
 
-        // for old clients
-        int oldReply = msg.getVirusInfo().equals("") ? 1 : 0;
+        // for old clients (deprecated)
+        int oldReply;
+        if (msg.getVirusInfo() != null) {
+            oldReply = msg.getVirusInfo().equals("") ? 1 : 0;
+        } else {
+            oldReply = 1;
+        }
         props.setHeader("isClean", oldReply);
 
         // service ID
