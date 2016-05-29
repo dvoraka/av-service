@@ -62,12 +62,24 @@ public class AmqpComponent implements ServerComponent {
 
     @Override
     public void sendMessage(AVMessage message) {
+        if (message == null) {
+            throw new IllegalArgumentException("Message may not be null!");
+        }
+
+        Message response = null;
         try {
-            Message response = AVMessageMapper.transform(message);
+            response = AVMessageMapper.transform(message);
             rabbitTemplate.send(responseExchange, "ROUTINGKEY", response);
         } catch (MapperException e) {
-            log.warn("Message problem!", e);
-            // TODO: send error response
+            log.warn("Message transformation problem!", e);
+            // create error response
+            AVMessage errorResponse = message.createErrorResponse(e.getMessage());
+            try {
+                response = AVMessageMapper.transform(errorResponse);
+            } catch (MapperException e1) {
+                log.error("Message send error!", e1);
+            }
+            rabbitTemplate.send(responseExchange, "ROUTINGKEY", response);
         }
     }
 }

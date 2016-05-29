@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -71,6 +72,15 @@ public final class DefaultAVMessage implements AVMessage {
                 .correlationId(this.getId())
                 .virusInfo(virusInfo)
                 .type(AVMessageType.RESPONSE)
+                .build();
+    }
+
+    @Override
+    public AVMessage createErrorResponse(String errorMessage) {
+        return new Builder(null)
+                .correlationId(this.getId())
+                .type(AVMessageType.RESPONSE_ERROR)
+                .data(errorMessage.getBytes(StandardCharsets.UTF_8))
                 .build();
     }
 

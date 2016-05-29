@@ -76,6 +76,7 @@ public final class AVMessageMapper {
     public static Message transform(AVMessage msg) throws MapperException {
         log.debug("AVTransform: " + msg);
 
+        // TODO: add checks for fields
         MessageProperties props = new MessageProperties();
         props.setMessageId(msg.getId());
         props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));

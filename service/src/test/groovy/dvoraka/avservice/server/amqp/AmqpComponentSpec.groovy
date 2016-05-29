@@ -1,7 +1,12 @@
 package dvoraka.avservice.server.amqp
 
 import dvoraka.avservice.common.AVMessageListener
+import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AVMessage
+import dvoraka.avservice.common.data.DefaultAVMessage
+import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.test.util.ReflectionTestUtils
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -26,10 +31,11 @@ class AmqpComponentSpec extends Specification {
     }
 
     def "remove listeners"() {
-        when:
+        given:
         AVMessageListener listener1 = getAVMessageListener()
         AVMessageListener listener2 = getAVMessageListener()
 
+        when:
         component.addAVMessageListener(listener1)
         component.addAVMessageListener(listener2)
 
@@ -42,6 +48,44 @@ class AmqpComponentSpec extends Specification {
 
         then:
         component.listenersCount() == 0
+    }
+
+    def "send null message"() {
+        when:
+        component.sendMessage(null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "send normal message"() {
+        given:
+        RabbitTemplate rabbitTemplate = Mock()
+        ReflectionTestUtils.setField(component, null, rabbitTemplate, RabbitTemplate.class)
+
+        AVMessage message = Utils.genNormalMessage()
+
+        when:
+        component.sendMessage(message)
+
+        then:
+        1 * rabbitTemplate.send(_, _, _)
+    }
+
+    @Ignore
+    def "send broken message"() {
+        given:
+        RabbitTemplate rabbitTemplate = Mock()
+        ReflectionTestUtils.setField(component, null, rabbitTemplate, RabbitTemplate.class)
+
+        AVMessage message = new DefaultAVMessage.Builder(null)
+                .build()
+
+        when:
+        component.sendMessage(message)
+
+        then:
+        0 * rabbitTemplate.send(_, _, _)
     }
 
     AVMessageListener getAVMessageListener() {

@@ -29,4 +29,6 @@ public interface AVMessage {
     String getVirusInfo();
 
     AVMessage createResponse(boolean virus);
+
+    AVMessage createErrorResponse(String errorMessage);
 }
