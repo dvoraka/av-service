@@ -7,7 +7,7 @@ import spock.lang.Specification
 /**
  * AMQP component test.
  */
-class AmqpComponentTest extends Specification {
+class AmqpComponentSpec extends Specification {
 
     AmqpComponent component
 
