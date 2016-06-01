@@ -9,6 +9,7 @@ import dvoraka.avservice.server.ReceivingType
 import dvoraka.avservice.service.AVService
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
 /**
  * Default processor tests.
@@ -16,10 +17,12 @@ import spock.lang.Specification
 class DefaultMessageProcessorSpec extends Specification {
 
     DefaultMessageProcessor processor
+    PollingConditions conditions
 
 
     def setup() {
         processor = new DefaultMessageProcessor(2)
+        conditions = new PollingConditions(timeout: 2, factor: 0.1)
     }
 
     def cleanup() {
@@ -66,16 +69,15 @@ class DefaultMessageProcessorSpec extends Specification {
         AVMessage message = Utils.genNormalMessage()
         processor.sendMessage(message)
 
-        sleep(1000)
-
         expect:
-        processor.hasProcessedMessage()
-        processor.getProcessedMessage().getCorrelationId().equals(message.getId())
+        conditions.eventually {
+            processor.hasProcessedMessage()
+            processor.getProcessedMessage().getCorrelationId().equals(message.getId())
+        }
     }
 
     def "send message with a full queue"() {
         setup:
-        long time = 1000
         AVService service = Stub()
         service.scanStream(_) >> false
 
@@ -87,23 +89,25 @@ class DefaultMessageProcessorSpec extends Specification {
         AVMessage message2 = Utils.genNormalMessage()
         processor.sendMessage(message2)
 
-        sleep(time)
-
         expect:
-        processor.isProcessedQueueFull()
-        processor.hasProcessedMessage()
-        processor.getProcessedMessage()
+        conditions.eventually {
+            processor.isProcessedQueueFull()
+            processor.hasProcessedMessage()
+            processor.getProcessedMessage()
+        }
 
         and:
-        sleep(time)
-        processor.hasProcessedMessage()
-        processor.getProcessedMessage()
-        sleep(time)
-        !processor.isProcessedQueueFull()
+        conditions.eventually {
+            processor.hasProcessedMessage()
+            processor.getProcessedMessage()
+        }
+        conditions.eventually {
+            !processor.isProcessedQueueFull()
+        }
     }
 
     def "send message (with a service error)"() {
-        setup:
+        given:
         AVService service = Stub()
         service.scanStream(_) >> {
             throw new ScanErrorException("Service is dead")
@@ -112,16 +116,15 @@ class DefaultMessageProcessorSpec extends Specification {
         ReflectionTestUtils.setField(processor, null, service, AVService.class)
         AVMessage message = Utils.genNormalMessage()
 
+        when:
         processor.sendMessage(message)
 
-        sleep(1000)
-
-        expect:
-        true
+        then:
+        notThrown(ScanErrorException)
     }
 
     def "processing message status"() {
-        setup:
+        given:
         String testId = "testId"
 
         AVService service = Stub()
@@ -140,7 +143,7 @@ class DefaultMessageProcessorSpec extends Specification {
     }
 
     def "processed message status"() {
-        setup:
+        given:
         String testId = "testId"
 
         AVService service = Stub()
@@ -148,10 +151,11 @@ class DefaultMessageProcessorSpec extends Specification {
 
         when:
         processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
-        sleep(1000)
 
         then:
-        processor.messageStatus(testId) == MessageStatus.PROCESSED
+        conditions.eventually {
+            processor.messageStatus(testId) == MessageStatus.PROCESSED
+        }
     }
 
     def "unknown message status"() {

@@ -6,7 +6,6 @@ import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.DefaultAVMessage
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.test.util.ReflectionTestUtils
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
