@@ -6,6 +6,7 @@ import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.DefaultAVMessage
 import dvoraka.avservice.common.data.MessageStatus
 import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
 /**
  * Direct REST strategy test.
@@ -14,11 +15,13 @@ class DirectRestStrategySpec extends Specification {
 
     String testId = 'TEST-ID'
 
-    DirectRestStrategy strategy;
+    DirectRestStrategy strategy
+    PollingConditions conditions
 
 
     def setup() {
         strategy = new DirectRestStrategy()
+        conditions = new PollingConditions(timeout: 2)
     }
 
     def cleanup() {
@@ -75,9 +78,9 @@ class DirectRestStrategySpec extends Specification {
         strategy.setRestMessageProcessor(processor)
         strategy.start()
 
-        sleep(1000)
-
         expect:
-        strategy.getResponse(testId).equals(response)
+        conditions.eventually {
+            strategy.getResponse(testId).equals(response)
+        }
     }
 }

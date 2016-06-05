@@ -10,6 +10,7 @@ import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
 /**
  * SimpleAmqpListeningStrategySpec test.
@@ -17,10 +18,12 @@ import spock.lang.Specification
 class SimpleAmqpListeningStrategySpec extends Specification {
 
     SimpleAmqpListeningStrategy strategy
+    PollingConditions conditions
 
 
     def setup() {
         strategy = new SimpleAmqpListeningStrategy(500L)
+        conditions = new PollingConditions(timeout: 2)
     }
 
     def "listening test without a message"() {
@@ -41,17 +44,19 @@ class SimpleAmqpListeningStrategySpec extends Specification {
                 strategy.listen()
             }
         }).start()
-        sleep(500)
 
         then:
-        strategy.isRunning()
+        conditions.eventually {
+            strategy.isRunning()
+        }
 
         when:
         strategy.stop()
-        sleep(1000)
 
         then:
-        !strategy.isRunning()
+        conditions.eventually {
+            !strategy.isRunning()
+        }
     }
 
     def "listening test with a message"() {
@@ -74,17 +79,19 @@ class SimpleAmqpListeningStrategySpec extends Specification {
                 strategy.listen()
             }
         }).start()
-        sleep(500)
 
         then:
-        strategy.isRunning()
+        conditions.eventually {
+            strategy.isRunning()
+        }
 
         when:
         strategy.stop()
-        sleep(1000)
 
         then:
-        !strategy.isRunning()
+        conditions.eventually {
+            !strategy.isRunning()
+        }
     }
 
     def "listening test with a malformed message"() {
@@ -108,20 +115,22 @@ class SimpleAmqpListeningStrategySpec extends Specification {
                 strategy.listen()
             }
         }).start()
-        sleep(500)
 
         then:
-        strategy.isRunning()
+        conditions.eventually {
+            strategy.isRunning()
+        }
 
         when:
         strategy.stop()
-        sleep(1000)
 
         then:
-        !strategy.isRunning()
+        conditions.eventually {
+            !strategy.isRunning()
+        }
     }
 
-    def "stopping test"() {
+    def "stopping test with interruption"() {
         when:
         RabbitTemplate template = Stub()
         MessageProcessor processor = Stub()
@@ -141,10 +150,11 @@ class SimpleAmqpListeningStrategySpec extends Specification {
             }
         })
         listeningThread.start()
-        sleep(500)
 
         then:
-        strategy.isRunning()
+        conditions.eventually {
+            strategy.isRunning()
+        }
 
         when:
         Thread stoppingThread = new Thread(new Runnable() {
@@ -155,13 +165,12 @@ class SimpleAmqpListeningStrategySpec extends Specification {
         })
         stoppingThread.start()
         stoppingThread.interrupt()
-        sleep(100)
 
         then:
-        // TODO:
-        // stoppingThread.isInterrupted()
-        true
-
+        conditions.eventually {
+            !strategy.isRunning()
+            stoppingThread.getState() == Thread.State.TERMINATED
+        }
     }
 
     def "get listening timeout"() {

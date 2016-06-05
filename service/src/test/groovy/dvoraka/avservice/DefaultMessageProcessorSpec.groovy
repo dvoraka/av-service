@@ -22,7 +22,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def setup() {
         processor = new DefaultMessageProcessor(2)
-        conditions = new PollingConditions(timeout: 2, factor: 0.1)
+        conditions = new PollingConditions(timeout: 2)
     }
 
     def cleanup() {
