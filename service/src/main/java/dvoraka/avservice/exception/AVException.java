@@ -6,9 +6,6 @@ package dvoraka.avservice.exception;
 public class AVException extends Exception {
 
 
-    public AVException() {
-    }
-
     public AVException(String message) {
         super(message);
     }
