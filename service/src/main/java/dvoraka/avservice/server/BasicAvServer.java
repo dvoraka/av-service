@@ -27,7 +27,7 @@ public class BasicAvServer implements AVServer, ServiceManagement, AVMessageList
     private static final Logger log = LogManager.getLogger(BasicAvServer.class.getName());
 
     private boolean started;
-    private boolean stopped;
+    private boolean stopped = true;
     private boolean running;
 
 
