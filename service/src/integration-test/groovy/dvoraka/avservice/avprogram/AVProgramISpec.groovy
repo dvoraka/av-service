@@ -17,10 +17,10 @@ import spock.lang.Unroll
 class AVProgramISpec extends Specification {
 
     @Shared
-    String eicarString = Utils.EICAR;
+    String eicarString = Utils.EICAR
 
     @Autowired
-    AVProgram avProgram;
+    AVProgram avProgram
 
 
     def setup() {

@@ -42,7 +42,7 @@ public class AppConfig {
 
     @Bean
     public AVUtils utils() {
-        return new AVUtils(sender(), receiver());
+        return new AVUtils();
     }
 
     @Bean

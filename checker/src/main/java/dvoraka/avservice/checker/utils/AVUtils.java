@@ -3,46 +3,29 @@ package dvoraka.avservice.checker.utils;
 import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.ProtocolException;
 import dvoraka.avservice.checker.exception.UnknownProtocolException;
-import dvoraka.avservice.checker.receiver.AVReceiver;
 import dvoraka.avservice.checker.receiver.Receiver;
-import dvoraka.avservice.checker.sender.AVSender;
 import dvoraka.avservice.checker.sender.Sender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.net.ConnectException;
 
 /**
- * Created by dvoraka on 23.4.14.
+ * AVUtils.
  */
 public class AVUtils implements AmqpUtils {
 
-    private static Logger logger = LogManager.getLogger();
-
+    @Autowired
     private Sender sender;
+    @Autowired
     private Receiver receiver;
+
+    private static Logger logger = LogManager.getLogger();
 
     private boolean senderOutput;
     private boolean receiverOutput;
-
-    public AVUtils() {
-        this(null, null);
-    }
-
-    public AVUtils(Sender sender, Receiver receiver) {
-        if (sender == null) {
-            this.sender = new AVSender("localhost", false);
-        } else {
-            this.sender = sender;
-        }
-
-        if (receiver == null) {
-            this.receiver = new AVReceiver("localhost", false);
-        } else {
-            this.receiver = receiver;
-        }
-    }
 
     /**
      * Sets new output flags and saves old ones.
@@ -99,17 +82,11 @@ public class AVUtils implements AmqpUtils {
 //        return procotolVersion;
 //    }
 
-    // TODO: improve
     @Override
     public String negotiateProtocol(String[] protocols)
             throws UnknownProtocolException {
 
-        String protocol;
-        int loop = 0;
-        final int maxLoops = 20;
-        for (int i = protocols.length; i > 0; i--) {
-            protocol = protocols[i - 1];
-            // System.out.println("Trying " + protocol + "...");
+        for (String protocol : protocols) {
             sender.setProtocolVersion(protocol);
 
             try {
@@ -129,12 +106,6 @@ public class AVUtils implements AmqpUtils {
                 logger.warn("negotiation failed", e);
                 throw new UnknownProtocolException();
             }
-
-            if (loop > maxLoops) {
-                break;
-            }
-
-            loop++;
         }
 
         return null;
