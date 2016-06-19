@@ -44,6 +44,13 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 ### Installation
 You can use Docker to prepare necessary services.
 #### Docker style
+**Services**
+* RabbitMQ
+* ClamAV daemon
+* Kibana
+* Elasticsearch
+* Logstash
+
 Change your working directory to *docker*:
 ```
 $ cd docker/
