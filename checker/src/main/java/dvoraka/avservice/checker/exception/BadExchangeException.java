@@ -1,19 +1,9 @@
 package dvoraka.avservice.checker.exception;
 
 /**
- * Exception class for messages with bad app-id.
- *
- * @author dvoraka
+ * Exception for messages with bad app-id.
  */
 public class BadExchangeException extends ProtocolException {
-
-    /**
-     * Creates a new instance of <code>BadExchangeException</code> without
-     * detail message.
-     */
-    public BadExchangeException() {
-        super();
-    }
 
     /**
      * Constructs an instance of <code>BadExchangeException</code> with the

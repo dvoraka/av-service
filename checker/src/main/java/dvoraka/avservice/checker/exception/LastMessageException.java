@@ -1,9 +1,7 @@
 package dvoraka.avservice.checker.exception;
 
 /**
- * Exception for reaching last message in queue.
- *
- * @author dvoraka
+ * Exception for reaching last message in a queue.
  */
 public class LastMessageException extends Exception {
 
@@ -13,15 +11,5 @@ public class LastMessageException extends Exception {
      */
     public LastMessageException() {
         super();
-    }
-
-    /**
-     * Constructs an instance of <code>LastMessageException</code> with the
-     * specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public LastMessageException(String msg) {
-        super(msg);
     }
 }

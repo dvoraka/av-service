@@ -1,7 +1,7 @@
 package dvoraka.avservice.checker.exception;
 
 /**
- * @author dvoraka
+ * Exception for reaching max loops count.
  */
 public class MaxLoopsReachedException extends Exception {
 
@@ -11,15 +11,5 @@ public class MaxLoopsReachedException extends Exception {
      */
     public MaxLoopsReachedException() {
         super();
-    }
-
-    /**
-     * Constructs an instance of <code>MaxLoopsReachedException</code> with the
-     * specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public MaxLoopsReachedException(String msg) {
-        super(msg);
     }
 }
