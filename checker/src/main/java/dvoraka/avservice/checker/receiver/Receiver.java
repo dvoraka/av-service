@@ -7,15 +7,13 @@ import java.io.IOException;
 
 /**
  * AMQP interface for receiving.
- *
- * @author dvoraka
  */
 public interface Receiver {
 
     /**
-     * Receives data.
+     * Receives an info about the message.
      *
-     * @param corrId parent message ID
+     * @param corrId the message ID
      * @throws IOException
      * @throws InterruptedException
      * @throws ProtocolException
