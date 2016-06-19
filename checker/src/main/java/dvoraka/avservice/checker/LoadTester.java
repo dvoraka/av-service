@@ -3,12 +3,12 @@ package dvoraka.avservice.checker;
 import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.MaxLoopsReachedException;
 import dvoraka.avservice.checker.exception.ProtocolException;
-import dvoraka.avservice.checker.receiver.AVReceiver;
 import dvoraka.avservice.checker.receiver.Receiver;
-import dvoraka.avservice.checker.sender.AVSender;
 import dvoraka.avservice.checker.sender.Sender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -18,11 +18,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * AMQP anti-virus load tester.
- * <p>
- * Created by dvoraka on 17.4.14.
  */
-// TODO: Spring
 public class LoadTester implements Tester {
+
+    @Autowired
+    private Sender sender;
+    @Autowired
+    private Receiver receiver;
 
     private static Logger logger = LogManager.getLogger();
 
@@ -31,38 +33,16 @@ public class LoadTester implements Tester {
     private static final int MS_PER_SECOND = 1000;
 
     private LoadTestProperties props;
-    private Sender sender;
-    private Receiver receiver;
 
     private int maxLoops;
     private int maxMsgExceptions;
 
 
-    public LoadTester() {
-        this(null, null, null);
-    }
-
     public LoadTester(LoadTestProperties props) {
-        this(props, null, null);
-    }
-
-    public LoadTester(LoadTestProperties props, Sender sender, Receiver receiver) {
         if (props == null) {
             this.props = new BasicProperties();
         } else {
             this.props = props;
-        }
-
-        if (sender == null) {
-            this.sender = new AVSender(this.props.getHost(), false);
-        } else {
-            this.sender = sender;
-        }
-
-        if (receiver == null) {
-            this.receiver = new AVReceiver(this.props.getHost(), false);
-        } else {
-            this.receiver = receiver;
         }
 
         this.maxLoops = MAX_LOOPS;
@@ -70,9 +50,12 @@ public class LoadTester implements Tester {
     }
 
     public static void main(String[] args) throws IOException {
-        LoadTestProperties ltp = new BasicProperties();
-        Tester lt = new LoadTester(ltp);
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(LoadTestConfig.class);
+        Tester lt = context.getBean(LoadTester.class);
         lt.startTest();
+
+        context.close();
     }
 
     public Collection<String> sendMessages() throws IOException {
@@ -154,7 +137,7 @@ public class LoadTester implements Tester {
         if (durationSeconds == 0) {
             durationSeconds = 1;
         }
-        System.out.println("Messages: " + getProps().getMsgCount() / durationSeconds  + "/s");
+        System.out.println("Messages: " + getProps().getMsgCount() / durationSeconds + "/s");
     }
 
     private void synchronousTest() throws IOException {
@@ -248,15 +231,7 @@ public class LoadTester implements Tester {
         return sender;
     }
 
-    public void setSender(Sender sender) {
-        this.sender = sender;
-    }
-
     public Receiver getReceiver() {
         return receiver;
-    }
-
-    public void setReceiver(Receiver receiver) {
-        this.receiver = receiver;
     }
 }
