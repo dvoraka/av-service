@@ -213,12 +213,8 @@ public class AVReceiver implements Receiver {
     /**
      * @return verbose output flag
      */
-    public boolean isVerboseOutput() {
-        return verboseOutput;
-    }
-
     @Override
-    public boolean getVerboseOutput() {
+    public boolean isVerboseOutput() {
         return verboseOutput;
     }
 

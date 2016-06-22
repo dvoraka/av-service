@@ -35,14 +35,14 @@ public interface Sender {
     void setProtocolVersion(String version);
 
     /**
-     * Returns flag for verbose output.
+     * Returns the flag for a verbose output.
      *
      * @return the verbose flag
      */
-    boolean getVerboseOutput();
+    boolean isVerboseOutput();
 
     /**
-     * Sets flag for verbose output.
+     * Sets the flag for a verbose output.
      *
      * @param verboseOutput the verbose flag
      */

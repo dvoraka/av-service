@@ -31,10 +31,10 @@ public class AVUtils implements AmqpUtils {
      * Sets new output flags and saves old ones.
      */
     private void disableOutputFlags() {
-        senderOutput = sender.getVerboseOutput();
+        senderOutput = sender.isVerboseOutput();
         sender.setVerboseOutput(false);
 
-        receiverOutput = receiver.getVerboseOutput();
+        receiverOutput = receiver.isVerboseOutput();
         receiver.setVerboseOutput(false);
     }
 

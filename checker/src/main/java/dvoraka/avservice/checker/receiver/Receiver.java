@@ -25,7 +25,7 @@ public interface Receiver {
             ProtocolException,
             LastMessageException;
 
-    boolean getVerboseOutput();
+    boolean isVerboseOutput();
 
     void setVerboseOutput(boolean verboseOutput);
 }

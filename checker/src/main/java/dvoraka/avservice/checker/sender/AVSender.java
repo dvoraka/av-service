@@ -31,7 +31,6 @@ public class AVSender implements Sender {
     private static final String DEFAULT_CHECK_EXCHANGE = "check";
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-
     /**
      * AMQP message broker host
      */
@@ -53,11 +52,7 @@ public class AVSender implements Sender {
 
 
     public AVSender(String host) {
-        this(host, true);
-    }
-
-    public AVSender(String host, boolean verboseOutput) {
-        this(host, verboseOutput, "1");
+        this(host, true, "1");
     }
 
     public AVSender(String host, boolean verboseOutput, String protocolVersion) {
@@ -117,10 +112,8 @@ public class AVSender implements Sender {
             channel.basicPublish(getRequestExchange(), "", props, bytes);
 //            channel.waitForConfirmsOrDie();
 
-            if (isVerboseOutput()) {
-                System.out.println("-------------");
-                System.out.println("Message sent.");
-            }
+            printMessage("-------------");
+            printMessage("Message sent.");
 
         } catch (IOException e) {
             logger.warn("Connection problem - send", e);
@@ -161,14 +154,12 @@ public class AVSender implements Sender {
 
             @Override
             public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-
 //                System.out.println("ACK");
 //                System.out.println("M: " + multiple);
             }
 
             @Override
             public void handleNack(long deliveryTag, boolean multiple) throws IOException {
-
 //                System.out.println("NACK");
 //                System.out.println("M: " + multiple);
             }
@@ -250,12 +241,12 @@ public class AVSender implements Sender {
     }
 
     /**
-     * Returns file bytes.
+     * Returns the file as bytes.
      *
      * @param virus include virus flag
      * @return file as bytes
      */
-    public byte[] readTestFile(boolean virus) {
+    private byte[] readTestFile(boolean virus) {
         byte[] bytes;
         if (virus) {
             bytes = infectedTestFileBytes();
@@ -272,7 +263,7 @@ public class AVSender implements Sender {
         try (InputStream in = getClass().getResourceAsStream("/eicar")) {
             if (in == null) {
                 logger.warn("Virus file not found.");
-                throw new FileNotFoundException();
+                throw new FileNotFoundException("Virus file not found.");
             }
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -285,7 +276,6 @@ public class AVSender implements Sender {
             }
 
             bytes = bos.toByteArray();
-
         } catch (IOException e) {
             logger.warn("Virus file problem!", e);
         }
@@ -299,6 +289,12 @@ public class AVSender implements Sender {
         return testStr.getBytes(DEFAULT_CHARSET);
     }
 
+    private void printMessage(String msg) {
+        if (isVerboseOutput()) {
+            System.out.println(msg);
+        }
+    }
+
     /**
      * @return the protocolVersion
      */
@@ -309,6 +305,7 @@ public class AVSender implements Sender {
     /**
      * @param protocolVersion the protocolVersion to set
      */
+    @Override
     public void setProtocolVersion(String protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
@@ -316,14 +313,12 @@ public class AVSender implements Sender {
     /**
      * @return the verbose output flag
      */
+    @Override
     public boolean isVerboseOutput() {
         return verboseOutput;
     }
 
-    public boolean getVerboseOutput() {
-        return verboseOutput;
-    }
-
+    @Override
     public void setVerboseOutput(boolean verboseOutput) {
         this.verboseOutput = verboseOutput;
     }

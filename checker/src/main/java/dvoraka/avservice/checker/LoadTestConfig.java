@@ -15,7 +15,7 @@ public class LoadTestConfig {
 
     @Bean
     public Sender sender() {
-        return new AVSender(loadTestProperties().getHost(), false);
+        return new AVSender(loadTestProperties().getHost(), false, "1");
     }
 
     @Bean
