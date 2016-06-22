@@ -1,6 +1,6 @@
 package dvoraka.avservice.checker
 
-import dvoraka.avservice.checker.receiver.Receiver
+import dvoraka.avservice.checker.receiver.AvReceiver
 import dvoraka.avservice.checker.sender.Sender
 import spock.lang.Specification;
 
@@ -11,7 +11,7 @@ class AVCheckerTest extends Specification {
 
         setup:
         Sender sender = Mock()
-        Receiver receiver = Mock()
+        AvReceiver receiver = Mock()
         AVChecker checker = new AVChecker(sender, receiver)
 
         when:

@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * AMQP interface for receiving.
  */
-public interface Receiver {
+public interface AvReceiver {
 
     /**
      * Receives an info about the message.

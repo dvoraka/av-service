@@ -3,7 +3,7 @@ package dvoraka.avservice.checker;
 import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.MaxLoopsReachedException;
 import dvoraka.avservice.checker.exception.ProtocolException;
-import dvoraka.avservice.checker.receiver.Receiver;
+import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.sender.Sender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +24,7 @@ public class LoadTester implements Tester {
     @Autowired
     private Sender sender;
     @Autowired
-    private Receiver receiver;
+    private AvReceiver avReceiver;
 
     private static Logger logger = LogManager.getLogger();
 
@@ -81,7 +81,7 @@ public class LoadTester implements Tester {
             while (it.hasNext()) {
                 try {
                     String item = it.next();
-                    getReceiver().receive(item);
+                    getAvReceiver().receive(item);
                     it.remove();
                 } catch (InterruptedException e) {
                     logger.warn("Receiving interrupted!");
@@ -148,7 +148,7 @@ public class LoadTester implements Tester {
         for (int i = 0; i < getProps().getMsgCount(); i++) {
             try {
                 msgId = getSender().sendFile(true, getProps().getAppId());
-                getReceiver().receive(msgId);
+                getAvReceiver().receive(msgId);
             } catch (InterruptedException e) {
                 logger.warn("Receiving interrupted!");
                 Thread.currentThread().interrupt();
@@ -174,7 +174,7 @@ public class LoadTester implements Tester {
             Iterator<String> it = skippedMessages.iterator();
             while (it.hasNext()) {
                 try {
-                    getReceiver().receive(it.next());
+                    getAvReceiver().receive(it.next());
                     it.remove();
                 } catch (InterruptedException e) {
                     logger.warn("Receiving interrupted!");
@@ -231,7 +231,7 @@ public class LoadTester implements Tester {
         return sender;
     }
 
-    public Receiver getReceiver() {
-        return receiver;
+    public AvReceiver getAvReceiver() {
+        return avReceiver;
     }
 }

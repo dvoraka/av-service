@@ -1,7 +1,7 @@
 package dvoraka.avservice.checker;
 
+import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.receiver.amqp.AmqpReceiver;
-import dvoraka.avservice.checker.receiver.Receiver;
 import dvoraka.avservice.checker.sender.amqp.AmqpSender;
 import dvoraka.avservice.checker.sender.Sender;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ public class LoadTestConfig {
     }
 
     @Bean
-    public Receiver receiver() {
+    public AvReceiver receiver() {
         return new AmqpReceiver(loadTestProperties().getHost(), false);
     }
 

@@ -7,7 +7,7 @@ import com.rabbitmq.client.QueueingConsumer;
 import dvoraka.avservice.checker.ErrorMessage;
 import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.ProtocolException;
-import dvoraka.avservice.checker.receiver.Receiver;
+import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeoutException;
  *
  * @author dvoraka
  */
-public class AmqpReceiver implements Receiver {
+public class AmqpReceiver implements AvReceiver {
 
     private static Logger logger = LogManager.getLogger();
 
