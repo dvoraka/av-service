@@ -3,7 +3,7 @@ package dvoraka.avservice.checker;
 import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.ProtocolException;
 import dvoraka.avservice.checker.receiver.AvReceiver;
-import dvoraka.avservice.checker.sender.Sender;
+import dvoraka.avservice.checker.sender.AvSender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +17,7 @@ import java.net.ConnectException;
  */
 public class AVChecker {
 
-    private Sender sender;
+    private AvSender sender;
     private AvReceiver receiver;
 
     private boolean dirtyFile;
@@ -25,11 +25,11 @@ public class AVChecker {
 
     private static Logger logger = LogManager.getLogger();
 
-    public AVChecker(Sender sender, AvReceiver receiver) {
+    public AVChecker(AvSender sender, AvReceiver receiver) {
         this(sender, receiver, false, "antivirus");
     }
 
-    public AVChecker(Sender sender, AvReceiver receiver,
+    public AVChecker(AvSender sender, AvReceiver receiver,
                      boolean dirtyFile, String appId) {
 
         this.sender = sender;
@@ -63,14 +63,14 @@ public class AVChecker {
     /**
      * @return the sender
      */
-    public Sender getSender() {
+    public AvSender getSender() {
         return sender;
     }
 
     /**
      * @param sender the sender to set
      */
-    public void setSender(Sender sender) {
+    public void setSender(AvSender sender) {
         this.sender = sender;
     }
 

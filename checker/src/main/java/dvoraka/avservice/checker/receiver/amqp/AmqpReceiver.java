@@ -19,9 +19,7 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Default AV receiver implementation.
- *
- * @author dvoraka
+ * AMQP receiver implementation.
  */
 public class AmqpReceiver implements AvReceiver {
 

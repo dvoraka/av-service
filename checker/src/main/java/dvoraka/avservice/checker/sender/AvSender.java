@@ -3,11 +3,9 @@ package dvoraka.avservice.checker.sender;
 import java.io.IOException;
 
 /**
- * AMQP interface for sending.
- *
- * @author dvoraka
+ * Anti-virus interface for sending.
  */
-public interface Sender {
+public interface AvSender {
 
     /**
      * Sends file through AMQP.

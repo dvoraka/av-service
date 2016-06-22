@@ -5,7 +5,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConfirmListener;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import dvoraka.avservice.checker.sender.Sender;
+import dvoraka.avservice.checker.sender.AvSender;
 import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,9 +22,9 @@ import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Anti-virus file sender class
+ * AMQP file sender class
  */
-public class AmqpSender implements Sender {
+public class AmqpSender implements AvSender {
 
     private static Logger logger = LogManager.getLogger();
 
@@ -37,7 +37,7 @@ public class AmqpSender implements Sender {
      */
     private final String host;
     /**
-     * Sender protocol version
+     * AvSender protocol version
      */
     private String protocolVersion;
     /**

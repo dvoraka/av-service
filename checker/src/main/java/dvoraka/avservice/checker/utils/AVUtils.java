@@ -4,7 +4,7 @@ import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.ProtocolException;
 import dvoraka.avservice.checker.exception.UnknownProtocolException;
 import dvoraka.avservice.checker.receiver.AvReceiver;
-import dvoraka.avservice.checker.sender.Sender;
+import dvoraka.avservice.checker.sender.AvSender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.net.ConnectException;
 public class AVUtils implements AmqpUtils {
 
     @Autowired
-    private Sender sender;
+    private AvSender avSender;
     @Autowired
     private AvReceiver avReceiver;
 
@@ -31,8 +31,8 @@ public class AVUtils implements AmqpUtils {
      * Sets new output flags and saves old ones.
      */
     private void disableOutputFlags() {
-        senderOutput = sender.isVerboseOutput();
-        sender.setVerboseOutput(false);
+        senderOutput = avSender.isVerboseOutput();
+        avSender.setVerboseOutput(false);
 
         receiverOutput = avReceiver.isVerboseOutput();
         avReceiver.setVerboseOutput(false);
@@ -42,7 +42,7 @@ public class AVUtils implements AmqpUtils {
      * Restores old output flags.
      */
     private void resetOutputFlags() {
-        sender.setVerboseOutput(senderOutput);
+        avSender.setVerboseOutput(senderOutput);
         avReceiver.setVerboseOutput(receiverOutput);
     }
 
@@ -87,10 +87,10 @@ public class AVUtils implements AmqpUtils {
             throws UnknownProtocolException {
 
         for (String protocol : protocols) {
-            sender.setProtocolVersion(protocol);
+            avSender.setProtocolVersion(protocol);
 
             try {
-                avReceiver.receive(sender.sendFile(false, "antivirus"));
+                avReceiver.receive(avSender.sendFile(false, "antivirus"));
                 return protocol;
             } catch (ConnectException e) {
                 logger.debug(e);

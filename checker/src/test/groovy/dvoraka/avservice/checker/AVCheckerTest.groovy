@@ -1,7 +1,7 @@
 package dvoraka.avservice.checker
 
 import dvoraka.avservice.checker.receiver.AvReceiver
-import dvoraka.avservice.checker.sender.Sender
+import dvoraka.avservice.checker.sender.AvSender
 import spock.lang.Specification;
 
 
@@ -10,7 +10,7 @@ class AVCheckerTest extends Specification {
     def "test check calls"() {
 
         setup:
-        Sender sender = Mock()
+        AvSender sender = Mock()
         AvReceiver receiver = Mock()
         AVChecker checker = new AVChecker(sender, receiver)
 

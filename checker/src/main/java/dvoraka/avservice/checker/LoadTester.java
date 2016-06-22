@@ -4,7 +4,7 @@ import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.MaxLoopsReachedException;
 import dvoraka.avservice.checker.exception.ProtocolException;
 import dvoraka.avservice.checker.receiver.AvReceiver;
-import dvoraka.avservice.checker.sender.Sender;
+import dvoraka.avservice.checker.sender.AvSender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class LoadTester implements Tester {
 
     @Autowired
-    private Sender sender;
+    private AvSender avSender;
     @Autowired
     private AvReceiver avReceiver;
 
@@ -62,7 +62,7 @@ public class LoadTester implements Tester {
         Collection<String> messageIDs = new HashSet<>(getProps().getMsgCount() / 2);
 
         for (int i = 0; i < getProps().getMsgCount(); i++) {
-            messageIDs.add(getSender().sendFile(true, getProps().getAppId()));
+            messageIDs.add(getAvSender().sendFile(true, getProps().getAppId()));
         }
 
         return messageIDs;
@@ -117,7 +117,7 @@ public class LoadTester implements Tester {
         long begin = System.currentTimeMillis();
 
         // purge queue before test start
-        getSender().purgeQueue(getProps().getDestinationQueue());
+        getAvSender().purgeQueue(getProps().getDestinationQueue());
 
         if (getProps().isSynchronous()) {
             synchronousTest();
@@ -147,7 +147,7 @@ public class LoadTester implements Tester {
         String msgId = null;
         for (int i = 0; i < getProps().getMsgCount(); i++) {
             try {
-                msgId = getSender().sendFile(true, getProps().getAppId());
+                msgId = getAvSender().sendFile(true, getProps().getAppId());
                 getAvReceiver().receive(msgId);
             } catch (InterruptedException e) {
                 logger.warn("Receiving interrupted!");
@@ -227,8 +227,8 @@ public class LoadTester implements Tester {
         this.props = props;
     }
 
-    public Sender getSender() {
-        return sender;
+    public AvSender getAvSender() {
+        return avSender;
     }
 
     public AvReceiver getAvReceiver() {

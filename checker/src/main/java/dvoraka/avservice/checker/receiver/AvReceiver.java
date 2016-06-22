@@ -6,7 +6,7 @@ import dvoraka.avservice.checker.exception.ProtocolException;
 import java.io.IOException;
 
 /**
- * AMQP interface for receiving.
+ * Anti-virus interface for receiving.
  */
 public interface AvReceiver {
 
