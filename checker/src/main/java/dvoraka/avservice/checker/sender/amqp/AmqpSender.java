@@ -1,10 +1,11 @@
-package dvoraka.avservice.checker.sender;
+package dvoraka.avservice.checker.sender.amqp;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConfirmListener;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import dvoraka.avservice.checker.sender.Sender;
 import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Anti-virus file sender class
  */
-public class AVSender implements Sender {
+public class AmqpSender implements Sender {
 
     private static Logger logger = LogManager.getLogger();
 
@@ -51,15 +52,15 @@ public class AVSender implements Sender {
     private ConnectionFactory conFactory;
 
 
-    public AVSender(String host) {
+    public AmqpSender(String host) {
         this(host, true, "1");
     }
 
-    public AVSender(String host, boolean verboseOutput, String protocolVersion) {
+    public AmqpSender(String host, boolean verboseOutput, String protocolVersion) {
         this(host, verboseOutput, protocolVersion, DEFAULT_VHOST, DEFAULT_CHECK_EXCHANGE);
     }
 
-    public AVSender(
+    public AmqpSender(
             String host,
             boolean verboseOutput,
             String protocolVersion,

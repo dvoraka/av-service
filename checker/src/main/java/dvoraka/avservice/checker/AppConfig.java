@@ -2,7 +2,7 @@ package dvoraka.avservice.checker;
 
 import dvoraka.avservice.checker.receiver.amqp.AmqpReceiver;
 import dvoraka.avservice.checker.receiver.Receiver;
-import dvoraka.avservice.checker.sender.AVSender;
+import dvoraka.avservice.checker.sender.amqp.AmqpSender;
 import dvoraka.avservice.checker.sender.Sender;
 import dvoraka.avservice.checker.utils.AVUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +32,7 @@ public class AppConfig {
 
     @Bean
     public Sender sender() {
-        return new AVSender(host);
+        return new AmqpSender(host);
     }
 
     @Bean
