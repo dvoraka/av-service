@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker.receiver;
+package dvoraka.avservice.checker.receiver.amqp;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -7,6 +7,7 @@ import com.rabbitmq.client.QueueingConsumer;
 import dvoraka.avservice.checker.ErrorMessage;
 import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.ProtocolException;
+import dvoraka.avservice.checker.receiver.Receiver;
 import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeoutException;
  *
  * @author dvoraka
  */
-public class AVReceiver implements Receiver {
+public class AmqpReceiver implements Receiver {
 
     private static Logger logger = LogManager.getLogger();
 
@@ -35,15 +36,15 @@ public class AVReceiver implements Receiver {
     private boolean verboseOutput;
 
 
-    public AVReceiver(String host) {
+    public AmqpReceiver(String host) {
         this(host, true);
     }
 
-    public AVReceiver(String host, boolean verboseOutput) {
+    public AmqpReceiver(String host, boolean verboseOutput) {
         this(host, DEFAULT_VHOST, verboseOutput);
     }
 
-    public AVReceiver(String host, String virtualHost, boolean verboseOutput) {
+    public AmqpReceiver(String host, String virtualHost, boolean verboseOutput) {
         this.host = host;
         this.virtualHost = virtualHost;
         this.verboseOutput = verboseOutput;

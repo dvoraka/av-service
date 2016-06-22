@@ -1,6 +1,6 @@
 package dvoraka.avservice.checker;
 
-import dvoraka.avservice.checker.receiver.AVReceiver;
+import dvoraka.avservice.checker.receiver.amqp.AmqpReceiver;
 import dvoraka.avservice.checker.receiver.Receiver;
 import dvoraka.avservice.checker.sender.AVSender;
 import dvoraka.avservice.checker.sender.Sender;
@@ -37,7 +37,7 @@ public class AppConfig {
 
     @Bean
     public Receiver receiver() {
-        return new AVReceiver(host);
+        return new AmqpReceiver(host);
     }
 
     @Bean
