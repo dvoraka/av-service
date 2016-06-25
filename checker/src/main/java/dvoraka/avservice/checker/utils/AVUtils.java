@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 
 /**
- * AVUtils.
+ * Anti-virus utils.
  */
 public class AVUtils implements AmqpUtils {
 
@@ -22,7 +22,7 @@ public class AVUtils implements AmqpUtils {
     @Autowired
     private AvReceiver avReceiver;
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger log = LogManager.getLogger();
 
     private boolean senderOutput;
     private boolean receiverOutput;
@@ -46,64 +46,58 @@ public class AVUtils implements AmqpUtils {
         avReceiver.setVerboseOutput(receiverOutput);
     }
 
-    // TODO: redesign
-//    /**
-//     * Tries concrete protocol version.
-//     *
-//     * @param protocolVersion the protocol version
-//     * @return result
-//     */
-//    public boolean tryProtocol(String protocolVersion) {
-//        String result = findProtocol(new String[]{protocolVersion});
-//
-//        return !(result == null);
-//    }
+    /**
+     * Tries the concrete protocol version.
+     *
+     * @param protocolVersion the protocol version
+     * @return true if the protocol works
+     */
+    public boolean tryProtocolVersion(String protocolVersion) {
+        String result = findProtocolVersion(new String[]{protocolVersion});
 
-//    /**
-//     * Finds first possible protocol version. Starts from the protocols array
-//     * end.
-//     *
-//     * @param protocols the protocols array
-//     * @return the protocol version
-//     */
-    // TODO: redesign
-//    public String findProtocol(String[] protocols) {
-//        disableOutputFlags();
-//
-//        String procotolVersion = null;
-//        try {
-//            procotolVersion = negotiateProtocol(protocols);
-//        } catch (UnknownProtocolException e) {
-//            // e.printStackTrace();
-//        }
-//
-//        resetOutputFlags();
-//
-//        return procotolVersion;
-//    }
+        return !(result == null);
+    }
+
+    /**
+     * Finds the first possible protocol version.
+     *
+     * @param protocols the protocols array
+     * @return the protocol version
+     */
+    public String findProtocolVersion(String[] protocols) {
+        disableOutputFlags();
+
+        String procotolVersion = null;
+        try {
+            procotolVersion = negotiateProtocol(protocols);
+        } catch (UnknownProtocolException e) {
+            log.debug("Protocol version not found.", e);
+        }
+
+        resetOutputFlags();
+
+        return procotolVersion;
+    }
 
     @Override
-    public String negotiateProtocol(String[] protocols)
-            throws UnknownProtocolException {
-
+    public String negotiateProtocol(String[] protocols) throws UnknownProtocolException {
         for (String protocol : protocols) {
             avSender.setProtocolVersion(protocol);
-
             try {
                 avReceiver.receive(avSender.sendFile(false, "antivirus"));
                 return protocol;
             } catch (ConnectException e) {
-                logger.debug(e);
+                log.debug(e);
                 throw new UnknownProtocolException();
             } catch (InterruptedException e) {
-                logger.warn(e);
+                log.warn(e);
                 Thread.currentThread().interrupt();
             } catch (ProtocolException e) {
-                logger.info(e);
+                log.info(e);
             } catch (LastMessageException e) {
-                logger.debug(e);
+                log.debug(e);
             } catch (IOException e) {
-                logger.warn("negotiation failed", e);
+                log.warn("negotiation failed", e);
                 throw new UnknownProtocolException();
             }
         }
