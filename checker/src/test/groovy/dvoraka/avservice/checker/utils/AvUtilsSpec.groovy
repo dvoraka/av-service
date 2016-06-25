@@ -6,15 +6,15 @@ import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 
 /**
- * AVUtils test.
+ * AvUtils test.
  */
-class AVUtilsSpec extends Specification {
+class AvUtilsSpec extends Specification {
 
-    AVUtils avUtils
+    AvUtils avUtils
 
 
     def setup() {
-        avUtils = new AVUtils()
+        avUtils = new AvUtils()
     }
 
     def "try protocol version"() {

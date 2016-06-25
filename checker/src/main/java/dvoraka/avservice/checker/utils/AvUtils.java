@@ -15,7 +15,7 @@ import java.net.ConnectException;
 /**
  * Anti-virus utils.
  */
-public class AVUtils implements AmqpUtils {
+public class AvUtils implements AmqpUtils {
 
     @Autowired
     private AvSender avSender;

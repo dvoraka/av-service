@@ -9,10 +9,10 @@ import spock.lang.Specification
  * AV utils test.
  */
 @ContextConfiguration(classes = [AppConfig])
-class AVUtilsISpec extends Specification {
+class AvUtilsISpec extends Specification {
 
     @Autowired
-    AVUtils avUtils
+    AvUtils avUtils
 
 
     // TODO: implement properly

@@ -4,7 +4,7 @@ import dvoraka.avservice.checker.receiver.amqp.AmqpReceiver;
 import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.sender.amqp.AmqpSender;
 import dvoraka.avservice.checker.sender.AvSender;
-import dvoraka.avservice.checker.utils.AVUtils;
+import dvoraka.avservice.checker.utils.AvUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,8 +41,8 @@ public class AppConfig {
     }
 
     @Bean
-    public AVUtils utils() {
-        return new AVUtils();
+    public AvUtils utils() {
+        return new AvUtils();
     }
 
     @Bean

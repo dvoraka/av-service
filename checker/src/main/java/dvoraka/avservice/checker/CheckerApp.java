@@ -29,7 +29,7 @@ public final class CheckerApp {
 
         // protocol negotiation
 //        String[] protocols = {"0.1", "1.0"};
-//        AVUtils utils = context.getBean(AVUtils.class);
+//        AvUtils utils = context.getBean(AvUtils.class);
 //        System.out.println("Negotiated protocol: "
 //                + utils.findProtocol(protocols));
 
