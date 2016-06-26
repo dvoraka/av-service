@@ -20,14 +20,11 @@ import java.util.Map;
  */
 public class LoadTestConfigParser extends DefaultHandler {
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger log = LogManager.getLogger();
 
     private Map<String, String> props = new HashMap<>();
     private StringBuilder buffer = new StringBuilder();
 
-    public LoadTestConfigParser() {
-        super();
-    }
 
     public Map<String, String> getProperties() {
         return props;
@@ -36,14 +33,13 @@ public class LoadTestConfigParser extends DefaultHandler {
     public void parseFileSax(String filename) {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser;
-
         try {
             saxParser = factory.newSAXParser();
             saxParser.parse(filename, this);
         } catch (ParserConfigurationException | SAXException e) {
-            logger.warn("Parser problem!", e);
+            log.warn("Parser problem!", e);
         } catch (IOException e) {
-            logger.warn("File problem!", e);
+            log.warn("File problem!", e);
         }
     }
 
@@ -55,20 +51,20 @@ public class LoadTestConfigParser extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) {
-        if ("host".equalsIgnoreCase(qName)) {
-            props.put("host", buffer.toString());
-        } else if ("virtualHost".equalsIgnoreCase(qName)) {
-            props.put("virtualHost", buffer.toString());
-        } else if ("appId".equalsIgnoreCase(qName)) {
+        if ("appId".equalsIgnoreCase(qName)) {
             props.put("appId", buffer.toString());
         } else if ("destinationQueue".equalsIgnoreCase(qName)) {
             props.put("destinationQueue", buffer.toString());
+        } else if ("host".equalsIgnoreCase(qName)) {
+            props.put("host", buffer.toString());
         } else if ("messageCount".equalsIgnoreCase(qName)) {
             props.put("messageCount", buffer.toString());
-        } else if ("synchronous".equalsIgnoreCase(qName)) {
-            props.put("synchronous", buffer.toString());
         } else if ("sendOnly".equalsIgnoreCase(qName)) {
             props.put("sendOnly", buffer.toString());
+        } else if ("synchronous".equalsIgnoreCase(qName)) {
+            props.put("synchronous", buffer.toString());
+        } else if ("virtualHost".equalsIgnoreCase(qName)) {
+            props.put("virtualHost", buffer.toString());
         }
     }
 
