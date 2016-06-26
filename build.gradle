@@ -34,6 +34,7 @@ allprojects {
         taskGroupName = 'AV-service'
 
         springVersion = '4.3.0.RELEASE'
+        springSecurityVersion = '4.1.0.RELEASE'
         groovyVersion = '2.4.7'
         spockVersion = '1.0-groovy-2.4'
         log4jVersion = '2.5'
@@ -86,8 +87,10 @@ subprojects {
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
-        compile('org.springframework.amqp:spring-rabbit:1.5.5.RELEASE') {
+        compile('org.springframework.amqp:spring-rabbit:1.6.0.RELEASE') {
             exclude group: 'org.springframework', module: 'spring-web'
+            exclude group: 'org.springframework', module: 'spring-tx'
+            exclude group: 'org.springframework', module: 'spring-messaging'
         }
         // Groovy
         compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
