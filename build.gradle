@@ -33,9 +33,10 @@ allprojects {
     ext {
         taskGroupName = 'AV-service'
 
-        springVersion = '4.2.4.RELEASE'
-        groovyVersion = '2.4.1'
+        springVersion = '4.3.0.RELEASE'
+        groovyVersion = '2.4.7'
         spockVersion = '1.0-groovy-2.4'
+        log4jVersion = '2.5'
     }
 }
 
@@ -78,10 +79,10 @@ subprojects {
 
     dependencies {
         // log4j
-        compile('org.apache.logging.log4j:log4j-api:2.5')
-        compile('org.apache.logging.log4j:log4j-core:2.5')
-        compile('org.apache.logging.log4j:log4j-slf4j-impl:2.5')
-        compile('org.apache.logging.log4j:log4j-jcl:2.5')
+        compile("org.apache.logging.log4j:log4j-api:${log4jVersion}")
+        compile("org.apache.logging.log4j:log4j-core:${log4jVersion}")
+        compile("org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}")
+        compile("org.apache.logging.log4j:log4j-jcl:${log4jVersion}")
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
@@ -90,7 +91,6 @@ subprojects {
         }
         // Groovy
         compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
-
         // Spring test
         testCompile("org.springframework:spring-test:${springVersion}")
         // Spock

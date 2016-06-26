@@ -5,7 +5,6 @@ plugins {
 description = 'Anti-virus service'
 
 dependencies {
-
     compile project(':common')
 
     // Spring
@@ -14,8 +13,8 @@ dependencies {
     compile("org.springframework.security:spring-security-web:4.1.0.RELEASE")
     compile("org.springframework:spring-aspects:${springVersion}")
     // Spring JMS
-    compile("org.springframework:spring-jms")
-    compile("org.apache.activemq:activemq-broker")
+    compile("org.springframework:spring-jms:${springVersion}")
+    compile("org.apache.activemq:activemq-broker:5.13.3")
     // Ehcache
     compile('org.ehcache:ehcache:3.0.0.rc2')
 }
