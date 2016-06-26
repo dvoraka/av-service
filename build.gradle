@@ -1,5 +1,5 @@
 plugins {
-    id "org.sonarqube" version "1.2"
+    id "org.sonarqube" version "2.0.1"
 }
 
 apply plugin: 'distribution'
@@ -107,8 +107,8 @@ subprojects {
     test {
         maxParallelForks = 1
 
-        minHeapSize = '64m'
-        maxHeapSize = '64m'
+        minHeapSize = '128m'
+        maxHeapSize = '128m'
 
         testLogging {
             exceptionFormat = 'full'
@@ -119,8 +119,8 @@ subprojects {
         testClassesDir = sourceSets.integrationTest.output.classesDir
         classpath = sourceSets.integrationTest.runtimeClasspath
 
-        minHeapSize = '32m'
-        maxHeapSize = '32m'
+        minHeapSize = '64m'
+        maxHeapSize = '64m'
 
         testLogging {
             // show events - "PASSED", "STARTED", "FAILED", "SKIPPED"
@@ -129,7 +129,7 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = "6.5"
+        toolVersion = "6.19"
         configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
         reportsDir = file("${project.rootDir}/reports/checkstyle/${project.name}")
 
@@ -152,13 +152,13 @@ subprojects {
 
     pmd {
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
-        toolVersion = '5.4.1'
+        toolVersion = '5.5.0'
 
         ignoreFailures = false
     }
 
     jacoco {
-        toolVersion = '0.7.6.201602180812'
+        toolVersion = '0.7.7.201606060606'
         reportsDir = file("${project.rootDir}/reports/jacoco/${project.name}")
     }
 
@@ -200,5 +200,5 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
+    gradleVersion = '2.13'
 }
