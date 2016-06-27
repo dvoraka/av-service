@@ -1,5 +1,6 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.checker.configuration;
 
+import dvoraka.avservice.checker.AVChecker;
 import dvoraka.avservice.checker.receiver.amqp.AmqpReceiver;
 import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.sender.amqp.AmqpSender;

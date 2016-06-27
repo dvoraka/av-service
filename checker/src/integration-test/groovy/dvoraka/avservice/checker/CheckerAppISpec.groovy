@@ -1,5 +1,6 @@
 package dvoraka.avservice.checker
 
+import dvoraka.avservice.checker.configuration.AppConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
