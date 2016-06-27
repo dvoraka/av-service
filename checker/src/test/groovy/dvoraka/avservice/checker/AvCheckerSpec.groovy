@@ -2,17 +2,18 @@ package dvoraka.avservice.checker
 
 import dvoraka.avservice.checker.receiver.AvReceiver
 import dvoraka.avservice.checker.sender.AvSender
+import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification;
 
-
-class AVCheckerTest extends Specification {
+class AvCheckerSpec extends Specification {
 
     def "test check calls"() {
-
-        setup:
+        given:
         AvSender sender = Mock()
         AvReceiver receiver = Mock()
-        AVChecker checker = new AVChecker(sender, receiver)
+        AvChecker checker = new AvChecker(false, "antivirus")
+        ReflectionTestUtils.setField(checker, null, sender, AvSender.class)
+        ReflectionTestUtils.setField(checker, null, receiver, AvReceiver.class)
 
         when:
         checker.check()

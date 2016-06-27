@@ -14,7 +14,7 @@ import spock.lang.Specification
 class CheckerAppISpec extends Specification {
 
     @Autowired
-    AVChecker checker
+    AvChecker checker
 
 
     def "AV checker loading"() {

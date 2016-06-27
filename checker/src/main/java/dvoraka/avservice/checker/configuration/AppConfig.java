@@ -1,6 +1,6 @@
 package dvoraka.avservice.checker.configuration;
 
-import dvoraka.avservice.checker.AVChecker;
+import dvoraka.avservice.checker.AvChecker;
 import dvoraka.avservice.checker.receiver.amqp.AmqpReceiver;
 import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.sender.amqp.AmqpSender;
@@ -47,7 +47,7 @@ public class AppConfig {
     }
 
     @Bean
-    public AVChecker checker() {
-        return new AVChecker(sender(), receiver(), infected, appId);
+    public AvChecker checker() {
+        return new AvChecker(infected, appId);
     }
 }

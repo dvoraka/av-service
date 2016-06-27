@@ -23,7 +23,6 @@ public final class CheckerApp {
     }
 
     public static void main(String[] args) throws java.io.IOException {
-
         printHeader();
 
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
@@ -37,7 +36,7 @@ public final class CheckerApp {
         // check
         logger.debug("Start checking...");
         System.out.println("CHECK:");
-        AVChecker avc = context.getBean(AVChecker.class);
+        AvChecker avc = context.getBean(AvChecker.class);
         avc.check();
         logger.debug("Check completed.");
 

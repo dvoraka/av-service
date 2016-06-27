@@ -6,35 +6,28 @@ import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.sender.AvSender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.net.ConnectException;
 
 /**
  * Diagnostic utility main class.
- *
- * @author dvoraka
  */
-public class AVChecker {
+public class AvChecker {
 
+    @Autowired
     private AvSender sender;
+    @Autowired
     private AvReceiver receiver;
 
     private boolean dirtyFile;
     private String appId;
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger log = LogManager.getLogger();
 
-    public AVChecker(AvSender sender, AvReceiver receiver) {
-        this(sender, receiver, false, "antivirus");
-    }
 
-    public AVChecker(AvSender sender, AvReceiver receiver,
-                     boolean dirtyFile, String appId) {
-
-        this.sender = sender;
-        this.receiver = receiver;
-
+    public AvChecker(boolean dirtyFile, String appId) {
         this.dirtyFile = dirtyFile;
         this.appId = appId;
     }
@@ -48,15 +41,15 @@ public class AVChecker {
                 System.out.println("Test OK");
             } else {
                 System.out.println("Test failed");
-                logger.warn("Check problem - bad response");
+                log.warn("Check problem - bad response");
             }
         } catch (ConnectException e) {
             System.err.println("Connection problem. Is message broker running?");
-            logger.warn("Check problem - connection problem", e);
+            log.warn("Check problem - connection problem", e);
         } catch (IOException | InterruptedException | ProtocolException e) {
-            logger.warn("Check problem.", e);
+            log.warn("Check problem.", e);
         } catch (LastMessageException e) {
-            logger.info(e);
+            log.info(e);
         }
     }
 
@@ -68,24 +61,10 @@ public class AVChecker {
     }
 
     /**
-     * @param sender the sender to set
-     */
-    public void setSender(AvSender sender) {
-        this.sender = sender;
-    }
-
-    /**
      * @return the receiver
      */
     public AvReceiver getReceiver() {
         return receiver;
-    }
-
-    /**
-     * @param receiver the receiver to set
-     */
-    public void setReceiver(AvReceiver receiver) {
-        this.receiver = receiver;
     }
 
     /**
@@ -96,23 +75,9 @@ public class AVChecker {
     }
 
     /**
-     * @param dirtyFile the dirtyFile to set
-     */
-    public void setDirtyFile(boolean dirtyFile) {
-        this.dirtyFile = dirtyFile;
-    }
-
-    /**
      * @return the appId
      */
     public String getAppId() {
         return appId;
-    }
-
-    /**
-     * @param appId the appId to set
-     */
-    public void setAppId(String appId) {
-        this.appId = appId;
     }
 }
