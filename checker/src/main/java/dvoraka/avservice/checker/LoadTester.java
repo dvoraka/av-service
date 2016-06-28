@@ -41,7 +41,7 @@ public class LoadTester implements Tester {
 
     public LoadTester(LoadTestProperties props) {
         if (props == null) {
-            this.props = new BasicProperties();
+            this.props = new BasicLoadTestProperties();
         } else {
             this.props = props;
         }

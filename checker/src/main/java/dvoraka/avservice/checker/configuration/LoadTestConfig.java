@@ -1,6 +1,6 @@
 package dvoraka.avservice.checker.configuration;
 
-import dvoraka.avservice.checker.BasicProperties;
+import dvoraka.avservice.checker.BasicLoadTestProperties;
 import dvoraka.avservice.checker.LoadTestProperties;
 import dvoraka.avservice.checker.LoadTester;
 import dvoraka.avservice.checker.Tester;
@@ -34,6 +34,6 @@ public class LoadTestConfig {
 
     @Bean
     public LoadTestProperties loadTestProperties() {
-        return new BasicProperties();
+        return new BasicLoadTestProperties();
     }
 }

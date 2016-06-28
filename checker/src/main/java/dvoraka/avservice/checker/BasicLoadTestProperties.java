@@ -9,12 +9,12 @@ import java.util.Map;
 
 /**
  * Basic load test properties.
- * <p>
- * Created by dvoraka on 18.4.14.
  */
-public class BasicProperties implements LoadTestProperties {
+public class BasicLoadTestProperties implements LoadTestProperties {
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger log = LogManager.getLogger();
+
+    private static final String CONF_FILE_NAME = "/loadTest.xml";
 
     private String host;
     private String virtualHost;
@@ -25,24 +25,19 @@ public class BasicProperties implements LoadTestProperties {
     private boolean sendOnly;
 
 
-    public BasicProperties() {
-        // default values
-        this.host = "localhost";
-        this.virtualHost = "/";
-        this.appId = "";
-        this.destinationQueue = "";
-        this.msgCount = 1;
-        this.synchronous = false;
+    public BasicLoadTestProperties() {
+        this(new Builder());
+
         this.sendOnly = false;
 
         try {
             loadPropertiesFromXML();
         } catch (IOException e) {
-            logger.warn("XML file problem!", e);
+            log.warn("XML file problem!", e);
         }
     }
 
-    private BasicProperties(Builder builder) {
+    private BasicLoadTestProperties(Builder builder) {
         this.host = builder.host;
         this.virtualHost = builder.virtualHost;
         this.appId = builder.appId;
@@ -124,14 +119,14 @@ public class BasicProperties implements LoadTestProperties {
     @Override
     public void loadPropertiesFromXML() throws IOException {
         LoadTestConfigParser parser = new LoadTestConfigParser();
-        parser.parseFileSax(getClass().getResource("/loadTest.xml").toString());
+        parser.parseFileSax(getClass().getResource(CONF_FILE_NAME).toString());
 
         Map<String, String> properties = parser.getProperties();
         loadProperties(properties);
     }
 
     /**
-     * Loads properties from map
+     * Loads properties from the map.
      *
      * @param props the properties
      */
@@ -161,7 +156,7 @@ public class BasicProperties implements LoadTestProperties {
 
     @Override
     public String toString() {
-        return "BasicProperties{"
+        return "BasicLoadTestProperties{"
                 + "host='" + host + '\''
                 + ", virtualHost='" + virtualHost + '\''
                 + ", appId='" + appId + '\''
@@ -220,8 +215,8 @@ public class BasicProperties implements LoadTestProperties {
             return this;
         }
 
-        public BasicProperties build() {
-            return new BasicProperties(this);
+        public BasicLoadTestProperties build() {
+            return new BasicLoadTestProperties(this);
         }
     }
 }

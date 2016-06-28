@@ -17,7 +17,7 @@ class LoadTesterISpec extends Specification {
 
     def "run load test"() {
         given:
-        LoadTestProperties props = new BasicProperties.Builder()
+        LoadTestProperties props = new BasicLoadTestProperties.Builder()
                 .msgCount(5)
                 .virtualHost("antivirus")
                 .destinationQueue("av-result")
