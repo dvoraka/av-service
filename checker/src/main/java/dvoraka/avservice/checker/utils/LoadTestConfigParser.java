@@ -15,8 +15,6 @@ import java.util.Map;
 
 /**
  * Simple XML parser for reading load test properties.
- * <p>
- * Created by dvoraka on 5/3/14.
  */
 public class LoadTestConfigParser extends DefaultHandler {
 

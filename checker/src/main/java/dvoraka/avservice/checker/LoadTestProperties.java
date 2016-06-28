@@ -1,9 +1,7 @@
 package dvoraka.avservice.checker;
 
 /**
- * Interface for load test properties
- * <p>
- * Created by dvoraka on 18.4.14.
+ * Interface for load test properties.
  */
 public interface LoadTestProperties extends TestProperties {
 
@@ -34,5 +32,4 @@ public interface LoadTestProperties extends TestProperties {
     boolean isSendOnly();
 
     void setSendOnly(boolean sendOnly);
-
 }

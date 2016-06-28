@@ -6,8 +6,6 @@ import dvoraka.avservice.checker.exception.UnknownProtocolException;
 
 /**
  * Object representation for AMQP anti-virus error message.
- *
- * @author dvoraka
  */
 public class ErrorMessage {
 
@@ -15,11 +13,10 @@ public class ErrorMessage {
     private String errorType;
 
     /**
-     * Creates error message object from string.
+     * Creates an error message object from the string.
      *
-     * @param rawMessage error string from message
-     * @throws IllegalArgumentException if <code>rawMessage</code> can't be
-     *                                  parsed
+     * @param rawMessage the error string from message
+     * @throws IllegalArgumentException if <code>rawMessage</code> can't be parsed
      */
     public ErrorMessage(String rawMessage) {
         if (rawMessage == null) {

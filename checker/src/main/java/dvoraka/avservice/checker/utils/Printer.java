@@ -5,9 +5,7 @@ import com.rabbitmq.client.AMQP;
 import java.util.Map;
 
 /**
- * Class for AMQP info printing.
- *
- * @author dvoraka
+ * Utility class for AMQP info printing.
  */
 public final class Printer {
 
