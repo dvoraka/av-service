@@ -28,7 +28,8 @@ public class ErrorMessage {
     }
 
     public void check() throws ProtocolException {
-        if ("bad app-id".equals(getErrorType())) {
+        // TODO: improve conditions
+        if ("bad app-id".equalsIgnoreCase(getErrorType())) {
             throw new BadExchangeException(getErrorText());
         } else {
             throw new UnknownProtocolException(getErrorText());
@@ -48,23 +49,9 @@ public class ErrorMessage {
     }
 
     /**
-     * @param errorType the errorType to set
-     */
-    public void setErrorType(String errorType) {
-        this.errorType = errorType;
-    }
-
-    /**
      * @return the errorText
      */
     public String getErrorText() {
         return errorText;
-    }
-
-    /**
-     * @param errorText the errorText to set
-     */
-    public void setErrorText(String errorText) {
-        this.errorText = errorText;
     }
 }
