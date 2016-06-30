@@ -15,7 +15,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  * Spring configuration for the main application.
  */
 @Configuration
-public class AppConfig {
+public class CheckerConfig {
 
     @Value("${host:localhost}")
     private String host;

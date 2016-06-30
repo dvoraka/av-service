@@ -1,6 +1,6 @@
 package dvoraka.avservice.checker;
 
-import dvoraka.avservice.checker.configuration.AppConfig;
+import dvoraka.avservice.checker.configuration.CheckerConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -25,7 +25,7 @@ public final class CheckerApp {
     public static void main(String[] args) throws java.io.IOException {
         printHeader();
 
-        AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(CheckerConfig.class);
 
         // protocol negotiation
 //        String[] protocols = {"0.1", "1.0"};

@@ -1,6 +1,6 @@
 package dvoraka.avservice.checker.utils
 
-import dvoraka.avservice.checker.configuration.AppConfig
+import dvoraka.avservice.checker.configuration.CheckerConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -8,7 +8,7 @@ import spock.lang.Specification
 /**
  * AV utils test.
  */
-@ContextConfiguration(classes = [AppConfig])
+@ContextConfiguration(classes = [CheckerConfig])
 class AvUtilsISpec extends Specification {
 
     @Autowired
