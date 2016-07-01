@@ -1,1 +1,4 @@
-include 'service', 'checker', 'common'
+include 'common'
+include 'checker'
+include 'server'
+include 'service'

@@ -5,7 +5,7 @@ import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.DefaultAVMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.exception.ScanErrorException
-import dvoraka.avservice.server.ReceivingType
+import dvoraka.avservice.common.ReceivingType
 import dvoraka.avservice.service.AVService
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification

@@ -7,4 +7,5 @@
 *.iml
 
 build/
+classes/
 reports/

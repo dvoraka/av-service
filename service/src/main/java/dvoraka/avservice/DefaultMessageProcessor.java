@@ -4,7 +4,7 @@ import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.exception.ScanErrorException;
-import dvoraka.avservice.server.ReceivingType;
+import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.service.AVService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -10,7 +10,7 @@ import dvoraka.avservice.configuration.AppConfig;
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.AbstractAVServer;
 import dvoraka.avservice.server.ListeningStrategy;
-import dvoraka.avservice.server.ReceivingType;
+import dvoraka.avservice.common.ReceivingType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;

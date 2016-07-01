@@ -1,11 +1,11 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.server.configuration;
 
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ListeningStrategy;
-import dvoraka.avservice.server.ReceivingType;
+import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpAVServer;
 import dvoraka.avservice.server.amqp.AmqpComponent;

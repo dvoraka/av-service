@@ -1,6 +1,7 @@
 package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
+import dvoraka.avservice.common.ReceivingType
 import dvoraka.avservice.server.amqp.AmqpAVServer
 import spock.lang.Specification
 
