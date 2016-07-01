@@ -1,10 +1,10 @@
-package dvoraka.avservice;
+package dvoraka.avservice.server;
 
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
-import dvoraka.avservice.configuration.AppConfig;
+import dvoraka.avservice.server.configuration.AmqpConfig;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -21,7 +21,7 @@ public final class EnvironmentConfigurator {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles("amqp");
-        context.register(AppConfig.class);
+        context.register(AmqpConfig.class);
         context.refresh();
 
         AVMessage avMessage = Utils.genNormalMessage();

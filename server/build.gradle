@@ -5,3 +5,11 @@ dependencies {
     compile project(':common')
     compile project(':service')
 }
+
+task configureEnvironment(type: JavaExec) {
+    description = 'Configure environment'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.EnvironmentConfigurator'
+    classpath = sourceSets.main.runtimeClasspath
+}
