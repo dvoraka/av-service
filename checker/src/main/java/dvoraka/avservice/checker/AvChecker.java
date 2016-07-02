@@ -54,20 +54,6 @@ public class AvChecker {
     }
 
     /**
-     * @return the sender
-     */
-    public AvSender getSender() {
-        return sender;
-    }
-
-    /**
-     * @return the receiver
-     */
-    public AvReceiver getReceiver() {
-        return receiver;
-    }
-
-    /**
      * @return the dirtyFile
      */
     public boolean isDirtyFile() {
