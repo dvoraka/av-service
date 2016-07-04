@@ -25,7 +25,8 @@ public final class CheckerApp {
     public static void main(String[] args) throws java.io.IOException {
         printHeader();
 
-        AbstractApplicationContext context = new AnnotationConfigApplicationContext(CheckerConfig.class);
+        AbstractApplicationContext context =
+                new AnnotationConfigApplicationContext(CheckerConfig.class);
 
         // protocol negotiation
 //        String[] protocols = {"0.1", "1.0"};

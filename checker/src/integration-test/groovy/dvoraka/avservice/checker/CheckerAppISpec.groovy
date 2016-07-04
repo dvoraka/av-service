@@ -28,4 +28,12 @@ class CheckerAppISpec extends Specification {
         then:
         notThrown(Exception)
     }
+
+    def "main method call"() {
+        when:
+        CheckerApp.main([] as String[])
+
+        then:
+        notThrown(Exception)
+    }
 }
