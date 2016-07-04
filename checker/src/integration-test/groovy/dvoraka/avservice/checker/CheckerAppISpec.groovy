@@ -9,7 +9,6 @@ import spock.lang.Specification
 /**
  * Run checker App.
  */
-@Ignore
 @ContextConfiguration(classes = [CheckerConfig])
 class CheckerAppISpec extends Specification {
 
@@ -17,12 +16,12 @@ class CheckerAppISpec extends Specification {
     AvChecker checker
 
 
-    def "AV checker loading"() {
+    def "AvChecker loading"() {
         expect:
         checker != null
     }
 
-    def "run checker"() {
+    def "check method test"() {
         when:
         checker.check()
 
