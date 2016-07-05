@@ -18,7 +18,7 @@ class LoadTesterISpec extends Specification {
     def "run load test"() {
         given:
         LoadTestProperties props = new BasicLoadTestProperties.Builder()
-                .msgCount(5)
+                .msgCount(2)
                 .virtualHost("antivirus")
                 .destinationQueue("av-result")
                 .appId("antivirus")
@@ -31,6 +31,14 @@ class LoadTesterISpec extends Specification {
 
         when:
         tester.startTest()
+
+        then:
+        notThrown(Exception)
+    }
+
+    def "main method call"() {
+        when:
+        LoadTester.main([] as String[])
 
         then:
         notThrown(Exception)
