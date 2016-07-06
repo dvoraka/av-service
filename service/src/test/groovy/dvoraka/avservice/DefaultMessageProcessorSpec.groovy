@@ -76,6 +76,78 @@ class DefaultMessageProcessorSpec extends Specification {
         }
     }
 
+    def "responding test with a listener"() {
+        given:
+        AVService service = Stub()
+        service.scanStream(_) >> false
+
+        AVMessage response = null
+        ProcessedAVMessageListener messageListener = new ProcessedAVMessageListener() {
+            @Override
+            void onProcessedAVMessage(AVMessage message) {
+                response = message
+            }
+        }
+
+        processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+        setProcessorService(service)
+        processor.addProcessedAVMessageListener(messageListener)
+
+        AVMessage message = Utils.genNormalMessage()
+
+        when:
+        processor.sendMessage(message)
+
+        then:
+        conditions.eventually {
+            response != null
+            response.getCorrelationId() == message.getId()
+        }
+    }
+
+    def "add and remove listeners"() {
+        given:
+        processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+        ProcessedAVMessageListener messageListener = Mock()
+
+        when:
+        processor.addProcessedAVMessageListener(messageListener)
+
+        then:
+        processor.observersCount() == 1
+
+        when:
+        processor.removeProcessedAVMessageListener(messageListener)
+
+        then:
+        processor.observersCount() == 0
+    }
+
+    def "add a listener for polling type"() {
+        when:
+        processor.addProcessedAVMessageListener(null)
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    def "ask for a message with a listener"() {
+        given:
+        processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+
+        when:
+        processor.hasProcessedMessage()
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        when:
+        processor.getProcessedMessage()
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
     def "send message with a full queue"() {
         setup:
         AVService service = Stub()

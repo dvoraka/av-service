@@ -217,6 +217,10 @@ public class DefaultMessageProcessor implements MessageProcessor {
         observers.remove(listener);
     }
 
+    public int observersCount() {
+        return observers.size();
+    }
+
     private void notifyObservers(AVMessage avMessage) {
         for (ProcessedAVMessageListener listener : observers) {
             listener.onProcessedAVMessage(avMessage);
@@ -249,10 +253,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private void removeProcessedMessage(String id) {
         processedMessages.remove(id);
-    }
-
-    private void setServerReceivingType(ReceivingType type) {
-        serverReceivingType = type;
     }
 
     public ReceivingType getServerReceivingType() {
