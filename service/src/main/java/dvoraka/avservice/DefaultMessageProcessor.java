@@ -78,7 +78,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void sendMessage(AVMessage message) {
-
         setRunning(true);
         receivedMsgCount.getAndIncrement();
 
@@ -264,13 +263,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
         return queueSize;
     }
 
-    @PreDestroy
-    public void cleanup() {
-        if (isRunning()) {
-            stop();
-        }
-    }
-
     @ManagedAttribute
     public long getReceivedMsgCount() {
         return receivedMsgCount.get();
@@ -279,5 +271,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
     @ManagedAttribute
     public long getProcessedMsgCount() {
         return processedMsgCount.get();
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        if (isRunning()) {
+            stop();
+        }
     }
 }

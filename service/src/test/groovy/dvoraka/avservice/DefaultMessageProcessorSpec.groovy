@@ -1,11 +1,11 @@
 package dvoraka.avservice
 
+import dvoraka.avservice.common.ReceivingType
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.DefaultAVMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.exception.ScanErrorException
-import dvoraka.avservice.common.ReceivingType
 import dvoraka.avservice.service.AVService
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
@@ -64,7 +64,7 @@ class DefaultMessageProcessorSpec extends Specification {
         AVService service = Stub()
         service.scanStream(_) >> false
 
-        ReflectionTestUtils.setField(processor, null, service, AVService.class)
+        setProcessorService(service)
 
         AVMessage message = Utils.genNormalMessage()
         processor.sendMessage(message)
@@ -82,7 +82,7 @@ class DefaultMessageProcessorSpec extends Specification {
         service.scanStream(_) >> false
 
         processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1)
-        ReflectionTestUtils.setField(processor, null, service, AVService.class)
+        setProcessorService(service)
 
         AVMessage message1 = Utils.genNormalMessage()
         processor.sendMessage(message1)
@@ -106,14 +106,14 @@ class DefaultMessageProcessorSpec extends Specification {
         }
     }
 
-    def "send message (with a service error)"() {
+    def "send message with a service error"() {
         given:
         AVService service = Stub()
         service.scanStream(_) >> {
             throw new ScanErrorException("Service is dead")
         }
 
-        ReflectionTestUtils.setField(processor, null, service, AVService.class)
+        setProcessorService(service)
         AVMessage message = Utils.genNormalMessage()
 
         when:
@@ -133,7 +133,7 @@ class DefaultMessageProcessorSpec extends Specification {
             return false
         }
 
-        ReflectionTestUtils.setField(processor, null, service, AVService.class)
+        setProcessorService(service)
 
         when:
         processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
@@ -147,7 +147,7 @@ class DefaultMessageProcessorSpec extends Specification {
         String testId = "testId"
 
         AVService service = Stub()
-        ReflectionTestUtils.setField(processor, null, service, AVService.class)
+        setProcessorService(service)
 
         when:
         processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
@@ -163,9 +163,36 @@ class DefaultMessageProcessorSpec extends Specification {
         String testId = "testId"
 
         AVService service = Stub()
-        ReflectionTestUtils.setField(processor, null, service, AVService.class)
+        setProcessorService(service)
 
         expect:
         processor.messageStatus(testId) == MessageStatus.UNKNOWN
+    }
+
+    def "test message counters"() {
+        given:
+        AVService service = Stub()
+        service.scanStream(_) >> false
+
+        setProcessorService(service)
+
+        when:
+        AVMessage message = Utils.genNormalMessage()
+        messageCount.times {
+            processor.sendMessage(message)
+        }
+
+        then:
+        conditions.eventually {
+            processor.getReceivedMsgCount() == messageCount
+            processor.getProcessedMsgCount() == messageCount
+        }
+
+        where:
+        messageCount << [1, 3]
+    }
+
+    void setProcessorService(AVService service) {
+        ReflectionTestUtils.setField(processor, null, service, AVService.class)
     }
 }
