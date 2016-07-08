@@ -7,6 +7,10 @@ services:
     network_mode: "host"
 #    ports:
 #      - "5672:5672"
+  activemq-dev:
+    build: ./activemq
+    image: "activemq-dev-server"
+    network_mode: "host"
 
   clamavd-dev:
     build: ./clamavd
