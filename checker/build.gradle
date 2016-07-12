@@ -6,6 +6,7 @@ description = "Testing utilities"
 
 dependencies {
     compile project(':common')
+    integrationTestCompile project(':server')
 }
 
 jar {

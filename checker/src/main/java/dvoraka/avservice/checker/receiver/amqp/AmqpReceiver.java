@@ -28,10 +28,12 @@ public class AmqpReceiver implements AvReceiver {
     private static final String DEFAULT_VHOST = "antivirus";
     private static final String DEFAULT_QUEUE = "av-result";
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+    private static final long DEFAULT_RCV_TIMEOUT = 200L;
 
     private String host;
     private String virtualHost;
     private boolean verboseOutput;
+    private long receiveTimeout;
 
 
     public AmqpReceiver(String host) {
@@ -46,6 +48,7 @@ public class AmqpReceiver implements AvReceiver {
         this.host = host;
         this.virtualHost = virtualHost;
         this.verboseOutput = verboseOutput;
+        this.receiveTimeout = DEFAULT_RCV_TIMEOUT;
     }
 
     private ConnectionFactory prepareConnectionFactory(String host, String virtualHost) {
@@ -82,8 +85,7 @@ public class AmqpReceiver implements AvReceiver {
     private QueueingConsumer.Delivery nextDelivery(QueueingConsumer consumer)
             throws InterruptedException, LastMessageException {
 
-        final long timeout = 100L;
-        QueueingConsumer.Delivery delivery = consumer.nextDelivery(timeout);
+        QueueingConsumer.Delivery delivery = consumer.nextDelivery(receiveTimeout);
         if (delivery == null) {
             throw new LastMessageException();
         }
@@ -228,5 +230,13 @@ public class AmqpReceiver implements AvReceiver {
 
     public void setVirtualHost(String virtualHost) {
         this.virtualHost = virtualHost;
+    }
+
+    public long getReceiveTimeout() {
+        return receiveTimeout;
+    }
+
+    public void setReceiveTimeout(long receiveTimeout) {
+        this.receiveTimeout = receiveTimeout;
     }
 }

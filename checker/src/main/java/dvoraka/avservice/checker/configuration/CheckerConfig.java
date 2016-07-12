@@ -26,6 +26,9 @@ public class CheckerConfig {
     @Value("${appid:antivirus}")
     private String appId;
 
+    @Value("${receiveTimeout:200}")
+    private long receiveTimeout;
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
@@ -38,7 +41,10 @@ public class CheckerConfig {
 
     @Bean
     public AvReceiver receiver() {
-        return new AmqpReceiver(host);
+        AvReceiver receiver = new AmqpReceiver(host);
+        receiver.setReceiveTimeout(receiveTimeout);
+
+        return receiver;
     }
 
     @Bean

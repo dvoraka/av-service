@@ -32,6 +32,7 @@ public class BasicAvServer implements AVServer, ServiceManagement, AVMessageList
 
 
     public static void main(String[] args) throws InterruptedException {
+        // TODO: fix
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles("amqp", "amqp-async");
         context.register(AppConfig.class);

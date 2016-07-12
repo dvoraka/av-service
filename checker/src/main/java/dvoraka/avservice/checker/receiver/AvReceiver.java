@@ -25,6 +25,8 @@ public interface AvReceiver {
             ProtocolException,
             LastMessageException;
 
+    void setReceiveTimeout(long timeout);
+
     boolean isVerboseOutput();
 
     void setVerboseOutput(boolean verboseOutput);

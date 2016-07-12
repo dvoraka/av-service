@@ -1,20 +1,35 @@
 package dvoraka.avservice.checker
 
 import dvoraka.avservice.checker.configuration.CheckerConfig
+import dvoraka.avservice.server.AVServer
+import dvoraka.avservice.server.configuration.AmqpConfig
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * Run checker App.
  */
-@ContextConfiguration(classes = [CheckerConfig])
+@ContextConfiguration(classes = [CheckerConfig.class, AmqpConfig.class])
+@ActiveProfiles(["default", "amqp", "amqp-async"])
 class CheckerAppISpec extends Specification {
+
+    @Autowired
+    AVServer basicAvServer
 
     @Autowired
     AvChecker checker
 
+
+    def setup() {
+        if (!basicAvServer.isRunning()) {
+            basicAvServer.start()
+        }
+    }
+
+    def cleanup() {
+    }
 
     def "AvChecker loading"() {
         expect:
