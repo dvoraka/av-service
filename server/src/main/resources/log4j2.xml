@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <File name="File" fileName="server.log" append="true">
+            <PatternLayout pattern="%d %p %C{1}: %m%n"/>
+        </File>
+        <File name="SpringFile" fileName="spring.log" append="true">
+            <PatternLayout pattern="%d %p %C{1}: %m%n"/>
+        </File>
+        <Socket name="Logstash" host="localHost" port="7000">
+            <SerializedLayout/>
+        </Socket>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.apache.log4j.xml" level="debug">
+            <AppenderRef ref="File"/>
+        </Logger>
+        <Logger name="org.springframework">
+            <level value="debug"/>
+            <AppenderRef ref="SpringFile"/>
+            <AppenderRef ref="Logstash"/>
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="File"/>
+            <AppenderRef ref="Logstash"/>
+        </Root>
+    </Loggers>
+</Configuration>
