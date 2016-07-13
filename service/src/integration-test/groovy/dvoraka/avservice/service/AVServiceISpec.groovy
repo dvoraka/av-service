@@ -8,7 +8,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 /**
- * Specification class for AVService.
+ * Specification class for AvService.
  */
 @ContextConfiguration(classes = [ServiceConfig.class])
 class AVServiceISpec extends Specification {
@@ -17,7 +17,7 @@ class AVServiceISpec extends Specification {
     String eicarString = Utils.EICAR
 
     @Autowired
-    AVService avService;
+    AvService avService;
 
 
     def "AV service loading"() {

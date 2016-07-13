@@ -4,8 +4,8 @@ import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.ClamAvProgram;
 import dvoraka.avservice.rest.RestClient;
-import dvoraka.avservice.service.AVService;
-import dvoraka.avservice.service.DefaultAVService;
+import dvoraka.avservice.service.AvService;
+import dvoraka.avservice.service.DefaultAvService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +34,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public AVService avService() {
-        return new DefaultAVService();
+    public AvService avService() {
+        return new DefaultAvService();
     }
 
     @Bean

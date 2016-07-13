@@ -5,8 +5,8 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.DefaultAVMessage
 import dvoraka.avservice.common.data.MessageStatus
-import dvoraka.avservice.exception.ScanErrorException
-import dvoraka.avservice.service.AVService
+import dvoraka.avservice.common.exception.ScanErrorException
+import dvoraka.avservice.service.AvService
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -61,7 +61,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "send normal message"() {
         setup:
-        AVService service = Stub()
+        AvService service = Stub()
         service.scanStream(_) >> false
 
         setProcessorService(service)
@@ -78,7 +78,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "responding test with a listener"() {
         given:
-        AVService service = Stub()
+        AvService service = Stub()
         service.scanStream(_) >> false
 
         AVMessage response = null
@@ -150,7 +150,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "send message with a full queue"() {
         setup:
-        AVService service = Stub()
+        AvService service = Stub()
         service.scanStream(_) >> false
 
         processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1)
@@ -180,7 +180,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "send message with a service error"() {
         given:
-        AVService service = Stub()
+        AvService service = Stub()
         service.scanStream(_) >> {
             throw new ScanErrorException("Service is dead")
         }
@@ -199,7 +199,7 @@ class DefaultMessageProcessorSpec extends Specification {
         given:
         String testId = "testId"
 
-        AVService service = Stub()
+        AvService service = Stub()
         service.scanStream(_) >> {
             sleep(1000)
             return false
@@ -218,7 +218,7 @@ class DefaultMessageProcessorSpec extends Specification {
         given:
         String testId = "testId"
 
-        AVService service = Stub()
+        AvService service = Stub()
         setProcessorService(service)
 
         when:
@@ -234,7 +234,7 @@ class DefaultMessageProcessorSpec extends Specification {
         setup:
         String testId = "testId"
 
-        AVService service = Stub()
+        AvService service = Stub()
         setProcessorService(service)
 
         expect:
@@ -243,7 +243,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "test message counters"() {
         given:
-        AVService service = Stub()
+        AvService service = Stub()
         service.scanStream(_) >> false
 
         setProcessorService(service)
@@ -264,7 +264,7 @@ class DefaultMessageProcessorSpec extends Specification {
         messageCount << [1, 3]
     }
 
-    void setProcessorService(AVService service) {
-        ReflectionTestUtils.setField(processor, null, service, AVService.class)
+    void setProcessorService(AvService service) {
+        ReflectionTestUtils.setField(processor, null, service, AvService.class)
     }
 }

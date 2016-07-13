@@ -1,6 +1,6 @@
 package dvoraka.avservice.avprogram;
 
-import dvoraka.avservice.exception.ScanErrorException;
+import dvoraka.avservice.common.exception.ScanErrorException;
 
 /**
  * Anti-virus program interface.

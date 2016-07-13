@@ -1,8 +1,8 @@
 package dvoraka.avservice.service
 
 import dvoraka.avservice.avprogram.AvProgram
-import dvoraka.avservice.exception.FileSizeException
-import dvoraka.avservice.exception.ScanErrorException
+import dvoraka.avservice.common.exception.FileSizeException
+import dvoraka.avservice.common.exception.ScanErrorException
 import spock.lang.Specification
 
 import java.nio.file.Files
@@ -11,13 +11,13 @@ import java.nio.file.StandardOpenOption
 /**
  * Default AV service test.
  */
-class DefaultAVServiceSpec extends Specification {
+class DefaultAvServiceSpec extends Specification {
 
-    DefaultAVService service
+    DefaultAvService service
 
 
     void setup() {
-        service = new DefaultAVService()
+        service = new DefaultAvService()
     }
 
     void cleanup() {
@@ -26,7 +26,7 @@ class DefaultAVServiceSpec extends Specification {
     def "constructor with max file size"() {
         setup:
         long maxFileSize = 100
-        service = new DefaultAVService(maxFileSize)
+        service = new DefaultAvService(maxFileSize)
 
         expect:
         service.getMaxFileSize() == maxFileSize

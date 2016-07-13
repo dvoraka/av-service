@@ -1,6 +1,6 @@
 package dvoraka.avservice.avprogram;
 
-import dvoraka.avservice.exception.ScanErrorException;
+import dvoraka.avservice.common.exception.ScanErrorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

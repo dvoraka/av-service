@@ -27,7 +27,7 @@ public class SpringAopTest {
         log.debug("After: " + joinPoint.getSignature().getName());
     }
 
-    @Around("execution(* dvoraka.avservice.service.AVService.*(..))")
+    @Around("execution(* dvoraka.avservice.service.AvService.*(..))")
     public boolean printInfo(ProceedingJoinPoint pjp) {
 
         long start = System.currentTimeMillis();

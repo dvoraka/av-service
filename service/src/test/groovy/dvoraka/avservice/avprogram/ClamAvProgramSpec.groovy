@@ -5,7 +5,7 @@ import spock.lang.Specification
 /**
  * ClamAV program test.
  */
-class ClamAVProgramSpec extends Specification {
+class ClamAvProgramSpec extends Specification {
 
     def "test connection"() {
         setup:

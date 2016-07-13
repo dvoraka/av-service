@@ -3,7 +3,7 @@ package dvoraka.avservice.server
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.avprogram.AvProgram
 import dvoraka.avservice.configuration.ServiceConfig
-import dvoraka.avservice.service.AVService
+import dvoraka.avservice.service.AvService
 import org.springframework.amqp.core.AmqpAdmin
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -22,7 +22,7 @@ import spock.lang.Specification
 class SpringAmqpISpec extends Specification {
 
     @Autowired
-    AVService avService
+    AvService avService
 
     @Autowired
     AvProgram avProgram

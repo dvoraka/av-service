@@ -1,9 +1,9 @@
-package dvoraka.avservice.exception;
+package dvoraka.avservice.common.exception;
 
 /**
  * Exception for a file size.
  */
-public class FileSizeException extends AVException {
+public class FileSizeException extends AvException {
 
 
     public FileSizeException(String message) {

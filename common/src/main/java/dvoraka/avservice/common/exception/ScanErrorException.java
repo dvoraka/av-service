@@ -1,9 +1,9 @@
-package dvoraka.avservice.exception;
+package dvoraka.avservice.common.exception;
 
 /**
  * Exception for errors while scanning.
  */
-public class ScanErrorException extends AVException {
+public class ScanErrorException extends AvException {
 
 
     public ScanErrorException(String message) {

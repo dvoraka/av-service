@@ -3,9 +3,9 @@ package dvoraka.avservice;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.MessageStatus;
-import dvoraka.avservice.exception.ScanErrorException;
+import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.ReceivingType;
-import dvoraka.avservice.service.AVService;
+import dvoraka.avservice.service.AvService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class DefaultMessageProcessor implements MessageProcessor {
 
     @Autowired
-    private AVService avService;
+    private AvService avService;
 
     private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class.getName());
 
