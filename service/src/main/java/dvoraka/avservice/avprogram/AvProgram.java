@@ -5,7 +5,7 @@ import dvoraka.avservice.exception.ScanErrorException;
 /**
  * Anti-virus program interface.
  */
-public interface AVProgram {
+public interface AvProgram {
 
     boolean scanStream(byte[] bytes) throws ScanErrorException;
 

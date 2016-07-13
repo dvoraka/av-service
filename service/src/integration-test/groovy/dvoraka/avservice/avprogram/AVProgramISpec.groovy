@@ -10,7 +10,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
- * AVProgram test.
+ * AvProgram test.
  */
 @ContextConfiguration(classes = [ServiceConfig.class])
 class AVProgramISpec extends Specification {
@@ -19,7 +19,7 @@ class AVProgramISpec extends Specification {
     String eicarString = Utils.EICAR
 
     @Autowired
-    AVProgram avProgram
+    AvProgram avProgram
 
 
     def setup() {

@@ -1,8 +1,8 @@
 package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.aop.SpringAopTest;
-import dvoraka.avservice.avprogram.AVProgram;
-import dvoraka.avservice.avprogram.ClamAVProgram;
+import dvoraka.avservice.avprogram.AvProgram;
+import dvoraka.avservice.avprogram.ClamAvProgram;
 import dvoraka.avservice.rest.RestClient;
 import dvoraka.avservice.service.AVService;
 import dvoraka.avservice.service.DefaultAVService;
@@ -39,8 +39,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public AVProgram avProgram() {
-        return new ClamAVProgram();
+    public AvProgram avProgram() {
+        return new ClamAvProgram();
     }
 
     @Bean

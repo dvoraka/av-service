@@ -1,6 +1,6 @@
 package dvoraka.avservice.service;
 
-import dvoraka.avservice.avprogram.AVProgram;
+import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.exception.FileSizeException;
 import dvoraka.avservice.exception.ScanErrorException;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +17,7 @@ import java.nio.file.Files;
 public class DefaultAVService implements AVService {
 
     @Autowired
-    private AVProgram avProgram;
+    private AvProgram avProgram;
 
     private static final Logger log = LogManager.getLogger(DefaultAVService.class.getName());
 
@@ -74,7 +74,7 @@ public class DefaultAVService implements AVService {
         this.maxFileSize = maxFileSize;
     }
 
-    public void setAvProgram(AVProgram program) {
+    public void setAvProgram(AvProgram program) {
         this.avProgram = program;
     }
 }

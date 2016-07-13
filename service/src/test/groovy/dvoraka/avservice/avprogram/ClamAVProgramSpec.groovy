@@ -9,7 +9,7 @@ class ClamAVProgramSpec extends Specification {
 
     def "test connection"() {
         setup:
-        ClamAVProgram program = Spy()
+        ClamAvProgram program = Spy()
         program.createSocket() >> new Socket()
         program.ping() >> true
 
@@ -19,7 +19,7 @@ class ClamAVProgramSpec extends Specification {
 
     def "test connection without ping"() {
         setup:
-        ClamAVProgram program = Spy()
+        ClamAvProgram program = Spy()
         program.createSocket() >> new Socket()
         program.ping() >> false
 
@@ -29,7 +29,7 @@ class ClamAVProgramSpec extends Specification {
 
     def "test connection with bad host"() {
         setup:
-        ClamAVProgram program = Spy()
+        ClamAvProgram program = Spy()
         program.createSocket() >> { throw new UnknownHostException() }
 
         expect:
@@ -38,7 +38,7 @@ class ClamAVProgramSpec extends Specification {
 
     def "test connection with bad connection"() {
         setup:
-        ClamAVProgram program = Spy()
+        ClamAvProgram program = Spy()
         program.createSocket() >> { throw new IOException() }
 
         expect:
@@ -47,7 +47,7 @@ class ClamAVProgramSpec extends Specification {
 
     def "test connection with security problem"() {
         setup:
-        ClamAVProgram program = Spy()
+        ClamAvProgram program = Spy()
         program.createSocket() >> { throw new SecurityException() }
 
         expect:
@@ -56,7 +56,7 @@ class ClamAVProgramSpec extends Specification {
 
     def "test connection with illegal socket values"() {
         setup:
-        ClamAVProgram program = Spy()
+        ClamAvProgram program = Spy()
         program.createSocket() >> { throw new IllegalArgumentException() }
 
         expect:

@@ -20,9 +20,9 @@ import java.nio.charset.StandardCharsets;
 /**
  * ClamAV wrapper.
  */
-public class ClamAVProgram implements AVProgram {
+public class ClamAvProgram implements AvProgram {
 
-    private static final Logger log = LogManager.getLogger(ClamAVProgram.class.getName());
+    private static final Logger log = LogManager.getLogger(ClamAvProgram.class.getName());
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 3310;
@@ -34,11 +34,11 @@ public class ClamAVProgram implements AVProgram {
     private int socketPort;
 
 
-    public ClamAVProgram() {
+    public ClamAvProgram() {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
 
-    public ClamAVProgram(String socketHost, int socketPort) {
+    public ClamAvProgram(String socketHost, int socketPort) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
     }

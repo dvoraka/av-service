@@ -1,6 +1,6 @@
 package dvoraka.avservice.service
 
-import dvoraka.avservice.avprogram.AVProgram
+import dvoraka.avservice.avprogram.AvProgram
 import dvoraka.avservice.exception.FileSizeException
 import dvoraka.avservice.exception.ScanErrorException
 import spock.lang.Specification
@@ -34,7 +34,7 @@ class DefaultAVServiceSpec extends Specification {
 
     def "scan stream"() {
         setup:
-        AVProgram program = Mock()
+        AvProgram program = Mock()
         service.setAvProgram(program)
 
         when:
@@ -46,7 +46,7 @@ class DefaultAVServiceSpec extends Specification {
 
     def "scan stream with info"() {
         setup:
-        AVProgram program = Stub()
+        AvProgram program = Stub()
 
         program.scanStreamWithInfo(_) >> "INFO"
 
@@ -58,7 +58,7 @@ class DefaultAVServiceSpec extends Specification {
 
     def "scan file without a file"() {
         setup:
-        AVProgram program = Mock()
+        AvProgram program = Mock()
         service.setAvProgram(program)
 
         when:
@@ -70,7 +70,7 @@ class DefaultAVServiceSpec extends Specification {
 
     def "scan file with a big file"() {
         setup:
-        AVProgram program = Mock()
+        AvProgram program = Mock()
         service.setAvProgram(program)
 
         File bigTempFile = File.createTempFile("test-tempfile", ".tmp");
@@ -95,7 +95,7 @@ class DefaultAVServiceSpec extends Specification {
 
     def "scan file with a file"() {
         setup:
-        AVProgram program = Mock()
+        AvProgram program = Mock()
         service.setAvProgram(program)
 
         File tempFile = File.createTempFile("test-tempfile", ".tmp");

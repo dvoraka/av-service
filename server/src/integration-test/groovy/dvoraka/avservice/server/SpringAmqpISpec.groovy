@@ -1,7 +1,7 @@
 package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
-import dvoraka.avservice.avprogram.AVProgram
+import dvoraka.avservice.avprogram.AvProgram
 import dvoraka.avservice.configuration.ServiceConfig
 import dvoraka.avservice.service.AVService
 import org.springframework.amqp.core.AmqpAdmin
@@ -25,7 +25,7 @@ class SpringAmqpISpec extends Specification {
     AVService avService
 
     @Autowired
-    AVProgram avProgram
+    AvProgram avProgram
 
     @Autowired
     AVServer avServer

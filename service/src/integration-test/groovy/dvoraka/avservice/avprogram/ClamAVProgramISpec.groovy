@@ -1,6 +1,5 @@
 package dvoraka.avservice.avprogram
 
-import dvoraka.avservice.avprogram.ClamAVProgram
 import dvoraka.avservice.common.Utils
 import spock.lang.Shared
 import spock.lang.Specification
@@ -13,11 +12,11 @@ class ClamAVProgramISpec extends Specification {
     @Shared
     String eicarString = Utils.EICAR
 
-    ClamAVProgram program
+    ClamAvProgram program
 
 
     def setup() {
-        program = new ClamAVProgram()
+        program = new ClamAvProgram()
     }
 
     def "connection test"() {
