@@ -3,7 +3,7 @@ package dvoraka.avservice
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.AVMessageMapper
-import dvoraka.avservice.configuration.AppConfig
+import dvoraka.avservice.configuration.ServiceConfig
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +16,7 @@ import spock.lang.Specification
  * Configure RabbitMQ. Creates necessary queues and bindings.
  */
 @Ignore
-@ContextConfiguration(classes = [AppConfig])
+@ContextConfiguration(classes = [ServiceConfig.class])
 @ActiveProfiles("amqp")
 class RabbitMQConfiguration extends Specification {
 

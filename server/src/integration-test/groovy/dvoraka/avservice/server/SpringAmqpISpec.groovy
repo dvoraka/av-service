@@ -2,7 +2,7 @@ package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.avprogram.AVProgram
-import dvoraka.avservice.configuration.AppConfig
+import dvoraka.avservice.configuration.ServiceConfig
 import dvoraka.avservice.service.AVService
 import org.springframework.amqp.core.AmqpAdmin
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
@@ -17,7 +17,7 @@ import spock.lang.Specification
  * DI config test for profile "amqp".
  */
 @Ignore("new modules structure")
-@ContextConfiguration(classes = [AppConfig])
+@ContextConfiguration(classes = [ServiceConfig.class])
 @ActiveProfiles("amqp")
 class SpringAmqpISpec extends Specification {
 

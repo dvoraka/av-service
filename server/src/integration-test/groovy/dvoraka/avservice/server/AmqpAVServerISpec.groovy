@@ -1,7 +1,6 @@
 package dvoraka.avservice.server
 
-import dvoraka.avservice.configuration.AppConfig
-import dvoraka.avservice.server.AVServer
+import dvoraka.avservice.configuration.ServiceConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -13,7 +12,7 @@ import spock.lang.Specification
  */
 // TODO: improve it
 @Ignore
-@ContextConfiguration(classes = [AppConfig])
+@ContextConfiguration(classes = [ServiceConfig.class])
 @ActiveProfiles("amqp")
 class AmqpAVServerISpec extends Specification {
 

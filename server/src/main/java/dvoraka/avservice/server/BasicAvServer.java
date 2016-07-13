@@ -4,7 +4,7 @@ import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessedAVMessageListener;
 import dvoraka.avservice.common.AVMessageListener;
 import dvoraka.avservice.common.data.AVMessage;
-import dvoraka.avservice.configuration.AppConfig;
+import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.service.ServiceManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +35,7 @@ public class BasicAvServer implements AVServer, ServiceManagement, AVMessageList
         // TODO: fix
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles("amqp", "amqp-async");
-        context.register(AppConfig.class);
+        context.register(ServiceConfig.class);
         context.refresh();
 
         SimpleMessageListenerContainer container = context.getBean(SimpleMessageListenerContainer.class);

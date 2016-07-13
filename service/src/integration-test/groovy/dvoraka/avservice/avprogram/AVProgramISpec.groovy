@@ -1,8 +1,7 @@
 package dvoraka.avservice.avprogram
 
-import dvoraka.avservice.avprogram.AVProgram
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.configuration.AppConfig
+import dvoraka.avservice.configuration.ServiceConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
@@ -13,7 +12,7 @@ import spock.lang.Unroll
 /**
  * AVProgram test.
  */
-@ContextConfiguration(classes = [AppConfig])
+@ContextConfiguration(classes = [ServiceConfig.class])
 class AVProgramISpec extends Specification {
 
     @Shared

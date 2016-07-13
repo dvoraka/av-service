@@ -6,7 +6,7 @@ import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
-import dvoraka.avservice.configuration.AppConfig;
+import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.AbstractAVServer;
 import dvoraka.avservice.server.ListeningStrategy;
@@ -63,7 +63,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, Processe
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles("amqp");
-        context.register(AppConfig.class);
+        context.register(ServiceConfig.class);
         context.refresh();
 
         AmqpAVServer server = context.getBean(AmqpAVServer.class);

@@ -2,7 +2,7 @@ package dvoraka.avservice.server.configuration;
 
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.configuration.AppConfig;
+import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AVServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ListeningStrategy;
@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Profile;
  * AMQP Spring configuration.
  */
 @Configuration
-@Import({AppConfig.class})
+@Import({ServiceConfig.class})
 @Profile("amqp")
 public class AmqpConfig {
 
