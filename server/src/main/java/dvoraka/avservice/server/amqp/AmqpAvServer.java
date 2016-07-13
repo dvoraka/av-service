@@ -7,8 +7,8 @@ import dvoraka.avservice.common.data.AVMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.configuration.ServiceConfig;
-import dvoraka.avservice.server.AVServer;
-import dvoraka.avservice.server.AbstractAVServer;
+import dvoraka.avservice.server.AbstractAvServer;
+import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.common.ReceivingType;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * AMQP AV server.
  */
 @Deprecated
-public class AmqpAVServer extends AbstractAVServer implements AVServer, ProcessedAVMessageListener {
+public class AmqpAvServer extends AbstractAvServer implements AvServer, ProcessedAVMessageListener {
 
     @Autowired
     private MessageProcessor messageProcessor;
@@ -37,7 +37,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, Processe
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    private static final Logger log = LogManager.getLogger(AmqpAVServer.class.getName());
+    private static final Logger log = LogManager.getLogger(AmqpAvServer.class.getName());
 
     private static final long POOL_TERM_TIME_S = 10;
     private static final String RESPONSE_EXCHANGE = "result";
@@ -46,7 +46,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, Processe
     private ReceivingType receivingType;
 
 
-    public AmqpAVServer(ReceivingType receivingType) {
+    public AmqpAvServer(ReceivingType receivingType) {
         ThreadFactory threadFactory = new CustomThreadFactory("server-pool-");
         executorService = Executors.newFixedThreadPool(2, threadFactory);
         this.receivingType = receivingType;
@@ -66,7 +66,7 @@ public class AmqpAVServer extends AbstractAVServer implements AVServer, Processe
         context.register(ServiceConfig.class);
         context.refresh();
 
-        AmqpAVServer server = context.getBean(AmqpAVServer.class);
+        AmqpAvServer server = context.getBean(AmqpAvServer.class);
         server.start();
 
         final long runTime = 6_000_000;

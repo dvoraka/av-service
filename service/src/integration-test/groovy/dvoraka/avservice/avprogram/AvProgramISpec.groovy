@@ -13,7 +13,7 @@ import spock.lang.Unroll
  * AvProgram test.
  */
 @ContextConfiguration(classes = [ServiceConfig.class])
-class AVProgramISpec extends Specification {
+class AvProgramISpec extends Specification {
 
     @Shared
     String eicarString = Utils.EICAR

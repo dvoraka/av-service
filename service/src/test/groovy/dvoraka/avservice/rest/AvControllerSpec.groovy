@@ -19,13 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * AV controller test.
  */
-class AVControllerSpec extends Specification {
+class AvControllerSpec extends Specification {
 
     MockMvc mockMvc;
 
 
     def setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new AVController()).build()
+        mockMvc = MockMvcBuilders.standaloneSetup(new AvController()).build()
     }
 
     def "test info"() {
@@ -47,7 +47,7 @@ class AVControllerSpec extends Specification {
         service.messageStatus(messageId) >> messageStatus
 
         mockMvc = MockMvcBuilders.standaloneSetup(
-                new AVController(restService: service)).build()
+                new AvController(restService: service)).build()
 
         ResultActions response = mockMvc.perform(
                 get("/msg-status/${messageId}"))
@@ -70,7 +70,7 @@ class AVControllerSpec extends Specification {
         service.messageStatus(messageId, serviceId) >> messageStatus
 
         mockMvc = MockMvcBuilders.standaloneSetup(
-                new AVController(restService: service)).build()
+                new AvController(restService: service)).build()
 
         ResultActions response = mockMvc.perform(
                 get("/msg-status/${messageId}/${serviceId}"))
@@ -92,7 +92,7 @@ class AVControllerSpec extends Specification {
         service.messageServiceId(messageId) >> serviceId
 
         mockMvc = MockMvcBuilders.standaloneSetup(
-                new AVController(restService: service)).build()
+                new AvController(restService: service)).build()
 
         ResultActions response = mockMvc.perform(
                 get("/msg-service-id/${messageId}"))
@@ -109,7 +109,7 @@ class AVControllerSpec extends Specification {
         RestService service = Mock()
 
         mockMvc = MockMvcBuilders.standaloneSetup(
-                new AVController(restService: service)).build()
+                new AvController(restService: service)).build()
 
         ObjectMapper mapper = new ObjectMapper()
         String content = mapper.writeValueAsString(message)
@@ -132,7 +132,7 @@ class AVControllerSpec extends Specification {
         service.getResponse(messageId) >> responseMsg
 
         mockMvc = MockMvcBuilders.standaloneSetup(
-                new AVController(restService: service)).build()
+                new AvController(restService: service)).build()
 
         ResultActions response = mockMvc.perform(
                 get("/get-response/${messageId}"))

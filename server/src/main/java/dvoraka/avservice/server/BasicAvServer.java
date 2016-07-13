@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * AMQP AV server implementation
  */
-public class BasicAvServer implements AVServer, ServiceManagement, AVMessageListener, ProcessedAVMessageListener {
+public class BasicAvServer implements AvServer, ServiceManagement, AVMessageListener, ProcessedAVMessageListener {
 
     @Autowired
     private ServerComponent serverComponent;

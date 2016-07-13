@@ -28,7 +28,7 @@ class SpringAmqpISpec extends Specification {
     AvProgram avProgram
 
     @Autowired
-    AVServer avServer
+    AvServer avServer
 
     @Autowired
     MessageProcessor messageProcessor

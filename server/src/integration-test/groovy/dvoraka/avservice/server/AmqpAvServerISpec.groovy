@@ -14,10 +14,10 @@ import spock.lang.Specification
 @Ignore
 @ContextConfiguration(classes = [ServiceConfig.class])
 @ActiveProfiles("amqp")
-class AmqpAVServerISpec extends Specification {
+class AmqpAvServerISpec extends Specification {
 
     @Autowired
-    AVServer avServer
+    AvServer avServer
 
 
     def setup() {

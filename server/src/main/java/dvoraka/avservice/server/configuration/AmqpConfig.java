@@ -3,12 +3,12 @@ package dvoraka.avservice.server.configuration;
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.configuration.ServiceConfig;
-import dvoraka.avservice.server.AVServer;
+import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.server.ServerComponent;
-import dvoraka.avservice.server.amqp.AmqpAVServer;
+import dvoraka.avservice.server.amqp.AmqpAvServer;
 import dvoraka.avservice.server.amqp.AmqpComponent;
 import dvoraka.avservice.server.amqp.SimpleAmqpListeningStrategy;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -64,12 +64,12 @@ public class AmqpConfig {
 
 
     @Bean
-    public AVServer avServer() {
-        return new AmqpAVServer(ReceivingType.LISTENER);
+    public AvServer avServer() {
+        return new AmqpAvServer(ReceivingType.LISTENER);
     }
 
     @Bean
-    public AVServer basicAvServer() {
+    public AvServer basicAvServer() {
         return new BasicAvServer();
     }
 

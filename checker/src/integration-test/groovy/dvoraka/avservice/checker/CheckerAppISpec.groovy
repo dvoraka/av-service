@@ -1,7 +1,7 @@
 package dvoraka.avservice.checker
 
 import dvoraka.avservice.checker.configuration.CheckerConfig
-import dvoraka.avservice.server.AVServer
+import dvoraka.avservice.server.AvServer
 import dvoraka.avservice.server.configuration.AmqpConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -16,7 +16,7 @@ import spock.lang.Specification
 class CheckerAppISpec extends Specification {
 
     @Autowired
-    AVServer basicAvServer
+    AvServer basicAvServer
 
     @Autowired
     AvChecker checker

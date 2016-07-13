@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * AV REST controller.
  */
 @RestController
-public class AVController {
+public class AvController {
 
     @Autowired
     private RestService restService;

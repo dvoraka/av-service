@@ -4,7 +4,7 @@ package dvoraka.avservice.server;
  * Abstract AV server.
  */
 @Deprecated
-public abstract class AbstractAVServer implements AVServer {
+public abstract class AbstractAvServer implements AvServer {
 
     private boolean started;
     private boolean stopped;

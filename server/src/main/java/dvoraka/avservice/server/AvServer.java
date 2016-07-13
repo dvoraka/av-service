@@ -3,7 +3,7 @@ package dvoraka.avservice.server;
 /**
  * Anti-virus server interface.
  */
-public interface AVServer {
+public interface AvServer {
 
     /**
      * Starts server.

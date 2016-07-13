@@ -11,7 +11,7 @@ import spock.lang.Specification
  * Specification class for AvService.
  */
 @ContextConfiguration(classes = [ServiceConfig.class])
-class AVServiceISpec extends Specification {
+class AvServiceISpec extends Specification {
 
     @Shared
     String eicarString = Utils.EICAR

@@ -2,7 +2,7 @@ package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.ReceivingType
-import dvoraka.avservice.server.amqp.AmqpAVServer
+import dvoraka.avservice.server.amqp.AmqpAvServer
 import spock.lang.Specification
 
 /**
@@ -10,7 +10,7 @@ import spock.lang.Specification
  */
 class AmqpAVServerSpec extends Specification {
 
-    AmqpAVServer amqpAVServer
+    AmqpAvServer amqpAVServer
 
     def setup() {
     }
@@ -18,7 +18,7 @@ class AmqpAVServerSpec extends Specification {
     def "constructor"() {
         setup:
         ReceivingType receivingType = ReceivingType.LISTENER
-        amqpAVServer = new AmqpAVServer(receivingType)
+        amqpAVServer = new AmqpAvServer(receivingType)
 
         expect:
         amqpAVServer.getReceivingType() == receivingType
@@ -29,7 +29,7 @@ class AmqpAVServerSpec extends Specification {
         MessageProcessor processor = Mock()
         ListeningStrategy strategy = Mock()
         ReceivingType receivingType = ReceivingType.POLLING
-        amqpAVServer = new AmqpAVServer(receivingType)
+        amqpAVServer = new AmqpAvServer(receivingType)
 
         amqpAVServer.setMessageProcessor(processor)
         amqpAVServer.setListeningStrategy(strategy)
@@ -51,7 +51,7 @@ class AmqpAVServerSpec extends Specification {
         MessageProcessor processor = Mock()
         ListeningStrategy strategy = Mock()
         ReceivingType receivingType = ReceivingType.LISTENER
-        amqpAVServer = new AmqpAVServer(receivingType)
+        amqpAVServer = new AmqpAvServer(receivingType)
 
         amqpAVServer.setMessageProcessor(processor)
         amqpAVServer.setListeningStrategy(strategy)

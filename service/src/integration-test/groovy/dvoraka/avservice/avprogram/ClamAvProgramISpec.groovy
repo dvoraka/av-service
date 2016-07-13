@@ -7,7 +7,7 @@ import spock.lang.Specification
 /**
  * ClamAV program test.
  */
-class ClamAVProgramISpec extends Specification {
+class ClamAvProgramISpec extends Specification {
 
     @Shared
     String eicarString = Utils.EICAR
