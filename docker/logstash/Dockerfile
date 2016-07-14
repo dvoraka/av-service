@@ -1,4 +1,4 @@
-FROM logstash
+FROM logstash:2.3.4-1
 
 RUN /opt/logstash/bin/logstash-plugin install logstash-input-log4j2-logstash2
 
