@@ -18,6 +18,7 @@ class JmsISpec extends Specification {
     @Autowired
     JmsClient client;
 
+
     def "send message"() {
         expect:
         client.sendTestMessage()

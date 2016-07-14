@@ -26,7 +26,7 @@ class RestServiceISpec extends Specification {
 
         expect:
         message != null
-        message.getServiceId().equals("testing-service")
+        message.getServiceId() == "testing-service"
     }
 
     def "send normal message"() {
@@ -51,7 +51,7 @@ class RestServiceISpec extends Specification {
         expect:
         status == MessageStatus.PROCESSED
         response.type == AvMessageType.RESPONSE
-        response.getVirusInfo().equals("")
+        response.getVirusInfo() == ""
     }
 
     def "send infected message"() {
@@ -76,6 +76,6 @@ class RestServiceISpec extends Specification {
         expect:
         status == MessageStatus.PROCESSED
         response.type == AvMessageType.RESPONSE
-        !response.getVirusInfo().equals("")
+        response.getVirusInfo() != ""
     }
 }
