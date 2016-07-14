@@ -14,7 +14,6 @@ public class JmsClient {
 
 
     public void sendTestMessage() {
-
         MessageCreator messageCreator = session -> session.createTextMessage("Hello!");
 
         jmsTemplate.send("destination", messageCreator);

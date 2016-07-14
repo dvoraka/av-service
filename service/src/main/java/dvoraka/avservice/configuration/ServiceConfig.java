@@ -28,6 +28,7 @@ public class ServiceConfig {
     @Value("${avservice.rest.url}")
     private String restUrl;
 
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
