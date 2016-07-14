@@ -5,7 +5,7 @@ import spock.lang.Specification
 import java.nio.charset.StandardCharsets
 
 /**
- * DefaultAVMessage test.
+ * DefaultAvMessage test.
  */
 class DefaultAVMessageSpec extends Specification {
 
@@ -13,7 +13,7 @@ class DefaultAVMessageSpec extends Specification {
     def "message creating test"() {
         setup:
         String testString = 'TEST-STRING'
-        DefaultAVMessage message = new DefaultAVMessage.Builder(testString)
+        DefaultAvMessage message = new DefaultAvMessage.Builder(testString)
                 .correlationId(testString)
                 .data(testString.getBytes(StandardCharsets.UTF_8))
                 .type(AVMessageType.REQUEST)
@@ -32,10 +32,10 @@ class DefaultAVMessageSpec extends Specification {
 
     def "create normal response test"() {
         setup:
-        DefaultAVMessage message = new DefaultAVMessage.Builder('TEST-ID').build()
+        DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
         String expCorrId = message.getId()
 
-        AVMessage response = message.createResponse(false)
+        AvMessage response = message.createResponse(false)
 
         expect:
         response.getCorrelationId().equals(expCorrId)
@@ -44,10 +44,10 @@ class DefaultAVMessageSpec extends Specification {
 
     def "create infected response test"() {
         setup:
-        DefaultAVMessage message = new DefaultAVMessage.Builder('TEST-ID').build()
+        DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
         String expCorrId = message.getId()
 
-        AVMessage response = message.createResponse(true)
+        AvMessage response = message.createResponse(true)
 
         expect:
         response.getCorrelationId().equals(expCorrId)
@@ -56,7 +56,7 @@ class DefaultAVMessageSpec extends Specification {
 
     def "null data test"() {
         setup:
-        DefaultAVMessage message = new DefaultAVMessage.Builder('TEST-ID').build()
+        DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
 
         expect:
         message.getData() == null
@@ -64,10 +64,10 @@ class DefaultAVMessageSpec extends Specification {
 
     def "simple toString test"() {
         setup:
-        DefaultAVMessage message = new DefaultAVMessage.Builder('TEST-ID').build()
+        DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
 
         expect:
-        message.toString().startsWith("DefaultAVMessage {")
+        message.toString().startsWith("DefaultAvMessage {")
         message.toString().endsWith("}")
     }
 }

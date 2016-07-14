@@ -2,8 +2,8 @@ package dvoraka.avservice.rest
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessage
-import dvoraka.avservice.common.data.DefaultAVMessage
+import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -67,8 +67,8 @@ class DirectRestStrategySpec extends Specification {
 
     def "get real response"() {
         setup:
-        AVMessage request = new DefaultAVMessage.Builder(testId).build()
-        AVMessage response = request.createResponse(false)
+        AvMessage request = new DefaultAvMessage.Builder(testId).build()
+        AvMessage response = request.createResponse(false)
 
         MessageProcessor processor = Stub()
 

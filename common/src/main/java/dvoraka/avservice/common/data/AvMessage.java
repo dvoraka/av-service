@@ -14,7 +14,7 @@ package dvoraka.avservice.common.data;
  * <li>virusInfo - info about infection</li>
  * </ul>
  */
-public interface AVMessage {
+public interface AvMessage {
 
     String getId();
 
@@ -28,7 +28,7 @@ public interface AVMessage {
 
     String getVirusInfo();
 
-    AVMessage createResponse(boolean virus);
+    AvMessage createResponse(boolean virus);
 
-    AVMessage createErrorResponse(String errorMessage);
+    AvMessage createErrorResponse(String errorMessage);
 }

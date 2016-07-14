@@ -1,6 +1,6 @@
 package dvoraka.avservice.rest;
 
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 
 /**
@@ -14,9 +14,9 @@ public interface RestStrategy {
 
     String messageServiceId(String id);
 
-    void messageCheck(AVMessage message);
+    void messageCheck(AvMessage message);
 
-    AVMessage getResponse(String id);
+    AvMessage getResponse(String id);
 
     void start();
 

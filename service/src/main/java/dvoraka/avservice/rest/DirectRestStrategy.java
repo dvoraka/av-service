@@ -1,7 +1,7 @@
 package dvoraka.avservice.rest;
 
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +33,7 @@ public class DirectRestStrategy implements RestStrategy {
     private ExecutorService executorService;
 
     private CacheManager cacheManager;
-    private Cache<String, AVMessage> messageCache;
+    private Cache<String, AvMessage> messageCache;
     private boolean cacheUpdating;
 
 
@@ -44,8 +44,8 @@ public class DirectRestStrategy implements RestStrategy {
 
     private void initializeCache() {
         final long expirationTime = 10_000;
-        CacheConfiguration<String, AVMessage> configuration = CacheConfigurationBuilder
-                .newCacheConfigurationBuilder(String.class, AVMessage.class)
+        CacheConfiguration<String, AvMessage> configuration = CacheConfigurationBuilder
+                .newCacheConfigurationBuilder(String.class, AvMessage.class)
                 .withExpiry(Expirations.timeToLiveExpiration(
                         new Duration(expirationTime, TimeUnit.MILLISECONDS)))
                 .build();
@@ -53,13 +53,13 @@ public class DirectRestStrategy implements RestStrategy {
                 .withCache("restCache", configuration)
                 .build(true);
 
-        messageCache = cacheManager.getCache("restCache", String.class, AVMessage.class);
+        messageCache = cacheManager.getCache("restCache", String.class, AvMessage.class);
     }
 
     private void updateCache() {
         while (cacheUpdating) {
             if (restMessageProcessor.hasProcessedMessage()) {
-                AVMessage message = restMessageProcessor.getProcessedMessage();
+                AvMessage message = restMessageProcessor.getProcessedMessage();
                 messageCache.put(message.getCorrelationId(), message);
                 log.debug("Saving message: " + message.getId());
             } else {
@@ -90,12 +90,12 @@ public class DirectRestStrategy implements RestStrategy {
     }
 
     @Override
-    public void messageCheck(AVMessage message) {
+    public void messageCheck(AvMessage message) {
         restMessageProcessor.sendMessage(message);
     }
 
     @Override
-    public AVMessage getResponse(String id) {
+    public AvMessage getResponse(String id) {
         return messageCache.get(id);
     }
 

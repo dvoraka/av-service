@@ -9,7 +9,7 @@ import spock.lang.Specification
 import java.nio.charset.StandardCharsets
 
 /**
- * AVMessage mapper test.
+ * AvMessage mapper test.
  */
 class AVMessageMapperSpec extends Specification {
 
@@ -45,8 +45,8 @@ class AVMessageMapperSpec extends Specification {
 
         // create AMQP message
         Message message = new Message(body, props)
-        // transform to AVMessage
-        AVMessage avMessage = AVMessageMapper.transform(message)
+        // transform to AvMessage
+        AvMessage avMessage = AVMessageMapper.transform(message)
 
         expect:
         avMessage.getId().equals(testId)
@@ -151,7 +151,7 @@ class AVMessageMapperSpec extends Specification {
 
     def "AVMessage -> AMQP Message, v1"() {
         setup:
-        AVMessage avMessage = new DefaultAVMessage.Builder(testId)
+        AvMessage avMessage = new DefaultAvMessage.Builder(testId)
                 .correlationId(testCorrId)
                 .data(new byte[dataSize])
                 .type(AVMessageType.REQUEST)
@@ -186,7 +186,7 @@ class AVMessageMapperSpec extends Specification {
 
     def "AVMessage -> AMQP Message, with normal message for old clients"() {
         setup:
-        AVMessage avMessage = Utils.genNormalMessage()
+        AvMessage avMessage = Utils.genNormalMessage()
 
         Message message = AVMessageMapper.transform(avMessage)
         Map<String, Object> headers = message.getMessageProperties().getHeaders()
@@ -197,7 +197,7 @@ class AVMessageMapperSpec extends Specification {
 
     def "AVMessage -> AMQP Message, with infected message for old clients"() {
         setup:
-        AVMessage avMessage = Utils.genInfectedMessage()
+        AvMessage avMessage = Utils.genInfectedMessage()
 
         Message message = AVMessageMapper.transform(avMessage)
         Map<String, Object> headers = message.getMessageProperties().getHeaders()

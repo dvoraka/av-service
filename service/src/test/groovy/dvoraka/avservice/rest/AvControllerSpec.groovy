@@ -2,7 +2,7 @@ package dvoraka.avservice.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessage
+import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.service.RestService
 import org.springframework.http.MediaType
@@ -105,7 +105,7 @@ class AvControllerSpec extends Specification {
 
     def "test messageCheck(AVMessage)"() {
         setup:
-        AVMessage message = Utils.genNormalMessage()
+        AvMessage message = Utils.genNormalMessage()
         RestService service = Mock()
 
         mockMvc = MockMvcBuilders.standaloneSetup(
@@ -127,7 +127,7 @@ class AvControllerSpec extends Specification {
     def "test getResponse(String)"() {
         setup:
         String messageId = "TID"
-        AVMessage responseMsg = Utils.genNormalMessage()
+        AvMessage responseMsg = Utils.genNormalMessage()
         RestService service = Stub()
         service.getResponse(messageId) >> responseMsg
 

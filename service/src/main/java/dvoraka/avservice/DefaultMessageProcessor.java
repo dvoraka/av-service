@@ -1,7 +1,7 @@
 package dvoraka.avservice;
 
 import dvoraka.avservice.common.CustomThreadFactory;
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.ReceivingType;
@@ -45,7 +45,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private AtomicLong receivedMsgCount = new AtomicLong();
     private AtomicLong processedMsgCount = new AtomicLong();
 
-    private Queue<AVMessage> processedMessagesQueue;
+    private Queue<AvMessage> processedMessagesQueue;
     private List<ProcessedAVMessageListener> observers = new ArrayList<>();
     private ExecutorService executorService;
     private ReceivingType serverReceivingType;
@@ -77,7 +77,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     @Override
-    public void sendMessage(AVMessage message) {
+    public void sendMessage(AvMessage message) {
         setRunning(true);
         receivedMsgCount.getAndIncrement();
 
@@ -102,7 +102,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
-    private void processMessage(AVMessage message) {
+    private void processMessage(AvMessage message) {
         log.debug("Scanning thread: " + Thread.currentThread().getName());
 
         boolean infected = false;
@@ -128,15 +128,15 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
-    private AVMessage prepareResponse(AVMessage message, boolean infected) {
+    private AvMessage prepareResponse(AvMessage message, boolean infected) {
         return message.createResponse(infected);
     }
 
-    private AVMessage prepareErrorResponse(AVMessage message, String errorMessage) {
+    private AvMessage prepareErrorResponse(AvMessage message, String errorMessage) {
         return message.createErrorResponse(errorMessage);
     }
 
-    private void sendResponse(AVMessage message) {
+    private void sendResponse(AvMessage message) {
         if (getServerReceivingType() == ReceivingType.LISTENER) {
             notifyObservers(message);
         } else if (getServerReceivingType() == ReceivingType.POLLING) {
@@ -144,7 +144,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
-    private void saveMessage(AVMessage message) {
+    private void saveMessage(AvMessage message) {
         while (isRunning()) {
             try {
                 log.debug("Saving message to the queue...");
@@ -175,7 +175,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     @Override
-    public AVMessage getProcessedMessage() {
+    public AvMessage getProcessedMessage() {
         if (serverReceivingType == ReceivingType.POLLING) {
             return processedMessagesQueue.poll();
         } else {
@@ -221,7 +221,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         return observers.size();
     }
 
-    private void notifyObservers(AVMessage avMessage) {
+    private void notifyObservers(AvMessage avMessage) {
         for (ProcessedAVMessageListener listener : observers) {
             listener.onProcessedAVMessage(avMessage);
         }

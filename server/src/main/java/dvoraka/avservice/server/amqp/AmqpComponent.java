@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.amqp;
 
 import dvoraka.avservice.common.AVMessageListener;
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.server.ServerComponent;
@@ -34,7 +34,7 @@ public class AmqpComponent implements ServerComponent {
 
     @Override
     public void onMessage(Message message) {
-        AVMessage avMessage = null;
+        AvMessage avMessage = null;
         try {
             avMessage = AVMessageMapper.transform(message);
         } catch (MapperException e) {
@@ -61,7 +61,7 @@ public class AmqpComponent implements ServerComponent {
     }
 
     @Override
-    public void sendMessage(AVMessage message) {
+    public void sendMessage(AvMessage message) {
         if (message == null) {
             throw new IllegalArgumentException("Message may not be null!");
         }
@@ -73,7 +73,7 @@ public class AmqpComponent implements ServerComponent {
         } catch (MapperException e) {
             log.warn("Message transformation problem!", e);
             // create error response
-            AVMessage errorResponse = message.createErrorResponse(e.getMessage());
+            AvMessage errorResponse = message.createErrorResponse(e.getMessage());
             try {
                 response = AVMessageMapper.transform(errorResponse);
             } catch (MapperException e1) {

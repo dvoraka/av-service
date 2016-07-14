@@ -2,8 +2,8 @@ package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.AVMessageMapper
+import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.server.amqp.ParallelAmqpListeningStrategy
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
@@ -32,7 +32,7 @@ class ParallelAmqpListeningStrategySpec extends Specification {
         strategy = new ParallelAmqpListeningStrategy(listeners)
         RabbitTemplate template = Stub()
         MessageProcessor processor = Mock()
-        AVMessage avMessage = Utils.genNormalMessage()
+        AvMessage avMessage = Utils.genNormalMessage()
 
         template.receive() >> {
             sleep(100)

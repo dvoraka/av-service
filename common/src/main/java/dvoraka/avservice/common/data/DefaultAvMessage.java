@@ -11,8 +11,8 @@ import java.util.UUID;
 /**
  * Default AV message implementation.
  */
-@JsonDeserialize(builder = DefaultAVMessage.Builder.class)
-public final class DefaultAVMessage implements AVMessage {
+@JsonDeserialize(builder = DefaultAvMessage.Builder.class)
+public final class DefaultAvMessage implements AvMessage {
 
     private String id;
     private String correlationId;
@@ -22,7 +22,7 @@ public final class DefaultAVMessage implements AVMessage {
     private AVMessageType type;
 
 
-    private DefaultAVMessage(Builder builder) {
+    private DefaultAvMessage(Builder builder) {
         this.id = builder.id;
         this.correlationId = builder.correlationId;
         this.data = builder.data;
@@ -65,7 +65,7 @@ public final class DefaultAVMessage implements AVMessage {
     }
 
     @Override
-    public AVMessage createResponse(boolean virus) {
+    public AvMessage createResponse(boolean virus) {
         String virusInfo = virus ? "virus info" : "";
 
         return new Builder(null)
@@ -76,7 +76,7 @@ public final class DefaultAVMessage implements AVMessage {
     }
 
     @Override
-    public AVMessage createErrorResponse(String errorMessage) {
+    public AvMessage createErrorResponse(String errorMessage) {
         return new Builder(null)
                 .correlationId(this.getId())
                 .type(AVMessageType.RESPONSE_ERROR)
@@ -86,7 +86,7 @@ public final class DefaultAVMessage implements AVMessage {
 
     @Override
     public String toString() {
-        return "DefaultAVMessage {"
+        return "DefaultAvMessage {"
                 + "id='" + id + '\''
                 + ", correlationId='" + correlationId + '\''
                 + ", data=" + Arrays.toString(data)
@@ -140,8 +140,8 @@ public final class DefaultAVMessage implements AVMessage {
             return this;
         }
 
-        public DefaultAVMessage build() {
-            return new DefaultAVMessage(this);
+        public DefaultAvMessage build() {
+            return new DefaultAvMessage(this);
         }
     }
 }

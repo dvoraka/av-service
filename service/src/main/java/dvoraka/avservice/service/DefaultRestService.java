@@ -1,6 +1,6 @@
 package dvoraka.avservice.service;
 
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.rest.RestStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +46,13 @@ public class DefaultRestService implements RestService {
     }
 
     @Override
-    public void messageCheck(AVMessage message) {
+    public void messageCheck(AvMessage message) {
         processingMessages.add(message.getId());
         restStrategy.messageCheck(message);
     }
 
     @Override
-    public AVMessage getResponse(String id) {
+    public AvMessage getResponse(String id) {
         return restStrategy.getResponse(id);
     }
 

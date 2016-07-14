@@ -2,8 +2,8 @@ package dvoraka.avservice.server.amqp
 
 import dvoraka.avservice.common.AVMessageListener
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessage
-import dvoraka.avservice.common.data.DefaultAVMessage
+import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.DefaultAvMessage
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
@@ -62,7 +62,7 @@ class AmqpComponentSpec extends Specification {
         RabbitTemplate rabbitTemplate = Mock()
         ReflectionTestUtils.setField(component, null, rabbitTemplate, RabbitTemplate.class)
 
-        AVMessage message = Utils.genNormalMessage()
+        AvMessage message = Utils.genNormalMessage()
 
         when:
         component.sendMessage(message)
@@ -76,7 +76,7 @@ class AmqpComponentSpec extends Specification {
         RabbitTemplate rabbitTemplate = Mock()
         ReflectionTestUtils.setField(component, null, rabbitTemplate, RabbitTemplate.class)
 
-        AVMessage message = new DefaultAVMessage.Builder(null)
+        AvMessage message = new DefaultAvMessage.Builder(null)
                 .build()
 
         when:
@@ -89,7 +89,7 @@ class AmqpComponentSpec extends Specification {
     AVMessageListener getAVMessageListener() {
         return new AVMessageListener() {
             @Override
-            void onAVMessage(AVMessage message) {
+            void onAVMessage(AvMessage message) {
 
             }
         }

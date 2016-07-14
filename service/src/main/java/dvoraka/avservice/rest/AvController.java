@@ -1,8 +1,8 @@
 package dvoraka.avservice.rest;
 
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AVMessageType;
-import dvoraka.avservice.common.data.DefaultAVMessage;
+import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.service.RestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ public class AvController {
     }
 
     @RequestMapping(value = "/msg-check", method = RequestMethod.POST)
-    public ResponseEntity<String> messageCheck(@RequestBody DefaultAVMessage message) {
+    public ResponseEntity<String> messageCheck(@RequestBody DefaultAvMessage message) {
 
         restService.messageCheck(message);
 
@@ -78,7 +78,7 @@ public class AvController {
     }
 
     @RequestMapping(value = "/get-response/{id}", method = RequestMethod.GET)
-    public AVMessage getResponse(@PathVariable String id) {
+    public AvMessage getResponse(@PathVariable String id) {
         return restService.getResponse(id);
     }
 
@@ -88,9 +88,9 @@ public class AvController {
      * @return the generated message
      */
     @RequestMapping(value = "/gen-msg")
-    public AVMessage generateMessage() {
+    public AvMessage generateMessage() {
         final int dataSize = 10;
-        return new DefaultAVMessage.Builder(null)
+        return new DefaultAvMessage.Builder(null)
                 .serviceId("testing-service")
                 .virusInfo("bad")
                 .correlationId("corrId")

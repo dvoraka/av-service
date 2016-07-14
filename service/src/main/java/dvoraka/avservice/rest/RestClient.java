@@ -1,7 +1,7 @@
 package dvoraka.avservice.rest;
 
-import dvoraka.avservice.common.data.AVMessage;
-import dvoraka.avservice.common.data.DefaultAVMessage;
+import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
@@ -21,9 +21,9 @@ public class RestClient {
         this.baseUrl = baseUrl;
     }
 
-    public void postMessage(AVMessage message, String service) {
+    public void postMessage(AvMessage message, String service) {
 
-        restTemplate.postForObject(baseUrl + service, message, DefaultAVMessage.class);
+        restTemplate.postForObject(baseUrl + service, message, DefaultAvMessage.class);
     }
 
     public MessageStatus getMessageStatus(String service) {
@@ -31,8 +31,8 @@ public class RestClient {
         return restTemplate.getForObject(baseUrl + service, MessageStatus.class);
     }
 
-    public AVMessage getMessage(String service) {
+    public AvMessage getMessage(String service) {
 
-        return restTemplate.getForObject(baseUrl + service, DefaultAVMessage.class);
+        return restTemplate.getForObject(baseUrl + service, DefaultAvMessage.class);
     }
 }

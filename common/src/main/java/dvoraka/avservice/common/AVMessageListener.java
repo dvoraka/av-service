@@ -1,11 +1,11 @@
 package dvoraka.avservice.common;
 
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 
 /**
  * AV message listener.
  */
 public interface AVMessageListener {
 
-    void onAVMessage(AVMessage message);
+    void onAVMessage(AvMessage message);
 }

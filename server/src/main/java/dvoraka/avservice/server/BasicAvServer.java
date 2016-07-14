@@ -3,7 +3,7 @@ package dvoraka.avservice.server;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessedAVMessageListener;
 import dvoraka.avservice.common.AVMessageListener;
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.service.ServiceManagement;
 import org.apache.logging.log4j.LogManager;
@@ -91,12 +91,12 @@ public class BasicAvServer implements AvServer, ServiceManagement, AVMessageList
     }
 
     @Override
-    public void onAVMessage(AVMessage message) {
+    public void onAVMessage(AvMessage message) {
         messageProcessor.sendMessage(message);
     }
 
     @Override
-    public void onProcessedAVMessage(AVMessage message) {
+    public void onProcessedAVMessage(AvMessage message) {
         serverComponent.sendMessage(message);
     }
 

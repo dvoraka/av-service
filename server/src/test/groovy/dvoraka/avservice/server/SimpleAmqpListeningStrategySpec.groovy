@@ -2,8 +2,8 @@ package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessage
 import dvoraka.avservice.common.data.AVMessageMapper
+import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.server.amqp.SimpleAmqpListeningStrategy
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
@@ -63,7 +63,7 @@ class SimpleAmqpListeningStrategySpec extends Specification {
         when:
         RabbitTemplate template = Stub()
         MessageProcessor processor = Stub()
-        AVMessage avMessage = Utils.genNormalMessage()
+        AvMessage avMessage = Utils.genNormalMessage()
 
         template.receive() >> {
             sleep(100)

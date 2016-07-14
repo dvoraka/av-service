@@ -1,6 +1,6 @@
 package dvoraka.avservice.common
 
-import dvoraka.avservice.common.data.AVMessage
+import dvoraka.avservice.common.data.AvMessage
 import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
@@ -13,7 +13,7 @@ class UtilsSpec extends Specification {
 
     def "generate normal message"() {
         setup:
-        AVMessage message = Utils.genNormalMessage()
+        AvMessage message = Utils.genNormalMessage()
 
         expect:
         checkMessageFields(message)
@@ -22,7 +22,7 @@ class UtilsSpec extends Specification {
 
     def "generate infected message"() {
         setup:
-        AVMessage message = Utils.genInfectedMessage()
+        AvMessage message = Utils.genInfectedMessage()
         byte[] expectedData = message.getData()
 
         expect:
@@ -30,7 +30,7 @@ class UtilsSpec extends Specification {
         Arrays.equals(expectedData, Utils.EICAR.getBytes(StandardCharsets.UTF_8))
     }
 
-    void checkMessageFields(AVMessage message) {
+    void checkMessageFields(AvMessage message) {
         assert message.getId()
         assert message.getCorrelationId()
         assert message.getData()

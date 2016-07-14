@@ -1,8 +1,8 @@
 package dvoraka.avservice.common;
 
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AVMessageType;
-import dvoraka.avservice.common.data.DefaultAVMessage;
+import dvoraka.avservice.common.data.DefaultAvMessage;
 
 import java.nio.charset.StandardCharsets;
 
@@ -19,9 +19,9 @@ public final class Utils {
     private Utils() {
     }
 
-    public static AVMessage genNormalMessage() {
+    public static AvMessage genNormalMessage() {
         final int dataSize = 20;
-        return new DefaultAVMessage.Builder(null)
+        return new DefaultAvMessage.Builder(null)
                 .serviceId(SERVICE_ID)
                 .virusInfo("")
                 .correlationId("1-2-3")
@@ -30,8 +30,8 @@ public final class Utils {
                 .build();
     }
 
-    public static AVMessage genInfectedMessage() {
-        return new DefaultAVMessage.Builder(null)
+    public static AvMessage genInfectedMessage() {
+        return new DefaultAvMessage.Builder(null)
                 .serviceId(SERVICE_ID)
                 .virusInfo("UNKNOWN")
                 .correlationId("1-2-3")

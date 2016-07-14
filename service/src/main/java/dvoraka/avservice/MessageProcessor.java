@@ -1,6 +1,6 @@
 package dvoraka.avservice;
 
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 
 /**
@@ -8,7 +8,7 @@ import dvoraka.avservice.common.data.MessageStatus;
  */
 public interface MessageProcessor {
 
-    void sendMessage(AVMessage message);
+    void sendMessage(AvMessage message);
 
     /**
      * Returns the message status with the given ID.
@@ -30,7 +30,7 @@ public interface MessageProcessor {
      *
      * @return a processed message
      */
-    AVMessage getProcessedMessage();
+    AvMessage getProcessedMessage();
 
     /**
      * Stops processing.

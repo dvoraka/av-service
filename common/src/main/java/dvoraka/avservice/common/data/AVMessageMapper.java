@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- * AVMessage mapper
+ * AvMessage mapper
  */
 public final class AVMessageMapper {
 
@@ -25,7 +25,7 @@ public final class AVMessageMapper {
     private AVMessageMapper() {
     }
 
-    public static AVMessage transform(Message msg) throws MapperException {
+    public static AvMessage transform(Message msg) throws MapperException {
         log.debug("Transform: " + msg);
 
         MessageProperties msgProps = msg.getMessageProperties();
@@ -65,7 +65,7 @@ public final class AVMessageMapper {
             throw new MapperException("Unknown message type");
         }
 
-        return new DefaultAVMessage.Builder(msgProps.getMessageId())
+        return new DefaultAvMessage.Builder(msgProps.getMessageId())
                 .data(msg.getBody())
                 .type(messageType)
                 .virusInfo(virusInfo)
@@ -73,7 +73,7 @@ public final class AVMessageMapper {
                 .build();
     }
 
-    public static Message transform(AVMessage msg) throws MapperException {
+    public static Message transform(AvMessage msg) throws MapperException {
         log.debug("AVTransform: " + msg);
 
         // mandatory fields

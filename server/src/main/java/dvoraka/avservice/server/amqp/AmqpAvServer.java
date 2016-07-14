@@ -3,7 +3,7 @@ package dvoraka.avservice.server.amqp;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessedAVMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
-import dvoraka.avservice.common.data.AVMessage;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AVMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.configuration.ServiceConfig;
@@ -104,7 +104,7 @@ public class AmqpAvServer extends AbstractAvServer implements AvServer, Processe
             }
 
             if (messageProcessor.hasProcessedMessage()) {
-                AVMessage message = messageProcessor.getProcessedMessage();
+                AvMessage message = messageProcessor.getProcessedMessage();
                 processResponse(message);
             } else {
                 final long sleepTime = 100;
@@ -118,7 +118,7 @@ public class AmqpAvServer extends AbstractAvServer implements AvServer, Processe
         }
     }
 
-    private void processResponse(AVMessage message) {
+    private void processResponse(AvMessage message) {
         log.debug("Processed message: " + message.getId());
 
         try {
@@ -130,7 +130,7 @@ public class AmqpAvServer extends AbstractAvServer implements AvServer, Processe
     }
 
     @Override
-    public void onProcessedAVMessage(AVMessage message) {
+    public void onProcessedAVMessage(AvMessage message) {
         processResponse(message);
     }
 

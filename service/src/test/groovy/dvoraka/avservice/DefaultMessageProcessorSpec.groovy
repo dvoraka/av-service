@@ -2,8 +2,8 @@ package dvoraka.avservice
 
 import dvoraka.avservice.common.ReceivingType
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessage
-import dvoraka.avservice.common.data.DefaultAVMessage
+import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.exception.ScanErrorException
 import dvoraka.avservice.service.AvService
@@ -66,7 +66,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
         setProcessorService(service)
 
-        AVMessage message = Utils.genNormalMessage()
+        AvMessage message = Utils.genNormalMessage()
         processor.sendMessage(message)
 
         expect:
@@ -81,10 +81,10 @@ class DefaultMessageProcessorSpec extends Specification {
         AvService service = Stub()
         service.scanStream(_) >> false
 
-        AVMessage response = null
+        AvMessage response = null
         ProcessedAVMessageListener messageListener = new ProcessedAVMessageListener() {
             @Override
-            void onProcessedAVMessage(AVMessage message) {
+            void onProcessedAVMessage(AvMessage message) {
                 response = message
             }
         }
@@ -93,7 +93,7 @@ class DefaultMessageProcessorSpec extends Specification {
         setProcessorService(service)
         processor.addProcessedAVMessageListener(messageListener)
 
-        AVMessage message = Utils.genNormalMessage()
+        AvMessage message = Utils.genNormalMessage()
 
         when:
         processor.sendMessage(message)
@@ -156,9 +156,9 @@ class DefaultMessageProcessorSpec extends Specification {
         processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1)
         setProcessorService(service)
 
-        AVMessage message1 = Utils.genNormalMessage()
+        AvMessage message1 = Utils.genNormalMessage()
         processor.sendMessage(message1)
-        AVMessage message2 = Utils.genNormalMessage()
+        AvMessage message2 = Utils.genNormalMessage()
         processor.sendMessage(message2)
 
         expect:
@@ -186,7 +186,7 @@ class DefaultMessageProcessorSpec extends Specification {
         }
 
         setProcessorService(service)
-        AVMessage message = Utils.genNormalMessage()
+        AvMessage message = Utils.genNormalMessage()
 
         when:
         processor.sendMessage(message)
@@ -208,7 +208,7 @@ class DefaultMessageProcessorSpec extends Specification {
         setProcessorService(service)
 
         when:
-        processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
+        processor.sendMessage(new DefaultAvMessage.Builder(testId).build())
 
         then:
         processor.messageStatus(testId) == MessageStatus.PROCESSING
@@ -222,7 +222,7 @@ class DefaultMessageProcessorSpec extends Specification {
         setProcessorService(service)
 
         when:
-        processor.sendMessage(new DefaultAVMessage.Builder(testId).build())
+        processor.sendMessage(new DefaultAvMessage.Builder(testId).build())
 
         then:
         conditions.eventually {
@@ -249,7 +249,7 @@ class DefaultMessageProcessorSpec extends Specification {
         setProcessorService(service)
 
         when:
-        AVMessage message = Utils.genNormalMessage()
+        AvMessage message = Utils.genNormalMessage()
         messageCount.times {
             processor.sendMessage(message)
         }
