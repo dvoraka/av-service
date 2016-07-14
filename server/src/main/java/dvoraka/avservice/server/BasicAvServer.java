@@ -2,7 +2,7 @@ package dvoraka.avservice.server;
 
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessedAVMessageListener;
-import dvoraka.avservice.common.AVMessageListener;
+import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.service.ServiceManagement;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * AMQP AV server implementation
  */
-public class BasicAvServer implements AvServer, ServiceManagement, AVMessageListener, ProcessedAVMessageListener {
+public class BasicAvServer implements AvServer, ServiceManagement, AvMessageListener, ProcessedAVMessageListener {
 
     @Autowired
     private ServerComponent serverComponent;

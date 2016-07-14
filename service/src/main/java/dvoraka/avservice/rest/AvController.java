@@ -1,7 +1,7 @@
 package dvoraka.avservice.rest;
 
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AVMessageType;
+import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.service.RestService;
@@ -95,7 +95,7 @@ public class AvController {
                 .virusInfo("bad")
                 .correlationId("corrId")
                 .data(new byte[dataSize])
-                .type(AVMessageType.RESPONSE)
+                .type(AvMessageType.RESPONSE)
                 .build();
     }
 }

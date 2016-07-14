@@ -2,7 +2,7 @@ package dvoraka.avservice.server.amqp;
 
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AVMessageMapper;
+import dvoraka.avservice.common.data.AvMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.server.ListeningStrategy;
 import org.apache.logging.log4j.LogManager;
@@ -47,7 +47,7 @@ public class SimpleAmqpListeningStrategy implements ListeningStrategy {
             if (message != null) {
                 log.debug("Message received.");
                 try {
-                    AvMessage avMessage = AVMessageMapper.transform(message);
+                    AvMessage avMessage = AvMessageMapper.transform(message);
                     messageProcessor.sendMessage(avMessage);
                 } catch (MapperException e) {
                     log.warn("Message problem!", e);

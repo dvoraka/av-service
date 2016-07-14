@@ -22,7 +22,7 @@ public interface AvMessage {
 
     byte[] getData();
 
-    AVMessageType getType();
+    AvMessageType getType();
 
     String getServiceId();
 

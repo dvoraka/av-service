@@ -19,7 +19,7 @@ public final class DefaultAvMessage implements AvMessage {
     private byte[] data;
     private String serviceId;
     private String virusInfo;
-    private AVMessageType type;
+    private AvMessageType type;
 
 
     private DefaultAvMessage(Builder builder) {
@@ -50,7 +50,7 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
-    public AVMessageType getType() {
+    public AvMessageType getType() {
         return type;
     }
 
@@ -71,7 +71,7 @@ public final class DefaultAvMessage implements AvMessage {
         return new Builder(null)
                 .correlationId(this.getId())
                 .virusInfo(virusInfo)
-                .type(AVMessageType.RESPONSE)
+                .type(AvMessageType.RESPONSE)
                 .build();
     }
 
@@ -79,7 +79,7 @@ public final class DefaultAvMessage implements AvMessage {
     public AvMessage createErrorResponse(String errorMessage) {
         return new Builder(null)
                 .correlationId(this.getId())
-                .type(AVMessageType.RESPONSE_ERROR)
+                .type(AvMessageType.RESPONSE_ERROR)
                 .data(errorMessage.getBytes(StandardCharsets.UTF_8))
                 .build();
     }
@@ -101,7 +101,7 @@ public final class DefaultAvMessage implements AvMessage {
         private String id;
         private String correlationId;
         private byte[] data;
-        private AVMessageType type;
+        private AvMessageType type;
         private String serviceId;
         private String virusInfo;
 
@@ -125,7 +125,7 @@ public final class DefaultAvMessage implements AvMessage {
             return this;
         }
 
-        public Builder type(AVMessageType type) {
+        public Builder type(AvMessageType type) {
             this.type = type;
             return this;
         }

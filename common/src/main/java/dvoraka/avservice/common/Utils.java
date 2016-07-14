@@ -1,7 +1,7 @@
 package dvoraka.avservice.common;
 
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AVMessageType;
+import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 
 import java.nio.charset.StandardCharsets;
@@ -26,7 +26,7 @@ public final class Utils {
                 .virusInfo("")
                 .correlationId("1-2-3")
                 .data(new byte[dataSize])
-                .type(AVMessageType.REQUEST)
+                .type(AvMessageType.REQUEST)
                 .build();
     }
 
@@ -36,7 +36,7 @@ public final class Utils {
                 .virusInfo("UNKNOWN")
                 .correlationId("1-2-3")
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
-                .type(AVMessageType.REQUEST)
+                .type(AvMessageType.REQUEST)
                 .build();
     }
 }

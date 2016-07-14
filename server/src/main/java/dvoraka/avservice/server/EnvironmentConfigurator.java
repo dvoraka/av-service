@@ -2,7 +2,7 @@ package dvoraka.avservice.server;
 
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AVMessageMapper;
+import dvoraka.avservice.common.data.AvMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.server.configuration.AmqpConfig;
 import org.springframework.amqp.core.Message;
@@ -25,7 +25,7 @@ public final class EnvironmentConfigurator {
         context.refresh();
 
         AvMessage avMessage = Utils.genNormalMessage();
-        Message message = AVMessageMapper.transform(avMessage);
+        Message message = AvMessageMapper.transform(avMessage);
 
         RabbitTemplate rabbitTemplate = context.getBean(RabbitTemplate.class);
         rabbitTemplate.send(message);

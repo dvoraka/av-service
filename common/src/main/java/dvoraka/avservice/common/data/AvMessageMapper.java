@@ -12,9 +12,9 @@ import java.util.Map;
 /**
  * AvMessage mapper
  */
-public final class AVMessageMapper {
+public final class AvMessageMapper {
 
-    private static final Logger log = LogManager.getLogger(AVMessageMapper.class.getName());
+    private static final Logger log = LogManager.getLogger(AvMessageMapper.class.getName());
 
     public static final String VIRUS_INFO_KEY = "virusInfo";
     public static final String DEFAULT_VIRUS_INFO = "noinfo";
@@ -22,7 +22,7 @@ public final class AVMessageMapper {
     public static final String DEFAULT_SERVICE_ID = "noservice";
 
 
-    private AVMessageMapper() {
+    private AvMessageMapper() {
     }
 
     public static AvMessage transform(Message msg) throws MapperException {
@@ -58,9 +58,9 @@ public final class AVMessageMapper {
 
         // message type checking
         String messageTypeStr = msgProps.getType().toUpperCase();
-        AVMessageType messageType;
+        AvMessageType messageType;
         try {
-            messageType = AVMessageType.valueOf(messageTypeStr);
+            messageType = AvMessageType.valueOf(messageTypeStr);
         } catch (IllegalArgumentException e) {
             throw new MapperException("Unknown message type");
         }

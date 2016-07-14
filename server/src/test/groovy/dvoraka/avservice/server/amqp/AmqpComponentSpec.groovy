@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.amqp
 
-import dvoraka.avservice.common.AVMessageListener
+import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
@@ -31,8 +31,8 @@ class AmqpComponentSpec extends Specification {
 
     def "remove listeners"() {
         given:
-        AVMessageListener listener1 = getAVMessageListener()
-        AVMessageListener listener2 = getAVMessageListener()
+        AvMessageListener listener1 = getAVMessageListener()
+        AvMessageListener listener2 = getAVMessageListener()
 
         when:
         component.addAVMessageListener(listener1)
@@ -86,8 +86,8 @@ class AmqpComponentSpec extends Specification {
         1 * rabbitTemplate.send(_, _, _)
     }
 
-    AVMessageListener getAVMessageListener() {
-        return new AVMessageListener() {
+    AvMessageListener getAVMessageListener() {
+        return new AvMessageListener() {
             @Override
             void onAVMessage(AvMessage message) {
 

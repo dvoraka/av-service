@@ -31,13 +31,13 @@ class AVMessageMapperSpec extends Specification {
         // appId
         props.setAppId(testAppId)
         // type
-        props.setType(AVMessageType.REQUEST.toString())
+        props.setType(AvMessageType.REQUEST.toString())
 
         // HEADERS
         // virusInfo
-        props.setHeader(AVMessageMapper.VIRUS_INFO_KEY, testVirusInfo)
+        props.setHeader(AvMessageMapper.VIRUS_INFO_KEY, testVirusInfo)
         // serviceId
-        props.setHeader(AVMessageMapper.SERVICE_ID_KEY, testServiceId)
+        props.setHeader(AvMessageMapper.SERVICE_ID_KEY, testServiceId)
 
         // BODY
         // data
@@ -46,11 +46,11 @@ class AVMessageMapperSpec extends Specification {
         // create AMQP message
         Message message = new Message(body, props)
         // transform to AvMessage
-        AvMessage avMessage = AVMessageMapper.transform(message)
+        AvMessage avMessage = AvMessageMapper.transform(message)
 
         expect:
         avMessage.getId().equals(testId)
-        avMessage.getType().equals(AVMessageType.REQUEST)
+        avMessage.getType().equals(AvMessageType.REQUEST)
 
         avMessage.getVirusInfo().equals(testVirusInfo)
         avMessage.getServiceId().equals(testServiceId)
@@ -69,7 +69,7 @@ class AVMessageMapperSpec extends Specification {
         Message message = new Message(null, props)
 
         when:
-        AVMessageMapper.transform(message)
+        AvMessageMapper.transform(message)
 
         then:
         thrown(MapperException)
@@ -87,7 +87,7 @@ class AVMessageMapperSpec extends Specification {
         Message message = new Message(null, props)
 
         when:
-        AVMessageMapper.transform(message)
+        AvMessageMapper.transform(message)
 
         then:
         thrown(MapperException)
@@ -98,14 +98,14 @@ class AVMessageMapperSpec extends Specification {
         MessageProperties props = new MessageProperties()
 
         // PROPERTIES
-        props.setType(AVMessageType.REQUEST.toString())
+        props.setType(AvMessageType.REQUEST.toString())
         // HEADERS
         // BODY
 
         Message message = new Message(null, props)
 
         when:
-        AVMessageMapper.transform(message)
+        AvMessageMapper.transform(message)
 
         then:
         thrown(MapperException)
@@ -117,14 +117,14 @@ class AVMessageMapperSpec extends Specification {
 
         // PROPERTIES
         props.setMessageId(testId)
-        props.setType(AVMessageType.REQUEST.toString())
+        props.setType(AvMessageType.REQUEST.toString())
         // HEADERS
         // BODY
 
         Message message = new Message(null, props)
 
         when:
-        AVMessageMapper.transform(message)
+        AvMessageMapper.transform(message)
 
         then:
         notThrown(MapperException)
@@ -143,7 +143,7 @@ class AVMessageMapperSpec extends Specification {
         Message message = new Message(null, props)
 
         when:
-        AVMessageMapper.transform(message)
+        AvMessageMapper.transform(message)
 
         then:
         thrown(MapperException)
@@ -154,13 +154,13 @@ class AVMessageMapperSpec extends Specification {
         AvMessage avMessage = new DefaultAvMessage.Builder(testId)
                 .correlationId(testCorrId)
                 .data(new byte[dataSize])
-                .type(AVMessageType.REQUEST)
+                .type(AvMessageType.REQUEST)
                 .serviceId(testServiceId)
                 .virusInfo(testVirusInfo)
                 .build()
 
         // transform to Message
-        Message message = AVMessageMapper.transform(avMessage)
+        Message message = AvMessageMapper.transform(avMessage)
         MessageProperties props = message.getMessageProperties()
         Map<String, Object> headers = props.getHeaders()
 
@@ -173,13 +173,13 @@ class AVMessageMapperSpec extends Specification {
         // correlation ID
         Arrays.equals(props.getCorrelationId(), testCorrId.getBytes(StandardCharsets.UTF_8))
         // type
-        props.getType().equals(AVMessageType.REQUEST.toString())
+        props.getType().equals(AvMessageType.REQUEST.toString())
 
         // HEADERS
         // serviceId
-        headers.get(AVMessageMapper.SERVICE_ID_KEY).equals(testServiceId)
+        headers.get(AvMessageMapper.SERVICE_ID_KEY).equals(testServiceId)
         // virusInfo
-        headers.get(AVMessageMapper.VIRUS_INFO_KEY).equals(testVirusInfo)
+        headers.get(AvMessageMapper.VIRUS_INFO_KEY).equals(testVirusInfo)
 
         message.getBody().length == dataSize
     }
@@ -188,7 +188,7 @@ class AVMessageMapperSpec extends Specification {
         setup:
         AvMessage avMessage = Utils.genNormalMessage()
 
-        Message message = AVMessageMapper.transform(avMessage)
+        Message message = AvMessageMapper.transform(avMessage)
         Map<String, Object> headers = message.getMessageProperties().getHeaders()
 
         expect:
@@ -199,7 +199,7 @@ class AVMessageMapperSpec extends Specification {
         setup:
         AvMessage avMessage = Utils.genInfectedMessage()
 
-        Message message = AVMessageMapper.transform(avMessage)
+        Message message = AvMessageMapper.transform(avMessage)
         Map<String, Object> headers = message.getMessageProperties().getHeaders()
 
         expect:

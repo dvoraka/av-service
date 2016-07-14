@@ -1,7 +1,7 @@
 package dvoraka.avservice.service
 
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessageType
+import dvoraka.avservice.common.data.AvMessageType
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.configuration.ServiceConfig
@@ -50,7 +50,7 @@ class RestServiceISpec extends Specification {
 
         expect:
         status == MessageStatus.PROCESSED
-        response.type == AVMessageType.RESPONSE
+        response.type == AvMessageType.RESPONSE
         response.getVirusInfo().equals("")
     }
 
@@ -75,7 +75,7 @@ class RestServiceISpec extends Specification {
 
         expect:
         status == MessageStatus.PROCESSED
-        response.type == AVMessageType.RESPONSE
+        response.type == AvMessageType.RESPONSE
         !response.getVirusInfo().equals("")
     }
 }

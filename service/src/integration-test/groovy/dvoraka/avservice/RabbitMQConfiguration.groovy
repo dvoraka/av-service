@@ -1,8 +1,8 @@
 package dvoraka.avservice
 
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessageMapper
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.AvMessageMapper
 import dvoraka.avservice.configuration.ServiceConfig
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -27,7 +27,7 @@ class RabbitMQConfiguration extends Specification {
     def "send message"() {
         setup:
         AvMessage avMessage = Utils.genNormalMessage()
-        Message message = AVMessageMapper.transform(avMessage)
+        Message message = AvMessageMapper.transform(avMessage)
 
         when:
         rabbitTemplate.sendAndReceive(message)

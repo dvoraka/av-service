@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.amqp;
 
-import dvoraka.avservice.common.AVMessageListener;
+import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AVMessageMapper;
+import dvoraka.avservice.common.data.AvMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +25,7 @@ public class AmqpComponent implements ServerComponent {
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
 
     private String responseExchange;
-    private List<AVMessageListener> listeners = new ArrayList<>();
+    private List<AvMessageListener> listeners = new ArrayList<>();
 
 
     public AmqpComponent(String responseExchange) {
@@ -36,23 +36,23 @@ public class AmqpComponent implements ServerComponent {
     public void onMessage(Message message) {
         AvMessage avMessage = null;
         try {
-            avMessage = AVMessageMapper.transform(message);
+            avMessage = AvMessageMapper.transform(message);
         } catch (MapperException e) {
             log.warn("Transformation error!", e);
         }
 
-        for (AVMessageListener listener : listeners) {
+        for (AvMessageListener listener : listeners) {
             listener.onAVMessage(avMessage);
         }
     }
 
     @Override
-    public void addAVMessageListener(AVMessageListener listener) {
+    public void addAVMessageListener(AvMessageListener listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removeAVMessageListener(AVMessageListener listener) {
+    public void removeAVMessageListener(AvMessageListener listener) {
         listeners.remove(listener);
     }
 
@@ -68,14 +68,14 @@ public class AmqpComponent implements ServerComponent {
 
         Message response = null;
         try {
-            response = AVMessageMapper.transform(message);
+            response = AvMessageMapper.transform(message);
             rabbitTemplate.send(responseExchange, "ROUTINGKEY", response);
         } catch (MapperException e) {
             log.warn("Message transformation problem!", e);
             // create error response
             AvMessage errorResponse = message.createErrorResponse(e.getMessage());
             try {
-                response = AVMessageMapper.transform(errorResponse);
+                response = AvMessageMapper.transform(errorResponse);
             } catch (MapperException e1) {
                 log.error("Message send error!", e1);
             }

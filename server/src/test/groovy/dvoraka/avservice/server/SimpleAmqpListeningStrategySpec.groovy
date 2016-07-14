@@ -2,8 +2,8 @@ package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AVMessageMapper
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.AvMessageMapper
 import dvoraka.avservice.server.amqp.SimpleAmqpListeningStrategy
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
@@ -67,7 +67,7 @@ class SimpleAmqpListeningStrategySpec extends Specification {
 
         template.receive() >> {
             sleep(100)
-            return AVMessageMapper.transform(avMessage)
+            return AvMessageMapper.transform(avMessage)
         }
 
         ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
