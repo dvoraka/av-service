@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class LoadTestConfigParser extends DefaultHandler {
 
-    private static Logger log = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
 
     private Map<String, String> props = new HashMap<>();
     private StringBuilder buffer = new StringBuilder();

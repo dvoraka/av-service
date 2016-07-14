@@ -26,7 +26,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class AmqpSender implements AvSender {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
 
     private static final String DEFAULT_VHOST = "antivirus";
     private static final String DEFAULT_CHECK_EXCHANGE = "check";
@@ -117,25 +117,25 @@ public class AmqpSender implements AvSender {
             printMessage("Message sent.");
 
         } catch (IOException e) {
-            logger.warn("Connection problem - send", e);
+            log.warn("Connection problem - send", e);
             throw e;
 //        } catch (InterruptedException e) {
-//            logger.warn("Connection problem - send interrupted", e);
+//            log.warn("Connection problem - send interrupted", e);
         } catch (TimeoutException e) {
-            logger.warn(e);
+            log.warn(e);
         } finally {
             if (channel != null) {
                 try {
                     channel.close();
                 } catch (TimeoutException | IOException e) {
-                    logger.warn(e);
+                    log.warn(e);
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (IOException e) {
-                    logger.warn(e);
+                    log.warn(e);
                 }
             }
         }
@@ -207,22 +207,22 @@ public class AmqpSender implements AvSender {
             channel = connection.createChannel();
             channel.queuePurge(queueName);
         } catch (IOException e) {
-            logger.warn("Connection problem - purge queue", e);
+            log.warn("Connection problem - purge queue", e);
         } catch (TimeoutException e) {
-            logger.warn(e);
+            log.warn(e);
         } finally {
             if (channel != null) {
                 try {
                     channel.close();
                 } catch (TimeoutException | IOException e) {
-                    logger.warn(e);
+                    log.warn(e);
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (IOException e) {
-                    logger.warn(e);
+                    log.warn(e);
                 }
             }
         }
@@ -263,7 +263,7 @@ public class AmqpSender implements AvSender {
         // read EICAR
         try (InputStream in = getClass().getResourceAsStream("/eicar")) {
             if (in == null) {
-                logger.warn("Virus file not found.");
+                log.warn("Virus file not found.");
                 throw new FileNotFoundException("Virus file not found.");
             }
 
@@ -278,7 +278,7 @@ public class AmqpSender implements AvSender {
 
             bytes = bos.toByteArray();
         } catch (IOException e) {
-            logger.warn("Virus file problem!", e);
+            log.warn("Virus file problem!", e);
         }
 
         return bytes;

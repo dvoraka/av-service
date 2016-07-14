@@ -22,7 +22,7 @@ public class AvUtils implements AmqpUtils {
     @Autowired
     private AvReceiver avReceiver;
 
-    private static Logger log = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
 
     private boolean senderOutput;
     private boolean receiverOutput;

@@ -11,7 +11,7 @@ import org.springframework.context.support.AbstractApplicationContext;
  */
 public final class CheckerApp {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
 
 
     private CheckerApp() {
@@ -35,11 +35,11 @@ public final class CheckerApp {
 //                + utils.findProtocol(protocols));
 
         // check
-        logger.debug("Start checking...");
+        log.debug("Start checking...");
         System.out.println("CHECK:");
         AvChecker avc = context.getBean(AvChecker.class);
         avc.check();
-        logger.debug("Check completed.");
+        log.debug("Check completed.");
 
         context.close();
     }

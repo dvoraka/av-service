@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class BasicLoadTestProperties implements LoadTestProperties {
 
-    private static Logger log = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
 
     private static final String CONF_FILE_NAME = "/loadTest.xml";
 

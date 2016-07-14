@@ -23,7 +23,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class AmqpReceiver implements AvReceiver {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
 
     private static final String DEFAULT_VHOST = "antivirus";
     private static final String DEFAULT_QUEUE = "av-result";
@@ -144,26 +144,26 @@ public class AmqpReceiver implements AvReceiver {
                 }
             }
         } catch (IOException e) {
-            logger.warn("Connection problem - receive", e);
+            log.warn("Connection problem - receive", e);
             throw e;
         } catch (TimeoutException e) {
-            logger.warn(e);
+            log.warn(e);
         } catch (InterruptedException e) {
-            logger.warn("Receiving interrupted!");
+            log.warn("Receiving interrupted!");
             Thread.currentThread().interrupt();
         } finally {
             if (channel != null) {
                 try {
                     channel.close();
                 } catch (TimeoutException | IOException e) {
-                    logger.warn(e);
+                    log.warn(e);
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (IOException e) {
-                    logger.warn(e);
+                    log.warn(e);
                 }
             }
         }

@@ -29,6 +29,7 @@ public class CheckerConfig {
     @Value("${receiveTimeout:200}")
     private long receiveTimeout;
 
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();

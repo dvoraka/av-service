@@ -27,7 +27,7 @@ public class LoadTester implements Tester {
     @Autowired
     private AvReceiver avReceiver;
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger();
 
     private static final int MAX_MSG_EXCEPTIONS = 3;
     private static final int MAX_LOOPS = 10;
@@ -85,12 +85,12 @@ public class LoadTester implements Tester {
                     getAvReceiver().receive(item);
                     it.remove();
                 } catch (InterruptedException e) {
-                    logger.warn("Receiving interrupted!");
+                    log.warn("Receiving interrupted!");
                     Thread.currentThread().interrupt();
                 } catch (ProtocolException e) {
-                    logger.info(e);
+                    log.info(e);
                 } catch (LastMessageException e) {
-                    logger.warn("", e);
+                    log.warn("", e);
                     if (exceptionCounter < this.maxMsgExceptions) {
                         exceptionCounter++;
                     } else {
@@ -98,13 +98,13 @@ public class LoadTester implements Tester {
                     }
                 }
             }
-            logger.debug(loopCounter + ". loop");
+            log.debug(loopCounter + ". loop");
 
             try {
                 final long sleepTime = 1000;
                 TimeUnit.MILLISECONDS.sleep(sleepTime);
             } catch (InterruptedException e) {
-                logger.warn("Sleeping interrupted!");
+                log.warn("Sleeping interrupted!");
                 Thread.currentThread().interrupt();
             }
 
@@ -151,13 +151,13 @@ public class LoadTester implements Tester {
                 msgId = getAvSender().sendFile(true, getProps().getAppId());
                 getAvReceiver().receive(msgId);
             } catch (InterruptedException e) {
-                logger.warn("Receiving interrupted!");
+                log.warn("Receiving interrupted!");
                 Thread.currentThread().interrupt();
             } catch (ProtocolException e) {
-                logger.info(e);
+                log.info(e);
             } catch (LastMessageException e) {
                 skippedMessages.add(msgId);
-                logger.debug("receiving failed", e);
+                log.debug("receiving failed", e);
             }
         }
 
@@ -167,7 +167,7 @@ public class LoadTester implements Tester {
                 try {
                     throw new MaxLoopsReachedException();
                 } catch (MaxLoopsReachedException e) {
-                    logger.warn("unreceivable messages", e);
+                    log.warn("unreceivable messages", e);
                     break;
                 }
             }
@@ -178,12 +178,12 @@ public class LoadTester implements Tester {
                     getAvReceiver().receive(it.next());
                     it.remove();
                 } catch (InterruptedException e) {
-                    logger.warn("Receiving interrupted!");
+                    log.warn("Receiving interrupted!");
                     Thread.currentThread().interrupt();
                 } catch (ProtocolException e) {
-                    logger.info(e);
+                    log.info(e);
                 } catch (LastMessageException e) {
-                    logger.debug("receiving failed", e);
+                    log.debug("receiving failed", e);
                 }
             }
 
@@ -206,7 +206,7 @@ public class LoadTester implements Tester {
             try {
                 receiveMessages(messageIDs);
             } catch (MaxLoopsReachedException e) {
-                logger.warn("receiving messages failed", e);
+                log.warn("receiving messages failed", e);
             }
 
             System.out.println("Receiving end");

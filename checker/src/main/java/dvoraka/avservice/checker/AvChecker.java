@@ -21,10 +21,10 @@ public class AvChecker {
     @Autowired
     private AvReceiver receiver;
 
+    private static final Logger log = LogManager.getLogger();
+
     private boolean dirtyFile;
     private String appId;
-
-    private static Logger log = LogManager.getLogger();
 
 
     public AvChecker(boolean dirtyFile, String appId) {
