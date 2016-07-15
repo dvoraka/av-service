@@ -17,6 +17,7 @@ before_script:
   - sudo ./tools/prepareRMQ.sh
 
 script:
+  - sudo netstat -an46
   - ./gradlew configureEnvironment
   - ./gradlew check
 
