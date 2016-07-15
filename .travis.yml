@@ -12,6 +12,7 @@ before_install:
   - sudo ./travis-config-deps.sh
   - sudo freshclam
   - sudo service clamav-daemon start
+  - sudo service activemq restart
 
 before_script:
   - sudo ./tools/prepareRMQ.sh
