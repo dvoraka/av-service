@@ -12,7 +12,6 @@ import javax.jms.TextMessage
 /**
  * JMS testing.
  */
-@Ignore
 @ContextConfiguration(classes = [JmsConfig.class])
 @ActiveProfiles("jms")
 class JmsISpec extends Specification {
@@ -21,6 +20,7 @@ class JmsISpec extends Specification {
     JmsClient client;
 
 
+    @Ignore
     def "send test message"() {
         expect:
         client.sendTestMessage()
