@@ -12,12 +12,13 @@ before_install:
   - sudo ./travis-config-deps.sh
   - sudo freshclam
   - sudo service clamav-daemon start
+  - sudo service activemq start
 
 before_script:
   - sudo ./tools/prepareRMQ.sh
 
 script:
-  - sudo netstat -an46
+  - sudo netstat -ln46
   - ./gradlew configureEnvironment
   - ./gradlew check
 
