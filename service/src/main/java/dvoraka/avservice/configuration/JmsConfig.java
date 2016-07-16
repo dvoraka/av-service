@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
 
 import javax.jms.ConnectionFactory;
 
@@ -52,7 +53,7 @@ public class JmsConfig {
     }
 
     @Bean
-    public MappingJackson2MessageConverter messageConverter() {
+    public MessageConverter messageConverter() {
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         messageConverter.setTypeIdPropertyName("typeId");
 
