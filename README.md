@@ -48,6 +48,7 @@ You can use Docker to prepare necessary services.
 * RabbitMQ
 * ActiveMQ
 * ClamAV daemon
+* PostgreSQL
 * Kibana
 * Elasticsearch
 * Logstash
