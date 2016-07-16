@@ -33,3 +33,8 @@ services:
     build: ./logstash
     image: "logstash-dev-server"
     network_mode: "host"
+
+  postgresql-dev:
+    build: ./postgresql
+    image: "postgresql-dev-server"
+    network_mode: "host"
