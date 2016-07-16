@@ -1,5 +1,7 @@
 package dvoraka.avservice
 
+import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.configuration.JmsConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -59,5 +61,38 @@ class JmsISpec extends Specification {
         then:
         corrId == expectedCorrId
         msgText == expectedText
+    }
+
+    @Ignore
+    def "send AvMessage"() {
+        setup:
+        AvMessage message = Utils.genNormalMessage()
+
+        expect:
+        client.sendMessage(message, JmsClient.TEST_DESTINATION)
+    }
+
+    @Ignore
+    def "send 10 AvMessages"() {
+        setup:
+        AvMessage message = Utils.genNormalMessage()
+
+        expect:
+        10.times {
+            client.sendMessage(message, JmsClient.TEST_DESTINATION)
+        }
+    }
+
+    def "send and receive AvMessage"() {
+        given:
+        AvMessage message = Utils.genNormalMessage()
+        String destination = JmsClient.TEST_DESTINATION
+
+        when:
+        client.sendMessage(message, destination)
+        AvMessage receivedMessage = client.receiveMessage(destination)
+
+        then:
+        receivedMessage.getId() == message.getId()
     }
 }

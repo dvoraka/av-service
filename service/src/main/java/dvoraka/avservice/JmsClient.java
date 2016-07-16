@@ -1,5 +1,6 @@
 package dvoraka.avservice;
 
+import dvoraka.avservice.common.data.AvMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -37,5 +38,13 @@ public class JmsClient {
 
     public Object receiveTestMessageAsObject() {
         return jmsTemplate.receive(TEST_DESTINATION);
+    }
+
+    public void sendMessage(AvMessage message, String destination) {
+        jmsTemplate.convertAndSend(destination, message);
+    }
+
+    public AvMessage receiveMessage(String destination) {
+        return (AvMessage) jmsTemplate.receiveAndConvert(destination);
     }
 }

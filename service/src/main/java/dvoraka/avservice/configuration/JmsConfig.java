@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 
 import javax.jms.ConnectionFactory;
 
@@ -22,6 +23,9 @@ public class JmsConfig {
 
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
+
+    @Value("${avservice.jms.receiveTimeout:2000}")
+    private long receiveTimeout;
 
 
     @Bean
@@ -40,7 +44,19 @@ public class JmsConfig {
 
     @Bean
     public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
-        return new JmsTemplate(connectionFactory);
+        JmsTemplate template = new JmsTemplate(connectionFactory);
+        template.setReceiveTimeout(receiveTimeout);
+        template.setMessageConverter(messageConverter());
+
+        return template;
+    }
+
+    @Bean
+    public MappingJackson2MessageConverter messageConverter() {
+        MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
+        messageConverter.setTypeIdPropertyName("typeId");
+
+        return messageConverter;
     }
 
     @Bean
