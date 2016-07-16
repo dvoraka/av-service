@@ -15,8 +15,12 @@ RUN mkdir -p /var/run/postgresql/$VERSION-main.pg_stat_tmp
 RUN chown -R postgres:postgres /var/run/postgresql/$VERSION-main.pg_stat_tmp
 RUN chown postgres:postgres /etc/postgresql/$VERSION/main/pg_hba.conf
 
-EXPOSE 5432
-
 USER postgres
+
+RUN /etc/init.d/postgresql start \
+    && psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" \
+    && createdb -O docker docker
+
+EXPOSE 5432
 
 CMD /usr/lib/postgresql/${VERSION}/bin/postgres -c config_file=/etc/postgresql/$VERSION/main/postgresql.conf
