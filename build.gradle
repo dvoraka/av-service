@@ -35,6 +35,7 @@ allprojects {
 
         springVersion = '4.3.0.RELEASE'
         springSecurityVersion = '4.1.0.RELEASE'
+        hibernateVersion = '5.2.1.Final'
         groovyVersion = '2.4.7'
         spockVersion = '1.0-groovy-2.4'
         log4jVersion = '2.5'
@@ -92,6 +93,8 @@ subprojects {
             exclude group: 'org.springframework', module: 'spring-tx'
             exclude group: 'org.springframework', module: 'spring-messaging'
         }
+        // Hibernate
+        compile("org.hibernate:hibernate-core:${hibernateVersion}")
         // Groovy
         compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
         // Spring test
