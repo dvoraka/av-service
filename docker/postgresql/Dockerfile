@@ -7,6 +7,7 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
     apt-get -y install \
         postgresql \
+        postgresql-contrib \
     && rm -rf /var/lib/apt/lists/*
 
 COPY conf/pg_hba.conf /etc/postgresql/$VERSION/main/
