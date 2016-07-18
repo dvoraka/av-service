@@ -1,8 +1,9 @@
-package dvoraka.avservice.server
+package dvoraka.avservice.server.configuration
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.avprogram.AvProgram
 import dvoraka.avservice.configuration.ServiceConfig
+import dvoraka.avservice.server.AvServer
 import dvoraka.avservice.service.AvService
 import org.springframework.amqp.core.AmqpAdmin
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
@@ -45,36 +46,36 @@ class SpringAmqpISpec extends Specification {
 
     def "AV service loading"() {
         expect:
-        avService != null
+            avService
     }
 
     def "AV program loading"() {
         expect:
-        avProgram != null
+            avProgram
     }
 
     def "AV server loading"() {
         expect:
-        avServer != null
+            avServer
     }
 
     def "Message processor loading"() {
         expect:
-        messageProcessor != null
+            messageProcessor
     }
 
     def "Connection factory loading"() {
         expect:
-        connectionFactory != null
+            connectionFactory
     }
 
     def "AMQP admin loading"() {
         expect:
-        amqpAdmin != null
+            amqpAdmin
     }
 
     def "Rabbit template loading"() {
         expect:
-        rabbitTemplate != null
+            rabbitTemplate
     }
 }
