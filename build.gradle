@@ -88,6 +88,7 @@ subprojects {
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
+        compile("org.springframework:spring-orm:${springVersion}")
         compile('org.springframework.amqp:spring-rabbit:1.6.0.RELEASE') {
             exclude group: 'org.springframework', module: 'spring-web'
             exclude group: 'org.springframework', module: 'spring-tx'
@@ -95,6 +96,7 @@ subprojects {
         }
         // Hibernate
         compile("org.hibernate:hibernate-core:${hibernateVersion}")
+        compile("postgresql:postgresql:9.1-901-1.jdbc4")
         // Groovy
         compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
         // Spring test
