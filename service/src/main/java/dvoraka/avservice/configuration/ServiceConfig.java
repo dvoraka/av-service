@@ -13,6 +13,9 @@ import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.jmx.export.MBeanExporter;
+import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
+import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -57,5 +60,13 @@ public class ServiceConfig {
     @Bean
     public RestClient restClient() {
         return new RestClient(restUrl);
+    }
+
+    @Bean
+    public MBeanExporter mbeanExporter() {
+        MBeanExporter exporter = new AnnotationMBeanExporter();
+        exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
+
+        return exporter;
     }
 }
