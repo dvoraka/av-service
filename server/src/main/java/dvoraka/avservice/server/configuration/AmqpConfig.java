@@ -2,11 +2,11 @@ package dvoraka.avservice.server.configuration;
 
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ListeningStrategy;
-import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpAvServer;
 import dvoraka.avservice.server.amqp.AmqpComponent;
@@ -152,12 +152,12 @@ public class AmqpConfig {
     }
 
     @Bean
-    Binding bindingCheck(Queue checkQueue, FanoutExchange checkExchange) {
+    public Binding bindingCheck(Queue checkQueue, FanoutExchange checkExchange) {
         return BindingBuilder.bind(checkQueue).to(checkExchange);
     }
 
     @Bean
-    Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
+    public Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
         return BindingBuilder.bind(resultQueue).to(resultExchange);
     }
 }
