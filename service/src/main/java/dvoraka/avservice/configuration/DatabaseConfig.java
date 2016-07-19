@@ -2,6 +2,7 @@ package dvoraka.avservice.configuration;
 
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -16,6 +17,7 @@ import java.util.Properties;
  * Database Spring configuration.
  */
 @Configuration
+@ComponentScan("dvoraka.avservice.db")
 @Profile("database")
 @EnableTransactionManagement
 public class DatabaseConfig {
@@ -23,9 +25,11 @@ public class DatabaseConfig {
 
     @Bean
     public SessionFactory sessionFactory(DataSource dataSource) {
-        return new LocalSessionFactoryBuilder(dataSource)
-                .addProperties(hibernateProperties())
-                .buildSessionFactory();
+        LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource);
+        builder.scanPackages("dvoraka.avservice.db")
+                .addProperties(hibernateProperties());
+
+        return builder.buildSessionFactory();
     }
 
     @Bean
@@ -48,6 +52,7 @@ public class DatabaseConfig {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.show_sql", "true");
+        properties.put("hibernate.format_sql", "true");
 
         return properties;
     }
