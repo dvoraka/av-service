@@ -1,8 +1,8 @@
 package dvoraka.avservice.service
 
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AvMessageType
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.AvMessageType
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.configuration.ServiceConfig
 import dvoraka.avservice.rest.RestClient
@@ -22,60 +22,60 @@ class RestServiceISpec extends Specification {
 
     def "get testing message"() {
         setup:
-        AvMessage message = client.getMessage("/gen-msg")
+            AvMessage message = client.getMessage("/gen-msg")
 
         expect:
-        message != null
-        message.getServiceId() == "testing-service"
+            message != null
+            message.getServiceId() == "testing-service"
     }
 
     def "send normal message"() {
         setup:
-        AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genNormalMessage()
 
         expect:
-        client.postMessage(message, "/msg-check")
+            client.postMessage(message, "/msg-check")
     }
 
     def "check normal message"() {
         setup:
-        AvMessage message = Utils.genNormalMessage()
-        String id = message.getId()
+            AvMessage message = Utils.genNormalMessage()
+            String id = message.getId()
 
-        client.postMessage(message, "/msg-check")
-        sleep(2000)
+            client.postMessage(message, "/msg-check")
+            sleep(2000)
 
-        MessageStatus status = client.getMessageStatus("/msg-status/" + id)
-        AvMessage response = client.getMessage("/get-response/" + id)
+            MessageStatus status = client.getMessageStatus("/msg-status/" + id)
+            AvMessage response = client.getMessage("/get-response/" + id)
 
         expect:
-        status == MessageStatus.PROCESSED
-        response.type == AvMessageType.RESPONSE
-        response.getVirusInfo() == ""
+            status == MessageStatus.PROCESSED
+            response.type == AvMessageType.RESPONSE
+            response.getVirusInfo() == ""
     }
 
     def "send infected message"() {
         setup:
-        AvMessage message = Utils.genInfectedMessage()
+            AvMessage message = Utils.genInfectedMessage()
 
         expect:
-        client.postMessage(message, "/msg-check")
+            client.postMessage(message, "/msg-check")
     }
 
     def "check infected message"() {
         setup:
-        AvMessage message = Utils.genInfectedMessage()
-        String id = message.getId()
+            AvMessage message = Utils.genInfectedMessage()
+            String id = message.getId()
 
-        client.postMessage(message, "/msg-check")
-        sleep(2000)
+            client.postMessage(message, "/msg-check")
+            sleep(2000)
 
-        MessageStatus status = client.getMessageStatus("/msg-status/" + id)
-        AvMessage response = client.getMessage("/get-response/" + id)
+            MessageStatus status = client.getMessageStatus("/msg-status/" + id)
+            AvMessage response = client.getMessage("/get-response/" + id)
 
         expect:
-        status == MessageStatus.PROCESSED
-        response.type == AvMessageType.RESPONSE
-        response.getVirusInfo() != ""
+            status == MessageStatus.PROCESSED
+            response.type == AvMessageType.RESPONSE
+            response.getVirusInfo() != ""
     }
 }

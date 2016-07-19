@@ -27,47 +27,47 @@ class AvProgramISpec extends Specification {
 
     def "AV program loading"() {
         expect:
-        avProgram != null
+            avProgram
     }
 
     def "Is program running?"() {
         expect:
-        avProgram.isRunning()
+            avProgram.isRunning()
     }
 
     def "scan normal bytes"() {
         setup:
-        byte[] bytes = "No virus here".getBytes("UTF-8")
+            byte[] bytes = "No virus here".getBytes("UTF-8")
 
         when:
-        boolean shouldBeFalse = avProgram.scanStream(bytes)
+            boolean shouldBeFalse = avProgram.scanStream(bytes)
 
         then:
-        !shouldBeFalse
+            !shouldBeFalse
     }
 
     def "scan eicar bytes"() {
         setup:
-        byte[] bytes = eicarString.getBytes("UTF-8")
+            byte[] bytes = eicarString.getBytes("UTF-8")
 
         when:
-        boolean shouldBeTrue = avProgram.scanStream(bytes)
+            boolean shouldBeTrue = avProgram.scanStream(bytes)
 
         then:
-        shouldBeTrue
+            shouldBeTrue
     }
 
     @Ignore
     @Unroll
     def "stream length test: #size bytes"() {
         setup:
-        byte[] bytes = new byte[size];
+            byte[] bytes = new byte[size];
 
         expect:
-        !avProgram.scanStream(bytes)
+            !avProgram.scanStream(bytes)
 
         where:
-        size << [100, 1000, 10_000, 100_000, 1000_000, 10_000_000]
+            size << [100, 1000, 10_000, 100_000, 1000_000, 10_000_000]
     }
 
     def "parallel scan"() {

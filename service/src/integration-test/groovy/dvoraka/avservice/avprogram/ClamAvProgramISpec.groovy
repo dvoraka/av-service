@@ -21,37 +21,37 @@ class ClamAvProgramISpec extends Specification {
 
     def "connection test"() {
         expect:
-        program.testConnection()
+            program.testConnection()
     }
 
     def "ping test"() {
         expect:
-        program.ping()
+            program.ping()
     }
 
     def "scan normal bytes"() {
         expect:
-        !program.scanStream("TESTDATA".getBytes())
+            !program.scanStream("TESTDATA".getBytes())
     }
 
     def "scan infected bytes"() {
         expect:
-        program.scanStream(eicarString.getBytes())
+            program.scanStream(eicarString.getBytes())
     }
 
     def "get version"() {
         setup:
-        String stats = program.version()
+            String stats = program.version()
 
         expect:
-        stats
+            stats
     }
 
     def "get stats"() {
         setup:
-        String stats = program.stats()
+            String stats = program.stats()
 
         expect:
-        stats
+            stats
     }
 }
