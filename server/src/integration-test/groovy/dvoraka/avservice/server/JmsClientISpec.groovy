@@ -1,8 +1,8 @@
-package dvoraka.avservice
+package dvoraka.avservice.server
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
-import dvoraka.avservice.configuration.JmsConfig
+import dvoraka.avservice.server.configuration.JmsConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration

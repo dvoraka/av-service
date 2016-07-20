@@ -1,6 +1,7 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.JmsClient;
+import dvoraka.avservice.configuration.ServiceConfig;
+import dvoraka.avservice.server.JmsClient;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
