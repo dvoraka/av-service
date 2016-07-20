@@ -47,20 +47,6 @@ public class AmqpComponent implements ServerComponent {
     }
 
     @Override
-    public void addAVMessageListener(AvMessageListener listener) {
-        listeners.add(listener);
-    }
-
-    @Override
-    public void removeAVMessageListener(AvMessageListener listener) {
-        listeners.remove(listener);
-    }
-
-    public int listenersCount() {
-        return listeners.size();
-    }
-
-    @Override
     public void sendMessage(AvMessage message) {
         if (message == null) {
             throw new IllegalArgumentException("Message may not be null!");
@@ -81,5 +67,19 @@ public class AmqpComponent implements ServerComponent {
             }
             rabbitTemplate.send(responseExchange, "ROUTINGKEY", response);
         }
+    }
+
+    @Override
+    public void addAVMessageListener(AvMessageListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeAVMessageListener(AvMessageListener listener) {
+        listeners.remove(listener);
+    }
+
+    public int listenersCount() {
+        return listeners.size();
     }
 }

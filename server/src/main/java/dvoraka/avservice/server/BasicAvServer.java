@@ -4,11 +4,10 @@ import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessedAVMessageListener;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.configuration.ServiceConfig;
+import dvoraka.avservice.server.configuration.AmqpConfig;
 import dvoraka.avservice.service.ServiceManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -32,14 +31,13 @@ public class BasicAvServer implements AvServer, ServiceManagement, AvMessageList
 
 
     public static void main(String[] args) throws InterruptedException {
-        // TODO: fix
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles("amqp", "amqp-async");
-        context.register(ServiceConfig.class);
+        context.register(AmqpConfig.class);
         context.refresh();
 
-        SimpleMessageListenerContainer container = context.getBean(SimpleMessageListenerContainer.class);
-        container.start();
+//        SimpleMessageListenerContainer container = context.getBean(SimpleMessageListenerContainer.class);
+//        container.start();
 
         BasicAvServer server = context.getBean(BasicAvServer.class);
         server.start();
