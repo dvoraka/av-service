@@ -3,11 +3,13 @@ package dvoraka.avservice.server
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.ReceivingType
 import dvoraka.avservice.server.amqp.AmqpAvServer
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * AMQP AV server test.
  */
+@Ignore("Class will be removed")
 class AmqpAVServerSpec extends Specification {
 
     AmqpAvServer amqpAVServer

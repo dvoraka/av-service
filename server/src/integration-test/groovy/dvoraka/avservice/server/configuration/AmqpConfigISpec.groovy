@@ -28,9 +28,6 @@ class AmqpConfigISpec extends Specification {
     AvServer avServer
 
     @Autowired
-    AvServer basicAvServer
-
-    @Autowired
     ServerComponent serverComponent
 
     @Autowired
@@ -76,11 +73,6 @@ class AmqpConfigISpec extends Specification {
     def "AvServer loading"() {
         expect:
             avServer
-    }
-
-    def "AvServer basic loading"() {
-        expect:
-            basicAvServer
     }
 
     def "ServerComponent loading"() {

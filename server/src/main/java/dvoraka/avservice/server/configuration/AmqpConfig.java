@@ -8,7 +8,6 @@ import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.server.ServerComponent;
-import dvoraka.avservice.server.amqp.AmqpAvServer;
 import dvoraka.avservice.server.amqp.AmqpComponent;
 import dvoraka.avservice.server.amqp.SimpleAmqpListeningStrategy;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -65,11 +64,6 @@ public class AmqpConfig {
 
     @Bean
     public AvServer avServer() {
-        return new AmqpAvServer(ReceivingType.LISTENER);
-    }
-
-    @Bean
-    public AvServer basicAvServer() {
         return new BasicAvServer();
     }
 
