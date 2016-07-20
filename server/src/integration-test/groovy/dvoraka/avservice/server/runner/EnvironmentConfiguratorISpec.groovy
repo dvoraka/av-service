@@ -1,4 +1,4 @@
-package dvoraka.avservice.server
+package dvoraka.avservice.server.runner
 
 import spock.lang.Specification
 
@@ -9,9 +9,9 @@ class EnvironmentConfiguratorISpec extends Specification {
 
     def "run configurator"() {
         when:
-        EnvironmentConfigurator.main([] as String[])
+            EnvironmentConfigurator.main([] as String[])
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 }

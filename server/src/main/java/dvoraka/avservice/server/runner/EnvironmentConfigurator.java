@@ -1,4 +1,4 @@
-package dvoraka.avservice.server;
+package dvoraka.avservice.server.runner;
 
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
@@ -18,7 +18,6 @@ public final class EnvironmentConfigurator {
     }
 
     public static void main(String[] args) throws MapperException {
-
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles("amqp");
         context.register(AmqpConfig.class);
