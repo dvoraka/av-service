@@ -1,4 +1,4 @@
-package dvoraka.avservice.server
+package dvoraka.avservice.server.amqp
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils

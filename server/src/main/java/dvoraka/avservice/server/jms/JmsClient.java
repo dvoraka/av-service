@@ -1,4 +1,4 @@
-package dvoraka.avservice.server;
+package dvoraka.avservice.server.jms;
 
 import dvoraka.avservice.common.data.AvMessage;
 import org.springframework.beans.factory.annotation.Autowired;

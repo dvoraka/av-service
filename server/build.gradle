@@ -18,7 +18,7 @@ task runAmqpServer(type: JavaExec) {
     description = 'Run AMQP server'
     group = "${taskGroupName}"
 
-    main = 'dvoraka.avservice.server.AmqpServer'
+    main = 'dvoraka.avservice.server.runner.AmqpServer'
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 //    environment('spring.profiles.active', '')

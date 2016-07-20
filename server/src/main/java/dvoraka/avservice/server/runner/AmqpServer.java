@@ -1,5 +1,6 @@
-package dvoraka.avservice.server;
+package dvoraka.avservice.server.runner;
 
+import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.configuration.AmqpConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
