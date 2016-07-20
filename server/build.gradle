@@ -23,3 +23,13 @@ task runAmqpServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 //    environment('spring.profiles.active', '')
 }
+
+task runJmsServer(type: JavaExec) {
+    description = 'Run JMS server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.runner.JmsServer'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+//    environment('spring.profiles.active', '')
+}

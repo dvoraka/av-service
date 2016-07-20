@@ -75,6 +75,7 @@ public class AmqpConfig {
     @Bean
     public MessageProcessor messageProcessor() {
         final int threads = 20;
+
         return new DefaultMessageProcessor(threads, ReceivingType.LISTENER, 0);
     }
 

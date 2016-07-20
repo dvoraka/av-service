@@ -26,9 +26,18 @@ public class JmsComponent implements ServerComponent {
     private List<AvMessageListener> listeners = new ArrayList<>();
 
 
+    /**
+     * AMQP method.
+     *
+     * @param message
+     */
     @Override
     public void onMessage(Message message) {
+    }
 
+    @Override
+    public void onMessage(javax.jms.Message message) {
+        System.out.println("Message received.");
     }
 
     @Override

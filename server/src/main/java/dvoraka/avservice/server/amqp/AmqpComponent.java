@@ -82,4 +82,13 @@ public class AmqpComponent implements ServerComponent {
     public int listenersCount() {
         return listeners.size();
     }
+
+    /**
+     * JMS method.
+     *
+     * @param message
+     */
+    @Override
+    public void onMessage(javax.jms.Message message) {
+    }
 }

@@ -5,5 +5,9 @@ import org.springframework.amqp.core.MessageListener;
 /**
  * Server component.
  */
-public interface ServerComponent extends MessageListener, AvMessageReceiver, AvMessageSender {
+public interface ServerComponent extends
+        AvMessageReceiver,
+        AvMessageSender,
+        MessageListener,
+        javax.jms.MessageListener {
 }
