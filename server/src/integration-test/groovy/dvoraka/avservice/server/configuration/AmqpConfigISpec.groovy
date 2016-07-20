@@ -21,7 +21,7 @@ import spock.lang.Specification
  * AMQP Spring configuration test.
  */
 @ContextConfiguration(classes = [AmqpConfig.class])
-@ActiveProfiles(["amqp", "amqp-async"])
+@ActiveProfiles(["amqp"])
 class AmqpConfigISpec extends Specification {
 
     @Autowired

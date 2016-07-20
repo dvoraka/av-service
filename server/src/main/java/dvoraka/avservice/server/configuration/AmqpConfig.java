@@ -79,7 +79,6 @@ public class AmqpConfig {
     }
 
     @Bean
-    @Profile("amqp-async")
     public SimpleMessageListenerContainer messageListenerContainer() {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory());

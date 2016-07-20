@@ -12,7 +12,7 @@ import spock.lang.Specification
  * Run checker App.
  */
 @ContextConfiguration(classes = [CheckerConfig.class, AmqpConfig.class])
-@ActiveProfiles(["default", "amqp", "amqp-async"])
+@ActiveProfiles(["default", "amqp"])
 class CheckerAppISpec extends Specification {
 
     @Autowired

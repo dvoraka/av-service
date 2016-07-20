@@ -19,15 +19,6 @@ dependencies {
     compile('org.ehcache:ehcache:3.0.0.rc2')
 }
 
-task runAmqpServer(type: JavaExec) {
-    description = 'Run AMQP server'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.BasicAvServer'
-    classpath = sourceSets.main.runtimeClasspath
-//    environment('spring.profiles.active', '')
-}
-
 gretty {
     jvmArgs = ['-Dspring.profiles.active=rest']
     integrationTestTask = 'integrationTest'
