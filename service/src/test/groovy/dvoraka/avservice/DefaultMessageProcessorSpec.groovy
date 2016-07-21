@@ -208,7 +208,9 @@ class DefaultMessageProcessorSpec extends Specification {
         setProcessorService(service)
 
         when:
-        processor.sendMessage(new DefaultAvMessage.Builder(testId).build())
+        processor.sendMessage(new DefaultAvMessage.Builder(testId)
+                .data(new byte[0])
+                .build())
 
         then:
         processor.messageStatus(testId) == MessageStatus.PROCESSING

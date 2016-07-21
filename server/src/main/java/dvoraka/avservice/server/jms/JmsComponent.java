@@ -7,7 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.converter.MessageConverter;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +21,27 @@ public class JmsComponent implements ServerComponent {
 
     @Autowired
     private JmsTemplate jmsTemplate;
+    @Autowired
+    private MessageConverter messageConverter;
 
     private static final Logger log = LogManager.getLogger(JmsComponent.class.getName());
 
-    private String destination = JmsClient.TEST_DESTINATION;
+    private String destination = "TEMP";
     private List<AvMessageListener> listeners = new ArrayList<>();
 
 
     @Override
     public void onMessage(Message message) {
-        System.out.println("Message received.");
+        AvMessage avMessage = null;
+        try {
+            avMessage = (AvMessage) messageConverter.fromMessage(message);
+        } catch (JMSException e) {
+            log.warn("On message error!", e);
+        }
+
+        for (AvMessageListener listener : listeners) {
+            listener.onAVMessage(avMessage);
+        }
     }
 
     @Override

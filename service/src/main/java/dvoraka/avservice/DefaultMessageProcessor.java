@@ -108,7 +108,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
         boolean infected = false;
         String error = null;
         try {
-            infected = avService.scanStream(message.getData());
+            byte[] data = message.getData();
+            if (data != null) {
+                infected = avService.scanStream(data);
+            } else {
+                throw new ScanErrorException("No data in the message.");
+            }
         } catch (ScanErrorException e) {
             error = e.getMessage();
             log.warn("Scanning error!", e);
