@@ -26,9 +26,13 @@ public class JmsComponent implements ServerComponent {
 
     private static final Logger log = LogManager.getLogger(JmsComponent.class.getName());
 
-    private String destination = "TEMP";
+    private String responseDestination;
     private List<AvMessageListener> listeners = new ArrayList<>();
 
+
+    public JmsComponent(String responseDestination) {
+        this.responseDestination = responseDestination;
+    }
 
     @Override
     public void onMessage(Message message) {
@@ -50,7 +54,7 @@ public class JmsComponent implements ServerComponent {
             throw new IllegalArgumentException("Message may not be null!");
         }
 
-        jmsTemplate.convertAndSend(destination, message);
+        jmsTemplate.convertAndSend(responseDestination, message);
     }
 
     @Override

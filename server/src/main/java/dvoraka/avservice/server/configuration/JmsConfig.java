@@ -35,6 +35,12 @@ public class JmsConfig {
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
 
+    @Value("${avservice.jms.checkDestination:check}")
+    private String checkDestination;
+
+    @Value("${avservice.jms.resultDestination:result}")
+    private String resultDestination;
+
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
 
@@ -53,7 +59,7 @@ public class JmsConfig {
 
     @Bean
     public ServerComponent serverComponent() {
-        return new JmsComponent();
+        return new JmsComponent(resultDestination);
     }
 
     @Bean
@@ -68,7 +74,7 @@ public class JmsConfig {
     public SimpleMessageListenerContainer messageListenerContainer() {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(activeMQConnFactory());
-        container.setDestinationName(JmsClient.TEST_DESTINATION);
+        container.setDestinationName(checkDestination);
         container.setMessageListener(messageListener());
 
         return container;
