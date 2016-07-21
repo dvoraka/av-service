@@ -39,12 +39,20 @@ public class DefaultAvService implements AvService {
 
     @Override
     public boolean scanStream(byte[] bytes) throws ScanErrorException {
-        return avProgram.scanStream(bytes);
+        if (bytes.length == 0) {
+            return false;
+        } else {
+            return avProgram.scanStream(bytes);
+        }
     }
 
     @Override
     public String scanStreamWithInfo(byte[] bytes) throws ScanErrorException {
-        return avProgram.scanStreamWithInfo(bytes);
+        if (bytes.length == 0) {
+            return "";
+        } else {
+            return avProgram.scanStreamWithInfo(bytes);
+        }
     }
 
     @Override

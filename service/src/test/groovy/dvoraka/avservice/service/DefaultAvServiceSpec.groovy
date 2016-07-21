@@ -5,6 +5,7 @@ import dvoraka.avservice.common.exception.FileSizeException
 import dvoraka.avservice.common.exception.ScanErrorException
 import spock.lang.Specification
 
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 
@@ -99,6 +100,10 @@ class DefaultAvServiceSpec extends Specification {
         service.setAvProgram(program)
 
         File tempFile = File.createTempFile("test-tempfile", ".tmp");
+        Files.write(
+                tempFile.toPath(),
+                "data".getBytes(StandardCharsets.UTF_8),
+                StandardOpenOption.APPEND)
         tempFile.deleteOnExit()
 
         when:
