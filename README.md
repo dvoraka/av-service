@@ -4,6 +4,13 @@
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav).
 
+* [Planned features](#planned-features)
+* [Used components](#used-components)
+* [Installation](#installation)
+* [Run services](#run-service)
+* [Load tests](#load-results-for-the-old-service-retested-february-20-2016)
+
+--
 ### Planned features
 * Highly scalable architecture
 * Robust design
@@ -109,6 +116,10 @@ Currently everything is rather in a prototype phase.
 #### AMQP
 ```
 $ ./gradlew runAmqpServer
+```
+#### JMS
+```
+$ ./gradlew runJmsServer
 ```
 #### REST
 ```
