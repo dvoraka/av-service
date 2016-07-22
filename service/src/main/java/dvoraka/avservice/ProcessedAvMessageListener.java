@@ -5,7 +5,8 @@ import dvoraka.avservice.common.data.AvMessage;
 /**
  * Processed AV message listener.
  */
-public interface ProcessedAVMessageListener {
+@FunctionalInterface
+public interface ProcessedAvMessageListener {
 
-    void onProcessedAVMessage(AvMessage message);
+    void onProcessedAvMessage(AvMessage message);
 }

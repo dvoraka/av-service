@@ -42,7 +42,7 @@ public interface MessageProcessor {
      *
      * @param listener the listener
      */
-    void addProcessedAVMessageListener(ProcessedAVMessageListener listener);
+    void addProcessedAVMessageListener(ProcessedAvMessageListener listener);
 
-    void removeProcessedAVMessageListener(ProcessedAVMessageListener listener);
+    void removeProcessedAVMessageListener(ProcessedAvMessageListener listener);
 }

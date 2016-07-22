@@ -74,6 +74,7 @@ public class DefaultAvService implements AvService {
         }
     }
 
+    @Override
     public long getMaxFileSize() {
         return maxFileSize;
     }

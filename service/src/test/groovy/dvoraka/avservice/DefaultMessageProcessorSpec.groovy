@@ -82,9 +82,9 @@ class DefaultMessageProcessorSpec extends Specification {
         service.scanStream(_) >> false
 
         AvMessage response = null
-        ProcessedAVMessageListener messageListener = new ProcessedAVMessageListener() {
+        ProcessedAvMessageListener messageListener = new ProcessedAvMessageListener() {
             @Override
-            void onProcessedAVMessage(AvMessage message) {
+            void onProcessedAvMessage(AvMessage message) {
                 response = message
             }
         }
@@ -108,7 +108,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "add and remove listeners"() {
         given:
         processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
-        ProcessedAVMessageListener messageListener = Mock()
+        ProcessedAvMessageListener messageListener = Mock()
 
         when:
         processor.addProcessedAVMessageListener(messageListener)

@@ -17,7 +17,7 @@ public class BasicUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (username.equals("JOHN")) {
+        if ("JOHN".equals(username)) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             return new User("JOHN", "PASS", true, true, true, true, authorities);

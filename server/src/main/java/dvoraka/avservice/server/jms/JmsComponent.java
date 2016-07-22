@@ -74,5 +74,6 @@ public class JmsComponent implements ServerComponent {
      */
     @Override
     public void onMessage(org.springframework.amqp.core.Message message) {
+        throw new UnsupportedOperationException();
     }
 }

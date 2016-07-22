@@ -90,5 +90,6 @@ public class AmqpComponent implements ServerComponent {
      */
     @Override
     public void onMessage(javax.jms.Message message) {
+        throw new UnsupportedOperationException();
     }
 }

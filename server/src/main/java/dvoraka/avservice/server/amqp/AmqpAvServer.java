@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.amqp;
 
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.ProcessedAVMessageListener;
+import dvoraka.avservice.ProcessedAvMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.common.data.AvMessage;
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * AMQP AV server.
  */
 @Deprecated
-public class AmqpAvServer extends AbstractAvServer implements AvServer, ProcessedAVMessageListener {
+public class AmqpAvServer extends AbstractAvServer implements AvServer, ProcessedAvMessageListener {
 
     @Autowired
     private MessageProcessor messageProcessor;
@@ -130,7 +130,7 @@ public class AmqpAvServer extends AbstractAvServer implements AvServer, Processe
     }
 
     @Override
-    public void onProcessedAVMessage(AvMessage message) {
+    public void onProcessedAvMessage(AvMessage message) {
         processResponse(message);
     }
 

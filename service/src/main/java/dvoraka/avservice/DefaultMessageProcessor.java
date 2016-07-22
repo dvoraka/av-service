@@ -46,7 +46,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private AtomicLong processedMsgCount = new AtomicLong();
 
     private Queue<AvMessage> processedMessagesQueue;
-    private List<ProcessedAVMessageListener> observers = new ArrayList<>();
+    private List<ProcessedAvMessageListener> observers = new ArrayList<>();
     private ExecutorService executorService;
     private ReceivingType serverReceivingType;
 
@@ -209,7 +209,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     @Override
-    public void addProcessedAVMessageListener(ProcessedAVMessageListener listener) {
+    public void addProcessedAVMessageListener(ProcessedAvMessageListener listener) {
         if (serverReceivingType == ReceivingType.LISTENER) {
             observers.add(listener);
         } else {
@@ -218,7 +218,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     @Override
-    public void removeProcessedAVMessageListener(ProcessedAVMessageListener listener) {
+    public void removeProcessedAVMessageListener(ProcessedAvMessageListener listener) {
         observers.remove(listener);
     }
 
@@ -227,8 +227,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     private void notifyObservers(AvMessage avMessage) {
-        for (ProcessedAVMessageListener listener : observers) {
-            listener.onProcessedAVMessage(avMessage);
+        for (ProcessedAvMessageListener listener : observers) {
+            listener.onProcessedAvMessage(avMessage);
         }
     }
 
