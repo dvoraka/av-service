@@ -61,8 +61,6 @@ public class AmqpReceiver implements AvReceiver {
 
     private Channel prepareChannel(Connection conn) throws IOException {
         Channel channel = conn.createChannel();
-//        channel.queueDeclare("test3", true, false, false, null);
-//        channel.queueBind("test3", "check-result", "");
 
         return channel;
     }
@@ -236,6 +234,7 @@ public class AmqpReceiver implements AvReceiver {
         return receiveTimeout;
     }
 
+    @Override
     public void setReceiveTimeout(long receiveTimeout) {
         this.receiveTimeout = receiveTimeout;
     }

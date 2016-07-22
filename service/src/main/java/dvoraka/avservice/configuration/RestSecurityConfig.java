@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
+    @Override
     public UserDetailsService userDetailsService() {
         return new BasicUserDetailsService();
     }

@@ -62,6 +62,7 @@ public final class AvMessageMapper {
         try {
             messageType = AvMessageType.valueOf(messageTypeStr);
         } catch (IllegalArgumentException e) {
+            log.warn("Message type error!", e);
             throw new MapperException("Unknown message type");
         }
 
@@ -96,7 +97,7 @@ public final class AvMessageMapper {
         // for old clients (deprecated)
         int oldReply;
         if (msg.getVirusInfo() != null) {
-            oldReply = msg.getVirusInfo().equals("") ? 1 : 0;
+            oldReply = "".equals(msg.getVirusInfo()) ? 1 : 0;
         } else {
             oldReply = 1;
         }

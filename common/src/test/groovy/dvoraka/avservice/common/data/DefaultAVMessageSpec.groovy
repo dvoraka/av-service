@@ -59,7 +59,7 @@ class DefaultAVMessageSpec extends Specification {
         DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
 
         expect:
-        message.getData() == null
+        message.getData() == new byte[0]
     }
 
     def "simple toString test"() {

@@ -46,7 +46,7 @@ public final class DefaultAvMessage implements AvMessage {
         if (data != null) {
             return data.clone();
         }
-        return null;
+        return new byte[0];
     }
 
     @Override
@@ -66,11 +66,11 @@ public final class DefaultAvMessage implements AvMessage {
 
     @Override
     public AvMessage createResponse(boolean virus) {
-        String virusInfo = virus ? "virus info" : "";
+        String virusInfoMsg = virus ? "virus info" : "";
 
         return new Builder(null)
                 .correlationId(this.getId())
-                .virusInfo(virusInfo)
+                .virusInfo(virusInfoMsg)
                 .type(AvMessageType.RESPONSE)
                 .build();
     }

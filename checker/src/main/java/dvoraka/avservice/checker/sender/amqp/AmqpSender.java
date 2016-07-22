@@ -2,7 +2,6 @@ package dvoraka.avservice.checker.sender.amqp;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.ConfirmListener;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import dvoraka.avservice.checker.sender.AvSender;
@@ -108,10 +107,8 @@ public class AmqpSender implements AvSender {
         try {
             connection = conFactory.newConnection();
             channel = connection.createChannel();
-//            setChannelConfirming(channel);
 
             channel.basicPublish(getRequestExchange(), "", props, bytes);
-//            channel.waitForConfirmsOrDie();
 
             printMessage("-------------");
             printMessage("Message sent.");
@@ -119,8 +116,6 @@ public class AmqpSender implements AvSender {
         } catch (IOException e) {
             log.warn("Connection problem - send", e);
             throw e;
-//        } catch (InterruptedException e) {
-//            log.warn("Connection problem - send interrupted", e);
         } catch (TimeoutException e) {
             log.warn(e);
         } finally {
@@ -141,32 +136,6 @@ public class AmqpSender implements AvSender {
         }
 
         return messageId;
-    }
-
-//    private void createAndBindResponseQueue(Channel channel) throws IOException {
-//        channel.queueDeclare(getResponseQueue(), true, false, false, null);
-//        channel.queueBind(getResponseQueue(), getResponseExchange(), "");
-//
-//        setResponseQueueCreated(true);
-//    }
-
-    private void setChannelConfirming(Channel channel) throws IOException {
-        channel.addConfirmListener(new ConfirmListener() {
-
-            @Override
-            public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-//                System.out.println("ACK");
-//                System.out.println("M: " + multiple);
-            }
-
-            @Override
-            public void handleNack(long deliveryTag, boolean multiple) throws IOException {
-//                System.out.println("NACK");
-//                System.out.println("M: " + multiple);
-            }
-        });
-
-        channel.confirmSelect();
     }
 
     private void printSendingProperties(AMQP.BasicProperties props) {
