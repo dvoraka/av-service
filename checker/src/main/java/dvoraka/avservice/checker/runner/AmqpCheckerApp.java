@@ -1,6 +1,7 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.checker.runner;
 
-import dvoraka.avservice.checker.configuration.CheckerConfig;
+import dvoraka.avservice.checker.AvChecker;
+import dvoraka.avservice.checker.configuration.AmqpCheckerConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -9,12 +10,12 @@ import org.springframework.context.support.AbstractApplicationContext;
 /**
  * Testing utility for AMQP anti-virus module.
  */
-public final class CheckerApp {
+public final class AmqpCheckerApp {
 
     private static final Logger log = LogManager.getLogger();
 
 
-    private CheckerApp() {
+    private AmqpCheckerApp() {
     }
 
     public static void printHeader() {
@@ -26,13 +27,7 @@ public final class CheckerApp {
         printHeader();
 
         AbstractApplicationContext context =
-                new AnnotationConfigApplicationContext(CheckerConfig.class);
-
-        // protocol negotiation
-//        String[] protocols = {"0.1", "1.0"};
-//        AvUtils utils = context.getBean(AvUtils.class);
-//        System.out.println("Negotiated protocol: "
-//                + utils.findProtocol(protocols));
+                new AnnotationConfigApplicationContext(AmqpCheckerConfig.class);
 
         // check
         log.debug("Start checking...");

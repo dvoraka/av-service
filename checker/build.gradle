@@ -22,7 +22,7 @@ task amqpCheck(type: JavaExec) {
     description = 'Run AMQP check'
     group = "${taskGroupName}"
 
-    main = 'dvoraka.avservice.checker.CheckerApp'
+    main = 'dvoraka.avservice.checker.runner.AmqpCheckerApp'
     classpath = sourceSets.main.runtimeClasspath
 }
 

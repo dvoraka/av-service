@@ -15,7 +15,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  * Spring configuration for the main application.
  */
 @Configuration
-public class CheckerConfig {
+public class AmqpCheckerConfig {
 
     @Value("${host:localhost}")
     private String host;

@@ -1,6 +1,7 @@
 package dvoraka.avservice.checker
 
-import dvoraka.avservice.checker.configuration.CheckerConfig
+import dvoraka.avservice.checker.configuration.AmqpCheckerConfig
+import dvoraka.avservice.checker.runner.AmqpCheckerApp
 import dvoraka.avservice.server.AvServer
 import dvoraka.avservice.server.configuration.AmqpConfig
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,15 +10,14 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 /**
- * Run checker App.
+ * Run AMQP checker App.
  */
-@ContextConfiguration(classes = [CheckerConfig.class, AmqpConfig.class])
+@ContextConfiguration(classes = [AmqpCheckerConfig.class, AmqpConfig.class])
 @ActiveProfiles(["default", "amqp"])
-class CheckerAppISpec extends Specification {
+class AmqpCheckerAppISpec extends Specification {
 
     @Autowired
     AvServer basicAvServer
-
     @Autowired
     AvChecker checker
 
@@ -46,7 +46,7 @@ class CheckerAppISpec extends Specification {
 
     def "main method call"() {
         when:
-        CheckerApp.main([] as String[])
+        AmqpCheckerApp.main([] as String[])
 
         then:
         notThrown(Exception)
