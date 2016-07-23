@@ -1,6 +1,5 @@
 package dvoraka.avservice.service;
 
-import dvoraka.avservice.common.exception.FileSizeException;
 import dvoraka.avservice.common.exception.ScanErrorException;
 
 import java.io.File;
@@ -14,7 +13,7 @@ public interface AvService {
 
     String scanStreamWithInfo(byte[] bytes) throws ScanErrorException;
 
-    boolean scanFile(File file) throws ScanErrorException, FileSizeException;
+    boolean scanFile(File file) throws ScanErrorException;
 
     long getMaxFileSize();
 }

@@ -56,14 +56,14 @@ public class DefaultAvService implements AvService {
     }
 
     @Override
-    public boolean scanFile(File file) throws ScanErrorException, FileSizeException {
+    public boolean scanFile(File file) throws ScanErrorException {
         byte[] bytes;
         try {
             long size = Files.size(file.toPath());
             if (size > getMaxFileSize()) {
                 log.warn("Too big file: " + size + " bytes.");
-                throw new FileSizeException(
-                        "File is too big: " + size + " bytes, max is: " + getMaxFileSize());
+                throw new ScanErrorException("Too big file.", new FileSizeException(
+                        "File is too big: " + size + " bytes, max is: " + getMaxFileSize()));
             }
             bytes = Files.readAllBytes(file.toPath());
 

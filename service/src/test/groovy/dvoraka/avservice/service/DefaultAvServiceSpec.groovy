@@ -26,90 +26,92 @@ class DefaultAvServiceSpec extends Specification {
 
     def "constructor with max file size"() {
         setup:
-        long maxFileSize = 100
-        service = new DefaultAvService(maxFileSize)
+            long maxFileSize = 100
+            service = new DefaultAvService(maxFileSize)
 
         expect:
-        service.getMaxFileSize() == maxFileSize
+            service.getMaxFileSize() == maxFileSize
     }
 
     def "scan stream"() {
         setup:
-        AvProgram program = Mock()
-        service.setAvProgram(program)
+            AvProgram program = Mock()
+            service.setAvProgram(program)
 
         when:
-        service.scanStream(new byte[10])
+            service.scanStream(new byte[10])
 
         then:
-        1 * program.scanStream(_)
+            1 * program.scanStream(_)
     }
 
     def "scan stream with info"() {
         setup:
-        AvProgram program = Stub()
+            AvProgram program = Stub()
 
-        program.scanStreamWithInfo(_) >> "INFO"
+            program.scanStreamWithInfo(_) >> "INFO"
 
-        service.setAvProgram(program)
+            service.setAvProgram(program)
 
         expect:
-        service.scanStreamWithInfo(new byte[10]).equals("INFO")
+            service.scanStreamWithInfo(new byte[10]).equals("INFO")
     }
 
     def "scan file without a file"() {
         setup:
-        AvProgram program = Mock()
-        service.setAvProgram(program)
+            AvProgram program = Mock()
+            service.setAvProgram(program)
 
         when:
-        service.scanFile(new File("123-TEST-FILE"))
+            service.scanFile(new File("123-TEST-FILE"))
 
         then:
-        thrown(ScanErrorException)
+            thrown(ScanErrorException)
     }
 
     def "scan file with a big file"() {
         setup:
-        AvProgram program = Mock()
-        service.setAvProgram(program)
+            AvProgram program = Mock()
+            service.setAvProgram(program)
 
-        File bigTempFile = File.createTempFile("test-tempfile", ".tmp");
-        bigTempFile.deleteOnExit()
+            File bigTempFile = File.createTempFile("test-tempfile", ".tmp");
+            bigTempFile.deleteOnExit()
 
-        long maxFileSize = service.getMaxFileSize()
+            long maxFileSize = service.getMaxFileSize()
 
-        byte[] buffer = new byte[1000]
-        long actualSize = 0
-        while (!(actualSize > maxFileSize)) {
-            Files.write(bigTempFile.toPath(), buffer, StandardOpenOption.APPEND)
-            actualSize = Files.size(bigTempFile.toPath())
-        }
+            byte[] buffer = new byte[1000]
+            long actualSize = 0
+            while (!(actualSize > maxFileSize)) {
+                Files.write(bigTempFile.toPath(), buffer, StandardOpenOption.APPEND)
+                actualSize = Files.size(bigTempFile.toPath())
+            }
 
         when:
-        service.scanFile(bigTempFile)
+            service.scanFile(bigTempFile)
 
         then:
-        actualSize > maxFileSize
-        thrown(FileSizeException)
+            actualSize > maxFileSize
+            def throwable = thrown(ScanErrorException)
+            throwable.getCause().getClass() == FileSizeException.class
+            throwable.getCause().getMessage()
     }
 
     def "scan file with a file"() {
         setup:
-        AvProgram program = Mock()
-        service.setAvProgram(program)
+            AvProgram program = Mock()
+            service.setAvProgram(program)
 
-        File tempFile = File.createTempFile("test-tempfile", ".tmp");
-        Files.write(
-                tempFile.toPath(),
-                "data".getBytes(StandardCharsets.UTF_8),
-                StandardOpenOption.APPEND)
-        tempFile.deleteOnExit()
+            File tempFile = File.createTempFile("test-tempfile", ".tmp");
+            Files.write(
+                    tempFile.toPath(),
+                    "data".getBytes(StandardCharsets.UTF_8),
+                    StandardOpenOption.APPEND)
+            tempFile.deleteOnExit()
 
         when:
-        service.scanFile(tempFile)
+            service.scanFile(tempFile)
 
         then:
-        1 * program.scanStream(_)
+            1 * program.scanStream(_)
     }
 }
