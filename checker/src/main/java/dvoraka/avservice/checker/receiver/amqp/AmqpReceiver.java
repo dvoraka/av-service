@@ -69,14 +69,15 @@ public class AmqpReceiver implements AvReceiver {
         if (isVerboseOutput()) {
             String message = new String(delivery.getBody(), DEFAULT_CHARSET);
 
-            System.out.println("-------------");
-            System.out.println(" [x] Received '" + message + "'");
-            System.out.println("-------------");
-            System.out.println("receive properties:\n" + delivery
-                    .getProperties());
+            String str = "-------------\n"
+                    + " [x] Received '" + message + "'\n"
+                    + "-------------\n"
+                    + "receive properties:\n"
+                    + delivery.getProperties();
+            System.out.println(str);
             Printer.printProperties(delivery.getProperties());
-            System.out.println("receive headers:\n" + delivery
-                    .getProperties().getHeaders());
+            System.out.println("receive headers:\n"
+                    + delivery.getProperties().getHeaders());
         }
     }
 
