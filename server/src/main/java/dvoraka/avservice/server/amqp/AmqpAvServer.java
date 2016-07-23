@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * AMQP AV server.
+ *
+ * @deprecated Concept which will be removed.
  */
 @Deprecated
 public class AmqpAvServer extends AbstractAvServer implements AvServer, ProcessedAvMessageListener {
@@ -53,14 +55,6 @@ public class AmqpAvServer extends AbstractAvServer implements AvServer, Processe
     }
 
     public static void main(String[] args) {
-
-        // waiting before start
-//        try {
-//            Thread.sleep(20_000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles("amqp");
         context.register(ServiceConfig.class);

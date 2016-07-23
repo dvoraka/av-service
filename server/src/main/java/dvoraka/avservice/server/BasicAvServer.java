@@ -28,17 +28,24 @@ public class BasicAvServer implements AvServer, ServiceManagement, AvMessageList
 
     @Override
     public void start() {
+        log.debug("Server started.");
         setStarted(true);
+
         serverComponent.addAVMessageListener(this);
         messageProcessor.addProcessedAVMessageListener(this);
         setRunning(true);
+
+        log.debug("Server is running.");
     }
 
     @Override
     public void stop() {
+        log.debug("Server stopped.");
         setStopped(true);
         serverComponent.removeAVMessageListener(this);
         setRunning(false);
+
+        log.debug("Server has stopped");
     }
 
     @Override

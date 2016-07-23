@@ -36,13 +36,15 @@ public class AvChecker {
         try {
             String messageId = sender.sendFile(isDirtyFile(), getAppId());
 
+            String result;
             if (isDirtyFile() == receiver.receive(messageId)) {
                 // check OK
-                System.out.println("Test OK");
+                result = "Test OK";
             } else {
-                System.out.println("Test failed");
+                result = "Test failed";
                 log.warn("Check problem - bad response");
             }
+            System.out.println(result);
         } catch (ConnectException e) {
             System.err.println("Connection problem. Is message broker running?");
             log.warn("Check problem - connection problem", e);
@@ -54,7 +56,7 @@ public class AvChecker {
     }
 
     /**
-     * @return the dirtyFile
+     * @return if the sending file is infected
      */
     public boolean isDirtyFile() {
         return dirtyFile;

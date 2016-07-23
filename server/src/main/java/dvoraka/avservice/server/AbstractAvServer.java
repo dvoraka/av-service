@@ -2,6 +2,8 @@ package dvoraka.avservice.server;
 
 /**
  * Abstract AV server.
+ *
+ * @deprecated Concept which will be removed.
  */
 @Deprecated
 public abstract class AbstractAvServer implements AvServer {
@@ -10,15 +12,10 @@ public abstract class AbstractAvServer implements AvServer {
     private boolean stopped;
     private boolean running;
 
-    @Override
-    public abstract void start();
 
     public void setStarted() {
         started = true;
     }
-
-    @Override
-    public abstract void stop();
 
     public void setStopped() {
         stopped = true;
@@ -33,9 +30,6 @@ public abstract class AbstractAvServer implements AvServer {
     public boolean isStopped() {
         return stopped;
     }
-
-    @Override
-    public abstract void restart();
 
     @Override
     public boolean isRunning() {

@@ -131,9 +131,10 @@ public class LoadTester implements Tester {
 
     private void printTestingTime(long begin) {
         long duration = System.currentTimeMillis() - begin;
-        System.out.println("");
-        System.out.println("Load test end");
-        System.out.println("Duration: " + (duration / MS_PER_SECOND) + " s");
+        String message = "\n"
+                + "Load test end\n"
+                + "Duration: " + (duration / MS_PER_SECOND) + " s";
+        System.out.println(message);
         long durationSeconds = duration / MS_PER_SECOND;
         if (durationSeconds == 0) {
             durationSeconds = 1;
