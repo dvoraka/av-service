@@ -19,54 +19,54 @@ class AmqpAVServerSpec extends Specification {
 
     def "constructor"() {
         setup:
-        ReceivingType receivingType = ReceivingType.LISTENER
-        amqpAVServer = new AmqpAvServer(receivingType)
+            ReceivingType receivingType = ReceivingType.LISTENER
+            amqpAVServer = new AmqpAvServer(receivingType)
 
         expect:
-        amqpAVServer.getReceivingType() == receivingType
+            amqpAVServer.getReceivingType() == receivingType
     }
 
     def "start with polling"() {
         setup:
-        MessageProcessor processor = Mock()
-        ListeningStrategy strategy = Mock()
-        ReceivingType receivingType = ReceivingType.POLLING
-        amqpAVServer = new AmqpAvServer(receivingType)
+            MessageProcessor processor = Mock()
+            ListeningStrategy strategy = Mock()
+            ReceivingType receivingType = ReceivingType.POLLING
+            amqpAVServer = new AmqpAvServer(receivingType)
 
-        amqpAVServer.setMessageProcessor(processor)
-        amqpAVServer.setListeningStrategy(strategy)
+            amqpAVServer.setMessageProcessor(processor)
+            amqpAVServer.setListeningStrategy(strategy)
 
-        amqpAVServer.start()
-        sleep(100)
+            amqpAVServer.start()
+            sleep(100)
 
         expect:
-        amqpAVServer.isStarted()
-        amqpAVServer.isRunning()
-        amqpAVServer.getReceivingType() == receivingType
+            amqpAVServer.isStarted()
+            amqpAVServer.isRunning()
+            amqpAVServer.getReceivingType() == receivingType
 
         cleanup:
-        amqpAVServer.stop()
+            amqpAVServer.stop()
     }
 
     def "start with listening"() {
         setup:
-        MessageProcessor processor = Mock()
-        ListeningStrategy strategy = Mock()
-        ReceivingType receivingType = ReceivingType.LISTENER
-        amqpAVServer = new AmqpAvServer(receivingType)
+            MessageProcessor processor = Mock()
+            ListeningStrategy strategy = Mock()
+            ReceivingType receivingType = ReceivingType.LISTENER
+            amqpAVServer = new AmqpAvServer(receivingType)
 
-        amqpAVServer.setMessageProcessor(processor)
-        amqpAVServer.setListeningStrategy(strategy)
+            amqpAVServer.setMessageProcessor(processor)
+            amqpAVServer.setListeningStrategy(strategy)
 
-        amqpAVServer.start()
-        sleep(100)
+            amqpAVServer.start()
+            sleep(100)
 
         expect:
-        amqpAVServer.isStarted()
-        amqpAVServer.isRunning()
-        amqpAVServer.getReceivingType() == receivingType
+            amqpAVServer.isStarted()
+            amqpAVServer.isRunning()
+            amqpAVServer.getReceivingType() == receivingType
 
         cleanup:
-        amqpAVServer.stop()
+            amqpAVServer.stop()
     }
 }

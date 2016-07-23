@@ -9,13 +9,13 @@ class BadExchangeExceptionSpec extends Specification {
 
     def "constructor (message)"() {
         given:
-        String msg = "Exception message"
+            String msg = "Exception message"
 
         when:
-        throw new BadExchangeException(msg)
+            throw new BadExchangeException(msg)
 
         then:
-        def e = thrown(BadExchangeException)
-        msg.equals(e.getMessage())
+            def e = thrown(BadExchangeException)
+            msg.equals(e.getMessage())
     }
 }

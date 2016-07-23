@@ -17,30 +17,30 @@ class LoadTesterISpec extends Specification {
 
     def "run load test"() {
         given:
-        LoadTestProperties props = new BasicLoadTestProperties.Builder()
-                .msgCount(2)
-                .virtualHost("antivirus")
-                .destinationQueue("av-result")
-                .appId("antivirus")
-                .synchronous(false)
-                .build()
-        println(props)
-        props.setSendOnly(true)
+            LoadTestProperties props = new BasicLoadTestProperties.Builder()
+                    .msgCount(2)
+                    .virtualHost("antivirus")
+                    .destinationQueue("av-result")
+                    .appId("antivirus")
+                    .synchronous(false)
+                    .build()
+            println(props)
+            props.setSendOnly(true)
 
-        tester.setProps(props)
+            tester.setProps(props)
 
         when:
-        tester.startTest()
+            tester.startTest()
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 
     def "main method call"() {
         when:
-        LoadTester.main([] as String[])
+            LoadTester.main([] as String[])
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 }

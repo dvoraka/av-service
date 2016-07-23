@@ -9,9 +9,9 @@ class MaxLoopsReachedExceptionSpec extends Specification {
 
     def "constructor"() {
         when:
-        throw new MaxLoopsReachedException()
+            throw new MaxLoopsReachedException()
 
         then:
-        thrown(MaxLoopsReachedException)
+            thrown(MaxLoopsReachedException)
     }
 }

@@ -13,21 +13,21 @@ class UtilsSpec extends Specification {
 
     def "generate normal message"() {
         setup:
-        AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genNormalMessage()
 
         expect:
-        checkMessageFields(message)
-        message.getVirusInfo().equals('')
+            checkMessageFields(message)
+            message.getVirusInfo().equals('')
     }
 
     def "generate infected message"() {
         setup:
-        AvMessage message = Utils.genInfectedMessage()
-        byte[] expectedData = message.getData()
+            AvMessage message = Utils.genInfectedMessage()
+            byte[] expectedData = message.getData()
 
         expect:
-        checkMessageFields(message)
-        Arrays.equals(expectedData, Utils.EICAR.getBytes(StandardCharsets.UTF_8))
+            checkMessageFields(message)
+            Arrays.equals(expectedData, Utils.EICAR.getBytes(StandardCharsets.UTF_8))
     }
 
     void checkMessageFields(AvMessage message) {

@@ -4,7 +4,6 @@ import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageMapper
-import dvoraka.avservice.server.amqp.ParallelAmqpListeningStrategy
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -19,109 +18,109 @@ class ParallelAmqpListeningStrategySpec extends Specification {
 
     def "constructor"() {
         setup:
-        int listeners = 5
-        strategy = new ParallelAmqpListeningStrategy(listeners)
+            int listeners = 5
+            strategy = new ParallelAmqpListeningStrategy(listeners)
 
         expect:
-        strategy.getListenersCount() == listeners
+            strategy.getListenersCount() == listeners
     }
 
     def "test listening"() {
         setup:
-        int listeners = 5
-        strategy = new ParallelAmqpListeningStrategy(listeners)
-        RabbitTemplate template = Stub()
-        MessageProcessor processor = Mock()
-        AvMessage avMessage = Utils.genNormalMessage()
+            int listeners = 5
+            strategy = new ParallelAmqpListeningStrategy(listeners)
+            RabbitTemplate template = Stub()
+            MessageProcessor processor = Mock()
+            AvMessage avMessage = Utils.genNormalMessage()
 
-        template.receive() >> {
-            sleep(100)
-            return AvMessageMapper.transform(avMessage)
-        }
+            template.receive() >> {
+                sleep(100)
+                return AvMessageMapper.transform(avMessage)
+            }
 
-        strategy.setRabbitTemplate(template)
-        strategy.setMessageProcessor(processor)
+            strategy.setRabbitTemplate(template)
+            strategy.setMessageProcessor(processor)
 
-        strategy.listen()
-        sleep(150)
+            strategy.listen()
+            sleep(150)
 
         expect:
-        strategy.getListenersCount() == listeners
-        strategy.isRunning()
+            strategy.getListenersCount() == listeners
+            strategy.isRunning()
 
         cleanup:
-        strategy.stop()
+            strategy.stop()
     }
 
     def "test listening with malformed messages"() {
         setup:
-        int listeners = 5
-        strategy = new ParallelAmqpListeningStrategy(listeners)
-        RabbitTemplate template = Stub()
-        MessageProcessor processor = Mock()
+            int listeners = 5
+            strategy = new ParallelAmqpListeningStrategy(listeners)
+            RabbitTemplate template = Stub()
+            MessageProcessor processor = Mock()
 
-        template.receive() >> {
-            sleep(100)
-            MessageProperties props = new MessageProperties()
-            Message message = new Message(null, props)
-            return message
-        }
+            template.receive() >> {
+                sleep(100)
+                MessageProperties props = new MessageProperties()
+                Message message = new Message(null, props)
+                return message
+            }
 
-        strategy.setRabbitTemplate(template)
-        strategy.setMessageProcessor(processor)
+            strategy.setRabbitTemplate(template)
+            strategy.setMessageProcessor(processor)
 
-        strategy.listen()
-        sleep(150)
+            strategy.listen()
+            sleep(150)
 
         expect:
-        strategy.getListenersCount() == listeners
-        strategy.isRunning()
+            strategy.getListenersCount() == listeners
+            strategy.isRunning()
 
         cleanup:
-        strategy.stop()
+            strategy.stop()
     }
 
     def "stopping test"() {
         when:
-        int listeners = 5
-        strategy = new ParallelAmqpListeningStrategy(listeners)
-        RabbitTemplate template = Stub()
-        MessageProcessor processor = Stub()
+            int listeners = 5
+            strategy = new ParallelAmqpListeningStrategy(listeners)
+            RabbitTemplate template = Stub()
+            MessageProcessor processor = Stub()
 
-        template.receive() >> {
-            sleep(100)
-        }
-
-        strategy.setRabbitTemplate(template)
-        strategy.setMessageProcessor(processor)
-
-        Thread listeningThread = new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.listen()
+            template.receive() >> {
+                sleep(100)
             }
-        })
-        listeningThread.start()
-        sleep(500)
+
+            strategy.setRabbitTemplate(template)
+            strategy.setMessageProcessor(processor)
+
+            Thread listeningThread = new Thread(new Runnable() {
+                @Override
+                void run() {
+                    strategy.listen()
+                }
+            })
+            listeningThread.start()
+            sleep(500)
 
         then:
-        strategy.isRunning()
+            strategy.isRunning()
 
         when:
-        Thread stoppingThread = new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.stop()
-            }
-        })
-        stoppingThread.start()
-        stoppingThread.interrupt()
-        sleep(100)
+            Thread stoppingThread = new Thread(new Runnable() {
+                @Override
+                void run() {
+                    strategy.stop()
+                }
+            })
+            stoppingThread.start()
+            stoppingThread.interrupt()
+            sleep(100)
 
         then:
-        // TODO:
+            // TODO:
 //         stoppingThread.isInterrupted()
-        true
+            true
 
     }
 }

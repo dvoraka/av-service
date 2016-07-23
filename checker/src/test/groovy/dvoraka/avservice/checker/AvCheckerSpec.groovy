@@ -13,89 +13,89 @@ class AvCheckerSpec extends Specification {
 
     def "test check calls"() {
         given:
-        AvSender sender = Mock()
-        AvReceiver receiver = Mock()
+            AvSender sender = Mock()
+            AvReceiver receiver = Mock()
 
-        checker = new AvChecker(false, "antivirus")
-        setAvSenderReceiver(sender, receiver)
+            checker = new AvChecker(false, "antivirus")
+            setAvSenderReceiver(sender, receiver)
 
         when:
-        checker.check()
+            checker.check()
 
         then:
-        notThrown(Exception)
-        1 * sender.sendFile(_, _)
-        1 * receiver.receive(_)
+            notThrown(Exception)
+            1 * sender.sendFile(_, _)
+            1 * receiver.receive(_)
     }
 
     def "check with ConnectException"() {
         given:
-        AvSender sender = Stub()
-        sender.sendFile(_, _) >> {
-            throw new ConnectException()
-        }
-        AvReceiver receiver = Mock()
+            AvSender sender = Stub()
+            sender.sendFile(_, _) >> {
+                throw new ConnectException()
+            }
+            AvReceiver receiver = Mock()
 
-        checker = new AvChecker(false, "antivirus")
-        setAvSenderReceiver(sender, receiver)
+            checker = new AvChecker(false, "antivirus")
+            setAvSenderReceiver(sender, receiver)
 
         when:
-        checker.check()
+            checker.check()
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 
     def "check with IOException"() {
         given:
-        AvSender sender = Stub()
-        sender.sendFile(_, _) >> {
-            throw new IOException()
-        }
-        AvReceiver receiver = Mock()
+            AvSender sender = Stub()
+            sender.sendFile(_, _) >> {
+                throw new IOException()
+            }
+            AvReceiver receiver = Mock()
 
-        checker = new AvChecker(false, "antivirus")
-        setAvSenderReceiver(sender, receiver)
+            checker = new AvChecker(false, "antivirus")
+            setAvSenderReceiver(sender, receiver)
 
         when:
-        checker.check()
+            checker.check()
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 
     def "check with LastMessageException"() {
         given:
-        AvSender sender = Mock()
-        AvReceiver receiver = Stub()
-        receiver.receive(_) >> {
-            throw new LastMessageException()
-        }
+            AvSender sender = Mock()
+            AvReceiver receiver = Stub()
+            receiver.receive(_) >> {
+                throw new LastMessageException()
+            }
 
-        checker = new AvChecker(false, "antivirus")
-        setAvSenderReceiver(sender, receiver)
+            checker = new AvChecker(false, "antivirus")
+            setAvSenderReceiver(sender, receiver)
 
         when:
-        checker.check()
+            checker.check()
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 
     def "check with a test problem"() {
         given:
-        AvSender sender = Mock()
-        AvReceiver receiver = Stub()
-        receiver.receive(_) >> true
+            AvSender sender = Mock()
+            AvReceiver receiver = Stub()
+            receiver.receive(_) >> true
 
-        checker = new AvChecker(false, "antivirus")
-        setAvSenderReceiver(sender, receiver)
+            checker = new AvChecker(false, "antivirus")
+            setAvSenderReceiver(sender, receiver)
 
         when:
-        checker.check()
+            checker.check()
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 
     void setAvSenderReceiver(AvSender sender, AvReceiver receiver) {

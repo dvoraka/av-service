@@ -9,9 +9,9 @@ class LastMessageExceptionSpec extends Specification {
 
     def "constructor"() {
         when:
-        throw new LastMessageException()
+            throw new LastMessageException()
 
         then:
-        thrown(LastMessageException)
+            thrown(LastMessageException)
     }
 }

@@ -9,9 +9,9 @@ class MessageStatusSpec extends Specification {
 
     def "test all values"() {
         expect:
-        MessageStatus.WAITING
-        MessageStatus.PROCESSING
-        MessageStatus.PROCESSED
-        MessageStatus.UNKNOWN
+            MessageStatus.WAITING
+            MessageStatus.PROCESSING
+            MessageStatus.PROCESSED
+            MessageStatus.UNKNOWN
     }
 }

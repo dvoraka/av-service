@@ -9,21 +9,21 @@ class ProtocolExceptionSpec extends Specification {
 
     def "constructor"() {
         when:
-        throw new ProtocolException()
+            throw new ProtocolException()
 
         then:
-        thrown(ProtocolException)
+            thrown(ProtocolException)
     }
 
     def "constructor (message)"() {
         given:
-        String msg = "Exception message"
+            String msg = "Exception message"
 
         when:
-        throw new ProtocolException(msg)
+            throw new ProtocolException(msg)
 
         then:
-        def e = thrown(ProtocolException)
-        msg.equals(e.getMessage())
+            def e = thrown(ProtocolException)
+            msg.equals(e.getMessage())
     }
 }

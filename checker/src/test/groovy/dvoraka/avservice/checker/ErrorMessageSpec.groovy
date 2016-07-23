@@ -11,59 +11,59 @@ class ErrorMessageSpec extends Specification {
 
     def "constructor with a null value"() {
         when:
-        new ErrorMessage(null)
+            new ErrorMessage(null)
 
         then:
-        thrown(IllegalArgumentException)
+            thrown(IllegalArgumentException)
     }
 
     def "constructor (rawMessage)"() {
         given:
-        String msgType = "message type:"
-        String msgText = "info"
-        String rawMessage = msgType + msgText
+            String msgType = "message type:"
+            String msgText = "info"
+            String rawMessage = msgType + msgText
 
         when:
-        ErrorMessage message = new ErrorMessage(rawMessage)
+            ErrorMessage message = new ErrorMessage(rawMessage)
 
         then:
-        message.getErrorType().equals(msgType.split(":")[0])
-        message.getErrorText().equals(rawMessage)
+            message.getErrorType().equals(msgType.split(":")[0])
+            message.getErrorText().equals(rawMessage)
     }
 
     def "check call with BadExchangeException"() {
         given:
-        String rawMessage = "bad app-id: some reason"
-        ErrorMessage message = new ErrorMessage(rawMessage)
+            String rawMessage = "bad app-id: some reason"
+            ErrorMessage message = new ErrorMessage(rawMessage)
 
         when:
-        message.check()
+            message.check()
 
         then:
-        thrown(BadExchangeException)
+            thrown(BadExchangeException)
     }
 
     def "check call with UnknownProtocolException"() {
         given:
-        String rawMessage = "some problem: some reason"
-        ErrorMessage message = new ErrorMessage(rawMessage)
+            String rawMessage = "some problem: some reason"
+            ErrorMessage message = new ErrorMessage(rawMessage)
 
         when:
-        message.check()
+            message.check()
 
         then:
-        thrown(UnknownProtocolException)
+            thrown(UnknownProtocolException)
     }
 
     def "to string"() {
         given:
-        String rawMessage = "some problem: some reason"
-        ErrorMessage message = new ErrorMessage(rawMessage)
+            String rawMessage = "some problem: some reason"
+            ErrorMessage message = new ErrorMessage(rawMessage)
 
         when:
-        String str = message.toString()
+            String str = message.toString()
 
         then:
-        str.contains("Error message:")
+            str.contains("Error message:")
     }
 }

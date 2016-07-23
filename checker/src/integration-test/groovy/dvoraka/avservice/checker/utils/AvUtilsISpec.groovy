@@ -18,6 +18,6 @@ class AvUtilsISpec extends Specification {
     // TODO: implement properly
     def "run negotiate protocol method"() {
         expect:
-        avUtils.negotiateProtocol(["1.0"] as String[]) == null
+            avUtils.negotiateProtocol(["1.0"] as String[]) == null
     }
 }

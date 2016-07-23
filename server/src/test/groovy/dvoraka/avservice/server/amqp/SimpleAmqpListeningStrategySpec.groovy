@@ -4,7 +4,6 @@ import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageMapper
-import dvoraka.avservice.server.amqp.SimpleAmqpListeningStrategy
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -28,157 +27,157 @@ class SimpleAmqpListeningStrategySpec extends Specification {
 
     def "listening test without a message"() {
         when:
-        RabbitTemplate template = Stub()
-        MessageProcessor processor = Mock()
+            RabbitTemplate template = Stub()
+            MessageProcessor processor = Mock()
 
-        template.receive() >> {
-            sleep(500)
-        }
-
-        ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
-        ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
-
-        new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.listen()
+            template.receive() >> {
+                sleep(500)
             }
-        }).start()
+
+            ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
+            ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
+
+            new Thread(new Runnable() {
+                @Override
+                void run() {
+                    strategy.listen()
+                }
+            }).start()
 
         then:
-        conditions.eventually {
-            strategy.isRunning()
-        }
+            conditions.eventually {
+                strategy.isRunning()
+            }
 
         when:
-        strategy.stop()
+            strategy.stop()
 
         then:
-        conditions.eventually {
-            !strategy.isRunning()
-        }
+            conditions.eventually {
+                !strategy.isRunning()
+            }
     }
 
     def "listening test with a message"() {
         when:
-        RabbitTemplate template = Stub()
-        MessageProcessor processor = Stub()
-        AvMessage avMessage = Utils.genNormalMessage()
+            RabbitTemplate template = Stub()
+            MessageProcessor processor = Stub()
+            AvMessage avMessage = Utils.genNormalMessage()
 
-        template.receive() >> {
-            sleep(100)
-            return AvMessageMapper.transform(avMessage)
-        }
-
-        ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
-        ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
-
-        new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.listen()
+            template.receive() >> {
+                sleep(100)
+                return AvMessageMapper.transform(avMessage)
             }
-        }).start()
+
+            ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
+            ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
+
+            new Thread(new Runnable() {
+                @Override
+                void run() {
+                    strategy.listen()
+                }
+            }).start()
 
         then:
-        conditions.eventually {
-            strategy.isRunning()
-        }
+            conditions.eventually {
+                strategy.isRunning()
+            }
 
         when:
-        strategy.stop()
+            strategy.stop()
 
         then:
-        conditions.eventually {
-            !strategy.isRunning()
-        }
+            conditions.eventually {
+                !strategy.isRunning()
+            }
     }
 
     def "listening test with a malformed message"() {
         when:
-        RabbitTemplate template = Stub()
-        MessageProcessor processor = Stub()
+            RabbitTemplate template = Stub()
+            MessageProcessor processor = Stub()
 
-        template.receive() >> {
-            sleep(100)
-            MessageProperties props = new MessageProperties()
-            Message message = new Message(null, props)
-            return message
-        }
-
-        ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
-        ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
-
-        new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.listen()
+            template.receive() >> {
+                sleep(100)
+                MessageProperties props = new MessageProperties()
+                Message message = new Message(null, props)
+                return message
             }
-        }).start()
+
+            ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
+            ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
+
+            new Thread(new Runnable() {
+                @Override
+                void run() {
+                    strategy.listen()
+                }
+            }).start()
 
         then:
-        conditions.eventually {
-            strategy.isRunning()
-        }
+            conditions.eventually {
+                strategy.isRunning()
+            }
 
         when:
-        strategy.stop()
+            strategy.stop()
 
         then:
-        conditions.eventually {
-            !strategy.isRunning()
-        }
+            conditions.eventually {
+                !strategy.isRunning()
+            }
     }
 
     def "stopping test with interruption"() {
         when:
-        RabbitTemplate template = Stub()
-        MessageProcessor processor = Stub()
-        strategy = new SimpleAmqpListeningStrategy(10_000L)
+            RabbitTemplate template = Stub()
+            MessageProcessor processor = Stub()
+            strategy = new SimpleAmqpListeningStrategy(10_000L)
 
-        template.receive() >> {
-            sleep(100)
-        }
-
-        ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
-        ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
-
-        Thread listeningThread = new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.listen()
+            template.receive() >> {
+                sleep(100)
             }
-        })
-        listeningThread.start()
+
+            ReflectionTestUtils.setField(strategy, null, template, RabbitTemplate.class)
+            ReflectionTestUtils.setField(strategy, null, processor, MessageProcessor.class)
+
+            Thread listeningThread = new Thread(new Runnable() {
+                @Override
+                void run() {
+                    strategy.listen()
+                }
+            })
+            listeningThread.start()
 
         then:
-        conditions.eventually {
-            strategy.isRunning()
-        }
+            conditions.eventually {
+                strategy.isRunning()
+            }
 
         when:
-        Thread stoppingThread = new Thread(new Runnable() {
-            @Override
-            void run() {
-                strategy.stop()
-            }
-        })
-        stoppingThread.start()
-        stoppingThread.interrupt()
+            Thread stoppingThread = new Thread(new Runnable() {
+                @Override
+                void run() {
+                    strategy.stop()
+                }
+            })
+            stoppingThread.start()
+            stoppingThread.interrupt()
 
         then:
-        conditions.eventually {
-            !strategy.isRunning()
-            stoppingThread.getState() == Thread.State.TERMINATED
-        }
+            conditions.eventually {
+                !strategy.isRunning()
+                stoppingThread.getState() == Thread.State.TERMINATED
+            }
     }
 
     def "get listening timeout"() {
         setup:
-        long timeout = 2000L
-        strategy = new SimpleAmqpListeningStrategy(timeout)
+            long timeout = 2000L
+            strategy = new SimpleAmqpListeningStrategy(timeout)
 
         expect:
-        strategy.getListeningTimeout() == timeout
+            strategy.getListeningTimeout() == timeout
     }
 }

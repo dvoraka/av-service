@@ -12,9 +12,9 @@ class LoadTesterSpec extends Specification {
 
     def "constructor"() {
         when:
-        loadTester = new LoadTester(null)
+            loadTester = new LoadTester(null)
 
         then:
-        loadTester.getProps()
+            loadTester.getProps()
     }
 }

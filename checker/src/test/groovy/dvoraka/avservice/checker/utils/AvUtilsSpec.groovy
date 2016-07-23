@@ -19,48 +19,48 @@ class AvUtilsSpec extends Specification {
 
     def "try protocol version"() {
         given:
-        String protocolVersion = "10"
+            String protocolVersion = "10"
 
-        AvSender avSender = Mock()
-        AvReceiver avReceiver = Mock()
-        setSenderAndReceiver(avSender, avReceiver)
+            AvSender avSender = Mock()
+            AvReceiver avReceiver = Mock()
+            setSenderAndReceiver(avSender, avReceiver)
 
         when:
-        boolean works = avUtils.tryProtocolVersion(protocolVersion)
+            boolean works = avUtils.tryProtocolVersion(protocolVersion)
 
         then:
-        works
+            works
     }
 
     def "find protocol version"() {
         given:
-        String[] protocols = ["10", "20"]
+            String[] protocols = ["10", "20"]
 
-        AvSender avSender = Mock()
-        AvReceiver avReceiver = Mock()
-        setSenderAndReceiver(avSender, avReceiver)
+            AvSender avSender = Mock()
+            AvReceiver avReceiver = Mock()
+            setSenderAndReceiver(avSender, avReceiver)
 
         when:
-        String foundProtocol = avUtils.findProtocolVersion(protocols)
+            String foundProtocol = avUtils.findProtocolVersion(protocols)
 
         then:
-        foundProtocol.equals(protocols[0])
+            foundProtocol.equals(protocols[0])
     }
 
     def "negotiate procol"() {
         given:
-        String[] protocols = ["10", "20"]
+            String[] protocols = ["10", "20"]
 
-        AvSender avSender = Mock()
-        AvReceiver avReceiver = Mock()
-        setSenderAndReceiver(avSender, avReceiver)
+            AvSender avSender = Mock()
+            AvReceiver avReceiver = Mock()
+            setSenderAndReceiver(avSender, avReceiver)
 
         when:
-        String foundProtocol = avUtils.negotiateProtocol(protocols)
+            String foundProtocol = avUtils.negotiateProtocol(protocols)
 
         then:
-        notThrown(UnknownHostException)
-        foundProtocol.equals(protocols[0])
+            notThrown(UnknownHostException)
+            foundProtocol.equals(protocols[0])
     }
 
     void setSenderAndReceiver(AvSender sender, AvReceiver receiver) {

@@ -18,63 +18,63 @@ class BasicAvServerSpec extends Specification {
 
     def "default server status"() {
         expect:
-        !server.isStarted()
-        !server.isRunning()
-        server.isStopped()
+            !server.isStarted()
+            !server.isRunning()
+            server.isStopped()
     }
 
     def "start server"() {
         given:
-        ServerComponent component = Mock()
-        MessageProcessor processor = Mock()
+            ServerComponent component = Mock()
+            MessageProcessor processor = Mock()
 
-        setScMpMocks(component, processor)
+            setScMpMocks(component, processor)
 
         when:
-        server.start()
+            server.start()
 
         then:
-        server.isStarted()
+            server.isStarted()
     }
 
     def "stop server"() {
         given:
-        ServerComponent component = Mock()
-        MessageProcessor processor = Mock()
+            ServerComponent component = Mock()
+            MessageProcessor processor = Mock()
 
-        setScMpMocks(component, processor)
-
-        when:
-        server.start()
-
-        then:
-        server.isStarted()
+            setScMpMocks(component, processor)
 
         when:
-        server.stop()
+            server.start()
 
         then:
-        server.isStopped()
+            server.isStarted()
+
+        when:
+            server.stop()
+
+        then:
+            server.isStopped()
     }
 
     def "restart server"() {
         given:
-        ServerComponent component = Mock()
-        MessageProcessor processor = Mock()
+            ServerComponent component = Mock()
+            MessageProcessor processor = Mock()
 
-        setScMpMocks(component, processor)
-
-        when:
-        server.start()
-
-        then:
-        server.isStarted()
+            setScMpMocks(component, processor)
 
         when:
-        server.restart()
+            server.start()
 
         then:
-        server.isStarted()
+            server.isStarted()
+
+        when:
+            server.restart()
+
+        then:
+            server.isStarted()
     }
 
     void setScMpMocks(ServerComponent component, MessageProcessor processor) {

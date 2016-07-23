@@ -23,186 +23,186 @@ class AVMessageMapperSpec extends Specification {
 
     def "AMQP Message -> AVMessage, v1"() {
         setup:
-        MessageProperties props = new MessageProperties()
+            MessageProperties props = new MessageProperties()
 
-        // PROPERTIES
-        // id
-        props.setMessageId(testId)
-        // appId
-        props.setAppId(testAppId)
-        // type
-        props.setType(AvMessageType.REQUEST.toString())
+            // PROPERTIES
+            // id
+            props.setMessageId(testId)
+            // appId
+            props.setAppId(testAppId)
+            // type
+            props.setType(AvMessageType.REQUEST.toString())
 
-        // HEADERS
-        // virusInfo
-        props.setHeader(AvMessageMapper.VIRUS_INFO_KEY, testVirusInfo)
-        // serviceId
-        props.setHeader(AvMessageMapper.SERVICE_ID_KEY, testServiceId)
+            // HEADERS
+            // virusInfo
+            props.setHeader(AvMessageMapper.VIRUS_INFO_KEY, testVirusInfo)
+            // serviceId
+            props.setHeader(AvMessageMapper.SERVICE_ID_KEY, testServiceId)
 
-        // BODY
-        // data
-        byte[] body = new byte[dataSize]
+            // BODY
+            // data
+            byte[] body = new byte[dataSize]
 
-        // create AMQP message
-        Message message = new Message(body, props)
-        // transform to AvMessage
-        AvMessage avMessage = AvMessageMapper.transform(message)
+            // create AMQP message
+            Message message = new Message(body, props)
+            // transform to AvMessage
+            AvMessage avMessage = AvMessageMapper.transform(message)
 
         expect:
-        avMessage.getId().equals(testId)
-        avMessage.getType().equals(AvMessageType.REQUEST)
+            avMessage.getId().equals(testId)
+            avMessage.getType().equals(AvMessageType.REQUEST)
 
-        avMessage.getVirusInfo().equals(testVirusInfo)
-        avMessage.getServiceId().equals(testServiceId)
+            avMessage.getVirusInfo().equals(testVirusInfo)
+            avMessage.getServiceId().equals(testServiceId)
 
-        avMessage.getData().length == dataSize
+            avMessage.getData().length == dataSize
     }
 
     def "AMQP Message -> AVMessage, empty message"() {
         given:
-        MessageProperties props = new MessageProperties()
+            MessageProperties props = new MessageProperties()
 
-        // PROPERTIES
-        // HEADERS
-        // BODY
+            // PROPERTIES
+            // HEADERS
+            // BODY
 
-        Message message = new Message(null, props)
+            Message message = new Message(null, props)
 
         when:
-        AvMessageMapper.transform(message)
+            AvMessageMapper.transform(message)
 
         then:
-        thrown(MapperException)
+            thrown(MapperException)
     }
 
     def "AMQP Message -> AVMessage, ID only"() {
         given:
-        MessageProperties props = new MessageProperties()
+            MessageProperties props = new MessageProperties()
 
-        // PROPERTIES
-        props.setMessageId(testId)
-        // HEADERS
-        // BODY
+            // PROPERTIES
+            props.setMessageId(testId)
+            // HEADERS
+            // BODY
 
-        Message message = new Message(null, props)
+            Message message = new Message(null, props)
 
         when:
-        AvMessageMapper.transform(message)
+            AvMessageMapper.transform(message)
 
         then:
-        thrown(MapperException)
+            thrown(MapperException)
     }
 
     def "AMQP Message -> AVMessage, message type only"() {
         given:
-        MessageProperties props = new MessageProperties()
+            MessageProperties props = new MessageProperties()
 
-        // PROPERTIES
-        props.setType(AvMessageType.REQUEST.toString())
-        // HEADERS
-        // BODY
+            // PROPERTIES
+            props.setType(AvMessageType.REQUEST.toString())
+            // HEADERS
+            // BODY
 
-        Message message = new Message(null, props)
+            Message message = new Message(null, props)
 
         when:
-        AvMessageMapper.transform(message)
+            AvMessageMapper.transform(message)
 
         then:
-        thrown(MapperException)
+            thrown(MapperException)
     }
 
     def "AMQP Message -> AVMessage, message ID and type"() {
         given:
-        MessageProperties props = new MessageProperties()
+            MessageProperties props = new MessageProperties()
 
-        // PROPERTIES
-        props.setMessageId(testId)
-        props.setType(AvMessageType.REQUEST.toString())
-        // HEADERS
-        // BODY
+            // PROPERTIES
+            props.setMessageId(testId)
+            props.setType(AvMessageType.REQUEST.toString())
+            // HEADERS
+            // BODY
 
-        Message message = new Message(null, props)
+            Message message = new Message(null, props)
 
         when:
-        AvMessageMapper.transform(message)
+            AvMessageMapper.transform(message)
 
         then:
-        notThrown(MapperException)
+            notThrown(MapperException)
     }
 
     def "AMQP Message -> AVMessage, with bad message type"() {
         given:
-        MessageProperties props = new MessageProperties()
+            MessageProperties props = new MessageProperties()
 
-        // PROPERTIES
-        props.setMessageId(testId)
-        props.setType("X-BAD-TYPE-X")
-        // HEADERS
-        // BODY
+            // PROPERTIES
+            props.setMessageId(testId)
+            props.setType("X-BAD-TYPE-X")
+            // HEADERS
+            // BODY
 
-        Message message = new Message(null, props)
+            Message message = new Message(null, props)
 
         when:
-        AvMessageMapper.transform(message)
+            AvMessageMapper.transform(message)
 
         then:
-        thrown(MapperException)
+            thrown(MapperException)
     }
 
     def "AVMessage -> AMQP Message, v1"() {
         setup:
-        AvMessage avMessage = new DefaultAvMessage.Builder(testId)
-                .correlationId(testCorrId)
-                .data(new byte[dataSize])
-                .type(AvMessageType.REQUEST)
-                .serviceId(testServiceId)
-                .virusInfo(testVirusInfo)
-                .build()
+            AvMessage avMessage = new DefaultAvMessage.Builder(testId)
+                    .correlationId(testCorrId)
+                    .data(new byte[dataSize])
+                    .type(AvMessageType.REQUEST)
+                    .serviceId(testServiceId)
+                    .virusInfo(testVirusInfo)
+                    .build()
 
-        // transform to Message
-        Message message = AvMessageMapper.transform(avMessage)
-        MessageProperties props = message.getMessageProperties()
-        Map<String, Object> headers = props.getHeaders()
+            // transform to Message
+            Message message = AvMessageMapper.transform(avMessage)
+            MessageProperties props = message.getMessageProperties()
+            Map<String, Object> headers = props.getHeaders()
 
         expect:
-        // PROPERTIES
-        // id
-        props.getMessageId().equals(testId)
-        // appId
+            // PROPERTIES
+            // id
+            props.getMessageId().equals(testId)
+            // appId
 //        props.getAppId().equals(testAppId)
-        // correlation ID
-        Arrays.equals(props.getCorrelationId(), testCorrId.getBytes(StandardCharsets.UTF_8))
-        // type
-        props.getType().equals(AvMessageType.REQUEST.toString())
+            // correlation ID
+            Arrays.equals(props.getCorrelationId(), testCorrId.getBytes(StandardCharsets.UTF_8))
+            // type
+            props.getType().equals(AvMessageType.REQUEST.toString())
 
-        // HEADERS
-        // serviceId
-        headers.get(AvMessageMapper.SERVICE_ID_KEY).equals(testServiceId)
-        // virusInfo
-        headers.get(AvMessageMapper.VIRUS_INFO_KEY).equals(testVirusInfo)
+            // HEADERS
+            // serviceId
+            headers.get(AvMessageMapper.SERVICE_ID_KEY).equals(testServiceId)
+            // virusInfo
+            headers.get(AvMessageMapper.VIRUS_INFO_KEY).equals(testVirusInfo)
 
-        message.getBody().length == dataSize
+            message.getBody().length == dataSize
     }
 
     def "AVMessage -> AMQP Message, with normal message for old clients"() {
         setup:
-        AvMessage avMessage = Utils.genNormalMessage()
+            AvMessage avMessage = Utils.genNormalMessage()
 
-        Message message = AvMessageMapper.transform(avMessage)
-        Map<String, Object> headers = message.getMessageProperties().getHeaders()
+            Message message = AvMessageMapper.transform(avMessage)
+            Map<String, Object> headers = message.getMessageProperties().getHeaders()
 
         expect:
-        headers.get('isClean').equals(1)
+            headers.get('isClean').equals(1)
     }
 
     def "AVMessage -> AMQP Message, with infected message for old clients"() {
         setup:
-        AvMessage avMessage = Utils.genInfectedMessage()
+            AvMessage avMessage = Utils.genInfectedMessage()
 
-        Message message = AvMessageMapper.transform(avMessage)
-        Map<String, Object> headers = message.getMessageProperties().getHeaders()
+            Message message = AvMessageMapper.transform(avMessage)
+            Map<String, Object> headers = message.getMessageProperties().getHeaders()
 
         expect:
-        headers.get('isClean').equals(0)
+            headers.get('isClean').equals(0)
     }
 }

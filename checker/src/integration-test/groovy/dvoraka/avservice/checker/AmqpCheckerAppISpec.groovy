@@ -33,22 +33,22 @@ class AmqpCheckerAppISpec extends Specification {
 
     def "AvChecker loading"() {
         expect:
-        checker != null
+            checker != null
     }
 
     def "check method test"() {
         when:
-        checker.check()
+            checker.check()
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 
     def "main method call"() {
         when:
-        AmqpCheckerApp.main([] as String[])
+            AmqpCheckerApp.main([] as String[])
 
         then:
-        notThrown(Exception)
+            notThrown(Exception)
     }
 }
