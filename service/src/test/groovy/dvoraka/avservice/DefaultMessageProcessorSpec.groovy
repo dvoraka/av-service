@@ -22,6 +22,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def setup() {
         processor = new DefaultMessageProcessor(2)
+        processor.start()
         conditions = new PollingConditions(timeout: 2)
     }
 
@@ -33,237 +34,241 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "constructor (thread count)"() {
         setup:
-        int threadCount = 5
-        processor = new DefaultMessageProcessor(threadCount)
+            int threadCount = 5
+            processor = new DefaultMessageProcessor(threadCount)
 
         expect:
-        processor.getThreadCount() == threadCount
-        processor.getQueueSize() == DefaultMessageProcessor.DEFAULT_QUEUE_SIZE
-        processor.getServerReceivingType() ==
-                DefaultMessageProcessor.DEFAULT_RECEIVING_TYPE
+            processor.getThreadCount() == threadCount
+            processor.getQueueSize() == DefaultMessageProcessor.DEFAULT_QUEUE_SIZE
+            processor.getServerReceivingType() ==
+                    DefaultMessageProcessor.DEFAULT_RECEIVING_TYPE
     }
 
     def "constructor (thread count, rec. type, queue size)"() {
         setup:
-        int threadCount = 5
-        ReceivingType receivingType = ReceivingType.LISTENER
-        int queueSize = 10
-        processor = new DefaultMessageProcessor(
-                threadCount,
-                receivingType,
-                queueSize)
+            int threadCount = 5
+            ReceivingType receivingType = ReceivingType.LISTENER
+            int queueSize = 10
+            processor = new DefaultMessageProcessor(
+                    threadCount,
+                    receivingType,
+                    queueSize)
 
         expect:
-        processor.getThreadCount() == threadCount
-        processor.getServerReceivingType() == receivingType
-        processor.getQueueSize() == queueSize
+            processor.getThreadCount() == threadCount
+            processor.getServerReceivingType() == receivingType
+            processor.getQueueSize() == queueSize
     }
 
     def "send normal message"() {
         setup:
-        AvService service = Stub()
-        service.scanStream(_) >> false
+            AvService service = Stub()
+            service.scanStream(_) >> false
 
-        setProcessorService(service)
+            setProcessorService(service)
 
-        AvMessage message = Utils.genNormalMessage()
-        processor.sendMessage(message)
+            AvMessage message = Utils.genNormalMessage()
+            processor.sendMessage(message)
 
         expect:
-        conditions.eventually {
-            processor.hasProcessedMessage()
-            processor.getProcessedMessage().getCorrelationId().equals(message.getId())
-        }
+            conditions.eventually {
+                processor.hasProcessedMessage()
+                processor.getProcessedMessage().getCorrelationId().equals(message.getId())
+            }
     }
 
     def "responding test with a listener"() {
         given:
-        AvService service = Stub()
-        service.scanStream(_) >> false
+            AvService service = Stub()
+            service.scanStream(_) >> false
 
-        AvMessage response = null
-        ProcessedAvMessageListener messageListener = new ProcessedAvMessageListener() {
-            @Override
-            void onProcessedAvMessage(AvMessage message) {
-                response = message
+            AvMessage response = null
+            ProcessedAvMessageListener messageListener = new ProcessedAvMessageListener() {
+                @Override
+                void onProcessedAvMessage(AvMessage message) {
+                    response = message
+                }
             }
-        }
 
-        processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
-        setProcessorService(service)
-        processor.addProcessedAVMessageListener(messageListener)
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            setProcessorService(service)
+            processor.addProcessedAVMessageListener(messageListener)
+            processor.start()
 
-        AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genNormalMessage()
 
         when:
-        processor.sendMessage(message)
+            processor.sendMessage(message)
 
         then:
-        conditions.eventually {
-            response != null
-            response.getCorrelationId() == message.getId()
-        }
+            conditions.eventually {
+                response != null
+                response.getCorrelationId() == message.getId()
+            }
     }
 
     def "add and remove listeners"() {
         given:
-        processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
-        ProcessedAvMessageListener messageListener = Mock()
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            ProcessedAvMessageListener messageListener = Mock()
+            processor.start()
 
         when:
-        processor.addProcessedAVMessageListener(messageListener)
+            processor.addProcessedAVMessageListener(messageListener)
 
         then:
-        processor.observersCount() == 1
+            processor.observersCount() == 1
 
         when:
-        processor.removeProcessedAVMessageListener(messageListener)
+            processor.removeProcessedAVMessageListener(messageListener)
 
         then:
-        processor.observersCount() == 0
+            processor.observersCount() == 0
     }
 
     def "add a listener for polling type"() {
         when:
-        processor.addProcessedAVMessageListener(null)
+            processor.addProcessedAVMessageListener(null)
 
         then:
-        thrown(UnsupportedOperationException)
+            thrown(UnsupportedOperationException)
     }
 
     def "ask for a message with a listener"() {
         given:
-        processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            processor.start()
 
         when:
-        processor.hasProcessedMessage()
+            processor.hasProcessedMessage()
 
         then:
-        thrown(UnsupportedOperationException)
+            thrown(UnsupportedOperationException)
 
         when:
-        processor.getProcessedMessage()
+            processor.getProcessedMessage()
 
         then:
-        thrown(UnsupportedOperationException)
+            thrown(UnsupportedOperationException)
     }
 
     def "send message with a full queue"() {
         setup:
-        AvService service = Stub()
-        service.scanStream(_) >> false
+            AvService service = Stub()
+            service.scanStream(_) >> false
 
-        processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1)
-        setProcessorService(service)
+            processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1)
+            setProcessorService(service)
+            processor.start()
 
-        AvMessage message1 = Utils.genNormalMessage()
-        processor.sendMessage(message1)
-        AvMessage message2 = Utils.genNormalMessage()
-        processor.sendMessage(message2)
+            AvMessage message1 = Utils.genNormalMessage()
+            processor.sendMessage(message1)
+            AvMessage message2 = Utils.genNormalMessage()
+            processor.sendMessage(message2)
 
         expect:
-        conditions.eventually {
-            processor.isProcessedQueueFull()
-            processor.hasProcessedMessage()
-            processor.getProcessedMessage()
-        }
+            conditions.eventually {
+                processor.isProcessedQueueFull()
+                processor.hasProcessedMessage()
+                processor.getProcessedMessage()
+            }
 
         and:
-        conditions.eventually {
-            processor.hasProcessedMessage()
-            processor.getProcessedMessage()
-        }
-        conditions.eventually {
-            !processor.isProcessedQueueFull()
-        }
+            conditions.eventually {
+                processor.hasProcessedMessage()
+                processor.getProcessedMessage()
+            }
+            conditions.eventually {
+                !processor.isProcessedQueueFull()
+            }
     }
 
     def "send message with a service error"() {
         given:
-        AvService service = Stub()
-        service.scanStream(_) >> {
-            throw new ScanErrorException("Service is dead")
-        }
+            AvService service = Stub()
+            service.scanStream(_) >> {
+                throw new ScanErrorException("Service is dead")
+            }
 
-        setProcessorService(service)
-        AvMessage message = Utils.genNormalMessage()
+            setProcessorService(service)
+            AvMessage message = Utils.genNormalMessage()
 
         when:
-        processor.sendMessage(message)
+            processor.sendMessage(message)
 
         then:
-        notThrown(ScanErrorException)
+            notThrown(ScanErrorException)
     }
 
     def "processing message status"() {
         given:
-        String testId = "testId"
+            String testId = "testId"
 
-        AvService service = Stub()
-        service.scanStream(_) >> {
-            sleep(1000)
-            return false
-        }
+            AvService service = Stub()
+            service.scanStream(_) >> {
+                sleep(1000)
+                return false
+            }
 
-        setProcessorService(service)
+            setProcessorService(service)
 
         when:
-        processor.sendMessage(new DefaultAvMessage.Builder(testId)
-                .data(new byte[0])
-                .build())
+            processor.sendMessage(new DefaultAvMessage.Builder(testId)
+                    .data(new byte[0])
+                    .build())
 
         then:
-        processor.messageStatus(testId) == MessageStatus.PROCESSING
+            processor.messageStatus(testId) == MessageStatus.PROCESSING
     }
 
     def "processed message status"() {
         given:
-        String testId = "testId"
+            String testId = "testId"
 
-        AvService service = Stub()
-        setProcessorService(service)
+            AvService service = Stub()
+            setProcessorService(service)
 
         when:
-        processor.sendMessage(new DefaultAvMessage.Builder(testId).build())
+            processor.sendMessage(new DefaultAvMessage.Builder(testId).build())
 
         then:
-        conditions.eventually {
-            processor.messageStatus(testId) == MessageStatus.PROCESSED
-        }
+            conditions.eventually {
+                processor.messageStatus(testId) == MessageStatus.PROCESSED
+            }
     }
 
     def "unknown message status"() {
         setup:
-        String testId = "testId"
+            String testId = "testId"
 
-        AvService service = Stub()
-        setProcessorService(service)
+            AvService service = Stub()
+            setProcessorService(service)
 
         expect:
-        processor.messageStatus(testId) == MessageStatus.UNKNOWN
+            processor.messageStatus(testId) == MessageStatus.UNKNOWN
     }
 
     def "test message counters"() {
         given:
-        AvService service = Stub()
-        service.scanStream(_) >> false
+            AvService service = Stub()
+            service.scanStream(_) >> false
 
-        setProcessorService(service)
+            setProcessorService(service)
 
         when:
-        AvMessage message = Utils.genNormalMessage()
-        messageCount.times {
-            processor.sendMessage(message)
-        }
+            AvMessage message = Utils.genNormalMessage()
+            messageCount.times {
+                processor.sendMessage(message)
+            }
 
         then:
-        conditions.eventually {
-            processor.getReceivedMsgCount() == messageCount
-            processor.getProcessedMsgCount() == messageCount
-        }
+            conditions.eventually {
+                processor.getReceivedMsgCount() == messageCount
+                processor.getProcessedMsgCount() == messageCount
+            }
 
         where:
-        messageCount << [1, 3]
+            messageCount << [1, 3]
     }
 
     void setProcessorService(AvService service) {

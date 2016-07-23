@@ -33,6 +33,11 @@ public interface MessageProcessor {
     AvMessage getProcessedMessage();
 
     /**
+     * Starts processing.
+     */
+    void start();
+
+    /**
      * Stops processing.
      */
     void stop();

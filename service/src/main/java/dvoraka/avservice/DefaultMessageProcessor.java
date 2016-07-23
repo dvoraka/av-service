@@ -1,10 +1,10 @@
 package dvoraka.avservice;
 
 import dvoraka.avservice.common.CustomThreadFactory;
+import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanErrorException;
-import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.service.AvService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -37,6 +39,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class.getName());
 
     public static final int DEFAULT_QUEUE_SIZE = 100;
+    public static final int DEFAULT_CACHE_TIMEOUT = 100 * 1_000;
     public static final ReceivingType DEFAULT_RECEIVING_TYPE = ReceivingType.POLLING;
     private static final long POOL_TERM_TIME_S = 20;
 
@@ -44,6 +47,10 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private Map<String, Long> processedMessages;
     private AtomicLong receivedMsgCount = new AtomicLong();
     private AtomicLong processedMsgCount = new AtomicLong();
+    /**
+     * In milliseconds
+     */
+    private long processedMsgTimeout = DEFAULT_CACHE_TIMEOUT;
 
     private Queue<AvMessage> processedMessagesQueue;
     private List<ProcessedAvMessageListener> observers = new ArrayList<>();
@@ -76,9 +83,15 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
+    public void start() {
+        setRunning(true);
+
+        executorService.execute(this::cacheUpdating);
+        log.debug("Cache updating started.");
+    }
+
     @Override
     public void sendMessage(AvMessage message) {
-        setRunning(true);
         receivedMsgCount.getAndIncrement();
 
         log.debug("Processing message...");
@@ -102,6 +115,31 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
+    private void cacheUpdating() {
+        HashSet<String> toRemove = new HashSet<>();
+
+        while (isRunning()) {
+            long now = System.currentTimeMillis();
+
+            processedMessages.entrySet().stream()
+                    .filter(entry -> (entry.getValue() + processedMsgTimeout) < now)
+                    .forEach(entry -> {
+                        toRemove.add(entry.getKey());
+                        log.debug("Removing ID: " + entry.getKey());
+                    });
+
+            processedMessages.keySet().removeAll(toRemove);
+            toRemove.clear();
+
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                log.warn("Sleep interrupted!", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
     private void processMessage(AvMessage message) {
         log.debug("Scanning thread: " + Thread.currentThread().getName());
 
@@ -120,10 +158,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
         log.debug("Scanning done in: " + Thread.currentThread().getName());
 
-        // TODO: Delete after some time?
         addProcessedMessage(message.getId());
         removeProcessingMessage(message.getId());
-
         processedMsgCount.getAndIncrement();
 
         if (error == null) {
@@ -256,10 +292,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processingMessages.remove(id);
     }
 
-    private void removeProcessedMessage(String id) {
-        processedMessages.remove(id);
-    }
-
     public ReceivingType getServerReceivingType() {
         return serverReceivingType;
     }
@@ -276,6 +308,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
     @ManagedAttribute
     public long getProcessedMsgCount() {
         return processedMsgCount.get();
+    }
+
+    @PostConstruct
+    public void init() {
+        start();
     }
 
     @PreDestroy
