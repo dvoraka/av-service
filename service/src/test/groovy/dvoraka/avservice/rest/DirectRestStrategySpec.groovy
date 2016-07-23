@@ -30,57 +30,57 @@ class DirectRestStrategySpec extends Specification {
 
     def "unknown message status"() {
         setup:
-        MessageProcessor processor = Stub()
+            MessageProcessor processor = Stub()
 
-        processor.messageStatus(_) >> MessageStatus.UNKNOWN
+            processor.messageStatus(_) >> MessageStatus.UNKNOWN
 
-        strategy.setRestMessageProcessor(processor)
-        strategy.start()
+            strategy.setRestMessageProcessor(processor)
+            strategy.start()
 
         expect:
-        strategy.messageStatus("NEWID").equals(MessageStatus.UNKNOWN)
-        strategy.messageStatus("NEWID", "SERVICEID").equals(MessageStatus.UNKNOWN)
+            strategy.messageStatus("NEWID").equals(MessageStatus.UNKNOWN)
+            strategy.messageStatus("NEWID", "SERVICEID").equals(MessageStatus.UNKNOWN)
     }
 
     def "message check"() {
         setup:
-        MessageProcessor processor = Mock()
-        strategy.setRestMessageProcessor(processor)
-        strategy.start()
+            MessageProcessor processor = Mock()
+            strategy.setRestMessageProcessor(processor)
+            strategy.start()
 
         when:
-        strategy.messageCheck(Utils.genNormalMessage())
+            strategy.messageCheck(Utils.genNormalMessage())
 
         then:
-        1 * processor.sendMessage(_)
+            1 * processor.sendMessage(_)
     }
 
     def "get null response"() {
         setup:
-        MessageProcessor processor = Mock()
-        strategy.setRestMessageProcessor(processor)
-        strategy.start()
+            MessageProcessor processor = Mock()
+            strategy.setRestMessageProcessor(processor)
+            strategy.start()
 
         expect:
-        strategy.getResponse("NEWID") == null
+            strategy.getResponse("NEWID") == null
     }
 
     def "get real response"() {
         setup:
-        AvMessage request = new DefaultAvMessage.Builder(testId).build()
-        AvMessage response = request.createResponse(false)
+            AvMessage request = new DefaultAvMessage.Builder(testId).build()
+            AvMessage response = request.createResponse(false)
 
-        MessageProcessor processor = Stub()
+            MessageProcessor processor = Stub()
 
-        processor.hasProcessedMessage() >>> [true, false]
-        processor.getProcessedMessage() >> response
+            processor.hasProcessedMessage() >>> [true, false]
+            processor.getProcessedMessage() >> response
 
-        strategy.setRestMessageProcessor(processor)
-        strategy.start()
+            strategy.setRestMessageProcessor(processor)
+            strategy.start()
 
         expect:
-        conditions.eventually {
-            strategy.getResponse(testId).equals(response)
-        }
+            conditions.eventually {
+                strategy.getResponse(testId).equals(response)
+            }
     }
 }

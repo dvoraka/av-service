@@ -30,130 +30,130 @@ class AvControllerSpec extends Specification {
 
     def "test info"() {
         setup:
-        ResultActions response = mockMvc.perform(
-                get("/"))
+            ResultActions response = mockMvc.perform(
+                    get("/"))
 
         expect:
-        response
-                .andExpect(status().isOk())
-                .andExpect(content().string("AV service"))
+            response
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("AV service"))
     }
 
     def "test messageStatus(String)"() {
         setup:
-        MessageStatus messageStatus = MessageStatus.PROCESSED
-        String messageId = 'TID'
-        RestService service = Stub()
-        service.messageStatus(messageId) >> messageStatus
+            MessageStatus messageStatus = MessageStatus.PROCESSED
+            String messageId = 'TID'
+            RestService service = Stub()
+            service.messageStatus(messageId) >> messageStatus
 
-        mockMvc = MockMvcBuilders.standaloneSetup(
-                new AvController(restService: service)).build()
+            mockMvc = MockMvcBuilders.standaloneSetup(
+                    new AvController(restService: service)).build()
 
-        ResultActions response = mockMvc.perform(
-                get("/msg-status/${messageId}"))
+            ResultActions response = mockMvc.perform(
+                    get("/msg-status/${messageId}"))
 
-        ObjectMapper mapper = new ObjectMapper()
-        String expectedContent = mapper.writeValueAsString(messageStatus)
+            ObjectMapper mapper = new ObjectMapper()
+            String expectedContent = mapper.writeValueAsString(messageStatus)
 
         expect:
-        response
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedContent))
+            response
+                    .andExpect(status().isOk())
+                    .andExpect(content().string(expectedContent))
     }
 
     def "test messageStatus(String, String)"() {
         setup:
-        MessageStatus messageStatus = MessageStatus.PROCESSING
-        String messageId = 'TID'
-        String serviceId = "SID"
-        RestService service = Stub()
-        service.messageStatus(messageId, serviceId) >> messageStatus
+            MessageStatus messageStatus = MessageStatus.PROCESSING
+            String messageId = 'TID'
+            String serviceId = "SID"
+            RestService service = Stub()
+            service.messageStatus(messageId, serviceId) >> messageStatus
 
-        mockMvc = MockMvcBuilders.standaloneSetup(
-                new AvController(restService: service)).build()
+            mockMvc = MockMvcBuilders.standaloneSetup(
+                    new AvController(restService: service)).build()
 
-        ResultActions response = mockMvc.perform(
-                get("/msg-status/${messageId}/${serviceId}"))
+            ResultActions response = mockMvc.perform(
+                    get("/msg-status/${messageId}/${serviceId}"))
 
-        ObjectMapper mapper = new ObjectMapper()
-        String expectedContent = mapper.writeValueAsString(messageStatus)
+            ObjectMapper mapper = new ObjectMapper()
+            String expectedContent = mapper.writeValueAsString(messageStatus)
 
         expect:
-        response
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedContent))
+            response
+                    .andExpect(status().isOk())
+                    .andExpect(content().string(expectedContent))
     }
 
     def "test messageServiceId(String)"() {
         setup:
-        String messageId = 'TID'
-        String serviceId = "SID"
-        RestService service = Stub()
-        service.messageServiceId(messageId) >> serviceId
+            String messageId = 'TID'
+            String serviceId = "SID"
+            RestService service = Stub()
+            service.messageServiceId(messageId) >> serviceId
 
-        mockMvc = MockMvcBuilders.standaloneSetup(
-                new AvController(restService: service)).build()
+            mockMvc = MockMvcBuilders.standaloneSetup(
+                    new AvController(restService: service)).build()
 
-        ResultActions response = mockMvc.perform(
-                get("/msg-service-id/${messageId}"))
+            ResultActions response = mockMvc.perform(
+                    get("/msg-service-id/${messageId}"))
 
         expect:
-        response
-                .andExpect(status().isOk())
-                .andExpect(content().string(serviceId))
+            response
+                    .andExpect(status().isOk())
+                    .andExpect(content().string(serviceId))
     }
 
     def "test messageCheck(AVMessage)"() {
         setup:
-        AvMessage message = Utils.genNormalMessage()
-        RestService service = Mock()
+            AvMessage message = Utils.genNormalMessage()
+            RestService service = Mock()
 
-        mockMvc = MockMvcBuilders.standaloneSetup(
-                new AvController(restService: service)).build()
+            mockMvc = MockMvcBuilders.standaloneSetup(
+                    new AvController(restService: service)).build()
 
-        ObjectMapper mapper = new ObjectMapper()
-        String content = mapper.writeValueAsString(message)
+            ObjectMapper mapper = new ObjectMapper()
+            String content = mapper.writeValueAsString(message)
 
-        ResultActions response = mockMvc.perform(
-                post("/msg-check")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content))
+            ResultActions response = mockMvc.perform(
+                    post("/msg-check")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(content))
 
         expect:
-        response
-                .andExpect(status().isAccepted())
+            response
+                    .andExpect(status().isAccepted())
     }
 
     def "test getResponse(String)"() {
         setup:
-        String messageId = "TID"
-        AvMessage responseMsg = Utils.genNormalMessage()
-        RestService service = Stub()
-        service.getResponse(messageId) >> responseMsg
+            String messageId = "TID"
+            AvMessage responseMsg = Utils.genNormalMessage()
+            RestService service = Stub()
+            service.getResponse(messageId) >> responseMsg
 
-        mockMvc = MockMvcBuilders.standaloneSetup(
-                new AvController(restService: service)).build()
+            mockMvc = MockMvcBuilders.standaloneSetup(
+                    new AvController(restService: service)).build()
 
-        ResultActions response = mockMvc.perform(
-                get("/get-response/${messageId}"))
+            ResultActions response = mockMvc.perform(
+                    get("/get-response/${messageId}"))
 
-        ObjectMapper mapper = new ObjectMapper()
-        String expectedContent = mapper.writeValueAsString(responseMsg)
+            ObjectMapper mapper = new ObjectMapper()
+            String expectedContent = mapper.writeValueAsString(responseMsg)
 
         expect:
-        response
-                .andExpect(status().isOk())
-                .andExpect(content().string(expectedContent))
+            response
+                    .andExpect(status().isOk())
+                    .andExpect(content().string(expectedContent))
     }
 
     def "test generateMessage"() {
         setup:
-        ResultActions response = mockMvc.perform(
-                get("/gen-msg"))
+            ResultActions response = mockMvc.perform(
+                    get("/gen-msg"))
 
         expect:
-        response
-                .andExpect(status().isOk())
+            response
+                    .andExpect(status().isOk())
 
     }
 }
