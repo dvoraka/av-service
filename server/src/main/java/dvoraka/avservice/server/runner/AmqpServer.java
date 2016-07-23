@@ -27,9 +27,6 @@ public final class AmqpServer {
         context.register(AmqpConfig.class);
         context.refresh();
 
-//        SimpleMessageListenerContainer container = context.getBean(SimpleMessageListenerContainer.class);
-//        container.start();
-
         BasicAvServer server = context.getBean(BasicAvServer.class);
         server.start();
 

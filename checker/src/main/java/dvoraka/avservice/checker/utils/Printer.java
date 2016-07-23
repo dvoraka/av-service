@@ -19,13 +19,15 @@ public final class Printer {
      * @param props AMQP properties
      */
     public static void printProperties(AMQP.BasicProperties props) {
-        System.out.println("\tapp-id: " + props.getAppId());
-        System.out.println("\tcontent-encoding: " + props.getContentEncoding());
-        System.out.println("\tcontent-type: " + props.getContentType());
-        System.out.println("\tcorrelation-id: " + props.getCorrelationId());
-        System.out.println("\tmessage-id: " + props.getMessageId());
-        System.out.println("\ttimestamp: " + props.getTimestamp());
-        System.out.println("\ttype: " + props.getType());
+        StringBuilder message = new StringBuilder()
+                .append("\tapp-id: ").append(props.getAppId()).append("\n")
+                .append("\tcontent-encoding: ").append(props.getContentEncoding()).append("\n")
+                .append("\tcontent-type: ").append(props.getContentType()).append("\n")
+                .append("\tcorrelation-id: ").append(props.getCorrelationId()).append("\n")
+                .append("\tmessage-id: ").append(props.getMessageId()).append("\n")
+                .append("\ttimestamp: ").append(props.getTimestamp()).append("\n")
+                .append("\ttype: ").append(props.getType());
+        System.out.println(message.toString());
     }
 
     /**

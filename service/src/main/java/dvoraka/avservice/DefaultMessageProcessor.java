@@ -83,6 +83,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
+    @Override
     public void start() {
         setRunning(true);
 

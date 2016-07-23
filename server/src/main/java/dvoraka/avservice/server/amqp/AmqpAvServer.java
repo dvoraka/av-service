@@ -179,7 +179,7 @@ public class AmqpAvServer extends AbstractAvServer implements AvServer, Processe
 
     @Override
     public void restart() {
-
+        throw new UnsupportedOperationException();
     }
 
     public ReceivingType getReceivingType() {

@@ -74,7 +74,7 @@ public class AvController {
 
         restService.messageCheck(message);
 
-        return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/get-response/{id}", method = RequestMethod.GET)

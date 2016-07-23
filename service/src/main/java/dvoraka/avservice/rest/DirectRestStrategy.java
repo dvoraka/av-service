@@ -100,6 +100,7 @@ public class DirectRestStrategy implements RestStrategy {
     }
 
     @PostConstruct
+    @Override
     public void start() {
         log.debug("Starting cache updating...");
         cacheUpdating = true;
