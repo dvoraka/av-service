@@ -3,6 +3,7 @@ package dvoraka.avservice.server.jms
 import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import org.apache.activemq.command.ActiveMQMessage
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.converter.MessageConversionException
 import org.springframework.jms.support.converter.MessageConverter
@@ -37,7 +38,7 @@ class JmsComponentSpec extends Specification {
             component.addAvMessageListener(listener)
 
         when:
-            component.onMessage((Message) null)
+            component.onMessage(new ActiveMQMessage())
 
         then:
             1 * listener.onAvMessage(message)
@@ -56,10 +57,18 @@ class JmsComponentSpec extends Specification {
             component.addAvMessageListener(listener)
 
         when:
-            component.onMessage((Message) null)
+            component.onMessage(new ActiveMQMessage())
 
         then:
             0 * listener.onAvMessage(_)
+    }
+
+    def "on message with null"() {
+        when:
+            component.onMessage((Message) null)
+
+        then:
+            thrown(IllegalArgumentException)
     }
 
     def "send null message"() {
@@ -113,7 +122,7 @@ class JmsComponentSpec extends Specification {
             component.listenersCount() == 0
     }
 
-    def "run bad onMessage"() {
+    def "run wrong onMessage"() {
         when:
             component.onMessage((org.springframework.amqp.core.Message) null)
 

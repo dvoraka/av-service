@@ -27,6 +27,9 @@ public final class AvMessageMapper {
 
     public static AvMessage transform(Message msg) throws MapperException {
         log.debug("Transform: " + msg);
+        if (msg == null) {
+            throw new IllegalArgumentException("Message may not be null!");
+        }
 
         MessageProperties msgProps = msg.getMessageProperties();
         Map<String, Object> headers = msgProps.getHeaders();
@@ -76,6 +79,9 @@ public final class AvMessageMapper {
 
     public static Message transform(AvMessage msg) throws MapperException {
         log.debug("AVTransform: " + msg);
+        if (msg == null) {
+            throw new IllegalArgumentException("Message may not be null!");
+        }
 
         // mandatory fields
         if (msg.getId() == null) {

@@ -34,6 +34,10 @@ public class AmqpComponent implements ServerComponent {
 
     @Override
     public void onMessage(Message message) {
+        if (message == null) {
+            throw new IllegalArgumentException("Message may not be null!");
+        }
+
         AvMessage avMessage;
         try {
             avMessage = AvMessageMapper.transform(message);
