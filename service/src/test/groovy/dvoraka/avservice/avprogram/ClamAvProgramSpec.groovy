@@ -1,11 +1,84 @@
 package dvoraka.avservice.avprogram
 
+import dvoraka.avservice.common.exception.ScanErrorException
 import spock.lang.Specification
 
 /**
  * ClamAV program test.
  */
 class ClamAvProgramSpec extends Specification {
+
+    def "scan stream (empty array)"() {
+        given:
+            ClamAvProgram program = Spy()
+            program.scanStreamWithInfo(_) >> ClamAvProgram.CLEAN_STREAM_RESPONSE
+
+        when:
+            boolean result = program.scanStream(new byte[0])
+
+        then:
+            !result
+    }
+
+    def "scan stream (empty array) with false check"() {
+        given:
+            ClamAvProgram program = Spy()
+            program.scanStreamWithInfo(_) >> "VIRUS"
+
+        when:
+            boolean result = program.scanStream(new byte[0])
+
+        then:
+            result
+    }
+
+    def "scan stream with an exception"() {
+        given:
+            ClamAvProgram program = Spy()
+            program.scanStreamWithInfo(_) >> {
+                throw new ScanErrorException("TEST")
+            }
+
+        when:
+            program.scanStream(new byte[0])
+
+        then:
+            thrown(ScanErrorException)
+    }
+
+    def "scan stream with with info with IO exception"() {
+        given:
+            ClamAvProgram program = Spy()
+            program.createSocket() >> {
+                throw new IOException("TEST")
+            }
+
+        when:
+            program.scanStreamWithInfo(new byte[0])
+
+        then:
+            thrown(ScanErrorException)
+    }
+
+    def "is running"() {
+        setup:
+            ClamAvProgram program = Spy()
+            program.testConnection() >> true
+
+        expect:
+            program.isRunning()
+    }
+
+    def "ping with IO exception"() {
+        setup:
+            ClamAvProgram program = Spy()
+            program.createSocket() >> {
+                throw new IOException("TEST")
+            }
+
+        expect:
+            !program.ping()
+    }
 
     def "test connection"() {
         setup:

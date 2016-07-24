@@ -19,24 +19,14 @@ class ClamAvProgramISpec extends Specification {
         program = new ClamAvProgram()
     }
 
-    def "connection test"() {
+    def "is running"() {
         expect:
-            program.testConnection()
+            program.isRunning()
     }
 
     def "ping test"() {
         expect:
             program.ping()
-    }
-
-    def "scan normal bytes"() {
-        expect:
-            !program.scanStream("TESTDATA".getBytes())
-    }
-
-    def "scan infected bytes"() {
-        expect:
-            program.scanStream(eicarString.getBytes())
     }
 
     def "get version"() {
@@ -53,5 +43,20 @@ class ClamAvProgramISpec extends Specification {
 
         expect:
             stats
+    }
+
+    def "scan normal bytes"() {
+        expect:
+            !program.scanStream("TESTDATA".getBytes())
+    }
+
+    def "scan infected bytes"() {
+        expect:
+            program.scanStream(eicarString.getBytes())
+    }
+
+    def "connection test"() {
+        expect:
+            program.testConnection()
     }
 }

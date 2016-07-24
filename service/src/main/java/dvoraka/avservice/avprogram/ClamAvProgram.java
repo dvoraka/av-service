@@ -26,7 +26,7 @@ public class ClamAvProgram implements AvProgram {
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 3310;
-    private static final String CLEAN_STREAM_RESPONSE = "stream: OK";
+    public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
@@ -89,7 +89,7 @@ public class ClamAvProgram implements AvProgram {
     public String scanStreamWithInfo(byte[] bytes) throws ScanErrorException {
         log.debug("Scanning stream...");
         try (
-                Socket socket = new Socket(socketHost, socketPort);
+                Socket socket = createSocket();
                 OutputStream outStream = socket.getOutputStream();
                 InputStreamReader inReader = new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
                 BufferedReader in = new BufferedReader(inReader)
@@ -131,7 +131,7 @@ public class ClamAvProgram implements AvProgram {
     private String command(String command) {
         String result = null;
         try (
-                Socket socket = new Socket(socketHost, socketPort);
+                Socket socket = createSocket();
                 PrintWriter out = new PrintWriter(
                         new OutputStreamWriter(socket.getOutputStream(), DEFAULT_CHARSET));
                 InputStreamReader inReader = new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
