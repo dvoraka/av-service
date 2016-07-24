@@ -7,7 +7,7 @@ import dvoraka.avservice.common.AvMessageListener;
  */
 public interface AvMessageReceiver {
 
-    void addAVMessageListener(AvMessageListener listener);
+    void addAvMessageListener(AvMessageListener listener);
 
-    void removeAVMessageListener(AvMessageListener listener);
+    void removeAvMessageListener(AvMessageListener listener);
 }

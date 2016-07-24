@@ -22,8 +22,8 @@ class AmqpComponentSpec extends Specification {
 
     def "add listeners"() {
         when:
-            component.addAVMessageListener(getAVMessageListener())
-            component.addAVMessageListener(getAVMessageListener())
+            component.addAvMessageListener(getAVMessageListener())
+            component.addAvMessageListener(getAVMessageListener())
 
         then:
             component.listenersCount() == 2
@@ -35,15 +35,15 @@ class AmqpComponentSpec extends Specification {
             AvMessageListener listener2 = getAVMessageListener()
 
         when:
-            component.addAVMessageListener(listener1)
-            component.addAVMessageListener(listener2)
+            component.addAvMessageListener(listener1)
+            component.addAvMessageListener(listener2)
 
         then:
             component.listenersCount() == 2
 
         when:
-            component.removeAVMessageListener(listener1)
-            component.removeAVMessageListener(listener2)
+            component.removeAvMessageListener(listener1)
+            component.removeAvMessageListener(listener2)
 
         then:
             component.listenersCount() == 0
@@ -86,10 +86,18 @@ class AmqpComponentSpec extends Specification {
             1 * rabbitTemplate.send(_, _, _)
     }
 
+    def "run bad onMessage"() {
+        when:
+            component.onMessage((javax.jms.Message) null)
+
+        then:
+            thrown(UnsupportedOperationException)
+    }
+
     AvMessageListener getAVMessageListener() {
         return new AvMessageListener() {
             @Override
-            void onAVMessage(AvMessage message) {
+            void onAvMessage(AvMessage message) {
 
             }
         }

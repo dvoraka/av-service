@@ -34,15 +34,17 @@ public class AmqpComponent implements ServerComponent {
 
     @Override
     public void onMessage(Message message) {
-        AvMessage avMessage = null;
+        AvMessage avMessage;
         try {
             avMessage = AvMessageMapper.transform(message);
         } catch (MapperException e) {
             log.warn("Transformation error!", e);
+
+            return;
         }
 
         for (AvMessageListener listener : listeners) {
-            listener.onAVMessage(avMessage);
+            listener.onAvMessage(avMessage);
         }
     }
 
@@ -70,12 +72,12 @@ public class AmqpComponent implements ServerComponent {
     }
 
     @Override
-    public void addAVMessageListener(AvMessageListener listener) {
+    public void addAvMessageListener(AvMessageListener listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removeAVMessageListener(AvMessageListener listener) {
+    public void removeAvMessageListener(AvMessageListener listener) {
         listeners.remove(listener);
     }
 

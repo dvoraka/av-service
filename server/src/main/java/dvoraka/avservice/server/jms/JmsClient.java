@@ -25,7 +25,7 @@ public class JmsClient {
     }
 
     public MessageCreator getTestMessageCreator() {
-        return (session) -> {
+        return session -> {
             TextMessage msg = session.createTextMessage(TEST_TEXT);
             msg.setJMSCorrelationID(TEST_CORRELATION_ID);
             return msg;

@@ -31,7 +31,7 @@ public class BasicAvServer implements AvServer, ServiceManagement, AvMessageList
         log.debug("Server started.");
         setStarted(true);
 
-        serverComponent.addAVMessageListener(this);
+        serverComponent.addAvMessageListener(this);
         messageProcessor.addProcessedAVMessageListener(this);
         setRunning(true);
 
@@ -42,7 +42,7 @@ public class BasicAvServer implements AvServer, ServiceManagement, AvMessageList
     public void stop() {
         log.debug("Server stopped.");
         setStopped(true);
-        serverComponent.removeAVMessageListener(this);
+        serverComponent.removeAvMessageListener(this);
         setRunning(false);
 
         log.debug("Server has stopped");
@@ -74,7 +74,7 @@ public class BasicAvServer implements AvServer, ServiceManagement, AvMessageList
     }
 
     @Override
-    public void onAVMessage(AvMessage message) {
+    public void onAvMessage(AvMessage message) {
         messageProcessor.sendMessage(message);
     }
 

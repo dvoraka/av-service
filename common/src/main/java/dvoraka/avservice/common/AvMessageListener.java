@@ -8,5 +8,5 @@ import dvoraka.avservice.common.data.AvMessage;
 @FunctionalInterface
 public interface AvMessageListener {
 
-    void onAVMessage(AvMessage message);
+    void onAvMessage(AvMessage message);
 }
