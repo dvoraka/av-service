@@ -12,7 +12,7 @@ dependencies {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'dvoraka.avservice.checker.CheckerApp',
+                'Main-Class': 'dvoraka.avservice.checker.runner.AmqpCheckerApp',
                 'Built-By': 'dvoraka',
         )
     }
