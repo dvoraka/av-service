@@ -86,7 +86,7 @@ $ ./gradlew configureEnvironment
 ```
 And everything shoud be prepared for running.
 
-### Manual installation (currently not recommened)
+### Manual installation (currently not recommended)
 #### ClamAV
 #### Debian
 ```
