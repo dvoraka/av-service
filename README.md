@@ -84,7 +84,7 @@ and
 ```
 $ ./gradlew configureEnvironment
 ```
-And everything shoud be prepared for running.
+And everything should be prepared for running.
 
 ### Manual installation (currently not recommended)
 #### ClamAV
