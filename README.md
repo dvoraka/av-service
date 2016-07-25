@@ -49,8 +49,10 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
  * **ELK Stack** (Elasticsearch, Logstash, Kibana) - logs analyzing
 
 ### Installation
-You can use Docker to prepare necessary services.
-#### Docker style
+You can use Docker to prepare necessary services for development.
+#### Docker
+Docker is recommended approach.
+
 **Services**
 * RabbitMQ
 * ActiveMQ
@@ -74,7 +76,7 @@ It prepares services running on **localhost**.
 
 For setting environment it is necessary to run a command from the **root** directory:
 
-change to root
+change to project root
 ```
 $ cd ..
 ```
@@ -82,8 +84,10 @@ and
 ```
 $ ./gradlew configureEnvironment
 ```
+And everything shoud be prepared for running.
+
+### Manual installation (currently not recommened)
 #### ClamAV
-Manual way.
 #### Debian
 ```
 # apt-get install clamav-daemon
