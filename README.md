@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
 [![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service/branch/master)
 
-Replacement for [amqpav](https://github.com/dvoraka/amqpav).
+Replacement for [amqpav](https://github.com/dvoraka/amqpav). AV-checker project was integrated as checker submodule.
 
 * [Planned features](#planned-features)
 * [Used components](#used-components)
