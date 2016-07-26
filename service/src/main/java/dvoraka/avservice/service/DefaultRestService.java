@@ -30,7 +30,6 @@ public class DefaultRestService implements RestService {
 
     @Override
     public MessageStatus messageStatus(String id, String serviceId) {
-
         MessageStatus status = restStrategy.messageStatus(id, serviceId);
 
         if (status == MessageStatus.UNKNOWN && processingMessages.contains(id)) {
