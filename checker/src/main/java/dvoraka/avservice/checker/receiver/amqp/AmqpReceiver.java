@@ -30,7 +30,7 @@ public class AmqpReceiver implements AvReceiver {
     private static final String DEFAULT_VHOST = "antivirus";
     private static final String DEFAULT_QUEUE = "av-result";
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    private static final long DEFAULT_RCV_TIMEOUT = 200L;
+    private static final long DEFAULT_RCV_TIMEOUT = 2000L;
 
     private String host;
     private String virtualHost;
@@ -72,6 +72,11 @@ public class AmqpReceiver implements AvReceiver {
         }
 
         consumer = new QueueingConsumer(channel);
+        try {
+            channel.basicConsume(DEFAULT_QUEUE, false, consumer);
+        } catch (IOException e) {
+            log.warn("Problem!", e);
+        }
     }
 
     @PreDestroy
@@ -139,9 +144,6 @@ public class AmqpReceiver implements AvReceiver {
         boolean virus = true;
         try {
             printMessage(" [*] Waiting for messages...");
-            // no ack before check
-            channel.basicConsume(DEFAULT_QUEUE, false, consumer);
-
             QueueingConsumer.Delivery delivery;
             long dTag;
             while (true) {
