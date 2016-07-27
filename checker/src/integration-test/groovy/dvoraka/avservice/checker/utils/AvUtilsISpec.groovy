@@ -15,8 +15,7 @@ class AvUtilsISpec extends Specification {
     AvUtils avUtils
 
 
-    // TODO: implement properly
-    def "run negotiate protocol method"() {
+    def "run negotiate protocol method when server is down"() {
         expect:
             avUtils.negotiateProtocol(["1.0"] as String[]) == null
     }
