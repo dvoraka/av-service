@@ -14,3 +14,4 @@
  * REST support
  * AV-checker project integration
  * Docker support for development
+ * Configuration in one properties file
