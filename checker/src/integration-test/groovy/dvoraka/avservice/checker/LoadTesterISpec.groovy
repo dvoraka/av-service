@@ -24,7 +24,6 @@ class LoadTesterISpec extends Specification {
                     .appId("antivirus")
                     .synchronous(false)
                     .build()
-            println(props)
             props.setSendOnly(true)
 
             tester.setProps(props)

@@ -5,6 +5,6 @@
     <appId>antivirus</appId>
     <destinationQueue>av-result</destinationQueue>
     <messageCount>2</messageCount>
-    <synchronous>true</synchronous>
-    <sendOnly>false</sendOnly>
+    <synchronous>false</synchronous>
+    <sendOnly>true</sendOnly>
 </loadTest>
