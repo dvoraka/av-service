@@ -128,6 +128,16 @@ public class ClamAvProgram implements AvProgram {
         return testConnection();
     }
 
+    @Override
+    public void setCaching(boolean caching) {
+
+    }
+
+    @Override
+    public long getMaxSize() {
+        return 0;
+    }
+
     private String command(String command) {
         String result = null;
         try (
