@@ -9,6 +9,8 @@ import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -49,6 +51,10 @@ public class AmqpSender implements AvSender {
     private String requestExchange;
 
     private ConnectionFactory conFactory;
+    private Connection connection;
+    private Channel channel;
+
+    private byte[] infectedBytes;
 
 
     public AmqpSender(String host) {
@@ -77,6 +83,36 @@ public class AmqpSender implements AvSender {
         conFactory.setVirtualHost(virtualHost);
     }
 
+    @PostConstruct
+    public void init() {
+        try {
+            connection = conFactory.newConnection();
+            channel = connection.createChannel();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PreDestroy
+    public void close() {
+        if (channel != null) {
+            try {
+                channel.close();
+            } catch (TimeoutException | IOException e) {
+                log.warn(e);
+            }
+        }
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (IOException e) {
+                log.warn(e);
+            }
+        }
+    }
+
     public String getHost() {
         return host;
     }
@@ -99,15 +135,10 @@ public class AmqpSender implements AvSender {
             printSendingProperties(props);
         }
 
-        Connection connection = null;
-        Channel channel = null;
         byte[] bytes = readTestFile(virus);
 
         // send message to "check" exchange
         try {
-            connection = conFactory.newConnection();
-            channel = connection.createChannel();
-
             channel.basicPublish(getRequestExchange(), "", props, bytes);
 
             printMessage("-------------");
@@ -116,23 +147,6 @@ public class AmqpSender implements AvSender {
         } catch (IOException e) {
             log.warn("Connection problem - send", e);
             throw e;
-        } catch (TimeoutException e) {
-            log.warn(e);
-        } finally {
-            if (channel != null) {
-                try {
-                    channel.close();
-                } catch (TimeoutException | IOException e) {
-                    log.warn(e);
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (IOException e) {
-                    log.warn(e);
-                }
-            }
         }
 
         return messageId;
@@ -160,6 +174,7 @@ public class AmqpSender implements AvSender {
                 .correlationId(null)
                 .messageId(messageId)
                 .type("request")
+                .deliveryMode(1)
                 .headers(prepareHeaders())
                 .build();
     }
@@ -228,29 +243,34 @@ public class AmqpSender implements AvSender {
     }
 
     private byte[] infectedTestFileBytes() {
-        byte[] bytes = null;
-        // read EICAR
-        try (InputStream in = getClass().getResourceAsStream("/eicar")) {
-            if (in == null) {
-                log.warn("Virus file not found.");
-                throw new FileNotFoundException("Virus file not found.");
+        if (infectedBytes != null) {
+            return infectedBytes;
+        } else {
+            // read EICAR
+            try (InputStream in = getClass().getResourceAsStream("/eicar")) {
+                if (in == null) {
+                    log.warn("Virus file not found.");
+                    throw new FileNotFoundException("Virus file not found.");
+                }
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                final int bufferSize = 10;
+                byte[] buffer = new byte[bufferSize];
+
+                int readNum;
+                while ((readNum = in.read(buffer)) != -1) {
+                    bos.write(buffer, 0, readNum);
+                }
+                infectedBytes = bos.toByteArray();
+
+                return infectedBytes;
+
+            } catch (IOException e) {
+                log.warn("Virus file problem!", e);
             }
 
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            final int bufferSize = 10;
-            byte[] buffer = new byte[bufferSize];
-
-            int readNum;
-            while ((readNum = in.read(buffer)) != -1) {
-                bos.write(buffer, 0, readNum);
-            }
-
-            bytes = bos.toByteArray();
-        } catch (IOException e) {
-            log.warn("Virus file problem!", e);
+            return null;
         }
-
-        return bytes;
     }
 
     private byte[] cleanTestFileBytes() {

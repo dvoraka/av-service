@@ -12,6 +12,8 @@ import dvoraka.avservice.checker.utils.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -28,12 +30,17 @@ public class AmqpReceiver implements AvReceiver {
     private static final String DEFAULT_VHOST = "antivirus";
     private static final String DEFAULT_QUEUE = "av-result";
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    private static final long DEFAULT_RCV_TIMEOUT = 200L;
+    private static final long DEFAULT_RCV_TIMEOUT = 2000L;
 
     private String host;
     private String virtualHost;
     private boolean verboseOutput;
     private long receiveTimeout;
+
+    private ConnectionFactory connectionFactory;
+    private Connection connection;
+    private Channel channel;
+    private QueueingConsumer consumer;
 
 
     public AmqpReceiver(String host) {
@@ -51,18 +58,43 @@ public class AmqpReceiver implements AvReceiver {
         this.receiveTimeout = DEFAULT_RCV_TIMEOUT;
     }
 
-    private ConnectionFactory prepareConnectionFactory(String host, String virtualHost) {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(host);
-        factory.setVirtualHost(virtualHost);
+    @PostConstruct
+    public void init() {
+        connectionFactory = new ConnectionFactory();
+        connectionFactory.setHost(host);
+        connectionFactory.setVirtualHost(virtualHost);
 
-        return factory;
+        try {
+            connection = connectionFactory.newConnection();
+            channel = connection.createChannel();
+        } catch (IOException | TimeoutException e) {
+            log.warn("Connection problem!", e);
+        }
+
+        consumer = new QueueingConsumer(channel);
+        try {
+            channel.basicConsume(DEFAULT_QUEUE, false, consumer);
+        } catch (IOException e) {
+            log.warn("Problem!", e);
+        }
     }
 
-    private Channel prepareChannel(Connection conn) throws IOException {
-        Channel channel = conn.createChannel();
-
-        return channel;
+    @PreDestroy
+    public void close() {
+        if (channel != null) {
+            try {
+                channel.close();
+            } catch (TimeoutException | IOException e) {
+                log.warn(e);
+            }
+        }
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (IOException e) {
+                log.warn(e);
+            }
+        }
     }
 
     private void printReceiveInfo(QueueingConsumer.Delivery delivery) {
@@ -109,19 +141,9 @@ public class AmqpReceiver implements AvReceiver {
             ProtocolException,
             LastMessageException {
 
-        ConnectionFactory factory = prepareConnectionFactory(getHost(), getVirtualHost());
-        Connection connection = null;
-        Channel channel = null;
         boolean virus = true;
         try {
-            connection = factory.newConnection();
-            channel = prepareChannel(connection);
-
             printMessage(" [*] Waiting for messages...");
-            QueueingConsumer consumer = new QueueingConsumer(channel);
-            // no ack before check
-            channel.basicConsume(DEFAULT_QUEUE, false, consumer);
-
             QueueingConsumer.Delivery delivery;
             long dTag;
             while (true) {
@@ -145,26 +167,9 @@ public class AmqpReceiver implements AvReceiver {
         } catch (IOException e) {
             log.warn("Connection problem - receive", e);
             throw e;
-        } catch (TimeoutException e) {
-            log.warn(e);
         } catch (InterruptedException e) {
             log.warn("Receiving interrupted!");
             Thread.currentThread().interrupt();
-        } finally {
-            if (channel != null) {
-                try {
-                    channel.close();
-                } catch (TimeoutException | IOException e) {
-                    log.warn(e);
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (IOException e) {
-                    log.warn(e);
-                }
-            }
         }
 
         return virus;
