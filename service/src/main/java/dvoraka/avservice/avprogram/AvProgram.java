@@ -33,6 +33,13 @@ public interface AvProgram {
     boolean isRunning();
 
     /**
+     * Returns the caching status.
+     *
+     * @return the caching status
+     */
+    boolean isCaching();
+
+    /**
      * Sets the caching for the program.
      *
      * @param caching enable/disable caching

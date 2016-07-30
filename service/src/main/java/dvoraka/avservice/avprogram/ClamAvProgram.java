@@ -16,6 +16,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * ClamAV wrapper.
@@ -26,6 +28,7 @@ public class ClamAvProgram implements AvProgram {
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 3310;
+    private static final boolean DEFAULT_CACHING = false;
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
@@ -33,14 +36,20 @@ public class ClamAvProgram implements AvProgram {
     private String socketHost;
     private int socketPort;
 
+    private volatile boolean caching;
+    private ConcurrentMap<String, String> scanCache;
+
 
     public ClamAvProgram() {
-        this(DEFAULT_HOST, DEFAULT_PORT);
+        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_CACHING);
     }
 
-    public ClamAvProgram(String socketHost, int socketPort) {
+    public ClamAvProgram(String socketHost, int socketPort, boolean caching) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
+
+        this.caching = caching;
+        scanCache = new ConcurrentHashMap<>();
     }
 
     /**
@@ -87,6 +96,13 @@ public class ClamAvProgram implements AvProgram {
 
     @Override
     public String scanStreamWithInfo(byte[] bytes) throws ScanErrorException {
+        if (caching) {
+            String arrayValue = arrayHash(bytes);
+            if (scanCache.containsKey(arrayValue)) {
+                return scanCache.get(arrayValue);
+            }
+        }
+
         log.debug("Scanning stream...");
         try (
                 Socket socket = createSocket();
@@ -112,6 +128,12 @@ public class ClamAvProgram implements AvProgram {
 
             log.debug("scanning done.");
             if (response != null) {
+
+                // TODO: move to another thread
+                if (caching) {
+                    scanCache.put(arrayHash(bytes), response);
+                }
+
                 return response;
             } else {
                 log.warn("Response reading problem!");
@@ -123,6 +145,11 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
+    private String arrayHash(byte[] bytes) {
+        // TODO: array hashing
+        return "";
+    }
+
     @Override
     public boolean isRunning() {
         return testConnection();
@@ -130,7 +157,12 @@ public class ClamAvProgram implements AvProgram {
 
     @Override
     public void setCaching(boolean caching) {
+        this.caching = caching;
+    }
 
+    @Override
+    public boolean isCaching() {
+        return caching;
     }
 
     @Override
