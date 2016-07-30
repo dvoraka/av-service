@@ -47,12 +47,12 @@ class ClamAvProgramISpec extends Specification {
 
     def "scan normal bytes"() {
         expect:
-            !program.scanStream("TESTDATA".getBytes())
+            !program.scanBytes("TESTDATA".getBytes())
     }
 
     def "scan infected bytes"() {
         expect:
-            program.scanStream(eicarString.getBytes())
+            program.scanBytes(eicarString.getBytes())
     }
 
     def "connection test"() {

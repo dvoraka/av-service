@@ -11,10 +11,10 @@ class ClamAvProgramSpec extends Specification {
     def "scan stream (empty array)"() {
         given:
             ClamAvProgram program = Spy()
-            program.scanStreamWithInfo(_) >> ClamAvProgram.CLEAN_STREAM_RESPONSE
+            program.scanBytesWithInfo(_) >> ClamAvProgram.CLEAN_STREAM_RESPONSE
 
         when:
-            boolean result = program.scanStream(new byte[0])
+            boolean result = program.scanBytes(new byte[0])
 
         then:
             !result
@@ -23,10 +23,10 @@ class ClamAvProgramSpec extends Specification {
     def "scan stream (empty array) with false check"() {
         given:
             ClamAvProgram program = Spy()
-            program.scanStreamWithInfo(_) >> "VIRUS"
+            program.scanBytesWithInfo(_) >> "VIRUS"
 
         when:
-            boolean result = program.scanStream(new byte[0])
+            boolean result = program.scanBytes(new byte[0])
 
         then:
             result
@@ -35,12 +35,12 @@ class ClamAvProgramSpec extends Specification {
     def "scan stream with an exception"() {
         given:
             ClamAvProgram program = Spy()
-            program.scanStreamWithInfo(_) >> {
+            program.scanBytesWithInfo(_) >> {
                 throw new ScanErrorException("TEST")
             }
 
         when:
-            program.scanStream(new byte[0])
+            program.scanBytes(new byte[0])
 
         then:
             thrown(ScanErrorException)
@@ -54,7 +54,7 @@ class ClamAvProgramSpec extends Specification {
             }
 
         when:
-            program.scanStreamWithInfo(new byte[0])
+            program.scanBytesWithInfo(new byte[0])
 
         then:
             thrown(ScanErrorException)

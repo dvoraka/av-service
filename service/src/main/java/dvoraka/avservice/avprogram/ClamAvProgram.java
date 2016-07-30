@@ -77,10 +77,10 @@ public class ClamAvProgram implements AvProgram {
      * tion.
      */
     @Override
-    public boolean scanStream(byte[] bytes) throws ScanErrorException {
+    public boolean scanBytes(byte[] bytes) throws ScanErrorException {
         String response;
         try {
-            response = scanStreamWithInfo(bytes);
+            response = scanBytesWithInfo(bytes);
         } catch (ScanErrorException e) {
             log.warn("Scanning failed!", e);
             throw new ScanErrorException("Scanning failed!", e);
@@ -95,7 +95,7 @@ public class ClamAvProgram implements AvProgram {
     }
 
     @Override
-    public String scanStreamWithInfo(byte[] bytes) throws ScanErrorException {
+    public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
         if (caching) {
             String arrayValue = arrayHash(bytes);
             if (scanCache.containsKey(arrayValue)) {

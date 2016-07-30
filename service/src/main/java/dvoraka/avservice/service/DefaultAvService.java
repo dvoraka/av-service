@@ -42,7 +42,7 @@ public class DefaultAvService implements AvService {
         if (bytes.length == 0) {
             return false;
         } else {
-            return avProgram.scanStream(bytes);
+            return avProgram.scanBytes(bytes);
         }
     }
 
@@ -51,7 +51,7 @@ public class DefaultAvService implements AvService {
         if (bytes.length == 0) {
             return "";
         } else {
-            return avProgram.scanStreamWithInfo(bytes);
+            return avProgram.scanBytesWithInfo(bytes);
         }
     }
 

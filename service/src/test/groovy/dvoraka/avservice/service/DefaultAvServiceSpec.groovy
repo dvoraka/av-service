@@ -42,14 +42,14 @@ class DefaultAvServiceSpec extends Specification {
             service.scanStream(new byte[10])
 
         then:
-            1 * program.scanStream(_)
+            1 * program.scanBytes(_)
     }
 
     def "scan stream with info"() {
         setup:
             AvProgram program = Stub()
 
-            program.scanStreamWithInfo(_) >> "INFO"
+            program.scanBytesWithInfo(_) >> "INFO"
 
             service.setAvProgram(program)
 
@@ -112,6 +112,6 @@ class DefaultAvServiceSpec extends Specification {
             service.scanFile(tempFile)
 
         then:
-            1 * program.scanStream(_)
+            1 * program.scanBytes(_)
     }
 }
