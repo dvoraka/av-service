@@ -16,6 +16,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -38,6 +41,8 @@ public class ClamAvProgram implements AvProgram {
 
     private volatile boolean caching;
     private ConcurrentMap<String, String> scanCache;
+    private Base64.Encoder b64encoder;
+    private MessageDigest digest;
 
 
     public ClamAvProgram() {
@@ -49,7 +54,31 @@ public class ClamAvProgram implements AvProgram {
         this.socketPort = socketPort;
 
         this.caching = caching;
-        scanCache = new ConcurrentHashMap<>();
+        if (this.caching) {
+            initCaching();
+        }
+    }
+
+    private void initCaching() {
+        try {
+            digest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            log.warn("Algorithm not found!", e);
+        }
+
+        if (digest != null) {
+            scanCache = new ConcurrentHashMap<>();
+            b64encoder = Base64.getEncoder();
+
+            caching = true;
+        } else {
+            caching = false;
+        }
+    }
+
+    private void disableCaching() {
+        caching = false;
+        // TODO: clean cache
     }
 
     @Override
@@ -143,12 +172,14 @@ public class ClamAvProgram implements AvProgram {
     }
 
     private String arrayHash(byte[] bytes) {
-        // TODO: array hashing
-        return "";
+        byte[] result = digest.digest(bytes);
+
+        return b64encoder.encodeToString(result);
     }
 
     private void addToCache(byte[] bytes, String response) {
-        // TODO: create arrayHash in a new thread and then add hash into the cache
+        // TODO: create arrayHash in a new thread and then add the hash into the cache
+        scanCache.put(arrayHash(bytes), response);
     }
 
     @Override
@@ -158,7 +189,11 @@ public class ClamAvProgram implements AvProgram {
 
     @Override
     public void setCaching(boolean caching) {
-        this.caching = caching;
+        if (caching) {
+            initCaching();
+        } else {
+            disableCaching();
+        }
     }
 
     @Override
