@@ -21,6 +21,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * ClamAV wrapper.
@@ -35,14 +37,16 @@ public class ClamAvProgram implements AvProgram {
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+    private static final int DEFAULT_CACHE_THREADS = 4;
 
     private String socketHost;
     private int socketPort;
 
     private volatile boolean caching;
     private ConcurrentMap<String, String> scanCache;
-    private Base64.Encoder b64encoder;
-    private MessageDigest digest;
+    private volatile Base64.Encoder b64encoder;
+    private volatile MessageDigest digest;
+    private ExecutorService executorService;
 
 
     public ClamAvProgram() {
@@ -59,7 +63,7 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
-    private synchronized void initCaching() {
+    private void initCaching() {
         try {
             digest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
@@ -69,6 +73,7 @@ public class ClamAvProgram implements AvProgram {
         if (digest != null) {
             scanCache = new ConcurrentHashMap<>();
             b64encoder = Base64.getEncoder();
+            executorService = Executors.newFixedThreadPool(DEFAULT_CACHE_THREADS);
 
             caching = true;
         } else {
@@ -76,7 +81,7 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
-    private synchronized void disableCaching() {
+    private void disableCaching() {
         caching = false;
         // TODO: clean cache
     }
@@ -120,10 +125,11 @@ public class ClamAvProgram implements AvProgram {
      */
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
+        String arrayDigest = null;
         if (caching) {
-            String arrayValue = arrayHash(bytes);
-            if (scanCache.containsKey(arrayValue)) {
-                return scanCache.get(arrayValue);
+            arrayDigest = arrayHash(bytes);
+            if (scanCache.containsKey(arrayDigest)) {
+                return scanCache.get(arrayDigest);
             }
         }
 
@@ -149,7 +155,11 @@ public class ClamAvProgram implements AvProgram {
             log.debug("scanning done.");
             if (response != null) {
                 if (caching) {
-                    addToCache(bytes, response);
+                    if (arrayDigest != null) {
+                        scanCache.put(arrayDigest, response);
+                    } else {
+                        executorService.execute(() -> addToCache(bytes, response));
+                    }
                 }
 
                 return response;
@@ -176,7 +186,6 @@ public class ClamAvProgram implements AvProgram {
     }
 
     private void addToCache(byte[] bytes, String response) {
-        // TODO: create arrayHash in a new thread and then add the hash into the cache
         scanCache.put(arrayHash(bytes), response);
     }
 

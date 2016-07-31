@@ -44,7 +44,10 @@ public class ServiceConfig {
 
     @Bean
     public AvProgram avProgram() {
-        return new ClamAvProgram();
+        AvProgram avProgram = new ClamAvProgram();
+        avProgram.setCaching(false);
+
+        return avProgram;
     }
 
     @Bean
