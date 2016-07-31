@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Av-service : Anti-virus service">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Av-service</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/dvoraka/av-service">View on GitHub</a>
+
+          <h1 id="project_title">Av-service</h1>
+          <h2 id="project_tagline">Anti-virus service</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/dvoraka/av-service/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/dvoraka/av-service/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="anti-virus-service" class="anchor" href="#anti-virus-service" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Anti-virus service</h1>
+
+<p><a href="https://travis-ci.org/dvoraka/av-service"><img src="https://travis-ci.org/dvoraka/av-service.svg?branch=master" alt="Build Status"></a>
+<a href="https://codecov.io/github/dvoraka/av-service/branch/master"><img src="https://codecov.io/github/dvoraka/av-service/coverage.svg" alt="codecov.io"></a></p>
+
+<p>Replacement for <a href="https://github.com/dvoraka/amqpav">amqpav</a>. Network anti-virus service supports JMS, AMQP and HTTP for communication. AV-checker project was integrated as checker submodule.</p>
+
+<ul>
+<li><a href="#planned-features">Planned features</a></li>
+<li><a href="#used-components">Used components</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#run-service">Run services</a></li>
+<li><a href="#load-results-for-the-old-service-retested-february-20-2016">Load tests</a></li>
+</ul>
+
+<h2></h2>
+
+<h3>
+<a id="planned-features" class="anchor" href="#planned-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Planned features</h3>
+
+<ul>
+<li>Highly scalable architecture</li>
+<li>Robust design</li>
+<li>Communication over AMQP 0.9.1, JMS and REST</li>
+</ul>
+
+<p><strong>Later</strong></p>
+
+<ul>
+<li>AMQP 1.0</li>
+<li>Message tracking DB service (usefull for bigger deployments)</li>
+</ul>
+
+<h3>
+<a id="used-components" class="anchor" href="#used-components" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Used components</h3>
+
+<ul>
+<li>
+<strong>ClamaAV</strong> - open source anti-virus engine</li>
+<li>
+<strong>RabbitMQ</strong> - open source message broker for AMQP</li>
+<li>
+<strong>ActiveMQ</strong> - open source message broker for JMS</li>
+</ul>
+
+<p><strong>Frameworks and libraries</strong></p>
+
+<ul>
+<li><strong>Spring</strong></li>
+<li>
+<strong>Spring REST</strong> - REST</li>
+<li>
+<strong>Spring AMQP</strong> - AMQP</li>
+<li>
+<strong>Spring JMS</strong> - JMS</li>
+<li>
+<strong>Ehcache 3</strong> - caching</li>
+<li>
+<strong>Spock</strong> - testing</li>
+<li>
+<strong>Log4j 2</strong> - logging</li>
+</ul>
+
+<p><strong>Code quality</strong></p>
+
+<ul>
+<li><strong>Checkstyle</strong></li>
+<li><strong>FindBugs</strong></li>
+<li><strong>PMD</strong></li>
+<li><strong>JaCoCo</strong></li>
+<li><strong>SonarQube</strong></li>
+</ul>
+
+<p><strong>Build</strong></p>
+
+<ul>
+<li>
+<strong>Gradle</strong> - build</li>
+<li>
+<strong>Docker</strong> - environment preparation</li>
+</ul>
+
+<p><strong>Development</strong></p>
+
+<ul>
+<li>
+<strong>ELK Stack</strong> (Elasticsearch, Logstash, Kibana) - logs analyzing</li>
+</ul>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>You can use Docker to prepare necessary services for development.</p>
+
+<h4>
+<a id="docker" class="anchor" href="#docker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Docker</h4>
+
+<p>Docker is recommended approach.</p>
+
+<p><strong>Services</strong></p>
+
+<ul>
+<li>RabbitMQ</li>
+<li>ActiveMQ</li>
+<li>ClamAV daemon</li>
+<li>PostgreSQL</li>
+<li>Kibana</li>
+<li>Elasticsearch</li>
+<li>Logstash</li>
+</ul>
+
+<p>Change your working directory to <em>docker</em>:</p>
+
+<pre><code>$ cd docker/
+</code></pre>
+
+<p>And run <code>docker-compose up</code> command:</p>
+
+<pre><code>$ docker-compose up
+</code></pre>
+
+<p>It prepares services running on <strong>localhost</strong>.</p>
+
+<p><strong>Configuration:</strong></p>
+
+<p>For setting environment it is necessary to run a command from the <strong>root</strong> directory:</p>
+
+<p>change to project root</p>
+
+<pre><code>$ cd ..
+</code></pre>
+
+<p>and</p>
+
+<pre><code>$ ./gradlew configureEnvironment
+</code></pre>
+
+<p>And everything should be prepared for running.</p>
+
+<h3>
+<a id="manual-installation-currently-not-recommended" class="anchor" href="#manual-installation-currently-not-recommended" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Manual installation (currently not recommended)</h3>
+
+<h4>
+<a id="clamav" class="anchor" href="#clamav" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ClamAV</h4>
+
+<h4>
+<a id="debian" class="anchor" href="#debian" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Debian</h4>
+
+<pre><code># apt-get install clamav-daemon
+</code></pre>
+
+<p>Official <a href="http://www.clamav.net/documents/installing-clamav">installation</a> for other systems.</p>
+
+<h5>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h5>
+
+<p>For Jessie it is better to use <code>dpkg-reconfigure clamav-daemon</code> and enable TCP socket there because of systemd integration. Don't use names (e.g., <strong>localhost</strong>) as the address.</p>
+
+<p>OR</p>
+
+<p>Manually change the configuration file <code>/etc/clamav/clamd.conf</code>:</p>
+
+<pre><code>TCPSocket 3310
+TCPAddr 127.0.0.1
+</code></pre>
+
+<p>This is for enabling TCP socket on a default port and localhost.</p>
+
+<h4>
+<a id="rabbitmq" class="anchor" href="#rabbitmq" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RabbitMQ</h4>
+
+<h4>
+<a id="debian-1" class="anchor" href="#debian-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Debian</h4>
+
+<pre><code># apt-get install rabbitmq-server
+</code></pre>
+
+<h5>
+<a id="configuration-1" class="anchor" href="#configuration-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h5>
+
+<p>You can use the script <code>tools/prepareRMQ.sh</code> to create the basic configuration. It creates a new virtual host called <strong>antivirus</strong> and adds permissions for <strong>guest</strong> user.</p>
+
+<h3>
+<a id="run-service" class="anchor" href="#run-service" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run service</h3>
+
+<p>Currently everything is rather in a prototype phase.</p>
+
+<h4>
+<a id="amqp" class="anchor" href="#amqp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AMQP</h4>
+
+<pre><code>$ ./gradlew runAmqpServer
+</code></pre>
+
+<h4>
+<a id="jms" class="anchor" href="#jms" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JMS</h4>
+
+<pre><code>$ ./gradlew runJmsServer
+</code></pre>
+
+<h4>
+<a id="rest" class="anchor" href="#rest" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>REST</h4>
+
+<pre><code>$ ./gradlew appStart
+</code></pre>
+
+<h3>
+<a id="amqp-checker" class="anchor" href="#amqp-checker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AMQP checker</h3>
+
+<p>Utility for testing AMQP infrastructure.</p>
+
+<h4>
+<a id="run" class="anchor" href="#run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run</h4>
+
+<pre><code>$ ./gradlew -q amqpCheck
+</code></pre>
+
+<p>And output should be:</p>
+
+<pre><code>...
+Test OK
+</code></pre>
+
+<h4>
+<a id="create-jar-with-dependencies" class="anchor" href="#create-jar-with-dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create jar with dependencies</h4>
+
+<pre><code>$ ./gradlew :checker:shadowJar
+</code></pre>
+
+<p>And the full jar will be in <code>checker/build/libs/</code> directory.</p>
+
+<h4>
+<a id="run-jar" class="anchor" href="#run-jar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run jar</h4>
+
+<p>Built jar is executable.</p>
+
+<h5>
+<a id="properties" class="anchor" href="#properties" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Properties:</h5>
+
+<ul>
+<li>host - message broker host</li>
+<li>infected - infection flag (true/false)</li>
+<li>appid - application ID string</li>
+</ul>
+
+<pre><code>$ java -Dhost=localhost -jar checker-0.1-SNAPSHOT-all.jar
+</code></pre>
+
+<p>And output should be:</p>
+
+<pre><code>...
+Test OK
+</code></pre>
+
+<h2>
+<a id="load-results-for-the-old-service-retested-february-20-2016" class="anchor" href="#load-results-for-the-old-service-retested-february-20-2016" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Load results for the old service (retested February 20, 2016):</h2>
+
+<p>Message broker, server and anti-virus program are on the same machine. Sending file is EICAR.</p>
+
+<p>Client is on a different machine.</p>
+
+<ul>
+<li>Receiver: AVReceiver</li>
+<li>Sender: AVSender</li>
+</ul>
+
+<h5>
+<a id="how-to-run-load-test" class="anchor" href="#how-to-run-load-test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to run load test</h5>
+
+<pre><code>$ ./gradlew loadTest
+</code></pre>
+
+<p>Configuration file is loadTest.xml in resources directory.</p>
+
+<h5>
+<a id="load-tests" class="anchor" href="#load-tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Load tests</h5>
+
+<pre><code>Load test start for 1000 messages...
+Load test end
+Duration: 20 s
+Messages: 50/s
+</code></pre>
+
+<pre><code>Load test start for 10 000 messages...
+Load test end
+Duration: 178 s
+Messages: 56/s
+</code></pre>
+
+<pre><code>Load test start for 100 000 messages...
+Load test end
+Duration: 1800 s
+Messages: 56/s
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Av-service maintained by <a href="https://github.com/dvoraka">dvoraka</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
