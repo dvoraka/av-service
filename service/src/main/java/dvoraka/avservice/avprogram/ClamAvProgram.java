@@ -106,16 +106,12 @@ public class ClamAvProgram implements AvProgram {
                 BufferedReader in = new BufferedReader(inReader)
         ) {
             // send bytes
-            byte[] lengthBytes = ByteBuffer.allocate(CHUNK_LENGTH_BYTE_SIZE)
-                    .order(ByteOrder.BIG_ENDIAN).putInt(bytes.length).array();
             outStream.write("nINSTREAM\n".getBytes("UTF-8"));
-            outStream.write(lengthBytes);
+            outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
             outStream.write(bytes);
 
-            // terminate stream with zero length chunk
-            byte[] zeroLengthBytes = ByteBuffer.allocate(CHUNK_LENGTH_BYTE_SIZE)
-                    .order(ByteOrder.BIG_ENDIAN).putInt(0).array();
-            outStream.write(zeroLengthBytes);
+            // terminate stream with a zero length chunk
+            outStream.write(intBytes(0, CHUNK_LENGTH_BYTE_SIZE));
             outStream.flush();
 
             // read check result
@@ -123,10 +119,8 @@ public class ClamAvProgram implements AvProgram {
 
             log.debug("scanning done.");
             if (response != null) {
-
-                // TODO: move to another thread
                 if (caching) {
-                    scanCache.put(arrayHash(bytes), response);
+                    addToCache(bytes, response);
                 }
 
                 return response;
@@ -140,9 +134,21 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
+    private byte[] intBytes(int number, int size) {
+        return ByteBuffer
+                .allocate(size)
+                .order(ByteOrder.BIG_ENDIAN)
+                .putInt(number)
+                .array();
+    }
+
     private String arrayHash(byte[] bytes) {
         // TODO: array hashing
         return "";
+    }
+
+    private void addToCache(byte[] bytes, String response) {
+        // TODO: create arrayHash in a new thread and then add hash into the cache
     }
 
     @Override
