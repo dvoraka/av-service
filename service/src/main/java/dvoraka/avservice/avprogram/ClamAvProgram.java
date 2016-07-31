@@ -59,7 +59,7 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
-    private void initCaching() {
+    private synchronized void initCaching() {
         try {
             digest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
@@ -76,7 +76,7 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
-    private void disableCaching() {
+    private synchronized void disableCaching() {
         caching = false;
         // TODO: clean cache
     }
@@ -171,10 +171,8 @@ public class ClamAvProgram implements AvProgram {
                 .array();
     }
 
-    private String arrayHash(byte[] bytes) {
-        byte[] result = digest.digest(bytes);
-
-        return b64encoder.encodeToString(result);
+    private synchronized String arrayHash(byte[] bytes) {
+        return b64encoder.encodeToString(digest.digest(bytes));
     }
 
     private void addToCache(byte[] bytes, String response) {
