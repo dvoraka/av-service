@@ -16,6 +16,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * ClamAV wrapper.
@@ -26,6 +28,7 @@ public class ClamAvProgram implements AvProgram {
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 3310;
+    private static final boolean DEFAULT_CACHING = false;
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
@@ -33,22 +36,41 @@ public class ClamAvProgram implements AvProgram {
     private String socketHost;
     private int socketPort;
 
+    private volatile boolean caching;
+    private ConcurrentMap<String, String> scanCache;
+
 
     public ClamAvProgram() {
-        this(DEFAULT_HOST, DEFAULT_PORT);
+        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_CACHING);
     }
 
-    public ClamAvProgram(String socketHost, int socketPort) {
+    public ClamAvProgram(String socketHost, int socketPort, boolean caching) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
+
+        this.caching = caching;
+        scanCache = new ConcurrentHashMap<>();
+    }
+
+    @Override
+    public boolean scanBytes(byte[] bytes) throws ScanErrorException {
+        String response;
+        try {
+            response = scanBytesWithInfo(bytes);
+        } catch (ScanErrorException e) {
+            log.warn("Scanning failed!", e);
+            throw new ScanErrorException("Scanning failed!", e);
+        }
+
+        if (response.equals(CLEAN_STREAM_RESPONSE)) {
+            return false;
+        } else {
+            log.debug("Virus found: " + response);
+            return true;
+        }
     }
 
     /**
-     * Scans the stream of bytes.
-     *
-     * @param bytes the bytes to scan
-     * @return infection found
-     * <p/>
      * <p>
      * <b>Clamd documentation:</b>
      * </p>
@@ -68,25 +90,14 @@ public class ClamAvProgram implements AvProgram {
      * tion.
      */
     @Override
-    public boolean scanStream(byte[] bytes) throws ScanErrorException {
-        String response;
-        try {
-            response = scanStreamWithInfo(bytes);
-        } catch (ScanErrorException e) {
-            log.warn("Scanning failed!", e);
-            throw new ScanErrorException("Scanning failed!", e);
+    public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
+        if (caching) {
+            String arrayValue = arrayHash(bytes);
+            if (scanCache.containsKey(arrayValue)) {
+                return scanCache.get(arrayValue);
+            }
         }
 
-        if (response.equals(CLEAN_STREAM_RESPONSE)) {
-            return false;
-        } else {
-            log.debug("Virus found: " + response);
-            return true;
-        }
-    }
-
-    @Override
-    public String scanStreamWithInfo(byte[] bytes) throws ScanErrorException {
         log.debug("Scanning stream...");
         try (
                 Socket socket = createSocket();
@@ -95,16 +106,12 @@ public class ClamAvProgram implements AvProgram {
                 BufferedReader in = new BufferedReader(inReader)
         ) {
             // send bytes
-            byte[] lengthBytes = ByteBuffer.allocate(CHUNK_LENGTH_BYTE_SIZE)
-                    .order(ByteOrder.BIG_ENDIAN).putInt(bytes.length).array();
             outStream.write("nINSTREAM\n".getBytes("UTF-8"));
-            outStream.write(lengthBytes);
+            outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
             outStream.write(bytes);
 
-            // terminate stream with zero length chunk
-            byte[] zeroLengthBytes = ByteBuffer.allocate(CHUNK_LENGTH_BYTE_SIZE)
-                    .order(ByteOrder.BIG_ENDIAN).putInt(0).array();
-            outStream.write(zeroLengthBytes);
+            // terminate stream with a zero length chunk
+            outStream.write(intBytes(0, CHUNK_LENGTH_BYTE_SIZE));
             outStream.flush();
 
             // read check result
@@ -112,6 +119,10 @@ public class ClamAvProgram implements AvProgram {
 
             log.debug("scanning done.");
             if (response != null) {
+                if (caching) {
+                    addToCache(bytes, response);
+                }
+
                 return response;
             } else {
                 log.warn("Response reading problem!");
@@ -123,6 +134,23 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
+    private byte[] intBytes(int number, int size) {
+        return ByteBuffer
+                .allocate(size)
+                .order(ByteOrder.BIG_ENDIAN)
+                .putInt(number)
+                .array();
+    }
+
+    private String arrayHash(byte[] bytes) {
+        // TODO: array hashing
+        return "";
+    }
+
+    private void addToCache(byte[] bytes, String response) {
+        // TODO: create arrayHash in a new thread and then add hash into the cache
+    }
+
     @Override
     public boolean isRunning() {
         return testConnection();
@@ -130,7 +158,12 @@ public class ClamAvProgram implements AvProgram {
 
     @Override
     public void setCaching(boolean caching) {
+        this.caching = caching;
+    }
 
+    @Override
+    public boolean isCaching() {
+        return caching;
     }
 
     @Override

@@ -40,7 +40,7 @@ class AvProgramISpec extends Specification {
             byte[] bytes = "No virus here".getBytes("UTF-8")
 
         when:
-            boolean shouldBeFalse = avProgram.scanStream(bytes)
+            boolean shouldBeFalse = avProgram.scanBytes(bytes)
 
         then:
             !shouldBeFalse
@@ -51,7 +51,7 @@ class AvProgramISpec extends Specification {
             byte[] bytes = eicarString.getBytes("UTF-8")
 
         when:
-            boolean shouldBeTrue = avProgram.scanStream(bytes)
+            boolean shouldBeTrue = avProgram.scanBytes(bytes)
 
         then:
             shouldBeTrue
@@ -64,7 +64,7 @@ class AvProgramISpec extends Specification {
             byte[] bytes = new byte[size];
 
         expect:
-            !avProgram.scanStream(bytes)
+            !avProgram.scanBytes(bytes)
 
         where:
             size << [100, 1000, 10_000, 100_000, 1000_000, 10_000_000]

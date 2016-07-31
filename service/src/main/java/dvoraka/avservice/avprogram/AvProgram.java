@@ -8,22 +8,22 @@ import dvoraka.avservice.common.exception.ScanErrorException;
 public interface AvProgram {
 
     /**
-     * Scans the byte stream and returns the infected flag.
+     * Scans the bytes and returns the infected flag.
      *
-     * @param bytes byte stream for scanning
+     * @param bytes bytes for scanning
      * @return the infected flag
      * @throws ScanErrorException when scanning failed
      */
-    boolean scanStream(byte[] bytes) throws ScanErrorException;
+    boolean scanBytes(byte[] bytes) throws ScanErrorException;
 
     /**
-     * Scans the byte stream and returns an info about found viruses.
+     * Scans the bytes and returns an info about found viruses.
      *
-     * @param bytes byte stream for scanning
+     * @param bytes bytes for scanning
      * @return the virus description
      * @throws ScanErrorException when scanning failed
      */
-    String scanStreamWithInfo(byte[] bytes) throws ScanErrorException;
+    String scanBytesWithInfo(byte[] bytes) throws ScanErrorException;
 
     /**
      * Returns status of the program.
@@ -31,6 +31,13 @@ public interface AvProgram {
      * @return the running status
      */
     boolean isRunning();
+
+    /**
+     * Returns the caching status.
+     *
+     * @return the caching status
+     */
+    boolean isCaching();
 
     /**
      * Sets the caching for the program.
