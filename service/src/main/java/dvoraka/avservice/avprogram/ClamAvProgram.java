@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * ClamAV wrapper.
@@ -38,6 +39,7 @@ public class ClamAvProgram implements AvProgram {
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private static final int DEFAULT_CACHE_THREADS = 4;
+    private static final long CACHE_POOL_TERM_TIME_S = 10;
 
     private String socketHost;
     private int socketPort;
@@ -82,8 +84,32 @@ public class ClamAvProgram implements AvProgram {
     }
 
     private void disableCaching() {
+        digest = null;
+        scanCache = null;
+        b64encoder = null;
+        shutdownCacheExecutorService();
+
         caching = false;
-        // TODO: clean cache
+    }
+
+    private void shutdownCacheExecutorService() {
+        if (executorService == null) {
+            return;
+        }
+
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(CACHE_POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+                if (!executorService.awaitTermination(CACHE_POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
+                    log.warn("Cache thread pool shutdown failed!");
+                }
+            }
+        } catch (InterruptedException e) {
+            log.warn("Stopping the cache thread pool interrupted!", e);
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 
     @Override
@@ -196,10 +222,12 @@ public class ClamAvProgram implements AvProgram {
 
     @Override
     public void setCaching(boolean caching) {
-        if (caching) {
-            initCaching();
-        } else {
-            disableCaching();
+        if (this.caching != caching) {
+            if (caching) {
+                initCaching();
+            } else {
+                disableCaching();
+            }
         }
     }
 
