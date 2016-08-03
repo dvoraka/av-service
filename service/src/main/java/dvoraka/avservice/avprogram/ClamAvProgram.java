@@ -32,9 +32,10 @@ public class ClamAvProgram implements AvProgram {
 
     private static final Logger log = LogManager.getLogger(ClamAvProgram.class.getName());
 
-    private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 3310;
-    private static final boolean DEFAULT_CACHING = false;
+    public static final String DEFAULT_HOST = "localhost";
+    public static final int DEFAULT_PORT = 3310;
+    public static final int DEFAULT_MAX_STREAM_SIZE = 10_000;
+
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
@@ -43,6 +44,7 @@ public class ClamAvProgram implements AvProgram {
 
     private String socketHost;
     private int socketPort;
+    private long maxStreamSize;
 
     private volatile boolean caching;
     private ConcurrentMap<String, String> scanCache;
@@ -52,17 +54,13 @@ public class ClamAvProgram implements AvProgram {
 
 
     public ClamAvProgram() {
-        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_CACHING);
+        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_STREAM_SIZE);
     }
 
-    public ClamAvProgram(String socketHost, int socketPort, boolean caching) {
+    public ClamAvProgram(String socketHost, int socketPort, long maxStreamSize) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
-
-        this.caching = caching;
-        if (this.caching) {
-            initCaching();
-        }
+        this.maxStreamSize = maxStreamSize;
     }
 
     private void initCaching() {
@@ -236,11 +234,6 @@ public class ClamAvProgram implements AvProgram {
         return caching;
     }
 
-    @Override
-    public long getMaxSize() {
-        return 0;
-    }
-
     private String command(String command) {
         String result = null;
         try (
@@ -299,5 +292,13 @@ public class ClamAvProgram implements AvProgram {
         }
 
         return success && ping();
+    }
+
+    public long getMaxStreamSize() {
+        return maxStreamSize;
+    }
+
+    public void setMaxStreamSize(long maxStreamSize) {
+        this.maxStreamSize = maxStreamSize;
     }
 }

@@ -24,12 +24,14 @@ public class DefaultAvService implements AvService {
 
     private final AvProgram avProgram;
     private long maxFileSize;
+    private long maxStreamSize;
 
 
     @Autowired
     public DefaultAvService(AvProgram avProgram) {
         this.avProgram = avProgram;
         maxFileSize = DEFAULT_MAX_FILE_SIZE;
+        maxStreamSize = avProgram.getMaxStreamSize();
     }
 
     @Override
