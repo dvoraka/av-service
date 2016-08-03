@@ -38,8 +38,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public AvService avService() {
-        return new DefaultAvService();
+    public AvService avService(AvProgram avProgram) {
+        return new DefaultAvService(avProgram);
     }
 
     @Bean
