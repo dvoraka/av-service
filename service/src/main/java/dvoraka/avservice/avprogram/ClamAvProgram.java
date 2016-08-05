@@ -35,6 +35,8 @@ public class ClamAvProgram implements AvProgram {
     public static final String DEFAULT_HOST = "localhost";
     public static final int DEFAULT_PORT = 3310;
     public static final int DEFAULT_MAX_STREAM_SIZE = 10_000;
+    public static final int DEFAULT_MAX_CACHED_FILE_SIZE = DEFAULT_MAX_STREAM_SIZE / 5;
+    public static final int DEFAULT_MAX_CACHE_SIZE = 10_000;
 
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
@@ -45,6 +47,8 @@ public class ClamAvProgram implements AvProgram {
     private String socketHost;
     private int socketPort;
     private long maxStreamSize;
+    private long maxCachedFileSize;
+    private long maxCacheSize;
 
     private volatile boolean caching;
     private ConcurrentMap<String, String> scanCache;
@@ -61,6 +65,9 @@ public class ClamAvProgram implements AvProgram {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
         this.maxStreamSize = maxStreamSize;
+
+        maxCachedFileSize = DEFAULT_MAX_CACHED_FILE_SIZE;
+        maxCacheSize = DEFAULT_MAX_CACHE_SIZE;
     }
 
     private void initCaching() {
@@ -300,5 +307,13 @@ public class ClamAvProgram implements AvProgram {
 
     public void setMaxStreamSize(long maxStreamSize) {
         this.maxStreamSize = maxStreamSize;
+    }
+
+    public long getMaxCacheSize() {
+        return maxCacheSize;
+    }
+
+    public void setMaxCacheSize(long maxCacheSize) {
+        this.maxCacheSize = maxCacheSize;
     }
 }
