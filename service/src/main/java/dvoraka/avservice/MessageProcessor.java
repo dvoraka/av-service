@@ -8,6 +8,11 @@ import dvoraka.avservice.common.data.MessageStatus;
  */
 public interface MessageProcessor {
 
+    /**
+     * Sends a message to the processor.
+     *
+     * @param message the message
+     */
     void sendMessage(AvMessage message);
 
     /**
@@ -28,7 +33,7 @@ public interface MessageProcessor {
     /**
      * Returns a processed message.
      *
-     * @return a processed message
+     * @return the processed message
      */
     AvMessage getProcessedMessage();
 
@@ -49,5 +54,10 @@ public interface MessageProcessor {
      */
     void addProcessedAVMessageListener(ProcessedAvMessageListener listener);
 
+    /**
+     * Removes a listener.
+     *
+     * @param listener the listener
+     */
     void removeProcessedAVMessageListener(ProcessedAvMessageListener listener);
 }
