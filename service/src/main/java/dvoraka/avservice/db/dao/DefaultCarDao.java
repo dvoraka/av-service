@@ -16,17 +16,21 @@ import java.util.List;
 @Repository
 public class DefaultCarDao implements CarDao {
 
+    private final SessionFactory sessionFactory;
+
+
     @Autowired
-    private SessionFactory sessionFactory;
+    public DefaultCarDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Transactional
     @Override
     public long count() {
         Session session = sessionFactory.getCurrentSession();
         String query = "SELECT count(*) from Car";
-        long count = (Long) session.createQuery(query).uniqueResult();
 
-        return count;
+        return (long) session.createQuery(query).uniqueResult();
     }
 
     @Transactional
