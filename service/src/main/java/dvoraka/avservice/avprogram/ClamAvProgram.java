@@ -21,9 +21,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * ClamAV wrapper.
@@ -41,8 +38,6 @@ public class ClamAvProgram implements AvProgram {
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    private static final int DEFAULT_CACHE_THREADS = 4;
-    private static final long CACHE_POOL_TERM_TIME_S = 10;
 
     private String socketHost;
     private int socketPort;
@@ -54,7 +49,6 @@ public class ClamAvProgram implements AvProgram {
     private ConcurrentMap<String, String> scanCache;
     private volatile Base64.Encoder b64encoder;
     private volatile MessageDigest digest;
-    private ExecutorService executorService;
 
 
     public ClamAvProgram() {
@@ -80,7 +74,6 @@ public class ClamAvProgram implements AvProgram {
         if (digest != null) {
             scanCache = new ConcurrentHashMap<>();
             b64encoder = Base64.getEncoder();
-            executorService = Executors.newFixedThreadPool(DEFAULT_CACHE_THREADS);
 
             caching = true;
         } else {
@@ -92,29 +85,8 @@ public class ClamAvProgram implements AvProgram {
         digest = null;
         scanCache = null;
         b64encoder = null;
-        shutdownCacheExecutorService();
 
         caching = false;
-    }
-
-    private void shutdownCacheExecutorService() {
-        if (executorService == null) {
-            return;
-        }
-
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(CACHE_POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-                if (!executorService.awaitTermination(CACHE_POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
-                    log.warn("Cache thread pool shutdown failed!");
-                }
-            }
-        } catch (InterruptedException e) {
-            log.warn("Stopping the cache thread pool interrupted!", e);
-            executorService.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
     }
 
     @Override
@@ -185,13 +157,10 @@ public class ClamAvProgram implements AvProgram {
 
             log.debug("scanning done.");
             if (response != null) {
-                if (caching && (bytes.length <= maxCachedFileSize)) {
-                    if (arrayDigest != null) {
-                        log.debug("Adding to the cache: " + arrayDigest);
-                        scanCache.put(arrayDigest, response);
-                    } else {
-                        executorService.execute(() -> addToCache(bytes, response));
-                    }
+                if (caching && (bytes.length <= maxCachedFileSize)
+                        && (arrayDigest != null)) {
+                    log.debug("Adding to the cache: " + arrayDigest);
+                    scanCache.put(arrayDigest, response);
                 }
 
                 return response;
@@ -215,10 +184,6 @@ public class ClamAvProgram implements AvProgram {
 
     private synchronized String arrayHash(byte[] bytes) {
         return b64encoder.encodeToString(digest.digest(bytes));
-    }
-
-    private void addToCache(byte[] bytes, String response) {
-        scanCache.put(arrayHash(bytes), response);
     }
 
     @Override
