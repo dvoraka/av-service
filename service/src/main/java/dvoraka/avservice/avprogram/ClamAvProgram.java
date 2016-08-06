@@ -157,7 +157,7 @@ public class ClamAvProgram implements AvProgram {
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
         String arrayDigest = null;
-        if (caching) {
+        if (caching && (bytes.length <= maxCachedFileSize)) {
             arrayDigest = arrayHash(bytes);
             if (scanCache.containsKey(arrayDigest)) {
                 return scanCache.get(arrayDigest);
@@ -185,8 +185,9 @@ public class ClamAvProgram implements AvProgram {
 
             log.debug("scanning done.");
             if (response != null) {
-                if (caching) {
+                if (caching && (bytes.length <= maxCachedFileSize)) {
                     if (arrayDigest != null) {
+                        log.debug("Adding to the cache: " + arrayDigest);
                         scanCache.put(arrayDigest, response);
                     } else {
                         executorService.execute(() -> addToCache(bytes, response));
@@ -307,6 +308,14 @@ public class ClamAvProgram implements AvProgram {
 
     public void setMaxStreamSize(long maxStreamSize) {
         this.maxStreamSize = maxStreamSize;
+    }
+
+    public long getMaxCachedFileSize() {
+        return maxCachedFileSize;
+    }
+
+    public void setMaxCachedFileSize(long maxCachedFileSize) {
+        this.maxCachedFileSize = maxCachedFileSize;
     }
 
     public long getMaxCacheSize() {
