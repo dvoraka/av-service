@@ -37,6 +37,21 @@ class BasicAvServerSpec extends Specification {
             server.isStarted()
     }
 
+    def "after server started"() {
+        given:
+            ServerComponent component = Mock()
+            MessageProcessor processor = Mock()
+
+            setScMpMocks(component, processor)
+
+        when:
+            server.start()
+
+        then:
+            server.isStarted()
+            !server.isStopped()
+    }
+
     def "stop server"() {
         given:
             ServerComponent component = Mock()

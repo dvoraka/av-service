@@ -16,25 +16,22 @@ import java.nio.file.Files;
  */
 public class DefaultAvService implements AvService {
 
-    @Autowired
-    private AvProgram avProgram;
-
     private static final Logger log = LogManager.getLogger(DefaultAvService.class.getName());
-
     /**
      * Default max file size in bytes.
      */
     private static final long DEFAULT_MAX_FILE_SIZE = 10_000_000;
 
+    private final AvProgram avProgram;
     private long maxFileSize;
+    private long maxStreamSize;
 
 
-    public DefaultAvService() {
+    @Autowired
+    public DefaultAvService(AvProgram avProgram) {
+        this.avProgram = avProgram;
         maxFileSize = DEFAULT_MAX_FILE_SIZE;
-    }
-
-    public DefaultAvService(long maxFileSize) {
-        this.maxFileSize = maxFileSize;
+        maxStreamSize = avProgram.getMaxStreamSize();
     }
 
     @Override
@@ -81,9 +78,5 @@ public class DefaultAvService implements AvService {
 
     public void setMaxFileSize(long maxFileSize) {
         this.maxFileSize = maxFileSize;
-    }
-
-    public void setAvProgram(AvProgram program) {
-        this.avProgram = program;
     }
 }

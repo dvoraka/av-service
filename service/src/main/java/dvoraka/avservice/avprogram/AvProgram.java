@@ -51,5 +51,5 @@ public interface AvProgram {
      *
      * @return the maximum stream size
      */
-    long getMaxSize();
+    long getMaxStreamSize();
 }

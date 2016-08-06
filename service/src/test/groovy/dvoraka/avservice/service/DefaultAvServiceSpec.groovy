@@ -14,54 +14,50 @@ import java.nio.file.StandardOpenOption
  */
 class DefaultAvServiceSpec extends Specification {
 
+    AvProgram avProgram
     DefaultAvService service
 
 
     void setup() {
-        service = new DefaultAvService()
+        avProgram = Mock()
+        service = new DefaultAvService(avProgram)
     }
 
     void cleanup() {
     }
 
-    def "constructor with max file size"() {
-        setup:
+    def "set max file size"() {
+        given:
             long maxFileSize = 100
-            service = new DefaultAvService(maxFileSize)
 
-        expect:
+        when:
+            service.setMaxFileSize(maxFileSize)
+
+        then:
             service.getMaxFileSize() == maxFileSize
     }
 
     def "scan stream"() {
-        setup:
-            AvProgram program = Mock()
-            service.setAvProgram(program)
-
         when:
             service.scanStream(new byte[10])
 
         then:
-            1 * program.scanBytes(_)
+            1 * avProgram.scanBytes(_)
     }
 
     def "scan stream with info"() {
-        setup:
-            AvProgram program = Stub()
+        given:
+            String expected = "INFO"
+            avProgram.scanBytesWithInfo(_) >> expected
 
-            program.scanBytesWithInfo(_) >> "INFO"
+        when:
+            String result = service.scanStreamWithInfo(new byte[10])
 
-            service.setAvProgram(program)
-
-        expect:
-            service.scanStreamWithInfo(new byte[10]).equals("INFO")
+        then:
+            result == expected
     }
 
     def "scan file without a file"() {
-        setup:
-            AvProgram program = Mock()
-            service.setAvProgram(program)
-
         when:
             service.scanFile(new File("123-TEST-FILE"))
 
@@ -71,9 +67,6 @@ class DefaultAvServiceSpec extends Specification {
 
     def "scan file with a big file"() {
         setup:
-            AvProgram program = Mock()
-            service.setAvProgram(program)
-
             File bigTempFile = File.createTempFile("test-tempfile", ".tmp");
             bigTempFile.deleteOnExit()
 
@@ -98,9 +91,6 @@ class DefaultAvServiceSpec extends Specification {
 
     def "scan file with a file"() {
         setup:
-            AvProgram program = Mock()
-            service.setAvProgram(program)
-
             File tempFile = File.createTempFile("test-tempfile", ".tmp");
             Files.write(
                     tempFile.toPath(),
@@ -112,6 +102,6 @@ class DefaultAvServiceSpec extends Specification {
             service.scanFile(tempFile)
 
         then:
-            1 * program.scanBytes(_)
+            1 * avProgram.scanBytes(_)
     }
 }

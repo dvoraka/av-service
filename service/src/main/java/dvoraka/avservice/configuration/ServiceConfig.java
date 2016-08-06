@@ -38,13 +38,16 @@ public class ServiceConfig {
     }
 
     @Bean
-    public AvService avService() {
-        return new DefaultAvService();
+    public AvService avService(AvProgram avProgram) {
+        return new DefaultAvService(avProgram);
     }
 
     @Bean
     public AvProgram avProgram() {
-        return new ClamAvProgram();
+        AvProgram avProgram = new ClamAvProgram();
+        avProgram.setCaching(false);
+
+        return avProgram;
     }
 
     @Bean

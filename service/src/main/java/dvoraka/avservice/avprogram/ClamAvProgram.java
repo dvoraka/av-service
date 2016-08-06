@@ -16,6 +16,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -26,30 +29,64 @@ public class ClamAvProgram implements AvProgram {
 
     private static final Logger log = LogManager.getLogger(ClamAvProgram.class.getName());
 
-    private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 3310;
-    private static final boolean DEFAULT_CACHING = false;
+    public static final String DEFAULT_HOST = "localhost";
+    public static final int DEFAULT_PORT = 3310;
+    public static final int DEFAULT_MAX_STREAM_SIZE = 10_000;
+    public static final int DEFAULT_MAX_CACHED_FILE_SIZE = DEFAULT_MAX_STREAM_SIZE / 5;
+    public static final int DEFAULT_MAX_CACHE_SIZE = 10_000;
+
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private String socketHost;
     private int socketPort;
+    private long maxStreamSize;
+    private long maxCachedFileSize;
+    private long maxCacheSize;
 
     private volatile boolean caching;
     private ConcurrentMap<String, String> scanCache;
+    private volatile Base64.Encoder b64encoder;
+    private volatile MessageDigest digest;
 
 
     public ClamAvProgram() {
-        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_CACHING);
+        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_STREAM_SIZE);
     }
 
-    public ClamAvProgram(String socketHost, int socketPort, boolean caching) {
+    public ClamAvProgram(String socketHost, int socketPort, long maxStreamSize) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
+        this.maxStreamSize = maxStreamSize;
 
-        this.caching = caching;
-        scanCache = new ConcurrentHashMap<>();
+        maxCachedFileSize = DEFAULT_MAX_CACHED_FILE_SIZE;
+        maxCacheSize = DEFAULT_MAX_CACHE_SIZE;
+    }
+
+    private void initCaching() {
+        try {
+            digest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            log.warn("Algorithm not found!", e);
+        }
+
+        if (digest != null) {
+            scanCache = new ConcurrentHashMap<>();
+            b64encoder = Base64.getEncoder();
+
+            caching = true;
+        } else {
+            caching = false;
+        }
+    }
+
+    private void disableCaching() {
+        digest = null;
+        scanCache = null;
+        b64encoder = null;
+
+        caching = false;
     }
 
     @Override
@@ -91,10 +128,11 @@ public class ClamAvProgram implements AvProgram {
      */
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
-        if (caching) {
-            String arrayValue = arrayHash(bytes);
-            if (scanCache.containsKey(arrayValue)) {
-                return scanCache.get(arrayValue);
+        String arrayDigest = null;
+        if (caching && (bytes.length <= maxCachedFileSize)) {
+            arrayDigest = arrayHash(bytes);
+            if (scanCache.containsKey(arrayDigest)) {
+                return scanCache.get(arrayDigest);
             }
         }
 
@@ -119,8 +157,10 @@ public class ClamAvProgram implements AvProgram {
 
             log.debug("scanning done.");
             if (response != null) {
-                if (caching) {
-                    addToCache(bytes, response);
+                if (caching && (bytes.length <= maxCachedFileSize)
+                        && (arrayDigest != null)) {
+                    log.debug("Adding to the cache: " + arrayDigest);
+                    scanCache.put(arrayDigest, response);
                 }
 
                 return response;
@@ -142,13 +182,8 @@ public class ClamAvProgram implements AvProgram {
                 .array();
     }
 
-    private String arrayHash(byte[] bytes) {
-        // TODO: array hashing
-        return "";
-    }
-
-    private void addToCache(byte[] bytes, String response) {
-        // TODO: create arrayHash in a new thread and then add hash into the cache
+    private synchronized String arrayHash(byte[] bytes) {
+        return b64encoder.encodeToString(digest.digest(bytes));
     }
 
     @Override
@@ -158,17 +193,18 @@ public class ClamAvProgram implements AvProgram {
 
     @Override
     public void setCaching(boolean caching) {
-        this.caching = caching;
+        if (this.caching != caching) {
+            if (caching) {
+                initCaching();
+            } else {
+                disableCaching();
+            }
+        }
     }
 
     @Override
     public boolean isCaching() {
         return caching;
-    }
-
-    @Override
-    public long getMaxSize() {
-        return 0;
     }
 
     private String command(String command) {
@@ -229,5 +265,29 @@ public class ClamAvProgram implements AvProgram {
         }
 
         return success && ping();
+    }
+
+    public long getMaxStreamSize() {
+        return maxStreamSize;
+    }
+
+    public void setMaxStreamSize(long maxStreamSize) {
+        this.maxStreamSize = maxStreamSize;
+    }
+
+    public long getMaxCachedFileSize() {
+        return maxCachedFileSize;
+    }
+
+    public void setMaxCachedFileSize(long maxCachedFileSize) {
+        this.maxCachedFileSize = maxCachedFileSize;
+    }
+
+    public long getMaxCacheSize() {
+        return maxCacheSize;
+    }
+
+    public void setMaxCacheSize(long maxCacheSize) {
+        this.maxCacheSize = maxCacheSize;
     }
 }
