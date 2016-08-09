@@ -40,4 +40,35 @@ class DefaultCachingServiceSpec extends Specification {
             cachingService.cacheSize() == 1
             cachingService.get(digest) == info
     }
+
+    def "size synchronization test"() {
+        given:
+            String info = 'INFO'
+            int maxSize = 1_000
+
+            Runnable putting = {
+                String tName = Thread.currentThread().getName()
+                10.times {
+                    cachingService.put(tName + it, info)
+                }
+            }
+
+            Thread[] threads = new Thread[120]
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new Thread(putting)
+            }
+
+            cachingService.setMaxCacheSize(maxSize)
+
+        when:
+            threads.each {
+                it.start()
+            }
+            threads.each {
+                it.join()
+            }
+
+        then:
+            cachingService.cacheSize() == maxSize
+    }
 }
