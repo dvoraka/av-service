@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * AMQP AV server implementation
  */
-public class BasicAvServer implements AvServer, ServiceManagement, AvMessageListener, ProcessedAvMessageListener {
+public class BasicAvServer implements
+        AvServer, ServiceManagement, AvMessageListener, ProcessedAvMessageListener {
 
     @Autowired
     private ServerComponent serverComponent;

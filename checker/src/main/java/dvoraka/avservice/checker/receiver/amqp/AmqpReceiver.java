@@ -175,7 +175,8 @@ public class AmqpReceiver implements AvReceiver {
         return virus;
     }
 
-    private void findError(QueueingConsumer.Delivery delivery, Map<String, Object> headers) throws ProtocolException {
+    private void findError(QueueingConsumer.Delivery delivery, Map<String, Object> headers)
+            throws ProtocolException {
         if ("response-error".equals(delivery.getProperties().getType())) {
             String errorMsg = headers.get("errorMsg").toString();
             checkError(new ErrorMessage(errorMsg));
