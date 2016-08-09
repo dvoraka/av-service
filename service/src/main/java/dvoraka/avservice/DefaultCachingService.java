@@ -37,10 +37,12 @@ public class DefaultCachingService implements CachingService {
             log.warn("Algorithm not found!", e);
         }
 
-        if (digest != null) {
-            scanCache = new ConcurrentHashMap<>();
-            b64encoder = Base64.getEncoder();
+        if (digest == null) {
+            throw new IllegalStateException("No algorithm found!");
         }
+
+        scanCache = new ConcurrentHashMap<>();
+        b64encoder = Base64.getEncoder();
     }
 
     @Override
@@ -55,7 +57,11 @@ public class DefaultCachingService implements CachingService {
 
     @Override
     public void put(String digest, String info) {
-        scanCache.put(digest, info);
+        synchronized (this) {
+            if (scanCache.size() < maxCacheSize) {
+                scanCache.put(digest, info);
+            }
+        }
     }
 
     @Override
