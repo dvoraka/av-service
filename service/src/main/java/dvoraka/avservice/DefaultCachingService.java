@@ -19,12 +19,12 @@ public class DefaultCachingService implements CachingService {
     public static final int DEFAULT_MAX_CACHED_FILE_SIZE = 5_000;
     public static final int DEFAULT_MAX_CACHE_SIZE = 10_000;
 
-    private long maxCachedFileSize;
-    private long maxCacheSize;
+    private volatile long maxCachedFileSize;
+    private volatile long maxCacheSize;
 
     private ConcurrentMap<String, String> scanCache;
-    private volatile Base64.Encoder b64encoder;
-    private volatile MessageDigest digest;
+    private Base64.Encoder b64encoder;
+    private MessageDigest digest;
 
 
     public DefaultCachingService() {
@@ -46,7 +46,7 @@ public class DefaultCachingService implements CachingService {
     }
 
     @Override
-    public String arrayDigest(byte[] bytes) {
+    public synchronized String arrayDigest(byte[] bytes) {
         return b64encoder.encodeToString(digest.digest(bytes));
     }
 
@@ -56,11 +56,9 @@ public class DefaultCachingService implements CachingService {
     }
 
     @Override
-    public void put(String digest, String info) {
-        synchronized (this) {
-            if (scanCache.size() < maxCacheSize) {
-                scanCache.put(digest, info);
-            }
+    public synchronized void put(String digest, String info) {
+        if (scanCache.size() < maxCacheSize) {
+            scanCache.put(digest, info);
         }
     }
 
