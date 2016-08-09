@@ -56,4 +56,11 @@ public interface CachingService {
      * @param size the max size
      */
     void setMaxCacheSize(long size);
+
+    /**
+     * Returns actual items count in the cache.
+     *
+     * @return the size
+     */
+    long cacheSize();
 }
