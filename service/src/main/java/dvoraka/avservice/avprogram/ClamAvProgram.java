@@ -1,8 +1,10 @@
 package dvoraka.avservice.avprogram;
 
+import dvoraka.avservice.CachingService;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,24 +18,20 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * ClamAV wrapper.
  */
 public class ClamAvProgram implements AvProgram {
 
+    @Autowired
+    private CachingService cachingService;
+
     private static final Logger log = LogManager.getLogger(ClamAvProgram.class.getName());
 
     public static final String DEFAULT_HOST = "localhost";
     public static final int DEFAULT_PORT = 3310;
     public static final int DEFAULT_MAX_STREAM_SIZE = 10_000;
-    public static final int DEFAULT_MAX_CACHED_FILE_SIZE = DEFAULT_MAX_STREAM_SIZE / 5;
-    public static final int DEFAULT_MAX_CACHE_SIZE = 10_000;
 
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
@@ -46,9 +44,6 @@ public class ClamAvProgram implements AvProgram {
     private long maxCacheSize;
 
     private volatile boolean caching;
-    private ConcurrentMap<String, String> scanCache;
-    private volatile Base64.Encoder b64encoder;
-    private volatile MessageDigest digest;
 
 
     public ClamAvProgram() {
@@ -59,34 +54,6 @@ public class ClamAvProgram implements AvProgram {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
         this.maxStreamSize = maxStreamSize;
-
-        maxCachedFileSize = DEFAULT_MAX_CACHED_FILE_SIZE;
-        maxCacheSize = DEFAULT_MAX_CACHE_SIZE;
-    }
-
-    private void initCaching() {
-        try {
-            digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            log.warn("Algorithm not found!", e);
-        }
-
-        if (digest != null) {
-            scanCache = new ConcurrentHashMap<>();
-            b64encoder = Base64.getEncoder();
-
-            caching = true;
-        } else {
-            caching = false;
-        }
-    }
-
-    private void disableCaching() {
-        digest = null;
-        scanCache = null;
-        b64encoder = null;
-
-        caching = false;
     }
 
     @Override
@@ -129,10 +96,11 @@ public class ClamAvProgram implements AvProgram {
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
         String arrayDigest = null;
-        if (caching && (bytes.length <= maxCachedFileSize)) {
-            arrayDigest = arrayHash(bytes);
-            if (scanCache.containsKey(arrayDigest)) {
-                return scanCache.get(arrayDigest);
+        if (caching) {
+            arrayDigest = cachingService.arrayDigest(bytes);
+            String cachedValue = cachingService.get(arrayDigest);
+            if (cachedValue != null) {
+                return cachedValue;
             }
         }
 
@@ -157,10 +125,9 @@ public class ClamAvProgram implements AvProgram {
 
             log.debug("scanning done.");
             if (response != null) {
-                if (caching && (bytes.length <= maxCachedFileSize)
-                        && (arrayDigest != null)) {
+                if (caching && arrayDigest != null) {
                     log.debug("Adding to the cache: " + arrayDigest);
-                    scanCache.put(arrayDigest, response);
+                    cachingService.put(arrayDigest, response);
                 }
 
                 return response;
@@ -182,10 +149,6 @@ public class ClamAvProgram implements AvProgram {
                 .array();
     }
 
-    private synchronized String arrayHash(byte[] bytes) {
-        return b64encoder.encodeToString(digest.digest(bytes));
-    }
-
     @Override
     public boolean isRunning() {
         return testConnection();
@@ -193,13 +156,7 @@ public class ClamAvProgram implements AvProgram {
 
     @Override
     public void setCaching(boolean caching) {
-        if (this.caching != caching) {
-            if (caching) {
-                initCaching();
-            } else {
-                disableCaching();
-            }
-        }
+        this.caching = caching;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package dvoraka.avservice.configuration;
 
+import dvoraka.avservice.CachingService;
+import dvoraka.avservice.DefaultCachingService;
 import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.ClamAvProgram;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jmx.export.MBeanExporter;
@@ -48,6 +51,12 @@ public class ServiceConfig {
         avProgram.setCaching(false);
 
         return avProgram;
+    }
+
+    @Lazy
+    @Bean
+    public CachingService cachingService() {
+        return new DefaultCachingService();
     }
 
     @Bean

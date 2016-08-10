@@ -9,7 +9,7 @@ public interface CachingService {
      * Generates a digest for the given array of bytes.
      *
      * @param bytes the array of bytes
-     * @return the digest
+     * @return the digest or null if the bytes length is bigger than max size
      */
     String arrayDigest(byte[] bytes);
 
