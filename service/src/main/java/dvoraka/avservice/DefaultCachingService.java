@@ -46,8 +46,13 @@ public class DefaultCachingService implements CachingService {
     }
 
     @Override
-    public synchronized String arrayDigest(byte[] bytes) {
-        return b64encoder.encodeToString(digest.digest(bytes));
+    public String arrayDigest(byte[] bytes) {
+        if (bytes.length > maxCachedFileSize) {
+            return null;
+        }
+        synchronized (this) {
+            return b64encoder.encodeToString(digest.digest(bytes));
+        }
     }
 
     @Override
@@ -56,9 +61,14 @@ public class DefaultCachingService implements CachingService {
     }
 
     @Override
-    public synchronized void put(String digest, String info) {
-        if (scanCache.size() < maxCacheSize) {
-            scanCache.put(digest, info);
+    public void put(String digest, String info) {
+        if (digest == null || info == null) {
+            return;
+        }
+        synchronized (this) {
+            if (scanCache.size() < maxCacheSize) {
+                scanCache.put(digest, info);
+            }
         }
     }
 
