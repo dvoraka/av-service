@@ -17,9 +17,9 @@ import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -43,8 +43,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
     public static final ReceivingType DEFAULT_RECEIVING_TYPE = ReceivingType.POLLING;
     private static final long POOL_TERM_TIME_S = 20;
 
-    private Map<String, Long> processingMessages;
-    private Map<String, Long> processedMessages;
+    private ConcurrentMap<String, Long> processingMessages;
+    private ConcurrentMap<String, Long> processedMessages;
     private AtomicLong receivedMsgCount = new AtomicLong();
     private AtomicLong processedMsgCount = new AtomicLong();
     /**
@@ -58,7 +58,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private ReceivingType serverReceivingType;
 
     private int threadCount;
-    private boolean running;
+    private volatile boolean running;
     private int queueSize;
 
 
@@ -67,7 +67,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     public DefaultMessageProcessor(int threadCount, ReceivingType serverReceivingType, int queueSize) {
-
         this.threadCount = threadCount;
         this.queueSize = queueSize;
 
@@ -118,7 +117,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private void cacheUpdating() {
         HashSet<String> toRemove = new HashSet<>();
-
         while (isRunning()) {
             long now = System.currentTimeMillis();
 
@@ -236,8 +234,14 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS);
-            log.debug("Stopping done.");
+            if (!executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+                if (!executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
+                    log.warn("Thread pool termination problem!");
+                }
+            } else {
+                log.debug("Thread pool stopping done.");
+            }
         } catch (InterruptedException e) {
             executorService.shutdownNow();
             log.warn("Stopping the thread pool interrupted!", e);
