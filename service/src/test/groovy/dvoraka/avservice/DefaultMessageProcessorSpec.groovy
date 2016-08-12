@@ -113,6 +113,9 @@ class DefaultMessageProcessorSpec extends Specification {
             ProcessedAvMessageListener messageListener = Mock()
             processor.start()
 
+        expect:
+            processor.observersCount() == 0
+
         when:
             processor.addProcessedAVMessageListener(messageListener)
 
@@ -269,6 +272,64 @@ class DefaultMessageProcessorSpec extends Specification {
 
         where:
             messageCount << [1, 3]
+    }
+
+    def "add observers from different threads"() {
+        given:
+            int observers = 50
+            ProcessedAvMessageListener messageListener = {}
+
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            Runnable addObserver = {
+                processor.addProcessedAVMessageListener(messageListener)
+            }
+
+            Thread[] threads = new Thread[observers]
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new Thread(addObserver)
+            }
+
+        when:
+            threads.each {
+                it.start()
+            }
+            threads.each {
+                it.join()
+            }
+
+        then:
+            observers == processor.observersCount()
+    }
+
+    def "remove observers from different threads"() {
+        given:
+            int observers = 50
+            ProcessedAvMessageListener messageListener = {}
+
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            Runnable removeObserver = {
+                processor.removeProcessedAVMessageListener(messageListener)
+            }
+
+            Thread[] threads = new Thread[observers]
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new Thread(removeObserver)
+            }
+
+            observers.times {
+                processor.addProcessedAVMessageListener(messageListener)
+            }
+
+        when:
+            threads.each {
+                it.start()
+            }
+            threads.each {
+                it.join()
+            }
+
+        then:
+            processor.observersCount() == 0
     }
 
     void setProcessorService(AvService service) {

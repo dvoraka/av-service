@@ -15,6 +15,7 @@ import org.springframework.jmx.export.annotation.ManagedResource;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
@@ -53,7 +54,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private long processedMsgTimeout = DEFAULT_CACHE_TIMEOUT;
 
     private Queue<AvMessage> processedMessagesQueue;
-    private List<ProcessedAvMessageListener> observers = new ArrayList<>();
+    private List<ProcessedAvMessageListener> observers;
     private ExecutorService executorService;
     private ReceivingType serverReceivingType;
 
@@ -76,7 +77,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processingMessages = new ConcurrentHashMap<>(queueSize);
         processedMessages = new ConcurrentHashMap<>(queueSize);
 
+        observers = Collections.synchronizedList(new ArrayList<>());
         this.serverReceivingType = serverReceivingType;
+
         if (serverReceivingType == ReceivingType.POLLING) {
             processedMessagesQueue = new LinkedBlockingQueue<>(queueSize);
         }
