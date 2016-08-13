@@ -53,7 +53,6 @@ public class ServiceConfig {
         return avProgram;
     }
 
-    @Lazy
     @Bean
     public CachingService cachingService() {
         return new DefaultCachingService();

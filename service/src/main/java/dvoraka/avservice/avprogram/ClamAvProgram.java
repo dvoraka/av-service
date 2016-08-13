@@ -5,7 +5,6 @@ import dvoraka.avservice.common.exception.ScanErrorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +24,6 @@ import java.nio.charset.StandardCharsets;
  */
 public class ClamAvProgram implements AvProgram {
 
-    @Lazy
     @Autowired
     private CachingService cachingService;
 
@@ -102,6 +100,7 @@ public class ClamAvProgram implements AvProgram {
             arrayDigest = cachingService.arrayDigest(bytes);
             String cachedValue = cachingService.get(arrayDigest);
             if (cachedValue != null) {
+                log.debug("Taking from the cache: " + arrayDigest);
                 return cachedValue;
             }
         }
