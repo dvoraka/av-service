@@ -27,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @PropertySource("classpath:avservice.properties")
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableMBeanExport
-@Import({SpringWebConfig.class})
+@Import({DatabaseConfig.class, SpringWebConfig.class})
 public class ServiceConfig {
 
     @Value("${avservice.rest.url}")

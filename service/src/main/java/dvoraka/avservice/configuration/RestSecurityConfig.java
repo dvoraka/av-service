@@ -1,6 +1,7 @@
 package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.service.BasicUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import javax.sql.DataSource;
+
 /**
  * Rest security configuration.
  */
@@ -16,6 +19,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
+
 
     @Bean
     @Override
@@ -38,5 +45,11 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().withUser("admin").password("admin").roles("USER", "ADMIN");
 
         auth.userDetailsService(userDetailsService());
+
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery(
+                        "select username, password, enabled from public.user where username=?")
+                .authoritiesByUsernameQuery(
+                        "select username, authority from public.authority where username=?");
     }
 }
