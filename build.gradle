@@ -60,11 +60,6 @@ subprojects {
 
     sourceSets {
         integrationTest {
-            java {
-                compileClasspath += main.output + test.output
-                runtimeClasspath += main.output + test.output
-                srcDir file('src/integration-test/java')
-            }
             groovy {
                 compileClasspath += main.output + test.output
                 runtimeClasspath += main.output + test.output
@@ -162,8 +157,8 @@ subprojects {
     }
 
     pmd {
-        reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
         toolVersion = '5.5.1'
+        reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
 
         ignoreFailures = false
     }
