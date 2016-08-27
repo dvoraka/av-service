@@ -99,6 +99,7 @@ subprojects {
         compile("postgresql:postgresql:9.1-901-1.jdbc4")
         // Groovy
         compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
+
         // Spring test
         testCompile("org.springframework:spring-test:${springVersion}")
         // Spock
@@ -137,7 +138,7 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = "6.19"
+        toolVersion = "7.1"
         configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
         reportsDir = file("${project.rootDir}/reports/checkstyle/${project.name}")
 
@@ -147,6 +148,8 @@ subprojects {
     findbugs {
         reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
         reportLevel = 'medium'
+
+        sourceSets = [sourceSets.main]
 
         ignoreFailures = false
     }
@@ -160,7 +163,7 @@ subprojects {
 
     pmd {
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
-        toolVersion = '5.5.0'
+        toolVersion = '5.5.1'
 
         ignoreFailures = false
     }
@@ -208,5 +211,5 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.13'
+    gradleVersion = '3.0'
 }
