@@ -10,6 +10,7 @@ import org.ehcache.CacheManager;
 import org.ehcache.config.CacheConfiguration;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,14 @@ public class DirectRestStrategy implements RestStrategy {
 
     private void initializeCache() {
         final long expirationTime = 10_000;
+        final long heapEntries = 10;
         CacheConfiguration<String, AvMessage> configuration = CacheConfigurationBuilder
-                .newCacheConfigurationBuilder(String.class, AvMessage.class)
+                .newCacheConfigurationBuilder(
+                        String.class, AvMessage.class, ResourcePoolsBuilder.heap(heapEntries))
                 .withExpiry(Expirations.timeToLiveExpiration(
                         new Duration(expirationTime, TimeUnit.MILLISECONDS)))
                 .build();
+
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("restCache", configuration)
                 .build(true);

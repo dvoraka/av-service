@@ -16,7 +16,7 @@ dependencies {
     compile("org.springframework:spring-jms:${springVersion}")
     compile("org.apache.activemq:activemq-broker:5.13.3")
     // Ehcache
-    compile('org.ehcache:ehcache:3.0.0.rc2')
+    compile('org.ehcache:ehcache:3.1.1')
 }
 
 gretty {
