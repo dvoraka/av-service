@@ -17,8 +17,7 @@ before_install:
 
 before_script:
   - sudo ./tools/prepareRMQ.sh
-  - psql -c "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';"
-  - createdb -O docker -E UTF8 -T template0 docker
+  - sudo ./tools/preparePostgreSQL.sh
 
 script:
   - sudo netstat -ln46
