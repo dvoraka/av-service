@@ -14,24 +14,4 @@ import spock.lang.Specification
 @ContextConfiguration(classes = [DatabaseConfig.class])
 @ActiveProfiles("database")
 class DatabaseConfigISpec extends Specification {
-
-    @Autowired
-    SessionFactory sessionFactory
-    @Autowired
-    CarService carService
-
-
-    def "SessionFactory loading"() {
-        expect:
-            sessionFactory
-    }
-
-    @Ignore
-    def "get Car table size"() {
-        when:
-            carService.count()
-
-        then:
-            notThrown(Exception)
-    }
 }
