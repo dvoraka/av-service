@@ -89,8 +89,10 @@ subprojects {
             exclude group: 'org.springframework', module: 'spring-tx'
             exclude group: 'org.springframework', module: 'spring-messaging'
         }
+        compile('org.springframework.data:spring-data-jpa:1.10.2.RELEASE')
         // Hibernate
         compile("org.hibernate:hibernate-core:${hibernateVersion}")
+        compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
         compile("postgresql:postgresql:9.1-901-1.jdbc4")
         // Groovy
         compile("org.codehaus.groovy:groovy-all:${groovyVersion}")

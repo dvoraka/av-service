@@ -1,6 +1,6 @@
 package dvoraka.avservice.configuration
 
-import dvoraka.avservice.db.service.CarService
+
 import org.hibernate.SessionFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
