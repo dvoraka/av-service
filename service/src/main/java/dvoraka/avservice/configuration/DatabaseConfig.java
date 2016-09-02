@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * Database Spring configuration.
@@ -23,8 +24,8 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("dvoraka.avservice.db")
 @EnableJpaRepositories("dvoraka.avservice.db")
-@Profile("database")
 @EnableTransactionManagement
+@Profile("database")
 public class DatabaseConfig {
 
 
@@ -47,6 +48,7 @@ public class DatabaseConfig {
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactoryBean.setPackagesToScan("dvoraka.avservice.db");
+        entityManagerFactoryBean.setJpaProperties(hibernateProperties());
 
         return entityManagerFactoryBean;
     }
@@ -59,18 +61,18 @@ public class DatabaseConfig {
         return transactionManager;
     }
 
-
-//    private Properties hibernateProperties() {
-//        Properties properties = new Properties();
-//        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-//        properties.put("hibernate.show_sql", "true");
-//        properties.put("hibernate.format_sql", "true");
-//
-//        return properties;
-//    }
-
     @Bean
     public MessageInfoService messageInfoService(MessageInfoRepository messageInfoRepository) {
         return new DefaultMessageInfoService(messageInfoRepository);
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.put("hibernate.show_sql", "true");
+        properties.put("hibernate.format_sql", "true");
+        properties.put("hibernate.hbm2ddl.auto", "update");
+
+        return properties;
     }
 }
