@@ -15,15 +15,15 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="org.apache.log4j.xml" level="debug">
+        <Logger name="org.apache.log4j.xml" level="info">
             <AppenderRef ref="File"/>
         </Logger>
         <Logger name="org.springframework">
-            <level value="debug"/>
+            <level value="info"/>
             <AppenderRef ref="SpringFile"/>
             <AppenderRef ref="Logstash"/>
         </Logger>
-        <Root level="debug">
+        <Root level="info">
             <AppenderRef ref="File"/>
             <AppenderRef ref="Logstash"/>
         </Root>
