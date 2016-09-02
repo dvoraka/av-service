@@ -6,6 +6,7 @@ jdk:
 
 services:
   - rabbitmq
+  - postgresql
 
 before_install:
   - sudo ./travis-install-deps.sh
@@ -16,6 +17,8 @@ before_install:
 
 before_script:
   - sudo ./tools/prepareRMQ.sh
+  - psql -c "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';"
+  - createdb -O docker -E UTF8 -T template0 docker
 
 script:
   - sudo netstat -ln46
