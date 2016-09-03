@@ -15,12 +15,11 @@ before_install:
 #  - sudo freshclam
 #  - sudo service clamav-daemon start
 #  - sudo service activemq restart
-  - ls
-#  - ls /root
   - env
   - cd docker
-  - docker-compose up -d
-  - cd ..
+  - travis_wait docker-compose up -d
+  - cd $TRAVIS_BUILD_DIR
+  - sleep 10
 
 before_script:
 #  - sudo ./tools/prepareRMQ.sh
