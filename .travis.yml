@@ -16,7 +16,7 @@ before_install:
 #  - sudo service clamav-daemon start
 #  - sudo service activemq restart
   - ls
-  - ls /root
+#  - ls /root
   - cd dvoraka/av-service/docker
   - docker-compose up
 
