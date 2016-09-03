@@ -8,13 +8,6 @@ services:
   - docker
 
 before_install:
-#  - sudo ./travis-install-deps.sh
-#  - sudo ./travis-config-deps.sh
-#  - sudo freshclam
-#  - sudo service clamav-daemon start
-#  - sudo service activemq restart
-#  - sudo apt-get install postgresql-client
-#  - sudo systemctl stop postgresql
   - sudo netstat -lnp46
   - sudo /etc/init.d/postgresql stop
   - sudo netstat -lnp46
@@ -24,13 +17,11 @@ before_install:
   - cd $TRAVIS_BUILD_DIR
 
 before_script:
-#  - sudo ./tools/prepareRMQ.sh
-#  - sudo ./tools/preparePostgreSQL.sh
+  - ./gradlew configureEnvironment
 
 script:
   - sudo netstat -lnp46
-  - ./gradlew configureEnvironment
-  - ./gradlew check -s -i
+  - ./gradlew check
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
