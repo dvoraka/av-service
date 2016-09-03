@@ -19,6 +19,8 @@ before_install:
 #  - ls /root
   - cd docker
   - docker-compose up -d
+  - env
+  - cd ..
 
 before_script:
 #  - sudo ./tools/prepareRMQ.sh
