@@ -16,6 +16,7 @@ before_install:
 #  - sudo service clamav-daemon start
 #  - sudo service activemq restart
 #  - sudo apt-get install postgresql-client
+  - sudo systemctl stop postgresql
   - sudo netstat -lnp46
   - env
   - cd docker
