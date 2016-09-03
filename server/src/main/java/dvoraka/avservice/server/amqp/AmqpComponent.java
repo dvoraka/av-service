@@ -4,6 +4,7 @@ import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,8 +22,8 @@ public class AmqpComponent implements ServerComponent {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-//    @Autowired
-//    private MessageInfoService messageInfoService;
+    @Autowired
+    private MessageInfoService messageInfoService;
 
 
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
