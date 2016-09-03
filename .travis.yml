@@ -17,7 +17,7 @@ before_install:
 #  - sudo service activemq restart
   - ls
 #  - ls /root
-  - cd dvoraka/av-service/docker
+  - cd docker
   - docker-compose up
 
 before_script:
