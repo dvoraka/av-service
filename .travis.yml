@@ -17,9 +17,10 @@ before_install:
 #  - sudo service activemq restart
   - env
   - cd docker
-  - travis_wait docker-compose up -d
+  - docker-compose up -d
   - cd $TRAVIS_BUILD_DIR
   - sleep 20
+  - PGPASSWORD=docker psql -l -h localhost -U docker
 
 before_script:
 #  - sudo ./tools/prepareRMQ.sh
