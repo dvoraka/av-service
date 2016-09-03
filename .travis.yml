@@ -15,12 +15,14 @@ before_install:
 #  - sudo freshclam
 #  - sudo service clamav-daemon start
 #  - sudo service activemq restart
-  - sudo apt-get install postgresql-client
+#  - sudo apt-get install postgresql-client
+  - sudo netstat -lnp46
   - env
   - cd docker
   - docker-compose up -d
   - cd $TRAVIS_BUILD_DIR
   - sleep 20
+  - psql -l -h localhost -U postgres
   - PGPASSWORD=docker psql -l -h localhost -U docker
 
 before_script:
