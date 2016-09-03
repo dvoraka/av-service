@@ -5,19 +5,24 @@ jdk:
   - oraclejdk8
 
 services:
-  - rabbitmq
-  - postgresql
+#  - rabbitmq
+#  - postgresql
+  - docker
 
 before_install:
-  - sudo ./travis-install-deps.sh
-  - sudo ./travis-config-deps.sh
-  - sudo freshclam
-  - sudo service clamav-daemon start
-  - sudo service activemq restart
+#  - sudo ./travis-install-deps.sh
+#  - sudo ./travis-config-deps.sh
+#  - sudo freshclam
+#  - sudo service clamav-daemon start
+#  - sudo service activemq restart
+  - ls
+  - ls /root
+  - cd dvoraka/av-service/docker
+  - docker-compose up
 
 before_script:
-  - sudo ./tools/prepareRMQ.sh
-  - sudo ./tools/preparePostgreSQL.sh
+#  - sudo ./tools/prepareRMQ.sh
+#  - sudo ./tools/preparePostgreSQL.sh
 
 script:
   - sudo netstat -ln46
