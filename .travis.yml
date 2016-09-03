@@ -5,8 +5,6 @@ jdk:
   - oraclejdk8
 
 services:
-#  - rabbitmq
-#  - postgresql
   - docker
 
 before_install:
@@ -17,15 +15,13 @@ before_install:
 #  - sudo service activemq restart
 #  - sudo apt-get install postgresql-client
 #  - sudo systemctl stop postgresql
+  - sudo netstat -lnp46
   - sudo /etc/init.d/postgresql stop
   - sudo netstat -lnp46
   - env
   - cd docker
   - docker-compose up -d
   - cd $TRAVIS_BUILD_DIR
-  - sleep 20
-#  - psql -l -h localhost -U postgres
-  - PGPASSWORD=docker psql -l -h localhost -U docker
 
 before_script:
 #  - sudo ./tools/prepareRMQ.sh
