@@ -28,7 +28,7 @@ before_script:
 script:
   - sudo netstat -lnp46
   - ./gradlew configureEnvironment
-  - ./gradlew check -s
+  - ./gradlew check -s -i
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
