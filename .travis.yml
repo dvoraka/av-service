@@ -13,7 +13,7 @@ before_install:
   - sudo netstat -lnp46
   - env
   - cd docker
-  - docker-compose up -d
+  - travis_wait 35 docker-compose up -d
   - cd $TRAVIS_BUILD_DIR
 
 before_script:
