@@ -19,16 +19,16 @@ before_install:
   - cd docker
   - travis_wait docker-compose up -d
   - cd $TRAVIS_BUILD_DIR
-  - sleep 10
+  - sleep 20
 
 before_script:
 #  - sudo ./tools/prepareRMQ.sh
 #  - sudo ./tools/preparePostgreSQL.sh
 
 script:
-  - sudo netstat -ln46
+  - sudo netstat -lnp46
   - ./gradlew configureEnvironment
-  - ./gradlew check
+  - ./gradlew check -s
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
