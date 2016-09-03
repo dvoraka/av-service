@@ -5,6 +5,9 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageMapper
 import dvoraka.avservice.common.data.DefaultAvMessage
+import dvoraka.avservice.db.repository.MessageInfoRepository
+import dvoraka.avservice.db.service.DefaultMessageInfoService
+import dvoraka.avservice.db.service.MessageInfoService
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.test.util.ReflectionTestUtils
@@ -20,6 +23,10 @@ class AmqpComponentSpec extends Specification {
 
     def setup() {
         component = new AmqpComponent("NONE")
+        MessageInfoRepository infoRepository = Mock()
+        DefaultMessageInfoService infoService = new DefaultMessageInfoService(infoRepository)
+
+        ReflectionTestUtils.setField(component, null, infoService, MessageInfoService.class)
     }
 
     def "on message"() {
