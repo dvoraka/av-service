@@ -15,6 +15,7 @@ before_install:
 #  - sudo freshclam
 #  - sudo service clamav-daemon start
 #  - sudo service activemq restart
+  - sudo apt-get install postgresql-client
   - env
   - cd docker
   - docker-compose up -d
