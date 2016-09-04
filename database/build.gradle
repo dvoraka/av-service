@@ -1,0 +1,6 @@
+
+description = 'Database'
+
+dependencies {
+    compile project(":common")
+}

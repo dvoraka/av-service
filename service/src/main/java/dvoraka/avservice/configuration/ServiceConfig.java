@@ -5,6 +5,7 @@ import dvoraka.avservice.DefaultCachingService;
 import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.ClamAvProgram;
+import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.rest.RestClient;
 import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.service.DefaultAvService;

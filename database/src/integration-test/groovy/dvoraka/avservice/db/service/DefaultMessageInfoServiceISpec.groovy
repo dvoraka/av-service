@@ -2,7 +2,7 @@ package dvoraka.avservice.db.service
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessageSource
-import dvoraka.avservice.configuration.ServiceConfig
+import dvoraka.avservice.db.configuration.DatabaseConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -11,7 +11,7 @@ import spock.lang.Specification
 /**
  * Service test.
  */
-@ContextConfiguration(classes = [ServiceConfig.class])
+@ContextConfiguration(classes = [DatabaseConfig.class])
 @ActiveProfiles(["database"])
 class DefaultMessageInfoServiceISpec extends Specification {
 

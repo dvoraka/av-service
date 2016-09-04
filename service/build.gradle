@@ -6,6 +6,7 @@ description = 'Anti-virus service'
 
 dependencies {
     compile project(':common')
+    compile project(':database')
 
     // Spring
     compile("org.springframework:spring-webmvc:${springVersion}")

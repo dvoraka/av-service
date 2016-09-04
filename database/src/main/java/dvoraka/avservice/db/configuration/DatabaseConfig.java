@@ -1,4 +1,4 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.db.configuration;
 
 import dvoraka.avservice.db.repository.MessageInfoRepository;
 import dvoraka.avservice.db.service.DefaultMessageInfoService;
