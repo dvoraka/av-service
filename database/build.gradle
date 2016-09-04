@@ -1,6 +1,15 @@
 
-description = 'Database'
+description = 'Database services'
 
 dependencies {
     compile project(":common")
+
+    // Spring
+    compile("org.springframework:spring-orm:${springVersion}")
+    compile("org.springframework.data:spring-data-jpa:${springDataJpaVersion}")
+    // Hibernate
+    compile("org.hibernate:hibernate-core:${hibernateVersion}")
+    compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
+    // PostgreSQL
+    compile("postgresql:postgresql:9.1-901-1.jdbc4")
 }

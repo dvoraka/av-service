@@ -35,6 +35,7 @@ allprojects {
 
         springVersion = '4.3.0.RELEASE'
         springSecurityVersion = '4.1.0.RELEASE'
+        springDataJpaVersion = '1.10.2.RELEASE'
         hibernateVersion = '5.2.1.Final'
         groovyVersion = '2.4.7'
         spockVersion = '1.0-groovy-2.4'
@@ -83,17 +84,11 @@ subprojects {
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
-        compile("org.springframework:spring-orm:${springVersion}")
         compile('org.springframework.amqp:spring-rabbit:1.6.0.RELEASE') {
             exclude group: 'org.springframework', module: 'spring-web'
             exclude group: 'org.springframework', module: 'spring-tx'
             exclude group: 'org.springframework', module: 'spring-messaging'
         }
-        compile('org.springframework.data:spring-data-jpa:1.10.2.RELEASE')
-        // Hibernate
-        compile("org.hibernate:hibernate-core:${hibernateVersion}")
-        compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
-        compile("postgresql:postgresql:9.1-901-1.jdbc4")
         // Groovy
         compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
 
@@ -107,7 +102,7 @@ subprojects {
     }
 
     jar {
-        baseName = "dvoraka.avservice.${project.name}"
+        baseName = "avservice-${project.name}"
     }
 
     test {
