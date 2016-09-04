@@ -3,6 +3,7 @@ package dvoraka.avservice.server.amqp;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageMapper;
+import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
@@ -45,7 +46,7 @@ public class AmqpComponent implements ServerComponent {
         AvMessage avMessage;
         try {
             avMessage = AvMessageMapper.transform(message);
-            messageInfoService.save(avMessage, "AMQP component");
+            messageInfoService.save(avMessage, AvMessageSource.AMQP_COMPONENT);
         } catch (MapperException e) {
             log.warn("Transformation error!", e);
 

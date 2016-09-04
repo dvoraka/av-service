@@ -1,6 +1,7 @@
 package dvoraka.avservice.db.service
 
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.AvMessageSource
 import dvoraka.avservice.configuration.ServiceConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -20,6 +21,6 @@ class DefaultMessageInfoServiceISpec extends Specification {
 
     def "test"() {
         expect:
-            messageInfoService.save(Utils.genNormalMessage(), "TEST")
+            messageInfoService.save(Utils.genNormalMessage(), AvMessageSource.TEST)
     }
 }

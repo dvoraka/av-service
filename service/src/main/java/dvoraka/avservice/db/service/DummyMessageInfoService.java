@@ -1,6 +1,7 @@
 package dvoraka.avservice.db.service;
 
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.model.MessageInfo;
 
 /**
@@ -9,7 +10,7 @@ import dvoraka.avservice.db.model.MessageInfo;
 public class DummyMessageInfoService implements MessageInfoService {
 
     @Override
-    public void save(AvMessage message, String source) {
+    public void save(AvMessage message, AvMessageSource source) {
     }
 
     @Override

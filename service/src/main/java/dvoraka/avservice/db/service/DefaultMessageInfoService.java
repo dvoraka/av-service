@@ -1,6 +1,7 @@
 package dvoraka.avservice.db.service;
 
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.model.MessageInfo;
 import dvoraka.avservice.db.repository.MessageInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,10 @@ public class DefaultMessageInfoService implements MessageInfoService {
     }
 
     @Override
-    public void save(AvMessage message, String source) {
+    public void save(AvMessage message, AvMessageSource source) {
         MessageInfo messageInfo = new MessageInfo();
         messageInfo.setUuid(message.getId());
-        messageInfo.setSource(source);
+        messageInfo.setSource(source.toString());
         messageInfo.setCreated(new Date());
 
         messageInfoRepository.save(messageInfo);
