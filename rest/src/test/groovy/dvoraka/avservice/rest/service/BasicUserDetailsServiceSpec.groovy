@@ -1,4 +1,4 @@
-package dvoraka.avservice.service
+package dvoraka.avservice.rest.service
 
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UsernameNotFoundException

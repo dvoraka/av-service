@@ -17,7 +17,7 @@ dependencies {
 }
 
 gretty {
-    jvmArgs = ['-Dspring.profiles.active=rest']
+    jvmArgs = ['-Dspring.profiles.active=rest,database']
     integrationTestTask = 'integrationTest'
     servletContainer = 'jetty9'
     contextPath = 'av-service'

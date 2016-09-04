@@ -5,7 +5,7 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageType
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.rest.RestClient
-import dvoraka.avservice.rest.configuration.SpringWebConfig
+import dvoraka.avservice.rest.configuration.RestClientConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -14,8 +14,8 @@ import spock.lang.Specification
 /**
  * REST testing.
  */
-@ContextConfiguration(classes = [SpringWebConfig.class])
-@ActiveProfiles("rest")
+@ContextConfiguration(classes = [RestClientConfig.class])
+@ActiveProfiles("rest-client")
 class RestServiceISpec extends Specification {
 
     @Autowired

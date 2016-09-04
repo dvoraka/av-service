@@ -57,16 +57,6 @@ public class ServiceConfig {
         return new SpringAopTest();
     }
 
-//    @Bean
-//    public RestTemplate restTemplate() {
-//        return new RestTemplate();
-//    }
-//
-//    @Bean
-//    public RestClient restClient() {
-//        return new RestClient(restUrl);
-//    }
-
     @Bean
     public MBeanExporter mbeanExporter() {
         MBeanExporter exporter = new AnnotationMBeanExporter();

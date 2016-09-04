@@ -1,6 +1,5 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.configuration.ServiceConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;
@@ -13,7 +12,7 @@ public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{ServiceConfig.class};
+        return new Class[]{SpringWebConfig.class};
     }
 
     @Override
