@@ -1,4 +1,4 @@
-package dvoraka.avservice.service;
+package dvoraka.avservice.rest.service;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,4 +1,4 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.rest.configuration;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

@@ -1,16 +1,20 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.rest.configuration;
 
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.rest.AvController;
 import dvoraka.avservice.rest.DirectRestStrategy;
+import dvoraka.avservice.rest.RestClient;
 import dvoraka.avservice.rest.RestStrategy;
-import dvoraka.avservice.service.DefaultRestService;
-import dvoraka.avservice.service.RestService;
+import dvoraka.avservice.rest.service.DefaultRestService;
+import dvoraka.avservice.rest.service.RestService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -20,8 +24,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 @Configuration
 @Profile("rest")
-@Import({RestSecurityConfig.class})
+@Import({RestSecurityConfig.class, ServiceConfig.class})
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
+
+    @Value("${avservice.rest.url}")
+    private String restUrl = "localhost";
+
 
     @Bean
     public AvController avController() {
@@ -42,5 +50,15 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     public MessageProcessor restMessageProcessor() {
         final int threads = 20;
         return new DefaultMessageProcessor(threads);
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public RestClient restClient() {
+        return new RestClient(restUrl);
     }
 }

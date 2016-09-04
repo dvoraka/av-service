@@ -1,5 +1,6 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.rest.configuration;
 
+import dvoraka.avservice.configuration.ServiceConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;

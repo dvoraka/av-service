@@ -6,10 +6,8 @@ import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.ClamAvProgram;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
-import dvoraka.avservice.rest.RestClient;
 import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.service.DefaultAvService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
@@ -19,7 +17,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * App Spring configuration.
@@ -28,11 +25,8 @@ import org.springframework.web.client.RestTemplate;
 @PropertySource("classpath:avservice.properties")
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableMBeanExport
-@Import({DatabaseConfig.class, SpringWebConfig.class})
+@Import({DatabaseConfig.class})
 public class ServiceConfig {
-
-    @Value("${avservice.rest.url}")
-    private String restUrl;
 
 
     @Bean
@@ -63,15 +57,15 @@ public class ServiceConfig {
         return new SpringAopTest();
     }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
-    public RestClient restClient() {
-        return new RestClient(restUrl);
-    }
+//    @Bean
+//    public RestTemplate restTemplate() {
+//        return new RestTemplate();
+//    }
+//
+//    @Bean
+//    public RestClient restClient() {
+//        return new RestClient(restUrl);
+//    }
 
     @Bean
     public MBeanExporter mbeanExporter() {

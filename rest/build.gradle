@@ -1,0 +1,26 @@
+plugins {
+    id "org.akhikhl.gretty" version "1.4.0"
+}
+
+description = 'REST components'
+
+dependencies {
+    compile project(':common')
+    compile project(':service')
+
+    // Spring
+    compile("org.springframework:spring-webmvc:${springVersion}")
+    compile("org.springframework.security:spring-security-config:${springSecurityVersion}")
+    compile("org.springframework.security:spring-security-web:${springSecurityVersion}")
+    // Ehcache
+    compile('org.ehcache:ehcache:3.1.1')
+}
+
+gretty {
+    jvmArgs = ['-Dspring.profiles.active=rest']
+    integrationTestTask = 'integrationTest'
+    servletContainer = 'jetty9'
+    contextPath = 'av-service'
+//    loggingLevel = 'DEBUG'
+    fileLogEnabled = false
+}

@@ -1,6 +1,6 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.service.BasicUserDetailsService;
+import dvoraka.avservice.rest.service.BasicUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
