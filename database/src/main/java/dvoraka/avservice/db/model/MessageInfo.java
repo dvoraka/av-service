@@ -20,6 +20,7 @@ public class MessageInfo {
 
     private String uuid;
     private String source;
+    private String serviceId;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
@@ -47,6 +48,14 @@ public class MessageInfo {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
     }
 
     public Date getCreated() {

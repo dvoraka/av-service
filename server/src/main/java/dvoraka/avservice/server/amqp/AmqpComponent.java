@@ -46,7 +46,7 @@ public class AmqpComponent implements ServerComponent {
         AvMessage avMessage;
         try {
             avMessage = AvMessageMapper.transform(message);
-            messageInfoService.save(avMessage, AvMessageSource.AMQP_COMPONENT);
+            messageInfoService.save(avMessage, AvMessageSource.AMQP_COMPONENT, "Service ID");
         } catch (MapperException e) {
             log.warn("Transformation error!", e);
 

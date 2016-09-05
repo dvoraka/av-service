@@ -9,7 +9,7 @@ import dvoraka.avservice.db.model.MessageInfo;
  */
 public interface MessageInfoService {
 
-    void save(AvMessage message, AvMessageSource source);
+    void save(AvMessage message, AvMessageSource source, String serviceId);
 
     MessageInfo getMessageInfo(String uuid);
 }

@@ -21,6 +21,6 @@ class DefaultMessageInfoServiceISpec extends Specification {
 
     def "test"() {
         expect:
-            messageInfoService.save(Utils.genNormalMessage(), AvMessageSource.TEST)
+            messageInfoService.save(Utils.genNormalMessage(), AvMessageSource.TEST, 'TEST-SERVICE')
     }
 }

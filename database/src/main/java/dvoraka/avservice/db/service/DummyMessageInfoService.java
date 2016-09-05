@@ -10,7 +10,7 @@ import dvoraka.avservice.db.model.MessageInfo;
 public class DummyMessageInfoService implements MessageInfoService {
 
     @Override
-    public void save(AvMessage message, AvMessageSource source) {
+    public void save(AvMessage message, AvMessageSource source, String serviceId) {
     }
 
     @Override

@@ -22,10 +22,11 @@ public class DefaultMessageInfoService implements MessageInfoService {
     }
 
     @Override
-    public void save(AvMessage message, AvMessageSource source) {
+    public void save(AvMessage message, AvMessageSource source, String serviceId) {
         MessageInfo messageInfo = new MessageInfo();
         messageInfo.setUuid(message.getId());
         messageInfo.setSource(source.toString());
+        messageInfo.setServiceId(serviceId);
         messageInfo.setCreated(new Date());
 
         messageInfoRepository.save(messageInfo);
