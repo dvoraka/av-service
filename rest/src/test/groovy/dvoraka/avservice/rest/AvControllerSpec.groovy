@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
+import dvoraka.avservice.rest.controller.AvRestController
 import dvoraka.avservice.rest.service.RestService
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -25,7 +26,7 @@ class AvControllerSpec extends Specification {
 
 
     def setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new AvController()).build()
+        mockMvc = MockMvcBuilders.standaloneSetup(new AvRestController()).build()
     }
 
     def "test info"() {
@@ -47,7 +48,7 @@ class AvControllerSpec extends Specification {
             service.messageStatus(messageId) >> messageStatus
 
             mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvController(restService: service)).build()
+                    new AvRestController(restService: service)).build()
 
             ResultActions response = mockMvc.perform(
                     get("/msg-status/${messageId}"))
@@ -70,7 +71,7 @@ class AvControllerSpec extends Specification {
             service.messageStatus(messageId, serviceId) >> messageStatus
 
             mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvController(restService: service)).build()
+                    new AvRestController(restService: service)).build()
 
             ResultActions response = mockMvc.perform(
                     get("/msg-status/${messageId}/${serviceId}"))
@@ -92,7 +93,7 @@ class AvControllerSpec extends Specification {
             service.messageServiceId(messageId) >> serviceId
 
             mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvController(restService: service)).build()
+                    new AvRestController(restService: service)).build()
 
             ResultActions response = mockMvc.perform(
                     get("/msg-service-id/${messageId}"))
@@ -109,7 +110,7 @@ class AvControllerSpec extends Specification {
             RestService service = Mock()
 
             mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvController(restService: service)).build()
+                    new AvRestController(restService: service)).build()
 
             ObjectMapper mapper = new ObjectMapper()
             String content = mapper.writeValueAsString(message)
@@ -132,7 +133,7 @@ class AvControllerSpec extends Specification {
             service.getResponse(messageId) >> responseMsg
 
             mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvController(restService: service)).build()
+                    new AvRestController(restService: service)).build()
 
             ResultActions response = mockMvc.perform(
                     get("/get-response/${messageId}"))

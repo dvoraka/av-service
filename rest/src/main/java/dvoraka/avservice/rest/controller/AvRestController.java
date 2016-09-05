@@ -1,4 +1,4 @@
-package dvoraka.avservice.rest;
+package dvoraka.avservice.rest.controller;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageType;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * AV REST controller.
  */
 @RestController
-public class AvController {
+public class AvRestController {
 
     @Autowired
     private RestService restService;

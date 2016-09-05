@@ -3,7 +3,7 @@ package dvoraka.avservice.rest.configuration;
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.configuration.ServiceConfig;
-import dvoraka.avservice.rest.AvController;
+import dvoraka.avservice.rest.controller.AvRestController;
 import dvoraka.avservice.rest.DirectRestStrategy;
 import dvoraka.avservice.rest.RestStrategy;
 import dvoraka.avservice.rest.service.DefaultRestService;
@@ -26,8 +26,8 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
 
     @Bean
-    public AvController avController() {
-        return new AvController();
+    public AvRestController avController() {
+        return new AvRestController();
     }
 
     @Bean
