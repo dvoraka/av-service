@@ -43,6 +43,6 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MessageProcessor restMessageProcessor() {
         final int threads = 20;
-        return new DefaultMessageProcessor(threads);
+        return new DefaultMessageProcessor(threads, "service1");
     }
 }

@@ -3,8 +3,10 @@ package dvoraka.avservice;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanErrorException;
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +38,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Autowired
     private AvService avService;
+    @Autowired
+    private MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class.getName());
 
@@ -43,6 +47,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
     public static final int DEFAULT_CACHE_TIMEOUT = 100 * 1_000;
     public static final ReceivingType DEFAULT_RECEIVING_TYPE = ReceivingType.POLLING;
     private static final long POOL_TERM_TIME_S = 20;
+    private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
+
 
     private ConcurrentMap<String, Long> processingMessages;
     private ConcurrentMap<String, Long> processedMessages;
@@ -61,15 +67,18 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private int threadCount;
     private volatile boolean running;
     private int queueSize;
+    private String serviceId;
 
 
-    public DefaultMessageProcessor(int threadCount) {
-        this(threadCount, DEFAULT_RECEIVING_TYPE, DEFAULT_QUEUE_SIZE);
+    public DefaultMessageProcessor(int threadCount, String serviceId) {
+        this(threadCount, DEFAULT_RECEIVING_TYPE, DEFAULT_QUEUE_SIZE, serviceId);
     }
 
-    public DefaultMessageProcessor(int threadCount, ReceivingType serverReceivingType, int queueSize) {
+    public DefaultMessageProcessor(
+            int threadCount, ReceivingType serverReceivingType, int queueSize, String serviceId) {
         this.threadCount = threadCount;
         this.queueSize = queueSize;
+        this.serviceId = serviceId;
 
         ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
@@ -99,6 +108,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         log.debug("Processing message...");
         addProcessingMessage(message.getId());
+
+        messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
 
         Runnable process = () -> processMessage(message);
         executorService.execute(process);
@@ -196,7 +207,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
                 break;
             } catch (IllegalStateException e) {
                 // full queue
-                log.warn("Processed queue for the thread " + Thread.currentThread().getName() + " is full");
+                log.warn("Processed queue for the thread " + Thread.currentThread().getName()
+                        + " is full");
                 final long sleepTime = 500;
                 try {
                     Thread.sleep(sleepTime);

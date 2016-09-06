@@ -6,6 +6,7 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.exception.ScanErrorException
+import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
@@ -18,10 +19,13 @@ class DefaultMessageProcessorSpec extends Specification {
 
     DefaultMessageProcessor processor
     PollingConditions conditions
+    String serviceId = 'TEST'
 
 
     def setup() {
-        processor = new DefaultMessageProcessor(2)
+        processor = new DefaultMessageProcessor(2, serviceId)
+        setMessageInfoService(Mock(MessageInfoService))
+
         processor.start()
         conditions = new PollingConditions(timeout: 2)
     }
@@ -32,10 +36,18 @@ class DefaultMessageProcessorSpec extends Specification {
         }
     }
 
+    void setMessageInfoService(MessageInfoService service) {
+        ReflectionTestUtils.setField(processor, null, service, MessageInfoService.class)
+    }
+
+    void setProcessorService(AvService service) {
+        ReflectionTestUtils.setField(processor, null, service, AvService.class)
+    }
+
     def "constructor (thread count)"() {
         setup:
             int threadCount = 5
-            processor = new DefaultMessageProcessor(threadCount)
+            processor = new DefaultMessageProcessor(threadCount, serviceId)
 
         expect:
             processor.getThreadCount() == threadCount
@@ -52,7 +64,8 @@ class DefaultMessageProcessorSpec extends Specification {
             processor = new DefaultMessageProcessor(
                     threadCount,
                     receivingType,
-                    queueSize)
+                    queueSize,
+                    serviceId)
 
         expect:
             processor.getThreadCount() == threadCount
@@ -90,8 +103,9 @@ class DefaultMessageProcessorSpec extends Specification {
                 }
             }
 
-            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10, serviceId)
             setProcessorService(service)
+            setMessageInfoService(Mock(MessageInfoService))
             processor.addProcessedAVMessageListener(messageListener)
             processor.start()
 
@@ -109,7 +123,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "add and remove listeners"() {
         given:
-            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10, serviceId)
             ProcessedAvMessageListener messageListener = Mock()
             processor.start()
 
@@ -139,7 +153,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "ask for a message with a listener"() {
         given:
-            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10, serviceId)
             processor.start()
 
         when:
@@ -160,8 +174,9 @@ class DefaultMessageProcessorSpec extends Specification {
             AvService service = Stub()
             service.scanStream(_) >> false
 
-            processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1)
+            processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1, serviceId)
             setProcessorService(service)
+            setMessageInfoService(Mock(MessageInfoService))
             processor.start()
 
             AvMessage message1 = Utils.genNormalMessage()
@@ -279,7 +294,7 @@ class DefaultMessageProcessorSpec extends Specification {
             int observers = 50
             ProcessedAvMessageListener messageListener = {}
 
-            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10, serviceId)
             Runnable addObserver = {
                 processor.addProcessedAVMessageListener(messageListener)
             }
@@ -306,7 +321,7 @@ class DefaultMessageProcessorSpec extends Specification {
             int observers = 50
             ProcessedAvMessageListener messageListener = {}
 
-            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10)
+            processor = new DefaultMessageProcessor(2, ReceivingType.LISTENER, 10, serviceId)
             Runnable removeObserver = {
                 processor.removeProcessedAVMessageListener(messageListener)
             }
@@ -330,9 +345,5 @@ class DefaultMessageProcessorSpec extends Specification {
 
         then:
             processor.observersCount() == 0
-    }
-
-    void setProcessorService(AvService service) {
-        ReflectionTestUtils.setField(processor, null, service, AvService.class)
     }
 }

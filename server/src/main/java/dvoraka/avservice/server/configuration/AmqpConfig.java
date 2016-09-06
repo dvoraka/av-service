@@ -29,6 +29,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.PostConstruct;
+
 /**
  * AMQP Spring configuration.
  */
@@ -66,25 +68,29 @@ public class AmqpConfig {
     @Value("${avservice.amqp.pass:guest}")
     private String userPassword;
 
+    private String serviceId;
+
+
+    @PostConstruct
+    public void init() {
+        serviceId = env.getProperty("avservice.serviceId", "default1");
+    }
 
     @Bean
     public AvServer avServer() {
-        return new BasicAvServer(
-                env.getProperty("avservice.serviceId", "default1"));
+        return new BasicAvServer(serviceId);
     }
 
     @Bean
     public ServerComponent serverComponent() {
-        return new AmqpComponent(
-                resultExchange,
-                env.getProperty("avservice.serviceId", "default1"));
+        return new AmqpComponent(resultExchange, serviceId);
     }
 
     @Bean
     public MessageProcessor messageProcessor() {
         final int threads = 20;
 
-        return new DefaultMessageProcessor(threads, ReceivingType.LISTENER, 0);
+        return new DefaultMessageProcessor(threads, ReceivingType.LISTENER, 0, serviceId);
     }
 
     @Bean

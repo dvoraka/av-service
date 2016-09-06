@@ -23,6 +23,7 @@ import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 
+import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
 import javax.jms.MessageListener;
 
@@ -49,11 +50,17 @@ public class JmsConfig {
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
 
+    private String serviceId;
+
+
+    @PostConstruct
+    public void init() {
+        serviceId = env.getProperty("avservice.serviceId", "default1");
+    }
 
     @Bean
     public AvServer avServer() {
-        return new BasicAvServer(
-                env.getProperty("avservice.serviceId", "default1"));
+        return new BasicAvServer(serviceId);
     }
 
     @Bean
@@ -72,7 +79,7 @@ public class JmsConfig {
     public MessageProcessor messageProcessor() {
         final int threads = 20;
 
-        return new DefaultMessageProcessor(threads, ReceivingType.LISTENER, 0);
+        return new DefaultMessageProcessor(threads, ReceivingType.LISTENER, 0, serviceId);
     }
 
     @Bean
