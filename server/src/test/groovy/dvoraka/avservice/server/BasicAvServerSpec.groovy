@@ -13,7 +13,7 @@ class BasicAvServerSpec extends Specification {
 
 
     def setup() {
-        server = new BasicAvServer()
+        server = new BasicAvServer('TEST1')
     }
 
     def "default server status"() {

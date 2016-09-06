@@ -10,11 +10,13 @@ import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.jms.JmsClient;
 import dvoraka.avservice.server.jms.JmsComponent;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
@@ -32,6 +34,9 @@ import javax.jms.MessageListener;
 @Profile("jms")
 public class JmsConfig {
 
+    @Autowired
+    private Environment env;
+
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
 
@@ -47,7 +52,8 @@ public class JmsConfig {
 
     @Bean
     public AvServer avServer() {
-        return new BasicAvServer();
+        return new BasicAvServer(
+                env.getProperty("avservice.serviceId", "default1"));
     }
 
     @Bean

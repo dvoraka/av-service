@@ -8,5 +8,10 @@ import dvoraka.avservice.common.data.AvMessage;
 @FunctionalInterface
 public interface AvMessageSender {
 
+    /**
+     * Sends a message.
+     *
+     * @param message the message
+     */
     void sendMessage(AvMessage message);
 }

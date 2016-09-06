@@ -14,7 +14,7 @@ import spock.lang.Specification
  * Temporary JMS infrastructure test.
  */
 @ContextConfiguration(classes = [JmsConfig.class])
-@ActiveProfiles(["jms", "jms-async"])
+@ActiveProfiles(["jms", "jms-async", "database"])
 class JmsCheckISpec extends Specification {
 
     @Autowired

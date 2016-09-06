@@ -69,7 +69,8 @@ public class AmqpConfig {
 
     @Bean
     public AvServer avServer() {
-        return new BasicAvServer();
+        return new BasicAvServer(
+                env.getProperty("avservice.serviceId", "default1"));
     }
 
     @Bean

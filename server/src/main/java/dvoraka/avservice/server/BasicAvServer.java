@@ -4,6 +4,8 @@ import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessedAvMessageListener;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.ServiceManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,13 +21,21 @@ public class BasicAvServer implements
     private ServerComponent serverComponent;
     @Autowired
     private MessageProcessor messageProcessor;
+    @Autowired
+    private MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(BasicAvServer.class.getName());
+    public static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.SERVER;
 
     private boolean started;
     private boolean stopped = true;
     private boolean running;
+    private String serviceId;
 
+
+    public BasicAvServer(String serviceId) {
+        this.serviceId = serviceId;
+    }
 
     @Override
     public void start() {
@@ -77,6 +87,7 @@ public class BasicAvServer implements
 
     @Override
     public void onAvMessage(AvMessage message) {
+        messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
         messageProcessor.sendMessage(message);
     }
 
