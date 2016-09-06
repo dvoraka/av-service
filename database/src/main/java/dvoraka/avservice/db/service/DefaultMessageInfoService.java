@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.model.MessageInfo;
 import dvoraka.avservice.db.repository.MessageInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 /**
  * Default message info service implementation.
  */
+@Service
 @Transactional
 public class DefaultMessageInfoService implements MessageInfoService {
 

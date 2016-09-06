@@ -4,7 +4,6 @@ import dvoraka.avservice.db.repository.MessageInfoRepository;
 import dvoraka.avservice.db.service.DefaultMessageInfoService;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -22,8 +21,7 @@ import java.util.Properties;
  * Database Spring configuration.
  */
 @Configuration
-@ComponentScan("dvoraka.avservice.db")
-@EnableJpaRepositories("dvoraka.avservice.db")
+@EnableJpaRepositories(basePackages = "dvoraka.avservice.db")
 @EnableTransactionManagement
 @Profile("database")
 public class DatabaseConfig {
@@ -41,20 +39,20 @@ public class DatabaseConfig {
     }
 
     @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
                 new LocalContainerEntityManagerFactoryBean();
 
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setPackagesToScan("dvoraka.avservice.db");
+        entityManagerFactoryBean.setPackagesToScan("dvoraka.avservice.db.model");
         entityManagerFactoryBean.setJpaProperties(hibernateProperties());
 
         return entityManagerFactoryBean;
     }
 
     @Bean
-    JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
 
