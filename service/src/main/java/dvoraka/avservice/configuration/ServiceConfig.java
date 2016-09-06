@@ -8,18 +8,20 @@ import dvoraka.avservice.avprogram.ClamAvProgram;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.service.DefaultAvService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
 
 /**
- * App Spring configuration.
+ * AV service Spring configuration.
  */
 @Configuration
 @PropertySource("classpath:avservice.properties")
@@ -27,6 +29,9 @@ import org.springframework.jmx.support.RegistrationPolicy;
 @EnableMBeanExport
 @Import({DatabaseConfig.class})
 public class ServiceConfig {
+
+    @Autowired
+    private Environment env;
 
 
     @Bean

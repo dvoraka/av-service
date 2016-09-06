@@ -22,7 +22,7 @@ class AmqpComponentSpec extends Specification {
 
 
     def setup() {
-        component = new AmqpComponent("NONE")
+        component = new AmqpComponent("NONE", "TEST1")
         MessageInfoRepository infoRepository = Mock()
         DefaultMessageInfoService infoService = new DefaultMessageInfoService(infoRepository)
 

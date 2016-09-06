@@ -26,15 +26,17 @@ public class AmqpComponent implements ServerComponent {
     @Autowired
     private MessageInfoService messageInfoService;
 
-
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
+    private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.AMQP_COMPONENT;
 
     private String responseExchange;
+    private String serviceId;
     private List<AvMessageListener> listeners = new ArrayList<>();
 
 
-    public AmqpComponent(String responseExchange) {
+    public AmqpComponent(String responseExchange, String serviceId) {
         this.responseExchange = responseExchange;
+        this.serviceId = serviceId;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class AmqpComponent implements ServerComponent {
         AvMessage avMessage;
         try {
             avMessage = AvMessageMapper.transform(message);
-            messageInfoService.save(avMessage, AvMessageSource.AMQP_COMPONENT, "Service ID");
+            messageInfoService.save(avMessage, MESSAGE_SOURCE, serviceId);
         } catch (MapperException e) {
             log.warn("Transformation error!", e);
 

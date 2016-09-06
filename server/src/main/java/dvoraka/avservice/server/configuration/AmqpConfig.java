@@ -21,11 +21,13 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 
 /**
  * AMQP Spring configuration.
@@ -34,6 +36,9 @@ import org.springframework.context.annotation.Profile;
 @Import({ServiceConfig.class})
 @Profile("amqp")
 public class AmqpConfig {
+
+    @Autowired
+    private Environment env;
 
     @Value("${avservice.amqp.host:localhost}")
     private String host;
@@ -69,7 +74,9 @@ public class AmqpConfig {
 
     @Bean
     public ServerComponent serverComponent() {
-        return new AmqpComponent(resultExchange);
+        return new AmqpComponent(
+                resultExchange,
+                env.getProperty("avservice.serviceId", "default1"));
     }
 
     @Bean
