@@ -47,9 +47,9 @@ public interface AvProgram {
     void setCaching(boolean caching);
 
     /**
-     * Returns maximum stream size.
+     * Returns maximum byte array size.
      *
      * @return the maximum stream size
      */
-    long getMaxStreamSize();
+    long getMaxArraySize();
 }

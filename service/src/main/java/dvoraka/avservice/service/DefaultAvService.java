@@ -24,31 +24,42 @@ public class DefaultAvService implements AvService {
 
     private final AvProgram avProgram;
     private long maxFileSize;
-    private long maxStreamSize;
+    private long maxArraySize;
 
 
     @Autowired
     public DefaultAvService(AvProgram avProgram) {
         this.avProgram = avProgram;
         maxFileSize = DEFAULT_MAX_FILE_SIZE;
-        maxStreamSize = avProgram.getMaxStreamSize();
+        maxArraySize = avProgram.getMaxArraySize();
     }
 
     @Override
-    public boolean scanStream(byte[] bytes) throws ScanErrorException {
+    public boolean scanBytes(byte[] bytes) throws ScanErrorException {
         if (bytes.length == 0) {
             return false;
-        } else {
-            return avProgram.scanBytes(bytes);
         }
+
+        checkSize(bytes.length);
+
+        return avProgram.scanBytes(bytes);
     }
 
     @Override
-    public String scanStreamWithInfo(byte[] bytes) throws ScanErrorException {
+    public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
         if (bytes.length == 0) {
             return "";
-        } else {
-            return avProgram.scanBytesWithInfo(bytes);
+        }
+
+        checkSize(bytes.length);
+
+        return avProgram.scanBytesWithInfo(bytes);
+    }
+
+    private void checkSize(long arraySize) throws ScanErrorException {
+        if (arraySize > getMaxArraySize()) {
+            throw new ScanErrorException(
+                    "Array is too big: " + arraySize + ", max is: " + getMaxArraySize());
         }
     }
 
@@ -64,7 +75,7 @@ public class DefaultAvService implements AvService {
             }
             bytes = Files.readAllBytes(file.toPath());
 
-            return scanStream(bytes);
+            return scanBytes(bytes);
         } catch (IOException e) {
             log.warn("File error!", e);
             throw new ScanErrorException("File error.", e);
@@ -78,5 +89,13 @@ public class DefaultAvService implements AvService {
 
     public void setMaxFileSize(long maxFileSize) {
         this.maxFileSize = maxFileSize;
+    }
+
+    public long getMaxArraySize() {
+        return maxArraySize;
+    }
+
+    public void setMaxArraySize(long maxArraySize) {
+        this.maxArraySize = maxArraySize;
     }
 }

@@ -76,7 +76,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "send normal message"() {
         setup:
             AvService service = Stub()
-            service.scanStream(_) >> false
+            service.scanBytes(_) >> false
 
             setProcessorService(service)
 
@@ -93,7 +93,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "responding test with a listener"() {
         given:
             AvService service = Stub()
-            service.scanStream(_) >> false
+            service.scanBytes(_) >> false
 
             AvMessage response = null
             ProcessedAvMessageListener messageListener = new ProcessedAvMessageListener() {
@@ -172,7 +172,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "send message with a full queue"() {
         setup:
             AvService service = Stub()
-            service.scanStream(_) >> false
+            service.scanBytes(_) >> false
 
             processor = new DefaultMessageProcessor(2, ReceivingType.POLLING, 1, serviceId)
             setProcessorService(service)
@@ -204,7 +204,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "send message with a service error"() {
         given:
             AvService service = Stub()
-            service.scanStream(_) >> {
+            service.scanBytes(_) >> {
                 throw new ScanErrorException("Service is dead")
             }
 
@@ -223,7 +223,7 @@ class DefaultMessageProcessorSpec extends Specification {
             String testId = "testId"
 
             AvService service = Stub()
-            service.scanStream(_) >> {
+            service.scanBytes(_) >> {
                 sleep(1000)
                 return false
             }
@@ -269,7 +269,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "test message counters"() {
         given:
             AvService service = Stub()
-            service.scanStream(_) >> false
+            service.scanBytes(_) >> false
 
             setProcessorService(service)
 

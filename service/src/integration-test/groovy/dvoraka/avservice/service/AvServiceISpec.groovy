@@ -30,7 +30,7 @@ class AvServiceISpec extends Specification {
             byte[] bytes = "aaaaa".getBytes()
 
         when:
-            boolean shouldBeFalse = avService.scanStream(bytes)
+            boolean shouldBeFalse = avService.scanBytes(bytes)
 
         then:
             !shouldBeFalse
@@ -41,7 +41,7 @@ class AvServiceISpec extends Specification {
             byte[] bytes = eicarString.getBytes()
 
         when:
-            boolean shouldBeTrue = avService.scanStream(bytes)
+            boolean shouldBeTrue = avService.scanBytes(bytes)
 
         then:
             shouldBeTrue

@@ -9,9 +9,9 @@ import java.io.File;
  */
 public interface AvService {
 
-    boolean scanStream(byte[] bytes) throws ScanErrorException;
+    boolean scanBytes(byte[] bytes) throws ScanErrorException;
 
-    String scanStreamWithInfo(byte[] bytes) throws ScanErrorException;
+    String scanBytesWithInfo(byte[] bytes) throws ScanErrorException;
 
     boolean scanFile(File file) throws ScanErrorException;
 

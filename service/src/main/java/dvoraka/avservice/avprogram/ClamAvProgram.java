@@ -31,7 +31,7 @@ public class ClamAvProgram implements AvProgram {
 
     public static final String DEFAULT_HOST = "localhost";
     public static final int DEFAULT_PORT = 3310;
-    public static final int DEFAULT_MAX_STREAM_SIZE = 10_000;
+    public static final int DEFAULT_MAX_ARRAY_SIZE = 10_000;
 
     public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
@@ -39,7 +39,7 @@ public class ClamAvProgram implements AvProgram {
 
     private String socketHost;
     private int socketPort;
-    private long maxStreamSize;
+    private long maxArraySize;
     private long maxCachedFileSize;
     private long maxCacheSize;
 
@@ -47,13 +47,13 @@ public class ClamAvProgram implements AvProgram {
 
 
     public ClamAvProgram() {
-        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_STREAM_SIZE);
+        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_ARRAY_SIZE);
     }
 
-    public ClamAvProgram(String socketHost, int socketPort, long maxStreamSize) {
+    public ClamAvProgram(String socketHost, int socketPort, long maxArraySize) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
-        this.maxStreamSize = maxStreamSize;
+        this.maxArraySize = maxArraySize;
     }
 
     @Override
@@ -225,12 +225,12 @@ public class ClamAvProgram implements AvProgram {
         return success && ping();
     }
 
-    public long getMaxStreamSize() {
-        return maxStreamSize;
+    public long getMaxArraySize() {
+        return maxArraySize;
     }
 
-    public void setMaxStreamSize(long maxStreamSize) {
-        this.maxStreamSize = maxStreamSize;
+    public void setMaxArraySize(long maxArraySize) {
+        this.maxArraySize = maxArraySize;
     }
 
     public long getMaxCachedFileSize() {

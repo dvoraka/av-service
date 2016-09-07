@@ -10,7 +10,7 @@ import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 
 /**
- * Default AV service test.
+ * Default AV service spec.
  */
 class DefaultAvServiceSpec extends Specification {
 
@@ -20,6 +20,8 @@ class DefaultAvServiceSpec extends Specification {
 
     void setup() {
         avProgram = Mock()
+        avProgram.getMaxArraySize() >> 100
+
         service = new DefaultAvService(avProgram)
     }
 
@@ -37,9 +39,9 @@ class DefaultAvServiceSpec extends Specification {
             service.getMaxFileSize() == maxFileSize
     }
 
-    def "scan stream"() {
+    def "scan bytes"() {
         when:
-            service.scanStream(new byte[10])
+            service.scanBytes(new byte[10])
 
         then:
             1 * avProgram.scanBytes(_)
@@ -51,7 +53,7 @@ class DefaultAvServiceSpec extends Specification {
             avProgram.scanBytesWithInfo(_) >> expected
 
         when:
-            String result = service.scanStreamWithInfo(new byte[10])
+            String result = service.scanBytesWithInfo(new byte[10])
 
         then:
             result == expected
@@ -89,7 +91,7 @@ class DefaultAvServiceSpec extends Specification {
             throwable.getCause().getMessage()
     }
 
-    def "scan file with a file"() {
+    def "scan file with a normal file"() {
         setup:
             File tempFile = File.createTempFile("test-tempfile", ".tmp");
             Files.write(
