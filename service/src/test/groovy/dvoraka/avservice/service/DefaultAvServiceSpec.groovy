@@ -39,15 +39,31 @@ class DefaultAvServiceSpec extends Specification {
             service.getMaxFileSize() == maxFileSize
     }
 
-    def "scan bytes"() {
+    def "set max array size"() {
+        given:
+            long maxArraySize = 100
+
         when:
-            service.scanBytes(new byte[10])
+            service.setMaxArraySize(100)
 
         then:
-            1 * avProgram.scanBytes(_)
+            service.getMaxArraySize() == maxArraySize
     }
 
-    def "scan stream with info"() {
+    def "scan bytes"() {
+        when:
+            service.scanBytes(new byte[size])
+
+        then:
+            calls * avProgram.scanBytes(_)
+
+        where:
+            size | calls
+            10   | 1
+            0    | 0
+    }
+
+    def "scan bytes with info"() {
         given:
             String expected = "INFO"
             avProgram.scanBytesWithInfo(_) >> expected
@@ -57,6 +73,35 @@ class DefaultAvServiceSpec extends Specification {
 
         then:
             result == expected
+    }
+    def "scan bytes with too big array"() {
+        given:
+            long bigSize = service.getMaxArraySize() + 1
+
+        when:
+            service.scanBytes(new byte[bigSize])
+
+        then:
+            thrown(ScanErrorException)
+    }
+
+    def "scan bytes with info with too big array"() {
+        given:
+            long bigSize = service.getMaxArraySize() + 1
+
+        when:
+            service.scanBytesWithInfo(new byte[bigSize])
+
+        then:
+            thrown(ScanErrorException)
+    }
+
+    def "scan empty bytes with info"() {
+        when:
+            String result = service.scanBytesWithInfo(new byte[0])
+
+        then:
+            result == ""
     }
 
     def "scan file without a file"() {
