@@ -95,6 +95,11 @@ public class ClamAvProgram implements AvProgram {
      */
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
+        if (bytes.length > getMaxArraySize()) {
+            throw new ScanErrorException(
+                    "Array is too big: " + bytes.length + ", max is " + getMaxArraySize());
+        }
+
         String arrayDigest = null;
         if (caching) {
             arrayDigest = cachingService.arrayDigest(bytes);
