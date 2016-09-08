@@ -78,9 +78,13 @@ subprojects {
     dependencies {
         // log4j
         compile("org.apache.logging.log4j:log4j-api:${log4jVersion}")
-        compile("org.apache.logging.log4j:log4j-core:${log4jVersion}")
-        compile("org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}")
-        compile("org.apache.logging.log4j:log4j-jcl:${log4jVersion}")
+//        compile("org.apache.logging.log4j:log4j-core:${log4jVersion}")
+//        compile("org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}")
+//        compile("org.apache.logging.log4j:log4j-jcl:${log4jVersion}")
+        // bridge to Logback
+        compile("org.apache.logging.log4j:log4j-to-slf4j:2.6.2")
+        compile("ch.qos.logback:logback-classic:1.1.6")
+        compile('net.logstash.logback:logstash-logback-encoder:4.7')
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
