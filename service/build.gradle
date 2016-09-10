@@ -9,5 +9,5 @@ dependencies {
     compile("org.springframework:spring-aspects:${springVersion}")
     // Spring JMS
     compile("org.springframework:spring-jms:${springVersion}")
-    compile("org.apache.activemq:activemq-broker:5.13.3")
+    compile("org.apache.activemq:activemq-broker:${activemqVersion}")
 }

@@ -14,7 +14,7 @@ dependencies {
     compile("org.springframework.security:spring-security-config:${springSecurityVersion}")
     compile("org.springframework.security:spring-security-web:${springSecurityVersion}")
     // Ehcache
-    compile('org.ehcache:ehcache:3.1.1')
+    compile("org.ehcache:ehcache:${ehcacheVersion}")
 }
 
 gretty {

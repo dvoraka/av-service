@@ -33,14 +33,20 @@ allprojects {
     ext {
         taskGroupName = 'AV-service'
         // Spring versions
-        springVersion = '4.3.0.RELEASE'
-        springSecurityVersion = '4.1.0.RELEASE'
+        springVersion = '4.3.2.RELEASE'
+        springSecurityVersion = '4.1.3.RELEASE'
         springRabbitVersion = '1.6.2.RELEASE'
         springDataJpaVersion = '1.10.2.RELEASE'
-
-        hibernateVersion = '5.2.1.Final'
+        // Hibernate version
+        hibernateVersion = '5.2.2.Final'
+        // Ehcache version
+        ehcacheVersion = '3.1.2'
+        // ActiveMQ
+        activemqVersion = '5.14.0'
+        // Spock versions
         groovyVersion = '2.4.7'
-        spockVersion = '1.0-groovy-2.4'
+        spockVersion = '1.1-groovy-2.4-rc-2'
+        // Log4j version
         log4jVersion = '2.6.2'
     }
 }
@@ -104,7 +110,7 @@ subprojects {
         testCompile("org.spockframework:spock-spring:${spockVersion}")
         testCompile("org.spockframework:spock-core:${spockVersion}")
         // Cglib
-        testCompile('cglib:cglib-nodep:3.2.2')
+        testCompile('cglib:cglib-nodep:3.2.4')
     }
 
     jar {
