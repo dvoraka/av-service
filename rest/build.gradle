@@ -24,4 +24,5 @@ gretty {
     contextPath = 'av-service'
 //    loggingLevel = 'DEBUG'
     fileLogEnabled = false
+    consoleLogEnabled = false
 }
