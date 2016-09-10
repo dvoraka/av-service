@@ -39,7 +39,7 @@ allprojects {
         hibernateVersion = '5.2.1.Final'
         groovyVersion = '2.4.7'
         spockVersion = '1.0-groovy-2.4'
-        log4jVersion = '2.5'
+        log4jVersion = '2.6.2'
     }
 }
 
@@ -82,7 +82,7 @@ subprojects {
 //        compile("org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}")
 //        compile("org.apache.logging.log4j:log4j-jcl:${log4jVersion}")
         // bridge to Logback
-        compile("org.apache.logging.log4j:log4j-to-slf4j:2.6.2")
+        compile("org.apache.logging.log4j:log4j-to-slf4j:${log4jVersion}")
         compile("ch.qos.logback:logback-classic:1.1.6")
         compile('net.logstash.logback:logstash-logback-encoder:4.7')
         // Spring
