@@ -32,10 +32,12 @@ distributions {
 allprojects {
     ext {
         taskGroupName = 'AV-service'
-
+        // Spring versions
         springVersion = '4.3.0.RELEASE'
         springSecurityVersion = '4.1.0.RELEASE'
+        springRabbitVersion = '1.6.2.RELEASE'
         springDataJpaVersion = '1.10.2.RELEASE'
+
         hibernateVersion = '5.2.1.Final'
         groovyVersion = '2.4.7'
         spockVersion = '1.0-groovy-2.4'
@@ -88,7 +90,7 @@ subprojects {
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
-        compile('org.springframework.amqp:spring-rabbit:1.6.0.RELEASE') {
+        compile("org.springframework.amqp:spring-rabbit:${springRabbitVersion}") {
             exclude group: 'org.springframework', module: 'spring-web'
             exclude group: 'org.springframework', module: 'spring-tx'
             exclude group: 'org.springframework', module: 'spring-messaging'
