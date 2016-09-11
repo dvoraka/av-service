@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class RestClientConfig {
 
     @Value("${avservice.rest.url}")
-    private String restUrl = "localhost";
+    private String restUrl;
 
 
     @Bean
