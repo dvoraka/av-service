@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets
 /**
  * DefaultAvMessage test.
  */
-class DefaultAVMessageSpec extends Specification {
+class DefaultAvMessageSpec extends Specification {
 
 
     def "message creating test"() {
@@ -22,12 +22,12 @@ class DefaultAVMessageSpec extends Specification {
                     .build()
 
         expect:
-            message.getId().equals(testString)
-            message.getCorrelationId().equals(testString)
+            message.getId() == testString
+            message.getCorrelationId() == testString
             Arrays.equals(message.getData(), testString.getBytes(StandardCharsets.UTF_8))
-            message.getType().equals(AvMessageType.REQUEST)
-            message.getServiceId().equals(testString)
-            message.getVirusInfo().equals(testString)
+            message.getType() == AvMessageType.REQUEST
+            message.getServiceId() == testString
+            message.getVirusInfo() == testString
     }
 
     def "create normal response test"() {
@@ -38,8 +38,8 @@ class DefaultAVMessageSpec extends Specification {
             AvMessage response = message.createResponse(false)
 
         expect:
-            response.getCorrelationId().equals(expCorrId)
-            response.getType().equals(AvMessageType.RESPONSE)
+            response.getCorrelationId() == expCorrId
+            response.getType() == AvMessageType.RESPONSE
     }
 
     def "create infected response test"() {
@@ -50,8 +50,22 @@ class DefaultAVMessageSpec extends Specification {
             AvMessage response = message.createResponse(true)
 
         expect:
-            response.getCorrelationId().equals(expCorrId)
-            response.getType().equals(AvMessageType.RESPONSE)
+            response.getCorrelationId() == expCorrId
+            response.getType() == AvMessageType.RESPONSE
+    }
+
+    def "create error response test"() {
+        given:
+            DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
+            String expCorrId = message.getId()
+            String errorMsg = "TEST-ERROR"
+
+        when:
+            AvMessage response = message.createErrorResponse(errorMsg)
+
+        then:
+            response.getCorrelationId() == expCorrId
+            response.getType() == AvMessageType.RESPONSE_ERROR
     }
 
     def "null data test"() {

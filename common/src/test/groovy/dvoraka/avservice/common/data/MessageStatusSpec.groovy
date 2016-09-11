@@ -7,7 +7,7 @@ import spock.lang.Specification
  */
 class MessageStatusSpec extends Specification {
 
-    def "test all values"() {
+    def "check all values"() {
         expect:
             MessageStatus.WAITING
             MessageStatus.PROCESSING
