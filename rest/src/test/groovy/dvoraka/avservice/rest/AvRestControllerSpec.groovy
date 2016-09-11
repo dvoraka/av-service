@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * AV controller test.
  */
-class AvControllerSpec extends Specification {
+class AvRestControllerSpec extends Specification {
 
     MockMvc mockMvc;
 
