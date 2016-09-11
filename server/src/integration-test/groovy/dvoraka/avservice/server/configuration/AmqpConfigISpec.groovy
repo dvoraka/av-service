@@ -2,7 +2,6 @@ package dvoraka.avservice.server.configuration
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.server.AvServer
-import dvoraka.avservice.server.ListeningStrategy
 import dvoraka.avservice.server.ServerComponent
 import org.springframework.amqp.core.AmqpAdmin
 import org.springframework.amqp.core.Binding
@@ -35,9 +34,6 @@ class AmqpConfigISpec extends Specification {
 
     @Autowired
     SimpleMessageListenerContainer messageListenerContainer
-
-    @Autowired
-    ListeningStrategy listeningStrategy
 
     @Autowired
     ConnectionFactory connectionFactory
@@ -88,11 +84,6 @@ class AmqpConfigISpec extends Specification {
     def "SimpleMessageListenerContainer loading"() {
         expect:
             messageListenerContainer
-    }
-
-    def "ListeningStrategy loading"() {
-        expect:
-            listeningStrategy
     }
 
     def "ConnectionFactory loading"() {

@@ -6,10 +6,8 @@ import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
-import dvoraka.avservice.server.ListeningStrategy;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
-import dvoraka.avservice.server.amqp.SimpleAmqpListeningStrategy;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -101,11 +99,6 @@ public class AmqpConfig {
         container.setMessageListener(messageListener());
 
         return container;
-    }
-
-    @Bean
-    public ListeningStrategy listeningStrategy() {
-        return new SimpleAmqpListeningStrategy(listeningTimeout);
     }
 
     @Bean
