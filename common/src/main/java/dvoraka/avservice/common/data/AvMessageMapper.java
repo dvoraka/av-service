@@ -100,6 +100,7 @@ public final class AvMessageMapper {
 
         props.setAppId("antivirus");
 
+        // TODO: Is it necessary?
         // for old clients (deprecated)
         int oldReply;
         if (msg.getVirusInfo() != null) {
