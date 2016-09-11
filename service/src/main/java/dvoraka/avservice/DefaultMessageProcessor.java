@@ -49,7 +49,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
 
-
     private ConcurrentMap<String, Long> processingMessages;
     private ConcurrentMap<String, Long> processedMessages;
     private AtomicLong receivedMsgCount = new AtomicLong();
