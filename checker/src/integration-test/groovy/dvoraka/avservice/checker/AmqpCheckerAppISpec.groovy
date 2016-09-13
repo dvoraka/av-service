@@ -5,6 +5,7 @@ import dvoraka.avservice.checker.runner.AmqpCheckerApp
 import dvoraka.avservice.server.AvServer
 import dvoraka.avservice.server.configuration.AmqpConfig
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -36,6 +37,7 @@ class AmqpCheckerAppISpec extends Specification {
             checker != null
     }
 
+    @DirtiesContext
     def "check method test"() {
         when:
             checker.check()
@@ -44,6 +46,7 @@ class AmqpCheckerAppISpec extends Specification {
             notThrown(Exception)
     }
 
+    @DirtiesContext
     def "main method call"() {
         when:
             AmqpCheckerApp.main([] as String[])

@@ -41,6 +41,7 @@ public class AmqpReceiver implements AvReceiver {
     private Connection connection;
     private Channel channel;
     private QueueingConsumer consumer;
+    private boolean consumerStarted;
 
 
     public AmqpReceiver(String host) {
@@ -72,11 +73,6 @@ public class AmqpReceiver implements AvReceiver {
         }
 
         consumer = new QueueingConsumer(channel);
-        try {
-            channel.basicConsume(DEFAULT_QUEUE, false, consumer);
-        } catch (IOException e) {
-            log.warn("Problem!", e);
-        }
     }
 
     @PreDestroy
@@ -140,6 +136,15 @@ public class AmqpReceiver implements AvReceiver {
             IOException,
             ProtocolException,
             LastMessageException {
+
+        if (!consumerStarted) {
+            try {
+                channel.basicConsume(DEFAULT_QUEUE, false, consumer);
+            } catch (IOException e) {
+                log.warn("Problem with consuming!", e);
+            }
+            consumerStarted = true;
+        }
 
         boolean virus = true;
         try {
