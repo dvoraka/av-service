@@ -1,5 +1,6 @@
 package dvoraka.avservice
 
+import dvoraka.avservice.common.ProcessedAvMessageListener
 import dvoraka.avservice.common.ReceivingType
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage

@@ -1,7 +1,7 @@
 package dvoraka.avservice.configuration;
 
-import dvoraka.avservice.CachingService;
-import dvoraka.avservice.DefaultCachingService;
+import dvoraka.avservice.service.CachingService;
+import dvoraka.avservice.service.DefaultCachingService;
 import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.ClamAvProgram;

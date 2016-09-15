@@ -1,4 +1,4 @@
-package dvoraka.avservice
+package dvoraka.avservice.service
 
 import spock.lang.Specification
 

@@ -1,6 +1,7 @@
 package dvoraka.avservice;
 
 import dvoraka.avservice.common.CustomThreadFactory;
+import dvoraka.avservice.common.ProcessedAvMessageListener;
 import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;

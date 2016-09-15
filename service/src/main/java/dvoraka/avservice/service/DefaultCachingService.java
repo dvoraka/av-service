@@ -1,4 +1,4 @@
-package dvoraka.avservice;
+package dvoraka.avservice.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
