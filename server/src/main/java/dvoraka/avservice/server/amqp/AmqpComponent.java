@@ -55,9 +55,7 @@ public class AmqpComponent implements ServerComponent {
             return;
         }
 
-        for (AvMessageListener listener : listeners) {
-            listener.onAvMessage(avMessage);
-        }
+        notifyListeners(listeners, avMessage);
     }
 
     @Override
