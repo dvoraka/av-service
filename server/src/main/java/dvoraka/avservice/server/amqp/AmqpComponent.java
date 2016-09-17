@@ -84,12 +84,12 @@ public class AmqpComponent implements ServerComponent {
     }
 
     @Override
-    public void addAvMessageListener(AvMessageListener listener) {
+    public synchronized void addAvMessageListener(AvMessageListener listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removeAvMessageListener(AvMessageListener listener) {
+    public synchronized void removeAvMessageListener(AvMessageListener listener) {
         listeners.remove(listener);
     }
 
