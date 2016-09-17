@@ -122,6 +122,61 @@ class JmsComponentSpec extends Specification {
             component.listenersCount() == 0
     }
 
+    def "add listeners from diff threads"() {
+        given:
+            int observers = 50
+
+            Runnable addListener = {
+                component.addAvMessageListener(getAvMessageListener())
+            }
+
+            Thread[] threads = new Thread[observers]
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new Thread(addListener)
+            }
+
+        when:
+            threads.each {
+                it.start()
+            }
+            threads.each {
+                it.join()
+            }
+
+        then:
+            observers == component.listenersCount()
+    }
+
+    def "remove observers from different threads"() {
+        given:
+            int observers = 50
+
+            AvMessageListener messageListener = getAvMessageListener()
+            Runnable removeListener = {
+                component.removeAvMessageListener(messageListener)
+            }
+
+            Thread[] threads = new Thread[observers]
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new Thread(removeListener)
+            }
+
+            observers.times {
+                component.addAvMessageListener(messageListener)
+            }
+
+        when:
+            threads.each {
+                it.start()
+            }
+            threads.each {
+                it.join()
+            }
+
+        then:
+            component.listenersCount() == 0
+    }
+
     def "run wrong onMessage"() {
         when:
             component.onMessage((org.springframework.amqp.core.Message) null)
