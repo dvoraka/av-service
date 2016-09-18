@@ -29,9 +29,9 @@ public class AmqpComponent implements ServerComponent {
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.AMQP_COMPONENT;
 
-    private String responseExchange;
-    private String serviceId;
-    private List<AvMessageListener> listeners = new ArrayList<>();
+    private final String responseExchange;
+    private final String serviceId;
+    private final List<AvMessageListener> listeners = new ArrayList<>();
 
 
     public AmqpComponent(String responseExchange, String serviceId) {
@@ -55,7 +55,9 @@ public class AmqpComponent implements ServerComponent {
             return;
         }
 
-        notifyListeners(listeners, avMessage);
+        synchronized (listeners) {
+            notifyListeners(listeners, avMessage);
+        }
     }
 
     @Override
@@ -82,13 +84,17 @@ public class AmqpComponent implements ServerComponent {
     }
 
     @Override
-    public synchronized void addAvMessageListener(AvMessageListener listener) {
-        listeners.add(listener);
+    public void addAvMessageListener(AvMessageListener listener) {
+        synchronized (listeners) {
+            listeners.add(listener);
+        }
     }
 
     @Override
-    public synchronized void removeAvMessageListener(AvMessageListener listener) {
-        listeners.remove(listener);
+    public void removeAvMessageListener(AvMessageListener listener) {
+        synchronized (listeners) {
+            listeners.remove(listener);
+        }
     }
 
     public int listenersCount() {
