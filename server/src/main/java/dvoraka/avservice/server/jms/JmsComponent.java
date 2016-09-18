@@ -27,8 +27,8 @@ public class JmsComponent implements ServerComponent {
 
     private static final Logger log = LogManager.getLogger(JmsComponent.class.getName());
 
-    private String responseDestination;
-    private List<AvMessageListener> listeners = new ArrayList<>();
+    private final String responseDestination;
+    private final List<AvMessageListener> listeners = new ArrayList<>();
 
 
     public JmsComponent(String responseDestination) {
@@ -50,7 +50,9 @@ public class JmsComponent implements ServerComponent {
             return;
         }
 
-        notifyListeners(listeners, avMessage);
+        synchronized (listeners) {
+            notifyListeners(listeners, avMessage);
+        }
     }
 
     @Override
@@ -63,13 +65,17 @@ public class JmsComponent implements ServerComponent {
     }
 
     @Override
-    public synchronized void addAvMessageListener(AvMessageListener listener) {
-        listeners.add(listener);
+    public void addAvMessageListener(AvMessageListener listener) {
+        synchronized (listeners) {
+            listeners.add(listener);
+        }
     }
 
     @Override
-    public synchronized void removeAvMessageListener(AvMessageListener listener) {
-        listeners.remove(listener);
+    public void removeAvMessageListener(AvMessageListener listener) {
+        synchronized (listeners) {
+            listeners.remove(listener);
+        }
     }
 
     public int listenersCount() {
