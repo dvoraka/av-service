@@ -1,10 +1,11 @@
 package dvoraka.avservice.avprogram;
 
-import dvoraka.avservice.service.CachingService;
 import dvoraka.avservice.common.exception.ScanErrorException;
+import dvoraka.avservice.service.CachingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * ClamAV wrapper.
  */
+@Component
 public class ClamAvProgram implements AvProgram {
 
     @Autowired
@@ -39,9 +41,7 @@ public class ClamAvProgram implements AvProgram {
 
     private final String socketHost;
     private final int socketPort;
-    private long maxArraySize;
-    private long maxCachedFileSize;
-    private long maxCacheSize;
+    private final long maxArraySize;
 
     private volatile boolean caching;
 
@@ -230,27 +230,8 @@ public class ClamAvProgram implements AvProgram {
         return success && ping();
     }
 
+    @Override
     public long getMaxArraySize() {
         return maxArraySize;
-    }
-
-    public void setMaxArraySize(long maxArraySize) {
-        this.maxArraySize = maxArraySize;
-    }
-
-    public long getMaxCachedFileSize() {
-        return maxCachedFileSize;
-    }
-
-    public void setMaxCachedFileSize(long maxCachedFileSize) {
-        this.maxCachedFileSize = maxCachedFileSize;
-    }
-
-    public long getMaxCacheSize() {
-        return maxCacheSize;
-    }
-
-    public void setMaxCacheSize(long maxCacheSize) {
-        this.maxCacheSize = maxCacheSize;
     }
 }
