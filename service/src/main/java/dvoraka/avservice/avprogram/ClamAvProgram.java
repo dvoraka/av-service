@@ -37,8 +37,8 @@ public class ClamAvProgram implements AvProgram {
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-    private String socketHost;
-    private int socketPort;
+    private final String socketHost;
+    private final int socketPort;
     private long maxArraySize;
     private long maxCachedFileSize;
     private long maxCacheSize;
