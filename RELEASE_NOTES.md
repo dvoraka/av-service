@@ -1,12 +1,24 @@
+## v0.3-rc1
+ * Better performance
+ * AV program caching for speedup same checks
+ * Better multi-threading synchronization
+ * XML REST configuration migrated to Java config
+ * DB logging service prototype
+ * Use development Docker containers on Travis CI
+ * New REST module
+ * New Database module
+ * Changed logging implementation to Logback for better Logstash connection
+ * Updated external libraries versions
+
 ## v0.2
- * Add this document
+ * Added this document
 
 ## v0.2-rc1
  * JMS support
- * Improve tests and coverage
+ * Improved tests and coverage
  * New docker images for better development
- * Improve code organization
- * Add runners for AMQP, JMS and REST servers for easy starting
+ * Better code organization
+ * Added runners for AMQP, JMS and REST servers for easy starting
 
 ## v0.1
  * First prototypes
