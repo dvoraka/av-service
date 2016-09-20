@@ -1,13 +1,16 @@
 package dvoraka.avservice.configuration;
 
-import dvoraka.avservice.service.CachingService;
-import dvoraka.avservice.service.DefaultCachingService;
+import dvoraka.avservice.DefaultMessageProcessor;
+import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.ClamAvProgram;
+import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.service.AvService;
+import dvoraka.avservice.service.CachingService;
 import dvoraka.avservice.service.DefaultAvService;
+import dvoraka.avservice.service.DefaultCachingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,6 +58,17 @@ public class ServiceConfig {
     @Bean
     public CachingService cachingService() {
         return new DefaultCachingService();
+    }
+
+    @Bean
+    public MessageProcessor messageProcessor() {
+        final int threads = 20;
+
+        return new DefaultMessageProcessor(
+                threads,
+                ReceivingType.LISTENER,
+                0,
+                env.getProperty("avservice.serviceId", "default1"));
     }
 
     @Bean

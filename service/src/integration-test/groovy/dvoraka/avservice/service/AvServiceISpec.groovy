@@ -3,6 +3,7 @@ package dvoraka.avservice.service
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.configuration.ServiceConfig
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
 import spock.lang.Specification
@@ -11,6 +12,7 @@ import spock.lang.Specification
  * Specification class for AvService.
  */
 @ContextConfiguration(classes = [ServiceConfig.class])
+@ActiveProfiles(['database'])
 class AvServiceISpec extends Specification {
 
     @Shared

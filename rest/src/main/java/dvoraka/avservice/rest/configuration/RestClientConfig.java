@@ -1,24 +1,25 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.rest.RestClient;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Rest client configuration.
  */
 @Configuration
+// TODO:
+@PropertySource("classpath:avservice.properties")
 @Profile("rest-client")
-@Import({ServiceConfig.class})
 public class RestClientConfig {
 
-    @Value("${avservice.rest.url}")
-    private String restUrl;
+    @Autowired
+    private Environment env;
 
 
     @Bean
@@ -28,6 +29,6 @@ public class RestClientConfig {
 
     @Bean
     public RestClient restClient() {
-        return new RestClient(restUrl);
+        return new RestClient(env.getProperty("avservice.rest.url"));
     }
 }

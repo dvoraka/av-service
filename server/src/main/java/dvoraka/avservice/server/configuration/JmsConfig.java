@@ -1,8 +1,5 @@
 package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.DefaultMessageProcessor;
-import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
@@ -73,13 +70,6 @@ public class JmsConfig {
     @Bean
     public ServerComponent serverComponent() {
         return new JmsComponent(resultDestination);
-    }
-
-    @Bean
-    public MessageProcessor messageProcessor() {
-        final int threads = 20;
-
-        return new DefaultMessageProcessor(threads, ReceivingType.LISTENER, 0, serviceId);
     }
 
     @Bean

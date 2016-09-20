@@ -25,7 +25,7 @@ class RestClientConfigISpec extends Specification {
 
     def "restUrl field loading"() {
         expect:
-            env.getProperty("avservice.rest.url") != null
+            env.getProperty("avservice.rest.url")
     }
 
     def "RestTemplate loading"() {
