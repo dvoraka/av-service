@@ -2,7 +2,6 @@ package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.aop.SpringAopTest;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.ClamAvProgram;
 import dvoraka.avservice.common.ReceivingType;
@@ -71,10 +70,10 @@ public class ServiceConfig {
                 env.getProperty("avservice.serviceId", "default1"));
     }
 
-    @Bean
-    public SpringAopTest springAopTest() {
-        return new SpringAopTest();
-    }
+//    @Bean
+//    public SpringAopTest springAopTest() {
+//        return new SpringAopTest();
+//    }
 
     @Bean
     public MBeanExporter mbeanExporter() {
