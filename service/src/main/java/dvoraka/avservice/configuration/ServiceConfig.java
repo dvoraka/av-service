@@ -61,10 +61,8 @@ public class ServiceConfig {
 
     @Bean
     public MessageProcessor messageProcessor() {
-        final int threads = 20;
-
         return new DefaultMessageProcessor(
-                threads,
+                Integer.parseInt(env.getProperty("avservice.cpuCores", "2")),
                 ReceivingType.LISTENER,
                 0,
                 env.getProperty("avservice.serviceId", "default1"));
