@@ -68,6 +68,7 @@ subprojects {
     }
 
     sourceSets {
+        // integration tests
         integrationTest {
             groovy {
                 compileClasspath += main.output + test.output
@@ -76,11 +77,24 @@ subprojects {
             }
             resources.srcDir file('src/integration-test/resources')
         }
+        // performance tests
+        performanceTest {
+            groovy {
+                compileClasspath += main.output + test.output
+                runtimeClasspath += main.output + test.output
+                srcDir file('src/performance-test/groovy')
+            }
+            resources.srcDir file('src/performance-test/resources')
+        }
     }
 
     configurations {
+        // IT
         integrationTestCompile.extendsFrom testCompile
         integrationTestRuntime.extendsFrom testRuntime
+        // PT
+        performanceTestCompile.extendsFrom testCompile
+        performanceTestRuntime.extendsFrom testRuntime
     }
 
     dependencies {
@@ -132,6 +146,8 @@ subprojects {
         testClassesDir = sourceSets.integrationTest.output.classesDir
         classpath = sourceSets.integrationTest.runtimeClasspath
 
+        mustRunAfter test
+
         minHeapSize = '64m'
         maxHeapSize = '64m'
 
@@ -141,10 +157,16 @@ subprojects {
         }
     }
 
+    task performanceTest(type: Test) {
+        testClassesDir = sourceSets.performanceTest.output.classesDir
+        classpath = sourceSets.performanceTest.runtimeClasspath
+    }
+
     checkstyle {
         toolVersion = "7.1"
         configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
         reportsDir = file("${project.rootDir}/reports/checkstyle/${project.name}")
+        sourceSets = [sourceSets.main]
 
         ignoreFailures = false
     }
@@ -152,7 +174,6 @@ subprojects {
     findbugs {
         reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
         reportLevel = 'medium'
-
         sourceSets = [sourceSets.main]
 
         ignoreFailures = false
@@ -168,6 +189,7 @@ subprojects {
     pmd {
         toolVersion = '5.5.1'
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
+        sourceSets = [sourceSets.main]
 
         ignoreFailures = false
     }
@@ -210,7 +232,6 @@ subprojects {
     build.dependsOn copyToLib
 
     check.dependsOn integrationTest
-    integrationTest.mustRunAfter test
     check.dependsOn jacocoTestReport
 }
 
