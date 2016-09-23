@@ -6,7 +6,7 @@ import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.service.ServiceManagement;
+import dvoraka.avservice.common.service.ServiceManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

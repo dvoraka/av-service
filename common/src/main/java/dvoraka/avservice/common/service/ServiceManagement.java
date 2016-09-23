@@ -1,4 +1,4 @@
-package dvoraka.avservice.service;
+package dvoraka.avservice.common.service;
 
 /**
  * Management for services.
