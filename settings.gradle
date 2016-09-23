@@ -1,6 +1,6 @@
+include 'core'
 include 'checker'
 include 'common'
 include 'database'
 include 'rest'
 include 'server'
-include 'service'

@@ -7,7 +7,7 @@ description = 'REST components'
 
 dependencies {
     compile project(':common')
-    compile project(':service')
+    compile project(':core')
 
     // Spring
     compile("org.springframework:spring-webmvc:${springVersion}")
