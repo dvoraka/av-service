@@ -3,13 +3,11 @@ package dvoraka.avservice.configuration;
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.avprogram.AvProgram;
-import dvoraka.avservice.avprogram.ClamAvProgram;
+import dvoraka.avservice.avprogram.configuration.AvProgramConfig;
 import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.service.AvService;
-import dvoraka.avservice.service.CachingService;
 import dvoraka.avservice.service.DefaultAvService;
-import dvoraka.avservice.service.DefaultCachingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +27,7 @@ import org.springframework.jmx.support.RegistrationPolicy;
 @PropertySource("classpath:avservice.properties")
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableMBeanExport
-@Import({DatabaseConfig.class})
+@Import({DatabaseConfig.class, AvProgramConfig.class})
 public class ServiceConfig {
 
     @Autowired
@@ -44,19 +42,6 @@ public class ServiceConfig {
     @Bean
     public AvService avService(AvProgram avProgram) {
         return new DefaultAvService(avProgram);
-    }
-
-    @Bean
-    public AvProgram avProgram() {
-        AvProgram avProgram = new ClamAvProgram();
-        avProgram.setCaching(false);
-
-        return avProgram;
-    }
-
-    @Bean
-    public CachingService cachingService() {
-        return new DefaultCachingService();
     }
 
     @Bean

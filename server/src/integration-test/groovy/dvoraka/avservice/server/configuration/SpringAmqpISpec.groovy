@@ -17,6 +17,7 @@ import spock.lang.Specification
 /**
  * DI config test for profile "amqp".
  */
+// TODO:
 @Ignore("new modules structure")
 @ContextConfiguration(classes = [ServiceConfig.class])
 @ActiveProfiles("amqp")

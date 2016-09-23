@@ -2,6 +2,7 @@
 description = 'Anti-virus service'
 
 dependencies {
+    compile project(':avprogram')
     compile project(':common')
     compile project(':database')
 

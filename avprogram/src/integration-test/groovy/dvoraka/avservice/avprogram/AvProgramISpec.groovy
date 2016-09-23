@@ -1,7 +1,7 @@
 package dvoraka.avservice.avprogram
 
+import dvoraka.avservice.avprogram.configuration.AvProgramConfig
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.configuration.ServiceConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -13,7 +13,7 @@ import spock.lang.Unroll
 /**
  * AvProgram test.
  */
-@ContextConfiguration(classes = [ServiceConfig.class])
+@ContextConfiguration(classes = [AvProgramConfig.class])
 @ActiveProfiles(['database'])
 class AvProgramISpec extends Specification {
 
