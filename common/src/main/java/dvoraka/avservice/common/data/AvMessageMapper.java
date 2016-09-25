@@ -100,7 +100,7 @@ public final class AvMessageMapper {
 
         props.setAppId("antivirus");
 
-        // TODO: Is it necessary?
+        // TODO: Is it necessary? Yes, current client still uses it and new response is not prepared.
         // for old clients (deprecated)
         int oldReply;
         if (msg.getVirusInfo() != null) {
