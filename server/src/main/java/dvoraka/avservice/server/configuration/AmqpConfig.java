@@ -4,6 +4,7 @@ import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ServerComponent;
+import dvoraka.avservice.server.amqp.AmqpClient;
 import dvoraka.avservice.server.amqp.AmqpComponent;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -16,6 +17,8 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -150,5 +153,18 @@ public class AmqpConfig {
     @Bean
     public Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
         return BindingBuilder.bind(resultQueue).to(resultExchange);
+    }
+
+    @Bean
+    public AmqpClient amqpClient() {
+        return new AmqpClient();
+    }
+
+    @Bean
+    public MessageConverter messageConverter() {
+        Jackson2JsonMessageConverter messageConverter = new Jackson2JsonMessageConverter();
+//        messageConverter.setTypeIdPropertyName("typeId");
+
+        return messageConverter;
     }
 }
