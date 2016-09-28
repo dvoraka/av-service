@@ -25,6 +25,6 @@ public class AmqpClient {
 
 
     public void sendMessage(AvMessage message, String exchange) {
-        rabbitTemplate.convertAndSend(exchange, message);
+        rabbitTemplate.convertAndSend(exchange, "RoutingKey", message);
     }
 }

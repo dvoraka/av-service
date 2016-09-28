@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -22,12 +21,11 @@ class AmqpClientISpec extends Specification {
     AmqpClient amqpClient
 
 
-    @Ignore
-    def "send message"() {
+    def "send message to result exchange"() {
         when:
             amqpClient.sendMessage(
                     Utils.genNormalMessage(),
-                    env.getProperty("avservice.amqp.checkExchange", "check"))
+                    env.getProperty("avservice.amqp.resultExchange", "result"))
 
         then:
             notThrown(Exception)

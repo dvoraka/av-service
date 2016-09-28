@@ -106,13 +106,13 @@ public class AmqpConfig {
     }
 
     @Bean
-    public AmqpAdmin amqpAdmin() {
-        return new RabbitAdmin(connectionFactory());
+    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
     }
 
     @Bean
-    public RabbitTemplate amqpTemplate() {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory());
+    public RabbitTemplate amqpTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
         template.setRoutingKey("test");
         template.setQueue(checkQueue);
@@ -162,8 +162,6 @@ public class AmqpConfig {
 
     @Bean
     public MessageConverter messageConverter() {
-        AvMessageConverter messageConverter = new AvMessageConverter();
-
-        return messageConverter;
+        return new AvMessageConverter();
     }
 }
