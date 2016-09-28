@@ -5,7 +5,6 @@ import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ServerComponent;
-import dvoraka.avservice.server.amqp.AmqpClient;
 import dvoraka.avservice.server.amqp.AmqpComponent;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -153,11 +152,6 @@ public class AmqpConfig {
     @Bean
     public Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
         return BindingBuilder.bind(resultQueue).to(resultExchange);
-    }
-
-    @Bean
-    public AmqpClient amqpClient() {
-        return new AmqpClient();
     }
 
     @Bean
