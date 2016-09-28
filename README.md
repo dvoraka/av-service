@@ -48,6 +48,9 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
 **Development**
  * **ELK Stack** (Elasticsearch, Logstash, Kibana) - logs analyzing
 
+### How to send a message for check
+Will be here soon.
+
 ### Installation
 You can use Docker to prepare necessary services for development.
 #### Docker
