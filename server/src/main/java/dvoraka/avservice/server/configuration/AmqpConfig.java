@@ -1,5 +1,6 @@
 package dvoraka.avservice.server.configuration;
 
+import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
@@ -17,7 +18,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -162,8 +162,7 @@ public class AmqpConfig {
 
     @Bean
     public MessageConverter messageConverter() {
-        Jackson2JsonMessageConverter messageConverter = new Jackson2JsonMessageConverter();
-//        messageConverter.setTypeIdPropertyName("typeId");
+        AvMessageConverter messageConverter = new AvMessageConverter();
 
         return messageConverter;
     }
