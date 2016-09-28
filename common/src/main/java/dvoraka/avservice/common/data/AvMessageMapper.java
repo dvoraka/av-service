@@ -69,7 +69,14 @@ public final class AvMessageMapper {
             throw new MapperException("Unknown message type");
         }
 
+        // correlation ID
+        String corrId = "";
+        if (msgProps.getCorrelationId() != null) {
+            corrId = new String(msgProps.getCorrelationId(), StandardCharsets.UTF_8);
+        }
+
         return new DefaultAvMessage.Builder(msgProps.getMessageId())
+                .correlationId(corrId)
                 .data(msg.getBody())
                 .type(messageType)
                 .virusInfo(virusInfo)

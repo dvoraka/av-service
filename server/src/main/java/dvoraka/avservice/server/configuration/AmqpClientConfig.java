@@ -7,7 +7,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -25,9 +24,6 @@ public class AmqpClientConfig {
     @Autowired
     private Environment env;
 
-    @Value("${avservice.amqp.listeningTimeout:4000}")
-    private long listeningTimeout;
-
 
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -43,15 +39,17 @@ public class AmqpClientConfig {
     @Bean
     public RabbitTemplate amqpTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setReceiveTimeout(listeningTimeout);
+        final long receiveTimeout = 1000L;
+        template.setReceiveTimeout(receiveTimeout);
         template.setRoutingKey("test");
+        template.setQueue(env.getProperty("avservice.amqp.resultQueue"));
 
         return template;
     }
 
     @Bean
     public AmqpClient amqpClient() {
-        return new AmqpClient();
+        return new AmqpClient(env.getProperty("avservice.amqp.checkExchange", "check"));
     }
 
     @Bean

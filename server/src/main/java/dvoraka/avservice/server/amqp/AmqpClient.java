@@ -19,6 +19,14 @@ public class AmqpClient {
     @Autowired
     private MessageConverter messageConverter;
 
+    private static final String DEFAULT_ROUTING_KEY = "RoutingKey";
+
+    private String defaultExchange;
+
+
+    public AmqpClient(String defaultExchange) {
+        this.defaultExchange = defaultExchange;
+    }
 
     @PostConstruct
     private void init() {
@@ -27,6 +35,18 @@ public class AmqpClient {
 
 
     public void sendMessage(AvMessage message, String exchange) {
-        rabbitTemplate.convertAndSend(exchange, "RoutingKey", message);
+        rabbitTemplate.convertAndSend(exchange, DEFAULT_ROUTING_KEY, message);
+    }
+
+    public AvMessage receiveMessage() {
+        return (AvMessage) rabbitTemplate.receiveAndConvert();
+    }
+
+    public String getDefaultExchange() {
+        return defaultExchange;
+    }
+
+    public void setDefaultExchange(String defaultExchange) {
+        this.defaultExchange = defaultExchange;
     }
 }
