@@ -1,5 +1,6 @@
 package dvoraka.avservice.common.data;
 
+import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.exception.MapperException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,7 @@ public final class AvMessageMapper {
     private static final Logger log = LogManager.getLogger(AvMessageMapper.class.getName());
 
     public static final String VIRUS_INFO_KEY = "virusInfo";
+    public static final String OK_VIRUS_INFO = Utils.OK_VIRUS_INFO;
     public static final String DEFAULT_VIRUS_INFO = "noinfo";
     public static final String SERVICE_ID_KEY = "serviceId";
     public static final String DEFAULT_SERVICE_ID = "noservice";
@@ -111,7 +113,7 @@ public final class AvMessageMapper {
         // for old clients (deprecated)
         int oldReply;
         if (msg.getVirusInfo() != null) {
-            oldReply = "".equals(msg.getVirusInfo()) ? 1 : 0;
+            oldReply = OK_VIRUS_INFO.equals(msg.getVirusInfo()) ? 1 : 0;
         } else {
             oldReply = 1;
         }

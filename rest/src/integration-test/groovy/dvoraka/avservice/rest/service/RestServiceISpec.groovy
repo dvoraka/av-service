@@ -53,7 +53,7 @@ class RestServiceISpec extends Specification {
         expect:
             status == MessageStatus.PROCESSED
             response.type == AvMessageType.RESPONSE
-            response.getVirusInfo() == ""
+            response.getVirusInfo() == Utils.OK_VIRUS_INFO
     }
 
     def "send infected message"() {
@@ -78,6 +78,6 @@ class RestServiceISpec extends Specification {
         expect:
             status == MessageStatus.PROCESSED
             response.type == AvMessageType.RESPONSE
-            response.getVirusInfo() != ""
+            response.getVirusInfo() != Utils.OK_VIRUS_INFO
     }
 }

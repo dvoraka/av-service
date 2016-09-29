@@ -14,6 +14,7 @@ public final class Utils {
     public static final String EICAR =
             "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
     public static final String SERVICE_ID = "UTILS-SERVICE";
+    public static final String OK_VIRUS_INFO = "stream: OK";
 
 
     private Utils() {
@@ -23,7 +24,7 @@ public final class Utils {
         final int dataSize = 20;
         return new DefaultAvMessage.Builder(null)
                 .serviceId(SERVICE_ID)
-                .virusInfo("")
+                .virusInfo(OK_VIRUS_INFO)
                 .correlationId("1-2-3")
                 .data(new byte[dataSize])
                 .type(AvMessageType.REQUEST)

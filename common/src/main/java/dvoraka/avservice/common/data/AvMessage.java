@@ -30,5 +30,7 @@ public interface AvMessage {
 
     AvMessage createResponse(boolean virus);
 
+    AvMessage createResponseWithString(String virusInfo);
+
     AvMessage createErrorResponse(String errorMessage);
 }

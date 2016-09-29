@@ -76,6 +76,15 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
+    public AvMessage createResponseWithString(String virusInfo) {
+        return new Builder(null)
+                .correlationId(this.getId())
+                .virusInfo(virusInfo)
+                .type(AvMessageType.RESPONSE)
+                .build();
+    }
+
+    @Override
     public AvMessage createErrorResponse(String errorMessage) {
         return new Builder(null)
                 .correlationId(this.getId())
