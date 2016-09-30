@@ -156,6 +156,11 @@ public class ClamAvProgram implements AvProgram {
     }
 
     @Override
+    public String getNoVirusResponse() {
+        return CLEAN_STREAM_RESPONSE;
+    }
+
+    @Override
     public boolean isRunning() {
         return testConnection();
     }

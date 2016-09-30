@@ -26,6 +26,15 @@ public interface AvProgram {
     String scanBytesWithInfo(byte[] bytes) throws ScanErrorException;
 
     /**
+     * Returns the concrete string which means no virus in a message.
+     *
+     * Every program can have different string for success so it is good to know what means OK.
+     *
+     * @return the string with OK meaning
+     */
+    String getNoVirusResponse();
+
+    /**
      * Returns status of the program.
      *
      * @return the running status

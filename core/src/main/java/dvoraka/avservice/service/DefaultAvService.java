@@ -1,6 +1,7 @@
 package dvoraka.avservice.service;
 
 import dvoraka.avservice.avprogram.AvProgram;
+import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.exception.FileSizeException;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import org.apache.logging.log4j.LogManager;
@@ -53,7 +54,12 @@ public class DefaultAvService implements AvService {
 
         checkSize(bytes.length);
 
-        return avProgram.scanBytesWithInfo(bytes);
+        String response = avProgram.scanBytesWithInfo(bytes);
+        if (response.equals(avProgram.getNoVirusResponse())) {
+            return Utils.OK_VIRUS_INFO;
+        } else {
+            return response;
+        }
     }
 
     private void checkSize(long arraySize) throws ScanErrorException {
