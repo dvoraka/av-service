@@ -90,7 +90,7 @@ public class DirectRestStrategy implements RestStrategy {
 
     @Override
     public String messageServiceId(String id) {
-        // TODO: implement
+        // null means local for now
         return null;
     }
 

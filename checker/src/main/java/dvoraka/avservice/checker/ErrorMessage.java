@@ -5,6 +5,8 @@ import dvoraka.avservice.checker.exception.ProtocolException;
 import dvoraka.avservice.checker.exception.UnknownProtocolException;
 
 /**
+ * <b>Works with old server implementation only!</b>
+ * <br>
  * Object representation for AMQP anti-virus error message.
  */
 public class ErrorMessage {
@@ -28,7 +30,6 @@ public class ErrorMessage {
     }
 
     public void check() throws ProtocolException {
-        // TODO: improve conditions
         if ("bad app-id".equalsIgnoreCase(getErrorType())) {
             throw new BadExchangeException(getErrorText());
         } else {
