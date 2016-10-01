@@ -4,11 +4,13 @@
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus service supports JMS, AMQP and HTTP for communication. AV-checker project was integrated as checker submodule.
 
-* [Planned features](#planned-features)
-* [Used components](#used-components)
-* [Installation](#installation)
-* [Run services](#run-service)
-* [Load tests](#load-results-for-the-old-service-retested-february-20-2016)
+ * [Features](#features)
+ * [Planned features](#planned-features)
+ * [Used components](#used-components)
+ * [How to send a message](#how-to-send-a-message-for-check)
+ * [Installation](#installation)
+ * [Run services](#run-service)
+ * [Load tests](#load-results-for-the-old-service-retested-february-20-2016)
 
 --
 
@@ -55,7 +57,25 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
  * **ELK Stack** (Elasticsearch, Logstash, Kibana) - logs analyzing
 
 ### How to send a message for check
-Will be here soon.
+You can use AMQP client from this project for first steps. For sending simple message you need only:
+
+```java
+    public static void main(String[] args) {
+    
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.getEnvironment().setActiveProfiles("amqp-client");
+        context.register(AmqpClientConfig.class);
+        context.refresh();
+
+        AmqpClient client = context.getBean(AmqpClient.class);
+
+        AvMessage message = Utils.genNormalMessage();
+        // send message to check exchange
+        client.sendMessage(message, "check");
+
+        context.close();
+    }
+```
 
 ### Installation
 You can use Docker to prepare necessary services for development.
