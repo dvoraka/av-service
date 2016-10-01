@@ -4,6 +4,7 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.MapperException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
@@ -200,6 +201,7 @@ class AvMessageMapperSpec extends Specification {
             message.getBody().length == dataSize
     }
 
+    @Ignore("deprecated")
     def "AVMessage -> AMQP Message, with normal message for old clients"() {
         setup:
             AvMessage avMessage = Utils.genNormalMessage()
@@ -211,6 +213,7 @@ class AvMessageMapperSpec extends Specification {
             headers.get('isClean') == 1
     }
 
+    @Ignore("deprecated")
     def "AvMessage -> AMQP Message, with infected message for old clients"() {
         setup:
             AvMessage avMessage = Utils.genInfectedMessage()

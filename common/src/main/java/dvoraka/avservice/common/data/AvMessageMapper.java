@@ -102,26 +102,15 @@ public final class AvMessageMapper {
         MessageProperties props = new MessageProperties();
         props.setMessageId(msg.getId());
         props.setType(msg.getType().toString());
-
+        // correlation ID
         if (msg.getCorrelationId() != null) {
             props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
         }
 
         props.setAppId("antivirus");
 
-        // TODO: Is it necessary? Yes, current client still uses it and new response is not prepared.
-        // for old clients (deprecated)
-        int oldReply;
-        if (msg.getVirusInfo() != null) {
-            oldReply = OK_VIRUS_INFO.equals(msg.getVirusInfo()) ? 1 : 0;
-        } else {
-            oldReply = 1;
-        }
-        props.setHeader("isClean", oldReply);
-
         // service ID
         props.setHeader(SERVICE_ID_KEY, msg.getServiceId());
-
         // virus info
         props.setHeader(VIRUS_INFO_KEY, msg.getVirusInfo());
 
