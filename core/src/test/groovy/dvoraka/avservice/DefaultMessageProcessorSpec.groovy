@@ -225,7 +225,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
             AvService service = Stub()
             service.scanBytes(_) >> {
-                sleep(1000)
+                sleep(5000)
                 return false
             }
 
