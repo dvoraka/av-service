@@ -5,8 +5,6 @@
  * XML REST configuration migrated to Java config
  * DB logging service prototype
  * Use development Docker containers on Travis CI
- * New REST module
- * New Database module
  * Changed logging implementation to Logback for better Logstash connection
  * Updated external libraries versions
  * One configuration property file for the whole application
@@ -14,6 +12,12 @@
  * Reference implementation of AMQP client
  * Implementation of a message converter with Spring
  * Virus info string in a message is now much more standardized
+ 
+#### modules
+ * New rest module
+ * New database module
+ * New avprogram module
+ * service module renamed to core
 
 ## v0.2
  * Added this document
