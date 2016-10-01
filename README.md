@@ -11,19 +11,25 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
 * [Load tests](#load-results-for-the-old-service-retested-february-20-2016)
 
 --
-### Planned features
-* Highly scalable architecture
-* Robust design
-* Communication over AMQP 0.9.1, JMS and REST
 
-**Later**
-* AMQP 1.0
-* Message tracking DB service (usefull for bigger deployments)
+### Features
+ * AMQP 0.9.1 support
+ * JMS support
+ * REST support
+ * Message tracking DB service (useful for bigger deployments)
+ * Highly scalable architecture
+ * Robust design
+ 
+### Planned features
+ * AMQP 1.0
+ * Separate REST app for better scaling and load balancer
+ * Statistics module
 
 ### Used components
  * **ClamaAV** - open source anti-virus engine
  * **RabbitMQ** - open source message broker for AMQP
  * **ActiveMQ** - open source message broker for JMS
+ * **PostgreSQL** - open source DB
 
 **Frameworks and libraries**
  * **Spring**
@@ -53,6 +59,7 @@ Will be here soon.
 
 ### Installation
 You can use Docker to prepare necessary services for development.
+
 #### Docker
 Docker is recommended approach.
 
