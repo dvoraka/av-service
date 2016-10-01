@@ -19,17 +19,17 @@
  * New avprogram module
  * service module renamed to core
 
-## v0.2
+## v0.2 (Jul 29, 2016)
  * Added this document
 
-## v0.2-rc1
+## v0.2-rc1 (Jul 26, 2016)
  * JMS support
  * Improved tests and coverage
  * New docker images for better development
  * Better code organization
  * Added runners for AMQP, JMS and REST servers for easy starting
 
-## v0.1
+## v0.1 (May 29, 2016)
  * First prototypes
  * AMQP support
  * REST support
