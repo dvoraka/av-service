@@ -9,6 +9,11 @@
  * New Database module
  * Changed logging implementation to Logback for better Logstash connection
  * Updated external libraries versions
+ * One configuration property file for the whole application
+ * Performance tests
+ * Reference implementation of AMQP client
+ * Implementation of a message converter with Spring
+ * Virus info string in a message is now much more standardized
 
 ## v0.2
  * Added this document
