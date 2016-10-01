@@ -15,6 +15,14 @@ class LoadTesterISpec extends Specification {
     LoadTester tester
 
 
+    def setup() {
+        tester.getAvSender().purgeQueue("av-check")
+    }
+
+    def cleanup() {
+        tester.getAvSender().purgeQueue("av-check")
+    }
+
     def "run load test"() {
         given:
             LoadTestProperties props = new BasicLoadTestProperties.Builder()
