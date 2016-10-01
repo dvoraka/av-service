@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
  * Rest client configuration.
  */
 @Configuration
-// TODO:
 @PropertySource("classpath:avservice.properties")
 @Profile("rest-client")
 public class RestClientConfig {
