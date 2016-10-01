@@ -9,6 +9,7 @@ import dvoraka.avservice.checker.exception.LastMessageException;
 import dvoraka.avservice.checker.exception.ProtocolException;
 import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.utils.Printer;
+import dvoraka.avservice.common.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -120,6 +121,7 @@ public class AmqpReceiver implements AvReceiver {
         return delivery;
     }
 
+    @Deprecated
     private boolean isCleanHeaderValue(Map<String, Object> headers) {
         Object header = headers.get("isClean");
         if (header == null) {
@@ -129,6 +131,16 @@ public class AmqpReceiver implements AvReceiver {
         int value = (Integer) header;
 
         return value == 0;
+    }
+
+    private boolean virusInfoHeaderValue(Map<String, Object> headers) {
+        Object header = headers.get("virusInfo");
+        if (header == null) {
+            throw new IllegalArgumentException("virusInfo header missing");
+        }
+        String headerStr = header.toString();
+
+        return !headerStr.equals(Utils.OK_VIRUS_INFO);
     }
 
     @Override
@@ -157,7 +169,7 @@ public class AmqpReceiver implements AvReceiver {
                 dTag = delivery.getEnvelope().getDeliveryTag();
 
                 Map<String, Object> headers = extractHeaders(delivery);
-                virus = isCleanHeaderValue(headers);
+                virus = virusInfoHeaderValue(headers);
 
                 if (corrId.equals(delivery.getProperties().getCorrelationId())) {
                     printMessage("Correlation ID match.");
