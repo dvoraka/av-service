@@ -23,9 +23,9 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
  * Robust design
  
 ### Planned features
- * AMQP 1.0
  * Separate REST app for better scaling and load balancer
  * Statistics module
+ * AMQP 1.0
 
 ### Used components
  * **ClamaAV** - open source anti-virus engine
@@ -36,11 +36,14 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
 **Frameworks and libraries**
  * **Spring**
  * **Spring REST** - REST
+ * **Spring Security** - REST security
  * **Spring AMQP** - AMQP
  * **Spring JMS** - JMS
+ * **Spring Data JPA** - DB message logging
  * **Ehcache 3** - caching
  * **Spock** - testing
- * **Log4j 2** - logging
+ * **Log4j 2** - logging API
+ * **Logback** - logging
 
 **Code quality**
  * **Checkstyle**
@@ -114,9 +117,9 @@ and
 ```
 $ ./gradlew configureEnvironment
 ```
-And everything should be prepared for running.
+And everything should be prepared for application running.
 
-### Manual installation (currently not recommended)
+### Manual installation (currently not recommended and updated)
 #### ClamAV
 #### Debian
 ```
@@ -145,7 +148,7 @@ This is for enabling TCP socket on a default port and localhost.
 You can use the script `tools/prepareRMQ.sh` to create the basic configuration. It creates a new virtual host called **antivirus** and adds permissions for **guest** user.
 
 ### Run service
-Currently everything is rather in a prototype phase.
+You can run all services easily with Gradle.
 
 #### AMQP
 ```
