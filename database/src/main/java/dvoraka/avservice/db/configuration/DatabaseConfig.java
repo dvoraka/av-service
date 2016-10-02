@@ -1,7 +1,7 @@
 package dvoraka.avservice.db.configuration;
 
 import dvoraka.avservice.db.repository.MessageInfoRepository;
-import dvoraka.avservice.db.service.DummyMessageInfoService;
+import dvoraka.avservice.db.service.DefaultMessageInfoService;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -68,8 +68,8 @@ public class DatabaseConfig {
 
     @Bean
     public MessageInfoService messageInfoService(MessageInfoRepository messageInfoRepository) {
-//        return new DefaultMessageInfoService(messageInfoRepository);
-        return new DummyMessageInfoService();
+        return new DefaultMessageInfoService(messageInfoRepository);
+//        return new DummyMessageInfoService();
     }
 
     private Properties hibernateProperties() {
