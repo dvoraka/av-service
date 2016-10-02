@@ -1,5 +1,8 @@
-package dvoraka.avservice.common.data;
+package dvoraka.avservice.common.amqp;
 
+import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageType;
+import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.exception.MapperException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- * AvMessage mapper
+ * AMQP AvMessage mapper
  */
 public final class AvMessageMapper {
 

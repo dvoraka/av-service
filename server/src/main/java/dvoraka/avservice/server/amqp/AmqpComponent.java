@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.amqp;
 
 import dvoraka.avservice.common.AvMessageListener;
+import dvoraka.avservice.common.amqp.AvMessageMapper;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageMapper;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.db.service.MessageInfoService;

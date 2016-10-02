@@ -2,8 +2,8 @@ package dvoraka.avservice.server.amqp
 
 import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.amqp.AvMessageMapper
 import dvoraka.avservice.common.data.AvMessage
-import dvoraka.avservice.common.data.AvMessageMapper
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.db.repository.MessageInfoRepository
 import dvoraka.avservice.db.service.DefaultMessageInfoService

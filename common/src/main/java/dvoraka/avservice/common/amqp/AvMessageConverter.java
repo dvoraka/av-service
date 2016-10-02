@@ -1,7 +1,6 @@
 package dvoraka.avservice.common.amqp;
 
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageMapper;
 import dvoraka.avservice.common.exception.MapperException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;

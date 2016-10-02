@@ -1,6 +1,9 @@
-package dvoraka.avservice.common.data
+package dvoraka.avservice.common.amqp
 
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.AvMessageType
+import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.exception.MapperException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
@@ -37,7 +40,7 @@ class AvMessageMapperSpec extends Specification {
         then:
             thrown(IllegalArgumentException)
     }
-    
+
     def "AMQP Message -> AvMessage, v1"() {
         setup:
             MessageProperties props = new MessageProperties()
