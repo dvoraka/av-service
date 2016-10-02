@@ -61,7 +61,7 @@ subprojects {
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    version = '0.3-SNAPSHOT'
+    version = '0.3-RC1'
 
     repositories {
         mavenCentral()
@@ -98,14 +98,18 @@ subprojects {
     }
 
     dependencies {
-        // log4j
+        // Log4j
         compile("org.apache.logging.log4j:log4j-api:${log4jVersion}")
 //        compile("org.apache.logging.log4j:log4j-core:${log4jVersion}")
 //        compile("org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}")
 //        compile("org.apache.logging.log4j:log4j-jcl:${log4jVersion}")
-        // bridge to Logback
+        // Log4j to SLF4J
         compile("org.apache.logging.log4j:log4j-to-slf4j:${log4jVersion}")
+        // JCL to SLF4J
+        compile("org.slf4j:jcl-over-slf4j:1.7.21")
+        // Logback
         compile("ch.qos.logback:logback-classic:1.1.6")
+        // Logstash encoder
         compile('net.logstash.logback:logstash-logback-encoder:4.7')
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
@@ -115,14 +119,14 @@ subprojects {
             exclude group: 'org.springframework', module: 'spring-tx'
             exclude group: 'org.springframework', module: 'spring-messaging'
         }
-        // Groovy
-        compile("org.codehaus.groovy:groovy-all:${groovyVersion}")
 
+        // Groovy
+        testCompile("org.codehaus.groovy:groovy-all:${groovyVersion}")
         // Spring test
         testCompile("org.springframework:spring-test:${springVersion}")
         // Spock
-        testCompile("org.spockframework:spock-spring:${spockVersion}")
         testCompile("org.spockframework:spock-core:${spockVersion}")
+        testCompile("org.spockframework:spock-spring:${spockVersion}")
         // Cglib
         testCompile('cglib:cglib-nodep:3.2.4')
     }
