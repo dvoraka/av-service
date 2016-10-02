@@ -31,7 +31,7 @@ public class LoadTester implements Tester {
 
     private static final int MAX_MSG_EXCEPTIONS = 3;
     private static final int MAX_LOOPS = 10;
-    private static final int MS_PER_SECOND = 1000;
+    private static final float MS_PER_SECOND = 1000f;
 
     private LoadTestProperties props;
 
@@ -131,11 +131,13 @@ public class LoadTester implements Tester {
 
     private void printTestingTime(long begin) {
         long duration = System.currentTimeMillis() - begin;
+        float durationSeconds = duration / MS_PER_SECOND;
+
         String message = "\n"
                 + "Load test end\n"
-                + "Duration: " + (duration / MS_PER_SECOND) + " s";
+                + "Duration: " + durationSeconds + " s";
         System.out.println(message);
-        long durationSeconds = duration / MS_PER_SECOND;
+
         if (durationSeconds == 0) {
             durationSeconds = 1;
         }
