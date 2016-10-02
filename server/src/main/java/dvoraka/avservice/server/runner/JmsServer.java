@@ -23,7 +23,7 @@ public final class JmsServer {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles("jms", "jms-async");
+        context.getEnvironment().setActiveProfiles("jms", "jms-async", "database");
         context.register(JmsConfig.class);
         context.refresh();
 
