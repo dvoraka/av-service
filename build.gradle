@@ -118,6 +118,7 @@ subprojects {
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
+        // AMQP
         compile("org.springframework.amqp:spring-rabbit:${springRabbitVersion}") {
             exclude group: 'org.springframework', module: 'spring-web'
             exclude group: 'org.springframework', module: 'spring-tx'
