@@ -6,6 +6,7 @@ import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.configuration.AvProgramConfig;
 import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
+import dvoraka.avservice.db.configuration.NoDatabaseConfig;
 import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.service.DefaultAvService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import org.springframework.jmx.support.RegistrationPolicy;
 @PropertySource("classpath:avservice.properties")
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableMBeanExport
-@Import({DatabaseConfig.class, AvProgramConfig.class})
+@Import({DatabaseConfig.class, NoDatabaseConfig.class, AvProgramConfig.class})
 public class ServiceConfig {
 
     @Autowired
