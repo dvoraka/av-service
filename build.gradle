@@ -229,7 +229,7 @@ subprojects {
     }
 
     tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:deprecation"
+        options.compilerArgs << "-Xlint:all"
     }
 
     clean {
