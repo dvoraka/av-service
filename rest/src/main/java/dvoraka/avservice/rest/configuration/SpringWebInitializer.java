@@ -12,7 +12,7 @@ public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{SpringWebConfig.class};
+        return new Class<?>[]{SpringWebConfig.class};
     }
 
     @Override
