@@ -69,7 +69,7 @@ public class JmsConfig {
 
     @Bean
     public ServerComponent serverComponent() {
-        return new JmsComponent(resultDestination);
+        return new JmsComponent(resultDestination, serviceId);
     }
 
     @Bean
