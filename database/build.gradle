@@ -7,6 +7,7 @@ dependencies {
     // Spring
     compile("org.springframework:spring-orm:${springVersion}")
     compile("org.springframework.data:spring-data-jpa:${springDataJpaVersion}")
+    compile("org.springframework.data:spring-data-solr:2.0.4.RELEASE")
     // Hibernate
     compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
     // PostgreSQL
