@@ -3,13 +3,11 @@ package dvoraka.avservice.db.configuration
 import org.apache.solr.client.solrj.SolrClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * Solr testing.
  */
-@Ignore
 @ContextConfiguration(classes = [SolrConfig.class])
 class SolrConfigITest extends Specification {
 
