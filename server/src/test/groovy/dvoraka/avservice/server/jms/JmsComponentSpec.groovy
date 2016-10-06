@@ -3,6 +3,7 @@ package dvoraka.avservice.server.jms
 import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.db.service.MessageInfoService
 import org.apache.activemq.command.ActiveMQMessage
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.converter.MessageConversionException
@@ -23,7 +24,10 @@ class JmsComponentSpec extends Specification {
 
     def setup() {
         destination = "TEST-DESTINATION"
-        component = new JmsComponent(destination)
+        component = new JmsComponent(destination, "TEST1")
+
+        MessageInfoService infoService = Mock()
+        ReflectionTestUtils.setField(component, null, infoService, MessageInfoService.class)
     }
 
     def "on message"() {

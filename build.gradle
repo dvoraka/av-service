@@ -49,7 +49,7 @@ allprojects {
         // Log4j version
         log4jVersion = '2.6.2'
         // Logback classic version
-        logbackVersion = '1.1.7'
+        logbackVersion = '1.1.6'
         // Cglib nodep version
         cglibVersion = '3.2.4'
     }
