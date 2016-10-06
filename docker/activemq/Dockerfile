@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM openjdk:8u102-jre
 
 ARG AMQ_NAME=activemq
 ARG AMQ_VERSION=5.13.3
