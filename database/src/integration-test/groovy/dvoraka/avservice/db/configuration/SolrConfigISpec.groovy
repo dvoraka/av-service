@@ -4,6 +4,7 @@ import dvoraka.avservice.db.model.MessageInfoDocument
 import dvoraka.avservice.db.repository.SolrMessageInfoRepository
 import org.apache.solr.client.solrj.SolrClient
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
@@ -11,7 +12,8 @@ import spock.lang.Specification
  * Solr testing.
  */
 @ContextConfiguration(classes = [SolrConfig.class])
-class SolrConfigITest extends Specification {
+@ActiveProfiles(['db-solr'])
+class SolrConfigISpec extends Specification {
 
     @Autowired
     SolrClient solrClient

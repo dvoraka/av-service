@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
  * Solr message info repository.
  */
 @Repository
-public interface SolrMessageInfoRepository extends SolrCrudRepository<MessageInfoDocument, String> {
+public interface SolrMessageInfoRepository
+        extends SolrCrudRepository<MessageInfoDocument, String>, SolrMessageInfoRepositoryCustom {
 }
