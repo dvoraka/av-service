@@ -122,6 +122,12 @@
     <field name="_root_" type="string" indexed="true" stored="false" docValues="false" />
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
 
+    <!-- test core fields -->
+    <field name="uuid" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="source" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="serviceId" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="created" type="date" indexed="true" stored="true" required="true" multiValued="false" />
+
     <!-- Only enabled in the "schemaless" data-driven example (assuming the client
          does not know what fields may be searched) because it's very expensive to index everything twice. -->
     <!-- <copyField source="*" dest="_text_"/> -->
@@ -131,46 +137,8 @@
        EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
        RESTRICTION: the glob-like pattern in the name attribute must have
        a "*" only at the start or the end.  -->
-   
-    <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>
-    <dynamicField name="*_is" type="ints"    indexed="true"  stored="true"/>
-    <dynamicField name="*_s"  type="string"  indexed="true"  stored="true" />
-    <dynamicField name="*_ss" type="strings"  indexed="true"  stored="true"/>
-    <dynamicField name="*_l"  type="long"   indexed="true"  stored="true"/>
-    <dynamicField name="*_ls" type="longs"   indexed="true"  stored="true"/>
-    <dynamicField name="*_t"   type="text_general" indexed="true" stored="true"/>
-    <dynamicField name="*_txt" type="text_general" indexed="true" stored="true"/>
-    <dynamicField name="*_b"  type="boolean" indexed="true" stored="true"/>
-    <dynamicField name="*_bs" type="booleans" indexed="true" stored="true"/>
-    <dynamicField name="*_f"  type="float"  indexed="true"  stored="true"/>
-    <dynamicField name="*_fs" type="floats"  indexed="true"  stored="true"/>
-    <dynamicField name="*_d"  type="double" indexed="true"  stored="true"/>
-    <dynamicField name="*_ds" type="doubles" indexed="true"  stored="true"/>
 
-    <!-- Type used to index the lat and lon components for the "location" FieldType -->
-    <dynamicField name="*_coordinate"  type="tdouble" indexed="true"  stored="false" useDocValuesAsStored="false" />
-
-    <dynamicField name="*_dt"  type="date"    indexed="true"  stored="true"/>
-    <dynamicField name="*_dts" type="date"    indexed="true"  stored="true" multiValued="true"/>
-    <dynamicField name="*_p"  type="location" indexed="true" stored="true"/>
-    <dynamicField name="*_srpt"  type="location_rpt" indexed="true" stored="true"/>
-
-    <!-- some trie-coded dynamic fields for faster range queries -->
-    <dynamicField name="*_ti" type="tint"    indexed="true"  stored="true"/>
-    <dynamicField name="*_tis" type="tints"    indexed="true"  stored="true"/>
-    <dynamicField name="*_tl" type="tlong"   indexed="true"  stored="true"/>
-    <dynamicField name="*_tls" type="tlongs"   indexed="true"  stored="true"/>
-    <dynamicField name="*_tf" type="tfloat"  indexed="true"  stored="true"/>
-    <dynamicField name="*_tfs" type="tfloats"  indexed="true"  stored="true"/>
-    <dynamicField name="*_td" type="tdouble" indexed="true"  stored="true"/>
-    <dynamicField name="*_tds" type="tdoubles" indexed="true"  stored="true"/>
-    <dynamicField name="*_tdt" type="tdate"  indexed="true"  stored="true"/>
-    <dynamicField name="*_tdts" type="tdates"  indexed="true"  stored="true"/>
-
-    <dynamicField name="ignored_*" type="ignored" multiValued="true"/>
-    <dynamicField name="attr_*" type="text_general" indexed="true" stored="true" multiValued="true"/>
-
-    <dynamicField name="random_*" type="random" />
+    <!-- <dynamicField name="random_*" type="random" /> -->
 
     <!-- uncomment the following to ignore any fields that don't already match an existing 
         field name or dynamic field, rather than reporting them as an error. 
@@ -333,7 +301,7 @@
     -->
 
     <!-- A text field that only splits on whitespace for exact matching of words -->
-    <dynamicField name="*_ws" type="text_ws"  indexed="true"  stored="true"/>
+    <!-- <dynamicField name="*_ws" type="text_ws"  indexed="true"  stored="true"/> -->
     <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
@@ -362,7 +330,7 @@
       </analyzer>
     </fieldType>
 
-    <dynamicField name="*_phon_en" type="phonetic_en"  indexed="true"  stored="true"/>
+    <!-- <dynamicField name="*_phon_en" type="phonetic_en"  indexed="true"  stored="true"/> -->
     <fieldType name="phonetic_en" stored="false" indexed="true" class="solr.TextField" >
       <analyzer>
         <tokenizer class="solr.StandardTokenizerFactory"/>
@@ -371,7 +339,7 @@
     </fieldType>
 
     <!-- lowercases the entire field value, keeping it as a single token.  -->
-    <dynamicField name="*_s_lower" type="lowercase"  indexed="true"  stored="true"/>
+    <!-- <dynamicField name="*_s_lower" type="lowercase"  indexed="true"  stored="true"/> -->
     <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
@@ -383,7 +351,7 @@
       Example of using PathHierarchyTokenizerFactory at index time, so
       queries for paths match documents at that path, or in descendent paths
     -->
-    <dynamicField name="*_descendent_path" type="descendent_path"  indexed="true"  stored="true"/>
+    <!-- <dynamicField name="*_descendent_path" type="descendent_path"  indexed="true"  stored="true"/> -->
     <fieldType name="descendent_path" class="solr.TextField">
       <analyzer type="index">
         <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
@@ -397,7 +365,7 @@
       Example of using PathHierarchyTokenizerFactory at query time, so
       queries for paths match documents at that path, or in ancestor paths
     -->
-    <dynamicField name="*_ancestor_path" type="ancestor_path"  indexed="true"  stored="true"/>
+    <!-- <dynamicField name="*_ancestor_path" type="ancestor_path"  indexed="true"  stored="true"/> -->
     <fieldType name="ancestor_path" class="solr.TextField">
       <analyzer type="index">
         <tokenizer class="solr.KeywordTokenizerFactory" />
@@ -422,7 +390,7 @@
       The subFields are an implementation detail of the fieldType, and end
       users normally should not need to know about them.
      -->
-    <dynamicField name="*_point" type="point"  indexed="true"  stored="true"/>
+    <!-- <dynamicField name="*_point" type="point"  indexed="true"  stored="true"/> -->
     <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
 
     <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
