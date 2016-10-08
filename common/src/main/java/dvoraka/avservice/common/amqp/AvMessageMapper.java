@@ -1,6 +1,8 @@
-package dvoraka.avservice.common.data;
+package dvoraka.avservice.common.amqp;
 
-import dvoraka.avservice.common.Utils;
+import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageType;
+import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.exception.MapperException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,14 +13,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- * AvMessage mapper
+ * AMQP AvMessage mapper
  */
 public final class AvMessageMapper {
 
     private static final Logger log = LogManager.getLogger(AvMessageMapper.class.getName());
 
     public static final String VIRUS_INFO_KEY = "virusInfo";
-    public static final String OK_VIRUS_INFO = Utils.OK_VIRUS_INFO;
     public static final String DEFAULT_VIRUS_INFO = "noinfo";
     public static final String SERVICE_ID_KEY = "serviceId";
     public static final String DEFAULT_SERVICE_ID = "noservice";

@@ -69,7 +69,6 @@ public class DatabaseConfig {
     @Bean
     public MessageInfoService messageInfoService(MessageInfoRepository messageInfoRepository) {
         return new DefaultMessageInfoService(messageInfoRepository);
-//        return new DummyMessageInfoService();
     }
 
     private Properties hibernateProperties() {

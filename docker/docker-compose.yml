@@ -38,3 +38,8 @@ services:
     build: ./postgresql
     image: "postgresql-dev-server"
     network_mode: "host"
+
+  solr-dev:
+    build: ./solr
+    image: "solr-dev-server"
+    network_mode: "host"

@@ -19,7 +19,8 @@ import java.util.Date;
 @Transactional
 public class DefaultMessageInfoService implements MessageInfoService {
 
-    private static final Logger log = LogManager.getLogger(DefaultMessageInfoService.class.getName());
+    private static final Logger log =
+            LogManager.getLogger(DefaultMessageInfoService.class.getName());
 
     private final MessageInfoRepository messageInfoRepository;
 

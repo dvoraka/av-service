@@ -69,7 +69,8 @@ public class LoadTester implements Tester {
         return messageIDs;
     }
 
-    public void receiveMessages(Collection<String> messageIDs) throws IOException, MaxLoopsReachedException {
+    public void receiveMessages(Collection<String> messageIDs)
+            throws IOException, MaxLoopsReachedException {
 
         int loopCounter = 1;
         while (!messageIDs.isEmpty()) {

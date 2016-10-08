@@ -2,6 +2,8 @@ package dvoraka.avservice.server.jms;
 
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,15 +26,20 @@ public class JmsComponent implements ServerComponent {
     private JmsTemplate jmsTemplate;
     @Autowired
     private MessageConverter messageConverter;
+    @Autowired
+    private MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(JmsComponent.class.getName());
+    private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.JMS_COMPONENT;
 
     private final String responseDestination;
+    private final String serviceId;
     private final List<AvMessageListener> listeners = new ArrayList<>();
 
 
-    public JmsComponent(String responseDestination) {
+    public JmsComponent(String responseDestination, String serviceId) {
         this.responseDestination = responseDestination;
+        this.serviceId = serviceId;
     }
 
     @Override
@@ -44,6 +51,7 @@ public class JmsComponent implements ServerComponent {
         AvMessage avMessage;
         try {
             avMessage = (AvMessage) messageConverter.fromMessage(message);
+            messageInfoService.save(avMessage, MESSAGE_SOURCE, serviceId);
         } catch (JMSException | MessageConversionException e) {
             log.warn("Conversion error!", e);
 

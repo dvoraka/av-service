@@ -1,6 +1,7 @@
-package dvoraka.avservice.common.data
+package dvoraka.avservice.common.amqp
 
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.AvMessage
 import spock.lang.Specification
 import spock.lang.Unroll
 

@@ -1,7 +1,7 @@
-FROM java:8-jre
+FROM openjdk:8u102-jre
 
 ARG AMQ_NAME=activemq
-ARG AMQ_VERSION=5.13.3
+ARG AMQ_VERSION=5.14.1
 ARG AMQ_ARCHIVE_NAME=apache-$AMQ_NAME-$AMQ_VERSION-bin.tar.gz
 ARG AMQ_DOWN_URL=http://archive.apache.org/dist/$AMQ_NAME/$AMQ_VERSION/$AMQ_ARCHIVE_NAME
 ARG AMQ_DIR=/opt/apache-$AMQ_NAME-$AMQ_VERSION

@@ -114,7 +114,8 @@ public class ClamAvProgram implements AvProgram {
         try (
                 Socket socket = createSocket();
                 OutputStream outStream = socket.getOutputStream();
-                InputStreamReader inReader = new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
+                InputStreamReader inReader =
+                        new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
                 BufferedReader in = new BufferedReader(inReader)
         ) {
             // send bytes
@@ -181,7 +182,8 @@ public class ClamAvProgram implements AvProgram {
                 Socket socket = createSocket();
                 PrintWriter out = new PrintWriter(
                         new OutputStreamWriter(socket.getOutputStream(), DEFAULT_CHARSET));
-                InputStreamReader inReader = new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
+                InputStreamReader inReader =
+                        new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
                 BufferedReader in = new BufferedReader(inReader)
         ) {
             out.println("n" + command);
