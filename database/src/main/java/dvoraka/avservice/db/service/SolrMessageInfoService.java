@@ -42,7 +42,7 @@ public class SolrMessageInfoService implements MessageInfoService {
         messageInfoDocument.setServiceId(serviceId);
         messageInfoDocument.setCreated(new Date());
 
-//        messageInfoRepository.save(messageInfoDocument);
+        messageInfoRepository.saveSoft(messageInfoDocument);
     }
 
     @Override

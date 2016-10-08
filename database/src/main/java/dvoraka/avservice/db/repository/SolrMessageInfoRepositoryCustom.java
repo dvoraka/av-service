@@ -3,8 +3,9 @@ package dvoraka.avservice.db.repository;
 import dvoraka.avservice.db.model.MessageInfoDocument;
 
 /**
- * Custom repo.
+ * Custom repository.
  */
 public interface SolrMessageInfoRepositoryCustom {
-    <S extends MessageInfoDocument> S save(S document);
+
+    MessageInfoDocument saveSoft(MessageInfoDocument document);
 }
