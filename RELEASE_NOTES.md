@@ -1,3 +1,5 @@
+## v0.3 (Oct 8, 2016)
+
 ## v0.3-rc1 (Oct 2, 2016)
  * Better performance
  * AV program caching for speedup same checks
