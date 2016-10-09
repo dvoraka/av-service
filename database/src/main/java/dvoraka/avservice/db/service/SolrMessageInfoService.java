@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,7 +24,15 @@ public class SolrMessageInfoService implements MessageInfoService {
     private static final Logger log =
             LogManager.getLogger(SolrMessageInfoService.class.getName());
 
+    private static final int DEFAULT_BATCH_SIZE = 199;
+
     private final SolrMessageInfoRepository messageInfoRepository;
+
+    private Collection<MessageInfoDocument> documents = new ArrayList<>();
+    private int batchSize = DEFAULT_BATCH_SIZE;
+//    private long commitEveryMs = 10_000L;
+//    private long lastCommitTime;
+    private int docsInCollection;
 
 
     @Autowired
@@ -42,7 +52,24 @@ public class SolrMessageInfoService implements MessageInfoService {
         messageInfoDocument.setServiceId(serviceId);
         messageInfoDocument.setCreated(new Date());
 
-        messageInfoRepository.saveSoft(messageInfoDocument);
+        save(messageInfoDocument);
+    }
+
+    private synchronized void save(MessageInfoDocument document) {
+        if (docsInCollection == batchSize) {
+
+            messageInfoRepository.save(documents);
+            documents.clear();
+            resetDocumentCounter();
+
+        } else {
+            documents.add(document);
+            docsInCollection++;
+        }
+    }
+
+    private void resetDocumentCounter() {
+        docsInCollection = 0;
     }
 
     @Override

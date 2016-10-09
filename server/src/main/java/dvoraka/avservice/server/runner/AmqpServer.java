@@ -23,7 +23,8 @@ public final class AmqpServer {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles("amqp", "database");
+//        context.getEnvironment().setActiveProfiles("amqp", "database");
+        context.getEnvironment().setActiveProfiles("amqp", "db-solr");
         context.register(AmqpConfig.class);
         context.refresh();
 
