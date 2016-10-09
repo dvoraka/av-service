@@ -1,6 +1,6 @@
 package dvoraka.avservice.db.configuration;
 
-import dvoraka.avservice.db.repository.SolrMessageInfoRepository;
+import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.db.service.SolrMessageInfoService;
 import org.apache.solr.client.solrj.SolrClient;
@@ -15,7 +15,7 @@ import org.springframework.data.solr.repository.config.EnableSolrRepositories;
  * Solr Spring configuration.
  */
 @Configuration
-@EnableSolrRepositories(basePackages = "dvoraka.avservice.db.repository")
+@EnableSolrRepositories(basePackages = "dvoraka.avservice.db.repository.solr")
 @Profile("db-solr")
 public class SolrConfig {
 

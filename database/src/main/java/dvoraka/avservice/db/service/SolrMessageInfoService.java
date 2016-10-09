@@ -4,7 +4,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.model.MessageInfo;
 import dvoraka.avservice.db.model.MessageInfoDocument;
-import dvoraka.avservice.db.repository.SolrMessageInfoRepository;
+import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

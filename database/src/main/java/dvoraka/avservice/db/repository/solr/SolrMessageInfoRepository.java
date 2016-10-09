@@ -1,4 +1,4 @@
-package dvoraka.avservice.db.repository;
+package dvoraka.avservice.db.repository.solr;
 
 import dvoraka.avservice.db.model.MessageInfoDocument;
 import org.springframework.data.solr.repository.SolrCrudRepository;

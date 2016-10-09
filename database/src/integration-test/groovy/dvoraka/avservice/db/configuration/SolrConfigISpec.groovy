@@ -1,7 +1,7 @@
 package dvoraka.avservice.db.configuration
 
 import dvoraka.avservice.db.model.MessageInfoDocument
-import dvoraka.avservice.db.repository.SolrMessageInfoRepository
+import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository
 import org.apache.solr.client.solrj.SolrClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
