@@ -49,6 +49,24 @@ class SolrPSpec extends Specification {
     }
 
     @Unroll
+    def "save documents in collection w/o: #cycles"() {
+        given:
+            Collection<MessageInfoDocument> documents = new ArrayList<>(cycles)
+
+        when:
+            cycles.times {
+                documents.add(genDocument())
+            }
+            solrTemplate.saveBeans(documents)
+
+        then:
+            notThrown(Exception)
+
+        where:
+            cycles << [10, 1000, 10_000, 100_000]
+    }
+
+    @Unroll
     def "save documents soft: #cycles"() {
         when:
             cycles.times {
@@ -81,7 +99,9 @@ class SolrPSpec extends Specification {
     @Ignore
     @Unroll
     def "hard commit after (#run. run)"() {
-        int documents = 100_000
+        given:
+            int documents = 100_000
+
         when:
             documents.times {
                 solrTemplate.saveBean(genDocument())
@@ -99,15 +119,28 @@ class SolrPSpec extends Specification {
     @Ignore
     def "insert documents"() {
         given:
-            int documents = 500_000
+            long start = System.currentTimeMillis()
+            int documentCount = 1_000_000
+            Collection<MessageInfoDocument> documents = new ArrayList<>(documentCount)
+
         when:
-            documents.times {
-                solrTemplate.saveBean(genDocument())
+            documentCount.times {
+                documents.add(genDocument())
             }
+            println("In collection: " + getMsFromStart(start))
+
+            solrTemplate.saveBeans(documents)
+            println("In Solr: " + getMsFromStart(start))
+
             solrTemplate.commit()
+            println("After commit: " + getMsFromStart(start))
 
         then:
             notThrown(Exception)
+    }
+
+    long getMsFromStart(long start) {
+        return (System.currentTimeMillis() - start)
     }
 
     MessageInfoDocument genDocument() {
