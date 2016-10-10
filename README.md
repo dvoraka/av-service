@@ -32,6 +32,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
  * **RabbitMQ** - open source message broker for AMQP
  * **ActiveMQ** - open source message broker for JMS
  * **PostgreSQL** - open source DB
+ * **Solr** - open source enterprise search platform
 
 **Frameworks and libraries**
  * **Spring**
@@ -39,7 +40,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
  * **Spring Security** - REST security
  * **Spring AMQP** - AMQP
  * **Spring JMS** - JMS
- * **Spring Data JPA** - DB message logging
+ * **Spring Data** - message logging
  * **Ehcache 3** - caching
  * **Spock** - testing
  * **Log4j 2** - logging API
@@ -91,6 +92,7 @@ Docker is recommended approach.
 * ActiveMQ
 * ClamAV daemon
 * PostgreSQL
+* Solr
 * Kibana
 * Elasticsearch
 * Logstash
@@ -164,8 +166,8 @@ $ ./gradlew appStart
 ```
 
 ### AMQP checker
-
 Utility for testing AMQP infrastructure.
+
 #### Run
 ```
 $ ./gradlew -q amqpCheck
@@ -183,6 +185,7 @@ And the full jar will be in `checker/build/libs/` directory.
 
 #### Run jar
 Built jar is executable.
+
 ##### Properties:
 * host - message broker host
 * infected - infection flag (true/false)
