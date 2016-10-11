@@ -1,6 +1,6 @@
 package dvoraka.avservice.checker
 
-import dvoraka.avservice.checker.exception.LastMessageException
+import dvoraka.avservice.common.exception.LastMessageException
 import dvoraka.avservice.checker.receiver.AvReceiver
 import dvoraka.avservice.checker.sender.AvSender
 import org.springframework.test.util.ReflectionTestUtils

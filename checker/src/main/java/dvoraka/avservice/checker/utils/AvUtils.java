@@ -1,8 +1,8 @@
 package dvoraka.avservice.checker.utils;
 
-import dvoraka.avservice.checker.exception.LastMessageException;
-import dvoraka.avservice.checker.exception.ProtocolException;
-import dvoraka.avservice.checker.exception.UnknownProtocolException;
+import dvoraka.avservice.common.exception.LastMessageException;
+import dvoraka.avservice.common.exception.ProtocolException;
+import dvoraka.avservice.common.exception.UnknownProtocolException;
 import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.sender.AvSender;
 import org.apache.logging.log4j.LogManager;
@@ -88,7 +88,7 @@ public class AvUtils implements AmqpUtils {
                 return protocol;
             } catch (ConnectException e) {
                 log.debug(e);
-                throw new UnknownProtocolException();
+                throw new UnknownProtocolException("Unknown protocol: " + protocol);
             } catch (InterruptedException e) {
                 log.warn(e);
                 Thread.currentThread().interrupt();
@@ -98,7 +98,7 @@ public class AvUtils implements AmqpUtils {
                 log.debug(e);
             } catch (IOException e) {
                 log.warn("negotiation failed", e);
-                throw new UnknownProtocolException();
+                throw new UnknownProtocolException("Unknown protocol: " + protocol);
             }
         }
 

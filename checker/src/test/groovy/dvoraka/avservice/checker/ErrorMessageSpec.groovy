@@ -1,7 +1,7 @@
 package dvoraka.avservice.checker
 
-import dvoraka.avservice.checker.exception.BadExchangeException
-import dvoraka.avservice.checker.exception.UnknownProtocolException
+import dvoraka.avservice.common.exception.BadExchangeException
+import dvoraka.avservice.common.exception.UnknownProtocolException
 import spock.lang.Specification
 
 /**

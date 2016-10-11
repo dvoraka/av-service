@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker.exception
+package dvoraka.avservice.common.exception
 
 import spock.lang.Specification
 

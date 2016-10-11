@@ -218,6 +218,7 @@ public class ClamAvProgram implements AvProgram {
      *
      * @return the result
      */
+    @SuppressWarnings("try")
     public boolean testConnection() {
         log.debug("Testing connection...");
 

@@ -1,19 +1,14 @@
-package dvoraka.avservice.checker.exception;
+package dvoraka.avservice.common.exception;
 
 /**
  * Base class for protocol exceptions.
  *
  * @author dvoraka
  */
-public class ProtocolException extends Exception {
+public class ProtocolException extends AvException {
 
-    /**
-     * Creates a new instance of <code>ProtocolException</code> without detail
-     * message.
-     */
-    public ProtocolException() {
-        super();
-    }
+    private static final long serialVersionUID = 7356284192079431265L;
+
 
     /**
      * Constructs an instance of <code>ProtocolException</code> with the
