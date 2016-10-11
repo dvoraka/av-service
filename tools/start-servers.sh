@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Start all docker containers with docker-compose up
+# Starts all docker containers with "docker-compose up" command
 #
 
 ENV=docker

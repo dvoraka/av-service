@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copy Logback configuration files
+# Copy anything to all modules
 #
 
 ROOT=$(dirname `pwd`)
