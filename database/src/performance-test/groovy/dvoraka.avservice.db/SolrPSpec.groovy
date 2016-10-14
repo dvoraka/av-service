@@ -25,10 +25,8 @@ class SolrPSpec extends Specification {
 
     def "warm up"() {
         when:
-            2.times {
-                solrTemplate.saveBean(genDocument())
-                solrTemplate.commit()
-            }
+            solrTemplate.saveBean(genDocument())
+            solrTemplate.commit()
 
         then:
             notThrown(Exception)
@@ -117,10 +115,10 @@ class SolrPSpec extends Specification {
     }
 
     @Ignore
-    def "insert documents"() {
+    def "insert 1 M documents"() {
         given:
             long start = System.currentTimeMillis()
-            int documentCount = 1_000_000
+            int documentCount = 100_000
             Collection<MessageInfoDocument> documents = new ArrayList<>(documentCount)
 
         when:
@@ -137,6 +135,9 @@ class SolrPSpec extends Specification {
 
         then:
             notThrown(Exception)
+
+        where:
+            i << (1..10)
     }
 
     long getMsFromStart(long start) {
