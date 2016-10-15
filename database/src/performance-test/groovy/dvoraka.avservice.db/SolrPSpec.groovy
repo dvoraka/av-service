@@ -25,13 +25,17 @@ class SolrPSpec extends Specification {
 
     def "warm up"() {
         when:
-            solrTemplate.saveBean(genDocument())
-            solrTemplate.commit()
+            1.times { // currently it doesn't work without 'times' (probably bug)
+                solrTemplate.saveBean(genDocument())
+                solrTemplate.commit()
+                solrTemplate.softCommit()
+            }
 
         then:
             notThrown(Exception)
     }
 
+    @Ignore
     @Unroll
     def "save documents w/o: #cycles"() {
         when:
@@ -46,6 +50,7 @@ class SolrPSpec extends Specification {
             cycles << [10, 100, 1000, 10_000]
     }
 
+    @Ignore
     @Unroll
     def "save documents in collection w/o: #cycles"() {
         given:
@@ -64,6 +69,7 @@ class SolrPSpec extends Specification {
             cycles << [10, 1000, 10_000, 100_000]
     }
 
+    @Ignore
     @Unroll
     def "save documents soft: #cycles"() {
         when:
@@ -79,6 +85,7 @@ class SolrPSpec extends Specification {
             cycles << [10, 100, 1000, 10_000]
     }
 
+    @Ignore
     @Unroll
     def "save documents hard: #cycles"() {
         when:
