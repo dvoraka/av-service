@@ -1,20 +1,23 @@
 # Performance notes
 
-Based on PC3
+Based on PC3.
 
 ## Solr
 
 Documents are Message info documents.
 
 ### 1. milion
-In collection: 10602 ms
-In Solr: 59769 ms
-After commit: 65834 ms
+ * In collection: 10602 ms
+ * In Solr: 59769 ms
+ * After commit: 65834 ms
 
 
-#### commits
+### Commits
 
-With empty collection.
+Insert document and commit after.
+
+
+With **empty** collection.
 
  x  | 10 | 100 | 1000 | 10 000 
 --- | --- | --- | --- | ---
