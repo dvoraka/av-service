@@ -6,10 +6,17 @@ Based on PC3.
 
 Documents are Message info documents.
 
-### 1. milion
- * In collection: 10602 ms
- * In Solr: 59769 ms
- * After commit: 65834 ms
+### Inserting documents
+
+#### 1. million
+ * In collection: 10 602 ms
+ * In Solr: 59 769 ms
+ * After commit: 65 834 ms
+
+#### 201. million
+ * In collection: 10 410 ms
+ * In Solr: 55 889 ms
+ * After commit: 273 645 ms
 
 ### Sorting queries
 
@@ -42,7 +49,7 @@ no  | 61 ms | 547 ms | 3.7 s | 21.9 s
 soft| x | 1.6 s | 11.3 s | 11 m 10 s 
 hard| 8.5 s | 58.4 s | 9 m 42 s | x 
 
-With **200 million** documents (48 GB).
+With **200 million** documents (46 GB).
 
  x  | 10 | 100 | 1000 | 10 000 
 --- | --- | --- | --- | ---
