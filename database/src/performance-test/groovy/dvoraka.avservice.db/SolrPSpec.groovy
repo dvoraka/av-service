@@ -28,7 +28,6 @@ class SolrPSpec extends Specification {
             1.times { // currently it doesn't work without 'times' (probably bug)
                 solrTemplate.saveBean(genDocument())
                 solrTemplate.commit()
-                solrTemplate.softCommit()
             }
 
         then:
