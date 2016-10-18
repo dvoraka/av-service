@@ -9,6 +9,7 @@ import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class AmqpComponent implements ServerComponent {
 
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.AMQP_COMPONENT;
+    public static final String ROUTING_KEY = "ROUTINGKEY";
 
     private final String responseExchange;
     private final String serviceId;
@@ -66,20 +68,16 @@ public class AmqpComponent implements ServerComponent {
             throw new IllegalArgumentException("Message may not be null!");
         }
 
-        Message response = null;
+        // TODO: improve exception handling
         try {
-            response = AvMessageMapper.transform(message);
-            rabbitTemplate.send(responseExchange, "ROUTINGKEY", response);
-        } catch (MapperException e) {
-            log.warn("Message transformation problem!", e);
+            rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
+        } catch (AmqpException e) {
+            log.warn("Message send problem!", e);
+
             // create error response
             AvMessage errorResponse = message.createErrorResponse(e.getMessage());
-            try {
-                response = AvMessageMapper.transform(errorResponse);
-            } catch (MapperException e1) {
-                log.error("Message send error!", e1);
-            }
-            rabbitTemplate.send(responseExchange, "ROUTINGKEY", response);
+
+            rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, errorResponse);
         }
     }
 

@@ -87,9 +87,10 @@ class AmqpComponentSpec extends Specification {
             component.sendMessage(message)
 
         then:
-            1 * rabbitTemplate.send(_, _, _)
+            1 * rabbitTemplate.convertAndSend(_, _, _)
     }
 
+    // TODO: improve
     def "send broken message"() {
         given:
             RabbitTemplate rabbitTemplate = Mock()
@@ -101,8 +102,8 @@ class AmqpComponentSpec extends Specification {
         when:
             component.sendMessage(message)
 
-        then:
-            1 * rabbitTemplate.send(_, _, _)
+        then: "send error response"
+            1 * rabbitTemplate.convertAndSend(_, _, _)
     }
 
     def "add listeners"() {

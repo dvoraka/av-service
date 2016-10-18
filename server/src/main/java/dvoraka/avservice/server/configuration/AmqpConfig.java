@@ -110,11 +110,13 @@ public class AmqpConfig {
     }
 
     @Bean
-    public RabbitTemplate amqpTemplate(ConnectionFactory connectionFactory) {
+    public RabbitTemplate amqpTemplate(
+            ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
         template.setRoutingKey("test");
         template.setQueue(checkQueue);
+        template.setMessageConverter(messageConverter);
 
         return template;
     }
