@@ -84,19 +84,19 @@ public class AmqpConfig {
     }
 
     @Bean
-    public SimpleMessageListenerContainer messageListenerContainer() {
+    public SimpleMessageListenerContainer messageListenerContainer(
+            MessageListener messageListener) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory());
         container.setQueueNames(checkQueue);
-        container.setMessageListener(messageListener());
+        container.setMessageListener(messageListener);
 
         return container;
     }
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory =
-                new CachingConnectionFactory(host);
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
         connectionFactory.setUsername(userName);
         connectionFactory.setPassword(userPassword);
         connectionFactory.setVirtualHost(virtualHost);
@@ -122,8 +122,8 @@ public class AmqpConfig {
     }
 
     @Bean
-    public MessageListener messageListener() {
-        return serverComponent();
+    public MessageListener messageListener(ServerComponent serverComponent) {
+        return serverComponent;
     }
 
     @Bean
