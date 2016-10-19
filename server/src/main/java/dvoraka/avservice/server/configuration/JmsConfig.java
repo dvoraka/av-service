@@ -108,6 +108,7 @@ public class JmsConfig {
     }
 
     @Bean
+    @Profile("jms-async")
     public MessageListener messageListener() {
         return serverComponent();
     }
