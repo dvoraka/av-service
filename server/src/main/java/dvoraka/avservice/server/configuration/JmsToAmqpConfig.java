@@ -2,14 +2,12 @@ package dvoraka.avservice.server.configuration;
 
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.configuration.ServiceConfig;
-import dvoraka.avservice.server.ComponentBridge;
 import dvoraka.avservice.server.ServerComponent;
+import dvoraka.avservice.server.ServerComponentBridge;
 import dvoraka.avservice.server.amqp.AmqpComponent;
 import dvoraka.avservice.server.jms.JmsComponent;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
@@ -91,8 +89,8 @@ public class JmsToAmqpConfig {
     }
 
     @Bean
-    public ComponentBridge componentBridge() {
-        return new ComponentBridge();
+    public ServerComponentBridge componentBridge() {
+        return new ServerComponentBridge();
     }
 
     //
@@ -134,10 +132,13 @@ public class JmsToAmqpConfig {
     }
 
     @Bean
-    public JmsTemplate jmsTemplate(javax.jms.ConnectionFactory inConnectionFactory) {
+    public JmsTemplate jmsTemplate(
+            javax.jms.ConnectionFactory inConnectionFactory,
+            org.springframework.jms.support.converter.MessageConverter inMessageConverter
+    ) {
         JmsTemplate template = new JmsTemplate(inConnectionFactory);
         template.setReceiveTimeout(receiveTimeout);
-        template.setMessageConverter(inMessageConverter());
+        template.setMessageConverter(inMessageConverter);
 
         return template;
     }
@@ -166,11 +167,11 @@ public class JmsToAmqpConfig {
 
     @Bean
     public SimpleMessageListenerContainer outMessageListenerContainer(
-            ConnectionFactory connectionFactory,
+            ConnectionFactory outConnectionFactory,
             MessageListener outMessageListener
     ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
+        container.setConnectionFactory(outConnectionFactory);
         container.setQueueNames(resultQueue);
         container.setMessageListener(outMessageListener);
 
@@ -194,12 +195,12 @@ public class JmsToAmqpConfig {
 
     @Bean
     public RabbitTemplate amqpTemplate(
-            ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+            ConnectionFactory connectionFactory, MessageConverter outMessageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
-        template.setRoutingKey("test");
+        template.setRoutingKey("bridge");
         template.setQueue(resultQueue);
-        template.setMessageConverter(messageConverter);
+        template.setMessageConverter(outMessageConverter);
 
         return template;
     }
@@ -207,11 +208,6 @@ public class JmsToAmqpConfig {
     @Bean
     public MessageListener outMessageListener(ServerComponent outComponent) {
         return outComponent;
-    }
-
-    @Bean
-    public Queue checkQueue() {
-        return new Queue(checkQueue);
     }
 
     @Bean
@@ -225,22 +221,7 @@ public class JmsToAmqpConfig {
     }
 
     @Bean
-    public FanoutExchange resultExchange() {
-        return new FanoutExchange(resultExchange);
-    }
-
-    @Bean
-    public Binding bindingCheck(Queue checkQueue, FanoutExchange checkExchange) {
-        return BindingBuilder.bind(checkQueue).to(checkExchange);
-    }
-
-    @Bean
-    public Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
-        return BindingBuilder.bind(resultQueue).to(resultExchange);
-    }
-
-    @Bean
-    public MessageConverter messageConverter() {
+    public MessageConverter outMessageConverter() {
         return new AvMessageConverter();
     }
 }

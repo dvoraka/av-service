@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * Component bridge.
+ * Server component bridge.
  */
 @Component
-public class ComponentBridge {
+public class ServerComponentBridge {
 
     @Autowired
     private ServerComponent inComponent;
@@ -25,7 +25,7 @@ public class ComponentBridge {
         context.register(JmsToAmqpConfig.class);
         context.refresh();
 
-        ComponentBridge bridge = context.getBean(ComponentBridge.class);
+        ServerComponentBridge bridge = context.getBean(ServerComponentBridge.class);
         bridge.start();
 
         System.out.println("Press Enter to stop the bridge.");
@@ -34,7 +34,7 @@ public class ComponentBridge {
         context.close();
     }
 
-    public ComponentBridge() {
+    public ServerComponentBridge() {
     }
 
     public void start() {
