@@ -7,7 +7,7 @@ COPY conf/ $SOLR_CONF/
 
 RUN solr start -p $SOLR_PORT \
     && sleep 15 \
-    && solr create -c test -d $SOLR_CONF/test -p $SOLR_PORT \
+    && solr create -c test -d test -p $SOLR_PORT \
     && solr stop -all
 
 EXPOSE $SOLR_PORT
