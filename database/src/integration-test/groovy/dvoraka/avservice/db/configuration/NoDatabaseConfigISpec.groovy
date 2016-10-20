@@ -9,9 +9,9 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [DatabaseConfig.class])
-@ActiveProfiles(["database"])
-class DatabaseConfigISpec extends Specification {
+@ContextConfiguration(classes = [NoDatabaseConfig.class])
+@ActiveProfiles(["no-db"])
+class NoDatabaseConfigISpec extends Specification {
 
     @Autowired
     MessageInfoService service
