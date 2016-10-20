@@ -1,44 +1,49 @@
 package dvoraka.avservice.server;
 
-import dvoraka.avservice.server.configuration.JmsToAmqpConfig;
+import dvoraka.avservice.common.service.ServiceManagement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * Server component bridge.
  */
 @Component
-public class ServerComponentBridge {
+public class ServerComponentBridge implements ServiceManagement {
+
+    private final ServerComponent inComponent;
+    private final ServerComponent outComponent;
+
+    private boolean running;
+
 
     @Autowired
-    private ServerComponent inComponent;
-    @Autowired
-    private ServerComponent outComponent;
-
-
-    public static void main(String[] args) throws IOException {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles("db-solr", "jms2amqp");
-        context.register(JmsToAmqpConfig.class);
-        context.refresh();
-
-        ServerComponentBridge bridge = context.getBean(ServerComponentBridge.class);
-        bridge.start();
-
-        System.out.println("Press Enter to stop the bridge.");
-        System.in.read();
-
-        context.close();
-    }
-
-    public ServerComponentBridge() {
+    public ServerComponentBridge(ServerComponent inComponent, ServerComponent outComponent) {
+        this.inComponent = inComponent;
+        this.outComponent = outComponent;
     }
 
     public void start() {
-        inComponent.addAvMessageListener(message -> outComponent.sendMessage(message));
-        outComponent.addAvMessageListener(message -> inComponent.sendMessage(message));
+        if (!running) {
+            running = true;
+            inComponent.addAvMessageListener(message -> outComponent.sendMessage(message));
+            outComponent.addAvMessageListener(message -> inComponent.sendMessage(message));
+        }
+    }
+
+    @Override
+    public void stop() {
+        // TODO
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public void restart() {
+        stop();
+        start();
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
     }
 }

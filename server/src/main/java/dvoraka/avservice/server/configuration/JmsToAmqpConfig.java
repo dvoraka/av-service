@@ -46,7 +46,6 @@ public class JmsToAmqpConfig {
 
     @Value("${avservice.jms.checkDestination:check}")
     private String checkDestination;
-
     @Value("${avservice.jms.resultDestination:result}")
     private String resultDestination;
 
@@ -56,21 +55,13 @@ public class JmsToAmqpConfig {
     // AMQP
     @Value("${avservice.amqp.host:localhost}")
     private String host;
-
     @Value("${avservice.amqp.vhost:antivirus}")
     private String virtualHost;
 
-    @Value("${avservice.amqp.checkQueue:av-check}")
-    private String checkQueue;
-
     @Value("${avservice.amqp.resultQueue:av-result}")
     private String resultQueue;
-
     @Value("${avservice.amqp.checkExchange:check}")
     private String checkExchange;
-
-    @Value("${avservice.amqp.resultExchange:result}")
-    private String resultExchange;
 
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
@@ -89,8 +80,9 @@ public class JmsToAmqpConfig {
     }
 
     @Bean
-    public ServerComponentBridge componentBridge() {
-        return new ServerComponentBridge();
+    public ServerComponentBridge componentBridge(
+            ServerComponent inComponent, ServerComponent outComponent) {
+        return new ServerComponentBridge(inComponent, outComponent);
     }
 
     //

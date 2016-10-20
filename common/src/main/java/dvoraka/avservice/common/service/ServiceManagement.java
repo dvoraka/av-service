@@ -10,4 +10,6 @@ public interface ServiceManagement {
     void stop();
 
     void restart();
+
+    boolean isRunning();
 }

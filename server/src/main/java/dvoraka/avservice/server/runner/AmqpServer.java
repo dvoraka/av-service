@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public final class AmqpServer {
 
-    private static boolean testRun = false;
+    private static boolean testRun;
 
 
     private AmqpServer() {
