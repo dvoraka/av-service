@@ -9,7 +9,7 @@ import dvoraka.avservice.common.data.AvMessage;
 public interface AvMessageListener {
 
     /**
-     * Receives messages.
+     * Receives AV messages.
      *
      * @param message the message
      */

@@ -46,4 +46,14 @@ public class ServerComponentBridge implements ServiceManagement {
     public boolean isRunning() {
         return running;
     }
+
+    @Override
+    public boolean isStarted() {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public boolean isStopped() {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 }

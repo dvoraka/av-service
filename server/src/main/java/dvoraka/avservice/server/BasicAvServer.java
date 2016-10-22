@@ -1,12 +1,10 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.common.ProcessedAvMessageListener;
-import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
-import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.common.service.ServiceManagement;
+import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * AMQP AV server implementation
  */
-public class BasicAvServer implements
-        AvServer, ServiceManagement, AvMessageListener, ProcessedAvMessageListener {
+public class BasicAvServer implements AvServer, ServiceManagement {
 
     @Autowired
     private ServerComponent serverComponent;

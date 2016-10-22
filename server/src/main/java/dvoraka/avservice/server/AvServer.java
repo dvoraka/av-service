@@ -1,9 +1,12 @@
 package dvoraka.avservice.server;
 
+import dvoraka.avservice.common.AvMessageListener;
+import dvoraka.avservice.common.ProcessedAvMessageListener;
+
 /**
  * Anti-virus server interface.
  */
-public interface AvServer {
+public interface AvServer extends AvMessageListener, ProcessedAvMessageListener {
 
     /**
      * Starts server.
@@ -16,26 +19,7 @@ public interface AvServer {
     void stop();
 
     /**
-     * Checks server status.
-     *
-     * @return started status
-     */
-    boolean isStarted();
-
-    /**
-     * Checks server status.
-     *
-     * @return stopped status
-     */
-    boolean isStopped();
-
-    /**
      * Restarts server.
      */
     void restart();
-
-    /**
-     * Check server status.
-     */
-    boolean isRunning();
 }
