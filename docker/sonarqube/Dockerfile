@@ -1,0 +1,6 @@
+FROM sonarqube:6.1
+
+EXPOSE 9000
+
+WORKDIR $SONARQUBE_HOME
+ENTRYPOINT ["./bin/run.sh"]
