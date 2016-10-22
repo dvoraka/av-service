@@ -188,10 +188,8 @@ class AvMessageMapperSpec extends Specification {
             // PROPERTIES
             // id
             props.getMessageId() == testId
-            // appId
-//        props.getAppId().equals(testAppId)
             // correlation ID
-            Arrays.equals(props.getCorrelationId(), testCorrId.getBytes(StandardCharsets.UTF_8))
+            props.getCorrelationIdString() == testCorrId
             // type
             props.getType() == AvMessageType.REQUEST.toString()
 

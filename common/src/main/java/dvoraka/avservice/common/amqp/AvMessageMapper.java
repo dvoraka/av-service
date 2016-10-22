@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -74,8 +73,8 @@ public final class AvMessageMapper {
 
         // correlation ID
         String corrId = "";
-        if (msgProps.getCorrelationId() != null) {
-            corrId = new String(msgProps.getCorrelationId(), StandardCharsets.UTF_8);
+        if (msgProps.getCorrelationIdString() != null) {
+            corrId = msgProps.getCorrelationIdString();
         }
 
         return new DefaultAvMessage.Builder(msgProps.getMessageId())
@@ -105,10 +104,10 @@ public final class AvMessageMapper {
         props.setType(msg.getType().toString());
         // correlation ID
         if (msg.getCorrelationId() != null) {
-            props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
+            props.setCorrelationIdString(msg.getCorrelationId());
         }
 
-        props.setAppId("antivirus");
+        props.setAppId("anti-virus");
 
         // service ID
         props.setHeader(SERVICE_ID_KEY, msg.getServiceId());
