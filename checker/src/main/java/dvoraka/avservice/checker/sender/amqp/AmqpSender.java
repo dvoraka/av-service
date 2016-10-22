@@ -88,10 +88,8 @@ public class AmqpSender implements AvSender {
         try {
             connection = conFactory.newConnection();
             channel = connection.createChannel();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
+        } catch (IOException | TimeoutException e) {
+            log.warn("Init failed!", e);
         }
     }
 
