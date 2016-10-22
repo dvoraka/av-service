@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner;
+package dvoraka.avservice.common.runner;
 
 import dvoraka.avservice.common.service.ServiceManagement;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

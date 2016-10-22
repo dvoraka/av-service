@@ -8,18 +8,18 @@ import dvoraka.avservice.server.configuration.AmqpConfig;
 import java.io.IOException;
 
 /**
- * AMQP server runner.
+ * Custom server runner. You can choose custom configurations and profiles for your use cases.
  */
-public class AmqpServerRunner extends AbstractRunner {
+public class CustomServerRunner extends AbstractRunner {
 
     public static void main(String[] args) throws IOException {
-        AmqpServerRunner runner = new AmqpServerRunner();
+        CustomServerRunner runner = new CustomServerRunner();
         runner.run();
     }
 
     @Override
     public String[] profiles() {
-        return new String[]{"amqp", "db-solr"};
+        return new String[]{"amqp", "no-db"};
     }
 
     @Override
