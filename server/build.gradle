@@ -27,7 +27,7 @@ task runJmsServer(type: JavaExec) {
     description = 'Run JMS server'
     group = "${taskGroupName}"
 
-    main = 'dvoraka.avservice.server.runner.JmsServer'
+    main = 'dvoraka.avservice.server.runner.JmsServerRunner'
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 //    environment('spring.profiles.active', '')

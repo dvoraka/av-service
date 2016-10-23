@@ -9,6 +9,7 @@ import java.io.IOException;
 /**
  * JMS server runner.
  */
+@Deprecated
 public final class JmsServer {
 
     private static boolean testRun;
