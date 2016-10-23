@@ -38,12 +38,17 @@ public abstract class AbstractRunner {
         ServiceManagement service = context.getBean(runClass());
         service.start();
 
+        waitForKey();
+
+        service.stop();
+        context.close();
+    }
+
+    public void waitForKey() throws IOException {
         if (!testRun) {
             System.out.println(stopMessage());
             System.in.read();
         }
-
-        context.close();
     }
 
     public static boolean isTestRun() {
