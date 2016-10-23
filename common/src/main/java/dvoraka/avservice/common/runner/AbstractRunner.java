@@ -1,6 +1,8 @@
 package dvoraka.avservice.common.runner;
 
 import dvoraka.avservice.common.service.ServiceManagement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
@@ -12,39 +14,50 @@ public abstract class AbstractRunner {
 
     private static boolean testRun;
 
+    @SuppressWarnings("checkstyle:VisibilityModifier")
+    protected Logger log = LogManager.getLogger(this.getClass().getName());
 
-    public AnnotationConfigApplicationContext applicationContext() {
-        return new AnnotationConfigApplicationContext();
-    }
 
-    public String[] profiles() {
-        return new String[]{"default"};
-    }
-
-    public abstract Class<?>[] configClasses();
-
-    public abstract Class<? extends ServiceManagement> runClass();
-
-    public String stopMessage() {
-        return "Press Enter to stop.";
-    }
-
-    public void run() throws IOException {
-        AnnotationConfigApplicationContext context = applicationContext();
+    protected AnnotationConfigApplicationContext applicationContext() {
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles(profiles());
         context.register(configClasses());
         context.refresh();
 
+        return context;
+    }
+
+    protected String[] profiles() {
+        return new String[]{"default"};
+    }
+
+    protected abstract Class<?>[] configClasses();
+
+    protected abstract Class<? extends ServiceManagement> runClass();
+
+    protected String stopMessage() {
+        return "Press Enter to stop.";
+    }
+
+    public void run() {
+        AnnotationConfigApplicationContext context = applicationContext();
         ServiceManagement service = context.getBean(runClass());
         service.start();
 
-        waitForKey();
-
-        service.stop();
-        context.close();
+        log.info("Runner started.");
+        try {
+            waitForKey();
+        } catch (IOException e) {
+            log.error("Runner problem!", e);
+        } finally {
+            service.stop();
+            context.close();
+            log.info("Runner stopped.");
+        }
     }
 
-    public void waitForKey() throws IOException {
+    protected void waitForKey() throws IOException {
         if (!testRun) {
             System.out.println(stopMessage());
             System.in.read();
