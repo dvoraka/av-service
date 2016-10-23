@@ -9,6 +9,7 @@ import java.io.IOException;
 /**
  * AMQP server runner.
  */
+@Deprecated
 public final class AmqpServer {
 
     private static boolean testRun;
