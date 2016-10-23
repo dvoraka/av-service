@@ -25,7 +25,7 @@ public abstract class AbstractRunner {
 
     public abstract Class<? extends ServiceManagement> runClass();
 
-    public String message() {
+    public String stopMessage() {
         return "Press Enter to stop.";
     }
 
@@ -39,7 +39,7 @@ public abstract class AbstractRunner {
         service.start();
 
         if (!testRun) {
-            System.out.println(message());
+            System.out.println(stopMessage());
             System.in.read();
         }
 
