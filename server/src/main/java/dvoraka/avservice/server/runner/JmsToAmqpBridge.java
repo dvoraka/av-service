@@ -9,6 +9,7 @@ import java.io.IOException;
 /**
  * JMS to AMQP bridge.
  */
+@Deprecated
 public final class JmsToAmqpBridge {
 
     private static boolean testRun;
