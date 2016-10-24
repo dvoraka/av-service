@@ -69,6 +69,19 @@ subprojects {
 
     repositories {
         mavenCentral()
+
+        // Spring snapshots
+        maven {
+            url "http://repo.spring.io/snapshot"
+        }
+        // Spring milestones
+        maven {
+            url "http://repo.spring.io/milestone"
+        }
+        // Spring libs milestones
+        maven {
+            url "http://repo.spring.io/libs-milestone"
+        }
     }
 
     sourceSets {
