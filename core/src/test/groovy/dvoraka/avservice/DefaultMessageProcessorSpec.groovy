@@ -10,6 +10,7 @@ import dvoraka.avservice.common.exception.ScanErrorException
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
 import org.springframework.test.util.ReflectionTestUtils
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
@@ -219,6 +220,7 @@ class DefaultMessageProcessorSpec extends Specification {
             notThrown(ScanErrorException)
     }
 
+    @Ignore("Too fuzzy timing")
     def "processing message status"() {
         given:
             String testId = "testId"
