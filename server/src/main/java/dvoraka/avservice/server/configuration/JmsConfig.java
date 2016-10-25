@@ -1,39 +1,32 @@
 package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.jms.JmsClient;
 import dvoraka.avservice.server.jms.JmsComponent;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.Environment;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 
-import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
 import javax.jms.MessageListener;
 
 /**
- * JMS Spring configuration.
+ * JMS configuration.
  */
 @Configuration
-@Import({ServiceConfig.class})
+@Import({JmsCommonConfig.class})
 @Profile("jms")
 public class JmsConfig {
-
-    @Autowired
-    private Environment env;
 
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
@@ -47,13 +40,9 @@ public class JmsConfig {
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
 
+    @Value("${avservice.serviceId:default1")
     private String serviceId;
 
-
-    @PostConstruct
-    public void init() {
-        serviceId = env.getProperty("avservice.serviceId", "default1");
-    }
 
     @Bean
     public AvServer avServer() {
