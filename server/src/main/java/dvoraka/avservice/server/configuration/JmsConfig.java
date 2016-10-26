@@ -1,7 +1,5 @@
 package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.server.jms.JmsClient;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
@@ -12,13 +10,9 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Import({
         JmsCommonConfig.class,
-        JmsServerConfig.class
+        JmsServerConfig.class,
+        JmsClientConfig.class
 })
 @Profile("jms")
 public class JmsConfig {
-
-    @Bean
-    public JmsClient jmsClient() {
-        return new JmsClient();
-    }
 }

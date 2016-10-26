@@ -19,7 +19,7 @@ public class JmsServerRunner extends AbstractRunner {
 
     @Override
     public String[] profiles() {
-        return new String[]{"jms", "jms-server", "jms-async", "database"};
+        return new String[]{"jms", "jms-server", "database"};
     }
 
     @Override

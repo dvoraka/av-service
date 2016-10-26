@@ -15,7 +15,7 @@ import spock.lang.Specification
  */
 // TODO: update
 @ContextConfiguration(classes = [JmsConfig.class])
-@ActiveProfiles(["jms", "jms-server", "jms-async", "database"])
+@ActiveProfiles(["jms", "jms-client", "jms-server", "database"])
 class JmsCheckISpec extends Specification {
 
     @Autowired

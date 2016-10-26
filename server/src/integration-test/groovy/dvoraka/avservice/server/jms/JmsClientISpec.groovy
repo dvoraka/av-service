@@ -15,7 +15,7 @@ import javax.jms.TextMessage
  * JMS testing.
  */
 @ContextConfiguration(classes = [JmsConfig.class])
-@ActiveProfiles(["jms", "database"])
+@ActiveProfiles(["jms", "jms-client", "no-db"])
 class JmsClientISpec extends Specification {
 
     @Autowired
