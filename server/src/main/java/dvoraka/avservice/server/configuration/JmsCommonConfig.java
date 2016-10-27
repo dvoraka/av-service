@@ -24,7 +24,6 @@ public class JmsCommonConfig {
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
 
-
     @Value("${avservice.serviceId:default1")
     private String serviceId;
 
