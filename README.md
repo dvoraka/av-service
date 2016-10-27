@@ -96,6 +96,7 @@ Docker is recommended approach.
 * Kibana
 * Elasticsearch
 * Logstash
+* SonarQube
 
 Change your working directory to *docker*:
 ```
