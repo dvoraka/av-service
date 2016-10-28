@@ -1,7 +1,7 @@
 # Anti-virus service
 [![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
 [![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service/branch/master)
-[![Latest release](https://img.shields.io/badge/release-0.3-brightgreen.svg)](https://github.com/dvoraka/av-service/tags/v0.3)
+[![Latest release](https://img.shields.io/badge/release-0.3-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tags/v0.3)
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus service supports JMS, AMQP and HTTP for communication. AV-checker project was integrated as checker submodule.
 
