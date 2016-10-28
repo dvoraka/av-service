@@ -7,8 +7,11 @@ Based on PC3 (NB, 2 cores) and everything runs on localhost.
 Current load test is really simple and can't use all performance of the server. New test is on the way.
 
 AMQP server run command: `./gradlew runAmqpServer`
+
 Load test run command: `./gradlew loadTest`
+
 Log level: INFO
+
 DB logging: no
 
 First run is for a warm-up and it is not counted.
