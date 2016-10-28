@@ -1,6 +1,26 @@
 # Performance notes
 
-Based on PC3.
+Based on PC3 (NB, 2 cores) and everything runs on localhost.
+
+## AMQP server
+
+Current load test is really simple and can't use all performance of the server. New test is on the way.
+
+AMQP server run command: `./gradlew runAmqpServer`
+Load test run command: `./gradlew loadTest`
+Log level: INFO
+DB logging: no
+
+First run is for a warm-up and it is not counted.
+
+### Oct 28, 2016
+run | messages/second
+--- | ---
+1. | 526
+2. | 526
+3. | 542
+4. | 534
+5. | 531
 
 ## Solr
 
