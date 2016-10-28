@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration
+package dvoraka.avservice.server.configuration.jms
 
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration

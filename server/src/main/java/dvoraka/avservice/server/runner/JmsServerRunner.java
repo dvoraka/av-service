@@ -3,7 +3,7 @@ package dvoraka.avservice.server.runner;
 import dvoraka.avservice.common.runner.AbstractRunner;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.BasicAvServer;
-import dvoraka.avservice.server.configuration.JmsConfig;
+import dvoraka.avservice.server.configuration.jms.JmsConfig;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration
+package dvoraka.avservice.server.configuration.jms
 
 import dvoraka.avservice.server.ServerComponentBridge
 import org.springframework.beans.factory.annotation.Autowired

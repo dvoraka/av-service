@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration;
+package dvoraka.avservice.server.configuration.jms;
 
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.configuration.ServiceConfig;

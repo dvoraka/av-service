@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration;
+package dvoraka.avservice.server.configuration.jms;
 
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;

@@ -1,6 +1,5 @@
-package dvoraka.avservice.server.configuration
+package dvoraka.avservice.server.configuration.jms
 
-import dvoraka.avservice.server.ServerComponent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.test.context.ActiveProfiles

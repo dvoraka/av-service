@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration;
+package dvoraka.avservice.server.configuration.jms;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

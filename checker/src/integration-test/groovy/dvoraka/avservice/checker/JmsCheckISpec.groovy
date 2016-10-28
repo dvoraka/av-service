@@ -3,7 +3,7 @@ package dvoraka.avservice.checker
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.server.AvServer
-import dvoraka.avservice.server.configuration.JmsConfig
+import dvoraka.avservice.server.configuration.jms.JmsConfig
 import dvoraka.avservice.server.jms.JmsClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
