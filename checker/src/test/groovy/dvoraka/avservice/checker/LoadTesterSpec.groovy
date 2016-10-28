@@ -55,7 +55,7 @@ class LoadTesterSpec extends Specification {
             avReceiver.receive(_) >> {
                 throw new LastMessageException()
             } >> {
-                throw new ProtocolException()
+                throw new ProtocolException("test error")
             } >> false
 
             loadTester.getAvReceiver() >> avReceiver

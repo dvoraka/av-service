@@ -6,7 +6,7 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 /**
- * Run load test.
+ * Load tester test.
  */
 @ContextConfiguration(classes = [LoadTestConfig.class])
 class LoadTesterISpec extends Specification {

@@ -1,11 +1,11 @@
 package dvoraka.avservice.checker;
 
 import dvoraka.avservice.checker.configuration.LoadTestConfig;
+import dvoraka.avservice.checker.receiver.AvReceiver;
+import dvoraka.avservice.checker.sender.AvSender;
 import dvoraka.avservice.common.exception.LastMessageException;
 import dvoraka.avservice.common.exception.MaxLoopsReachedException;
 import dvoraka.avservice.common.exception.ProtocolException;
-import dvoraka.avservice.checker.receiver.AvReceiver;
-import dvoraka.avservice.checker.sender.AvSender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,9 +139,6 @@ public class LoadTester implements Tester {
                 + "Duration: " + durationSeconds + " s";
         System.out.println(message);
 
-        if (durationSeconds == 0) {
-            durationSeconds = 1;
-        }
         System.out.println("Messages: " + getProps().getMsgCount() / durationSeconds + "/s");
     }
 
