@@ -94,6 +94,43 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        DefaultAvMessage that = (DefaultAvMessage) o;
+
+        if (!id.equals(that.id)) {
+            return false;
+        }
+        if (correlationId != null
+                ? !correlationId.equals(that.correlationId)
+                : that.correlationId != null) {
+            return false;
+        }
+        if (!Arrays.equals(data, that.data)) {
+            return false;
+        }
+        if (serviceId != null ? !serviceId.equals(that.serviceId) : that.serviceId != null) {
+            return false;
+        }
+        if (virusInfo != null ? !virusInfo.equals(that.virusInfo) : that.virusInfo != null) {
+            return false;
+        }
+
+        return type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "DefaultAvMessage {"
                 + "id='" + id + '\''
