@@ -30,7 +30,7 @@ class AvMessageMapperSpec extends Specification {
             AvMessageMapper.transform((Message) null)
 
         then:
-            thrown(IllegalArgumentException)
+            thrown(NullPointerException)
     }
 
     def "transform AvMessage to Message with null argument"() {
@@ -38,7 +38,7 @@ class AvMessageMapperSpec extends Specification {
             AvMessageMapper.transform((AvMessage) null)
 
         then:
-            thrown(IllegalArgumentException)
+            thrown(NullPointerException)
     }
 
     def "AMQP Message -> AvMessage, v1"() {
