@@ -27,7 +27,6 @@ import org.springframework.jmx.support.RegistrationPolicy;
  */
 @Configuration
 @PropertySource("classpath:avservice.properties")
-//@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableMBeanExport
 @Import({DatabaseConfig.class, NoDatabaseConfig.class, SolrConfig.class, AvProgramConfig.class})
 public class ServiceConfig {
@@ -54,11 +53,6 @@ public class ServiceConfig {
                 null,
                 env.getProperty("avservice.serviceId", "default1"));
     }
-
-//    @Bean
-//    public SpringAopTest springAopTest() {
-//        return new SpringAopTest();
-//    }
 
     @Bean
     public MBeanExporter mbeanExporter() {
