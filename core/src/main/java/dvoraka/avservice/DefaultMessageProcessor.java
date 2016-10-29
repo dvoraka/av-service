@@ -119,11 +119,17 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
+    /**
+     * Init and starts processor.
+     */
     @PostConstruct
     public void init() {
         start();
     }
 
+    /**
+     * Closes and stops all opened resources.
+     */
     @PreDestroy
     public void cleanup() {
         if (isRunning()) {
@@ -134,7 +140,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
     @Override
     public void start() {
         setRunning(true);
-
         executorService.execute(this::cacheUpdating);
         log.debug("Cache updating started.");
     }
@@ -315,6 +320,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
         observers.remove(listener);
     }
 
+    /**
+     * Returns actual observer count.
+     *
+     * @return the observer count
+     */
     public int observersCount() {
         return observers.size();
     }
