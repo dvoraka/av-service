@@ -11,9 +11,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class SolrMessageInfoRepositoryImpl implements SolrMessageInfoRepositoryCustom {
 
-    @Autowired
-    private SolrTemplate solrTemplate;
+    private final SolrTemplate solrTemplate;
 
+
+    @Autowired
+    public SolrMessageInfoRepositoryImpl(SolrTemplate solrTemplate) {
+        this.solrTemplate = solrTemplate;
+    }
 
     @Override
     public MessageInfoDocument saveSoft(MessageInfoDocument document) {
