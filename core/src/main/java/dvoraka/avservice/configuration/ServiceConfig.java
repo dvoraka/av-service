@@ -51,7 +51,7 @@ public class ServiceConfig {
         return new DefaultMessageProcessor(
                 Integer.parseInt(env.getProperty("avservice.cpuCores", "2")),
                 ReceivingType.LISTENER,
-                0,
+                null,
                 env.getProperty("avservice.serviceId", "default1"));
     }
 

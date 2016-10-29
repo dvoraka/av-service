@@ -70,27 +70,64 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private String serviceId;
 
 
+    /**
+     * Creates a processor with a given thread count and service ID.
+     *
+     * @param threadCount the processing thread count
+     * @param serviceId   the service ID string
+     */
     public DefaultMessageProcessor(int threadCount, String serviceId) {
         this(threadCount, DEFAULT_RECEIVING_TYPE, DEFAULT_QUEUE_SIZE, serviceId);
     }
 
+    /**
+     * Creates a processor with a given thread count and service ID. Receiving type is for how to
+     * get processed messages back. Queue size is a buffer for polling type only and can be null if
+     * you use different type of receiving.
+     *
+     * @param threadCount         the processing thread count
+     * @param serverReceivingType the type of processed message receiving
+     * @param queueSize           the queue size (for polling only)
+     * @param serviceId           the service ID string
+     */
     public DefaultMessageProcessor(
-            int threadCount, ReceivingType serverReceivingType, int queueSize, String serviceId) {
+            int threadCount,
+            ReceivingType serverReceivingType,
+            Integer queueSize,
+            String serviceId) {
+
         this.threadCount = threadCount;
-        this.queueSize = queueSize;
         this.serviceId = serviceId;
+
+        if (queueSize != null) {
+            this.queueSize = queueSize;
+        } else {
+            this.queueSize = DEFAULT_QUEUE_SIZE;
+        }
 
         ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
 
-        processingMessages = new ConcurrentHashMap<>(queueSize);
-        processedMessages = new ConcurrentHashMap<>(queueSize);
+        processingMessages = new ConcurrentHashMap<>(this.queueSize);
+        processedMessages = new ConcurrentHashMap<>(this.queueSize);
 
         observers = Collections.synchronizedList(new ArrayList<>());
         this.serverReceivingType = serverReceivingType;
 
         if (serverReceivingType == ReceivingType.POLLING) {
-            processedMessagesQueue = new LinkedBlockingQueue<>(queueSize);
+            processedMessagesQueue = new LinkedBlockingQueue<>(this.queueSize);
+        }
+    }
+
+    @PostConstruct
+    public void init() {
+        start();
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        if (isRunning()) {
+            stop();
         }
     }
 
@@ -335,17 +372,5 @@ public class DefaultMessageProcessor implements MessageProcessor {
     @ManagedAttribute
     public long getProcessedMsgCount() {
         return processedMsgCount.get();
-    }
-
-    @PostConstruct
-    public void init() {
-        start();
-    }
-
-    @PreDestroy
-    public void cleanup() {
-        if (isRunning()) {
-            stop();
-        }
     }
 }
