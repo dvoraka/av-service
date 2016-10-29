@@ -1,6 +1,6 @@
 # Performance notes
 
-Based on PC3 (NB, 2 cores) and everything runs on localhost.
+Based on PC3 (NB, i3 (2 cores), SSD) and everything runs on localhost.
 
 ## AMQP server
 
