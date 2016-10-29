@@ -147,6 +147,7 @@ subprojects {
         testCompile("org.spockframework:spock-spring:${spockVersion}")
         // Cglib
         testCompile("cglib:cglib-nodep:${cglibVersion}")
+        testCompile("org.objenesis:objenesis:2.4")
     }
 
     jar {
