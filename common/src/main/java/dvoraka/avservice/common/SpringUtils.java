@@ -18,9 +18,8 @@ public final class SpringUtils {
         List<String> list = Arrays.asList(context.getBeanDefinitionNames());
         Collections.sort(list);
 
-        System.out.println("Beans:");
-        list.forEach(System.out::println);
-        System.out.println();
-        System.out.println("Size: " + list.size());
+        System.out.println("Beans:"); //NOSONAR
+        list.forEach(System.out::println); //NOSONAR
+        System.out.println("\nSize: " + list.size()); //NOSONAR
     }
 }
