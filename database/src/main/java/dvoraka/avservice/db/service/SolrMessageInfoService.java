@@ -45,7 +45,6 @@ public class SolrMessageInfoService implements MessageInfoService {
         log.debug("Saving: " + message.getId());
 
         MessageInfoDocument messageInfoDocument = new MessageInfoDocument();
-        // TODO: ID generation should be more precise
         messageInfoDocument.setId(UUID.randomUUID().toString());
         messageInfoDocument.setUuid(message.getId());
         messageInfoDocument.setSource(source.toString());
