@@ -194,12 +194,10 @@ public class DefaultMessageProcessor implements MessageProcessor {
         log.debug("Scanning thread: " + Thread.currentThread().getName());
 
         String virusInfo = null;
-//        boolean infected = false;
         String error = null;
         try {
             byte[] data = message.getData();
             if (data != null) {
-//                infected = avService.scanBytes(data);
                 virusInfo = avService.scanBytesWithInfo(data);
             } else {
                 throw new ScanErrorException("No data in the message.");
@@ -215,16 +213,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processedMsgCount.getAndIncrement();
 
         if (error == null) {
-//            sendResponse(prepareResponse(message, infected));
             sendResponse(prepareResponse(message, virusInfo));
         } else {
             sendResponse(prepareErrorResponse(message, error));
         }
     }
-
-//    private AvMessage prepareResponse(AvMessage message, boolean infected) {
-//        return message.createResponse(infected);
-//    }
 
     private AvMessage prepareResponse(AvMessage message, String virusInfo) {
         return message.createResponseWithString(virusInfo);
