@@ -13,6 +13,7 @@ public class DummyMessageInfoService implements MessageInfoService {
 
     @Override
     public void save(AvMessage message, AvMessageSource source, String serviceId) {
+        // do nothing
     }
 
     @Override

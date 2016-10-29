@@ -22,11 +22,12 @@ public class ServerComponentBridge implements ServiceManagement {
         this.outComponent = outComponent;
     }
 
+    @Override
     public void start() {
         if (!running) {
             running = true;
-            inComponent.addAvMessageListener(message -> outComponent.sendMessage(message));
-            outComponent.addAvMessageListener(message -> inComponent.sendMessage(message));
+            inComponent.addAvMessageListener(outComponent::sendMessage);
+            outComponent.addAvMessageListener(inComponent::sendMessage);
         }
     }
 
