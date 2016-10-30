@@ -48,6 +48,23 @@ class AvProgramISpec extends Specification {
             !shouldBeFalse
     }
 
+    def "scan normal bytes with caching enabled"() {
+        setup:
+            byte[] bytes = "No virus here".getBytes("UTF-8")
+            avProgram.setCaching(true)
+
+        when:
+            boolean shouldBeFalse = avProgram.scanBytes(bytes)
+            boolean fromChache = avProgram.scanBytes(bytes)
+
+        then:
+            !shouldBeFalse
+            !fromChache
+
+        cleanup:
+            avProgram.setCaching(false)
+    }
+
     def "scan eicar bytes"() {
         setup:
             byte[] bytes = eicarString.getBytes("UTF-8")
