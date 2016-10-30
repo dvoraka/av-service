@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.amqp
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate
+import dvoraka.avservice.server.AvServer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -10,11 +10,11 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [AmqpConfig.class])
-@ActiveProfiles(["amqp", "no-db"])
-class AmqpConfigISpec extends Specification {
+@ActiveProfiles(['core', 'amqp', 'amqp-server', 'no-db'])
+class AmqpServerConfigISpec extends Specification {
 
     @Autowired
-    RabbitTemplate rabbitTemplate
+    AvServer avServer
 
 
     def "test"() {
