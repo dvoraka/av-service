@@ -1,6 +1,6 @@
-package dvoraka.avservice.server.configuration
+package dvoraka.avservice.server.configuration.amqp
 
-import dvoraka.avservice.server.AvServer
+import dvoraka.avservice.server.amqp.AmqpClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -9,12 +9,12 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [AmqpConfig.class])
-@ActiveProfiles(["amqp", "no-db"])
-class AmqpConfigISpec extends Specification {
+@ContextConfiguration(classes = [AmqpClientConfig.class])
+@ActiveProfiles(["amqp-client"])
+class AmqpClientConfigISpec extends Specification {
 
     @Autowired
-    AvServer avServer
+    AmqpClient amqpClient
 
 
     def "test"() {

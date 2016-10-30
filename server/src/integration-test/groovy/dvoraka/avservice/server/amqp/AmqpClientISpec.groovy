@@ -2,7 +2,7 @@ package dvoraka.avservice.server.amqp
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
-import dvoraka.avservice.server.configuration.AmqpClientConfig
+import dvoraka.avservice.server.configuration.amqp.AmqpClientConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.test.context.ActiveProfiles

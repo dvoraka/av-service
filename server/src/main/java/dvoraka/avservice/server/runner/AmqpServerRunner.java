@@ -3,7 +3,7 @@ package dvoraka.avservice.server.runner;
 import dvoraka.avservice.common.runner.AbstractRunner;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.BasicAvServer;
-import dvoraka.avservice.server.configuration.AmqpConfig;
+import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
 
 import java.io.IOException;
 

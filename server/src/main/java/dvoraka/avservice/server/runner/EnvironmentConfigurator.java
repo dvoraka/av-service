@@ -4,7 +4,7 @@ import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.amqp.AvMessageMapper;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MapperException;
-import dvoraka.avservice.server.configuration.AmqpConfig;
+import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

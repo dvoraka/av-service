@@ -1,11 +1,11 @@
-package dvoraka.avservice.server.configuration;
+package dvoraka.avservice.server.configuration.amqp;
 
 import dvoraka.avservice.common.amqp.AvMessageConverter;
-import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
+import dvoraka.avservice.server.configuration.ServerCommonConfig;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -18,26 +18,21 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.Environment;
-
-import javax.annotation.PostConstruct;
 
 /**
  * AMQP Spring configuration.
  */
 @Configuration
-@Import({ServiceConfig.class})
+@Import({
+        ServerCommonConfig.class
+})
 @Profile("amqp")
 public class AmqpConfig {
-
-    @Autowired
-    private Environment env;
 
     @Value("${avservice.amqp.host:localhost}")
     private String host;
@@ -47,13 +42,11 @@ public class AmqpConfig {
 
     @Value("${avservice.amqp.checkQueue:av-check}")
     private String checkQueue;
-
     @Value("${avservice.amqp.resultQueue:av-result}")
     private String resultQueue;
 
     @Value("${avservice.amqp.checkExchange:check}")
     private String checkExchange;
-
     @Value("${avservice.amqp.resultExchange:result}")
     private String resultExchange;
 
@@ -65,13 +58,9 @@ public class AmqpConfig {
     @Value("${avservice.amqp.pass:guest}")
     private String userPassword;
 
+    @Value("${avservice.serviceId:default1")
     private String serviceId;
 
-
-    @PostConstruct
-    public void init() {
-        serviceId = env.getProperty("avservice.serviceId", "default1");
-    }
 
     @Bean
     public AvServer avServer() {
