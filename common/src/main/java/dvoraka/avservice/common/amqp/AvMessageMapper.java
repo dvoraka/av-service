@@ -144,8 +144,6 @@ public final class AvMessageMapper {
             props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
         }
 
-        props.setAppId("antivirus");
-
         // service ID
         props.setHeader(SERVICE_ID_KEY, msg.getServiceId());
         // virus info

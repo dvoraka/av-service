@@ -55,11 +55,11 @@ class AvProgramISpec extends Specification {
 
         when:
             boolean shouldBeFalse = avProgram.scanBytes(bytes)
-            boolean fromChache = avProgram.scanBytes(bytes)
+            boolean fromCache = avProgram.scanBytes(bytes)
 
         then:
             !shouldBeFalse
-            !fromChache
+            !fromCache
 
         cleanup:
             avProgram.setCaching(false)

@@ -203,28 +203,4 @@ class AvMessageMapperSpec extends Specification {
 
             message.getBody().length == dataSize
     }
-
-    @Ignore("deprecated")
-    def "AVMessage -> AMQP Message, with normal message for old clients"() {
-        setup:
-            AvMessage avMessage = Utils.genNormalMessage()
-
-            Message message = AvMessageMapper.transform(avMessage)
-            Map<String, Object> headers = message.getMessageProperties().getHeaders()
-
-        expect:
-            headers.get('isClean') == 1
-    }
-
-    @Ignore("deprecated")
-    def "AvMessage -> AMQP Message, with infected message for old clients"() {
-        setup:
-            AvMessage avMessage = Utils.genInfectedMessage()
-
-            Message message = AvMessageMapper.transform(avMessage)
-            Map<String, Object> headers = message.getMessageProperties().getHeaders()
-
-        expect:
-            headers.get('isClean') == 0
-    }
 }
