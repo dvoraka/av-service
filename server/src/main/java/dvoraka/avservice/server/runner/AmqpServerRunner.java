@@ -19,7 +19,7 @@ public class AmqpServerRunner extends AbstractRunner {
 
     @Override
     public String[] profiles() {
-        return new String[]{"amqp", "db-solr"};
+        return new String[]{"amqp", "amqp-server", "db-solr"};
     }
 
     @Override

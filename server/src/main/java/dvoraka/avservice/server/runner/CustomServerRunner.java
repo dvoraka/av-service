@@ -19,7 +19,7 @@ public class CustomServerRunner extends AbstractRunner {
 
     @Override
     public String[] profiles() {
-        return new String[]{"amqp", "no-db"};
+        return new String[]{"amqp", "amqp-server", "no-db"};
     }
 
     @Override

@@ -1,22 +1,16 @@
 package dvoraka.avservice.server.configuration.amqp;
 
 import dvoraka.avservice.common.amqp.AvMessageConverter;
-import dvoraka.avservice.server.AvServer;
-import dvoraka.avservice.server.BasicAvServer;
-import dvoraka.avservice.server.ServerComponent;
-import dvoraka.avservice.server.amqp.AmqpComponent;
 import dvoraka.avservice.server.configuration.ServerCommonConfig;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +19,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 /**
- * AMQP Spring configuration.
+ * Main AMQP configuration for clients.
  */
 @Configuration
 @Import({
-        ServerCommonConfig.class
+        ServerCommonConfig.class,
+        AmqpServerConfig.class
 })
 @Profile("amqp")
 public class AmqpConfig {
@@ -63,27 +58,6 @@ public class AmqpConfig {
 
 
     @Bean
-    public AvServer avServer() {
-        return new BasicAvServer(serviceId);
-    }
-
-    @Bean
-    public ServerComponent serverComponent() {
-        return new AmqpComponent(resultExchange, serviceId);
-    }
-
-    @Bean
-    public SimpleMessageListenerContainer messageListenerContainer(
-            MessageListener messageListener) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory());
-        container.setQueueNames(checkQueue);
-        container.setMessageListener(messageListener);
-
-        return container;
-    }
-
-    @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
         connectionFactory.setUsername(userName);
@@ -108,11 +82,6 @@ public class AmqpConfig {
         template.setMessageConverter(messageConverter);
 
         return template;
-    }
-
-    @Bean
-    public MessageListener messageListener(ServerComponent serverComponent) {
-        return serverComponent;
     }
 
     @Bean
