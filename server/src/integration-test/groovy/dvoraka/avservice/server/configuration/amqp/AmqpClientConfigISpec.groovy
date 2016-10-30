@@ -10,7 +10,6 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@Ignore("needs redesign")
 @ContextConfiguration(classes = [AmqpConfig.class])
 @ActiveProfiles(["amqp", "amqp-client"])
 class AmqpClientConfigISpec extends Specification {

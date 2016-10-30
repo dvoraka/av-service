@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jmx.export.MBeanExporter;
-import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
-import org.springframework.jmx.support.RegistrationPolicy;
 
 /**
  * Core configuration
@@ -40,13 +37,5 @@ public class ServiceCoreConfig {
                 ReceivingType.LISTENER,
                 null,
                 serviceId);
-    }
-
-    @Bean
-    public MBeanExporter mbeanExporter() {
-        MBeanExporter exporter = new AnnotationMBeanExporter();
-        exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
-
-        return exporter;
     }
 }

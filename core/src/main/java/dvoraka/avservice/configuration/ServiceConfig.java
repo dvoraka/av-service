@@ -10,6 +10,9 @@ import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.jmx.export.MBeanExporter;
+import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
+import org.springframework.jmx.support.RegistrationPolicy;
 
 /**
  * AV service Spring configuration.
@@ -24,8 +27,15 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
         NoDatabaseConfig.class,
         SolrConfig.class
 })
-@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 public class ServiceConfig {
+
+    @Bean
+    public MBeanExporter mbeanExporter() {
+        MBeanExporter exporter = new AnnotationMBeanExporter();
+        exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
+
+        return exporter;
+    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

@@ -10,7 +10,6 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@Ignore("needs redesign")
 @ContextConfiguration(classes = [JmsConfig.class])
 @ActiveProfiles(["jms", "jms-client"])
 class JmsClientConfigISpec extends Specification {

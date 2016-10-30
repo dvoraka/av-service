@@ -14,7 +14,7 @@ import spock.lang.Specification
  */
 @Ignore("manual testing")
 @ContextConfiguration(classes = [JmsConfig.class])
-@ActiveProfiles(["jms", "jms-server", "jms-bridge-input", "no-db"])
+@ActiveProfiles(['jms', 'jms-client'])
 class CustomConfigISpec extends Specification {
 
     @Autowired
