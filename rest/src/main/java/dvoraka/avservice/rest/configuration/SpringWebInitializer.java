@@ -28,6 +28,6 @@ public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServ
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        servletContext.setInitParameter("spring.profiles.active", "default, rest, database");
+        servletContext.setInitParameter("spring.profiles.active", "core, rest, database");
     }
 }

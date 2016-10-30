@@ -25,7 +25,7 @@ public class JmsCommonConfig {
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
 
-    @Value("${avservice.serviceId:default1")
+    @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
     @Value("${avservice.jms.receiveTimeout:2000}")
@@ -56,7 +56,6 @@ public class JmsCommonConfig {
 
         return template;
     }
-
 
     @Bean
     public MessageConverter messageConverter() {

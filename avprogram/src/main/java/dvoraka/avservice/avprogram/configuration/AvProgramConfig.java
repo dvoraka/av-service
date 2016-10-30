@@ -6,13 +6,14 @@ import dvoraka.avservice.common.service.CachingService;
 import dvoraka.avservice.common.service.DefaultCachingService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
- * AV program Spring configuration.
+ * AV program configuration.
  */
 @Configuration
+@Profile("core")
 public class AvProgramConfig {
-
 
     @Bean
     public AvProgram avProgram() {

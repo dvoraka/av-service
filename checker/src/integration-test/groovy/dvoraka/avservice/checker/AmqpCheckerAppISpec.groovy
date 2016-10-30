@@ -14,7 +14,7 @@ import spock.lang.Specification
  * Run AMQP checker App.
  */
 @ContextConfiguration(classes = [AmqpCheckerConfig.class, AmqpConfig.class])
-@ActiveProfiles(["amqp", "amqp-server", "no-db"])
+@ActiveProfiles(['core', 'amqp', 'amqp-server', 'no-db'])
 class AmqpCheckerAppISpec extends Specification {
 
     @Autowired
