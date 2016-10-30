@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets
  */
 class DefaultAvMessageSpec extends Specification {
 
+    String testId = 'TEST-ID'
+
 
     def "message creating test"() {
         setup:
@@ -32,7 +34,7 @@ class DefaultAvMessageSpec extends Specification {
 
     def "create normal response test"() {
         setup:
-            DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
+            DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
             String expCorrId = message.getId()
 
             AvMessage response = message.createResponse(false)
@@ -42,9 +44,23 @@ class DefaultAvMessageSpec extends Specification {
             response.getType() == AvMessageType.RESPONSE
     }
 
+    def "create normal response with string test"() {
+        setup:
+            DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
+            String expCorrId = message.getId()
+            String virusInfo = 'Bad virus!'
+
+            AvMessage response = message.createResponseWithString(virusInfo)
+
+        expect:
+            response.getCorrelationId() == expCorrId
+            response.getType() == AvMessageType.RESPONSE
+            response.getVirusInfo() == virusInfo
+    }
+
     def "create infected response test"() {
         setup:
-            DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
+            DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
             String expCorrId = message.getId()
 
             AvMessage response = message.createResponse(true)
@@ -56,7 +72,7 @@ class DefaultAvMessageSpec extends Specification {
 
     def "create error response test"() {
         given:
-            DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
+            DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
             String expCorrId = message.getId()
             String errorMsg = "TEST-ERROR"
 
@@ -70,7 +86,7 @@ class DefaultAvMessageSpec extends Specification {
 
     def "null data test"() {
         setup:
-            DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
+            DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
 
         expect:
             message.getData() == new byte[0]
@@ -78,10 +94,19 @@ class DefaultAvMessageSpec extends Specification {
 
     def "simple toString test"() {
         setup:
-            DefaultAvMessage message = new DefaultAvMessage.Builder('TEST-ID').build()
+            DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
 
         expect:
             message.toString().startsWith("DefaultAvMessage {")
             message.toString().endsWith("}")
+    }
+
+    def "equality test"() {
+        setup:
+            AvMessage msg1 = new DefaultAvMessage.Builder(testId).build()
+            AvMessage msg2 = new DefaultAvMessage.Builder(testId).build()
+
+        expect:
+            msg1 == msg2
     }
 }

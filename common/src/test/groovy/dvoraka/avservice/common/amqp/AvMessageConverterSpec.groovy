@@ -3,6 +3,7 @@ package dvoraka.avservice.common.amqp
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import org.springframework.amqp.core.Message
+import org.springframework.amqp.support.converter.MessageConversionException
 import spock.lang.Specification
 
 /**
@@ -28,5 +29,13 @@ class AvMessageConverterSpec extends Specification {
 
         then:
             avMessage == convertedBackAvMessage
+    }
+
+    def "conversion to from null"() {
+        when:
+            converter.toMessage(null, null)
+
+        then:
+            thrown(MessageConversionException)
     }
 }
