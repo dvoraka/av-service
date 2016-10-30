@@ -10,14 +10,13 @@ import dvoraka.avservice.db.configuration.NoDatabaseConfig;
 import dvoraka.avservice.db.configuration.SolrConfig;
 import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.service.DefaultAvService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.Environment;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
@@ -28,11 +27,19 @@ import org.springframework.jmx.support.RegistrationPolicy;
 @Configuration
 @PropertySource("classpath:avservice.properties")
 @EnableMBeanExport
-@Import({DatabaseConfig.class, NoDatabaseConfig.class, SolrConfig.class, AvProgramConfig.class})
+@Import({
+        AvProgramConfig.class,
+        DatabaseConfig.class,
+        NoDatabaseConfig.class,
+        SolrConfig.class
+})
 public class ServiceConfig {
 
-    @Autowired
-    private Environment env;
+    @Value("${avservice.cpuCores:2}")
+    private Integer cpuCores;
+
+    @Value("${avservice.serviceId:default1}")
+    private String serviceId;
 
 
     @Bean
@@ -48,10 +55,10 @@ public class ServiceConfig {
     @Bean
     public MessageProcessor messageProcessor() {
         return new DefaultMessageProcessor(
-                Integer.parseInt(env.getProperty("avservice.cpuCores", "2")),
+                cpuCores,
                 ReceivingType.LISTENER,
                 null,
-                env.getProperty("avservice.serviceId", "default1"));
+                serviceId);
     }
 
     @Bean

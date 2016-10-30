@@ -4,13 +4,15 @@ import dvoraka.avservice.server.amqp.AmqpClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [AmqpClientConfig.class])
-@ActiveProfiles(["amqp-client"])
+@Ignore("needs redesign")
+@ContextConfiguration(classes = [AmqpConfig.class])
+@ActiveProfiles(["amqp", "amqp-client"])
 class AmqpClientConfigISpec extends Specification {
 
     @Autowired
