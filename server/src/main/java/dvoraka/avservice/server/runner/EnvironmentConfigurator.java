@@ -19,7 +19,7 @@ public final class EnvironmentConfigurator {
 
     public static void main(String[] args) throws MapperException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles("amqp", "database");
+        context.getEnvironment().setActiveProfiles("core", "amqp", "amqp-server", "no-db");
         context.register(AmqpConfig.class);
         context.refresh();
 
