@@ -5,7 +5,6 @@ import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.ServerComponentBridge;
 import dvoraka.avservice.server.amqp.AmqpComponent;
-import dvoraka.avservice.server.jms.JmsComponent;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.FanoutExchange;
@@ -33,7 +32,10 @@ import javax.annotation.PostConstruct;
  * JMS to AMQP bridge Spring configuration.
  */
 @Configuration
-@Import({ServiceConfig.class})
+@Import({
+        ServiceConfig.class,
+        JmsBridgeInputConfig.class
+})
 @Profile("jms2amqp")
 public class JmsToAmqpConfig {
 
@@ -89,10 +91,10 @@ public class JmsToAmqpConfig {
     // JMS
     //
 
-    @Bean
-    public ServerComponent inComponent() {
-        return new JmsComponent(resultDestination, serviceId);
-    }
+//    @Bean
+//    public ServerComponent inComponent() {
+//        return new JmsComponent(resultDestination, serviceId);
+//    }
 
     @Bean
     public ActiveMQConnectionFactory activeMQConnFactory() {
@@ -101,17 +103,17 @@ public class JmsToAmqpConfig {
         return factory;
     }
 
-    @Bean
-    public org.springframework.jms.listener.SimpleMessageListenerContainer
-    inMessageListenerContainer() {
-        org.springframework.jms.listener.SimpleMessageListenerContainer container =
-                new org.springframework.jms.listener.SimpleMessageListenerContainer();
-        container.setConnectionFactory(activeMQConnFactory());
-        container.setDestinationName(checkDestination);
-        container.setMessageListener(inMessageListener());
-
-        return container;
-    }
+//    @Bean
+//    public org.springframework.jms.listener.SimpleMessageListenerContainer
+//    inMessageListenerContainer() {
+//        org.springframework.jms.listener.SimpleMessageListenerContainer container =
+//                new org.springframework.jms.listener.SimpleMessageListenerContainer();
+//        container.setConnectionFactory(activeMQConnFactory());
+//        container.setDestinationName(checkDestination);
+//        container.setMessageListener(inMessageListener());
+//
+//        return container;
+//    }
 
     @Bean
     public javax.jms.ConnectionFactory
@@ -143,10 +145,10 @@ public class JmsToAmqpConfig {
         return messageConverter;
     }
 
-    @Bean
-    public MessageListener inMessageListener() {
-        return inComponent();
-    }
+//    @Bean
+//    public MessageListener inMessageListener() {
+//        return inComponent();
+//    }
 
     //
     // AMQP

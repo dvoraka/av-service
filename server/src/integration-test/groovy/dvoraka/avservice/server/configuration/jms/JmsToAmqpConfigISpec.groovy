@@ -10,7 +10,7 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [JmsToAmqpConfig.class])
-@ActiveProfiles(["jms2amqp", "no-db"])
+@ActiveProfiles(["jms2amqp", "jms-bridge-input", "no-db"])
 class JmsToAmqpConfigISpec extends Specification {
 
     @Autowired

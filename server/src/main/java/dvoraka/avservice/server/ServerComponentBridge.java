@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Server component bridge.
+ * Server components bridge.
  */
 @Component
 public class ServerComponentBridge implements ServiceManagement {
@@ -18,6 +18,10 @@ public class ServerComponentBridge implements ServiceManagement {
 
     @Autowired
     public ServerComponentBridge(ServerComponent inComponent, ServerComponent outComponent) {
+        if (inComponent == outComponent) {
+            throw new IllegalArgumentException("Components must not be the same!");
+        }
+
         this.inComponent = inComponent;
         this.outComponent = outComponent;
     }
