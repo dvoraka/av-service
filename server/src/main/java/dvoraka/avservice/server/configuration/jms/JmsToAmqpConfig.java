@@ -5,7 +5,6 @@ import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.ServerComponentBridge;
 import dvoraka.avservice.server.amqp.AmqpComponent;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.MessageListener;
@@ -16,17 +15,11 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.Environment;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
-
-import javax.annotation.PostConstruct;
 
 /**
  * JMS to AMQP bridge Spring configuration.
@@ -38,21 +31,6 @@ import javax.annotation.PostConstruct;
 })
 @Profile("jms2amqp")
 public class JmsToAmqpConfig {
-
-    @Autowired
-    private Environment env;
-
-    // JMS
-    @Value("${avservice.jms.brokerUrl}")
-    private String brokerUrl;
-
-    @Value("${avservice.jms.checkDestination:check}")
-    private String checkDestination;
-    @Value("${avservice.jms.resultDestination:result}")
-    private String resultDestination;
-
-    @Value("${avservice.jms.receiveTimeout:2000}")
-    private long receiveTimeout;
 
     // AMQP
     @Value("${avservice.amqp.host:localhost}")
@@ -73,13 +51,9 @@ public class JmsToAmqpConfig {
     @Value("${avservice.amqp.pass:guest}")
     private String userPassword;
 
+    @Value("${avservice.serviceId:default1")
     private String serviceId;
 
-
-    @PostConstruct
-    public void init() {
-        serviceId = env.getProperty("avservice.serviceId", "default1");
-    }
 
     @Bean
     public ServerComponentBridge componentBridge(
@@ -88,72 +62,8 @@ public class JmsToAmqpConfig {
     }
 
     //
-    // JMS
-    //
-
-//    @Bean
-//    public ServerComponent inComponent() {
-//        return new JmsComponent(resultDestination, serviceId);
-//    }
-
-    @Bean
-    public ActiveMQConnectionFactory activeMQConnFactory() {
-        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
-
-        return factory;
-    }
-
-//    @Bean
-//    public org.springframework.jms.listener.SimpleMessageListenerContainer
-//    inMessageListenerContainer() {
-//        org.springframework.jms.listener.SimpleMessageListenerContainer container =
-//                new org.springframework.jms.listener.SimpleMessageListenerContainer();
-//        container.setConnectionFactory(activeMQConnFactory());
-//        container.setDestinationName(checkDestination);
-//        container.setMessageListener(inMessageListener());
-//
-//        return container;
-//    }
-
-    @Bean
-    public javax.jms.ConnectionFactory
-    inConnectionFactory(javax.jms.ConnectionFactory activeMQConnFactory) {
-        javax.jms.ConnectionFactory factory =
-                new org.springframework.jms.connection.CachingConnectionFactory(
-                        activeMQConnFactory);
-
-        return factory;
-    }
-
-    @Bean
-    public JmsTemplate jmsTemplate(
-            javax.jms.ConnectionFactory inConnectionFactory,
-            org.springframework.jms.support.converter.MessageConverter inMessageConverter
-    ) {
-        JmsTemplate template = new JmsTemplate(inConnectionFactory);
-        template.setReceiveTimeout(receiveTimeout);
-        template.setMessageConverter(inMessageConverter);
-
-        return template;
-    }
-
-    @Bean
-    public org.springframework.jms.support.converter.MessageConverter inMessageConverter() {
-        MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
-        messageConverter.setTypeIdPropertyName("typeId");
-
-        return messageConverter;
-    }
-
-//    @Bean
-//    public MessageListener inMessageListener() {
-//        return inComponent();
-//    }
-
-    //
     // AMQP
     //
-
     @Bean
     public ServerComponent outComponent() {
         return new AmqpComponent(checkExchange, serviceId);
