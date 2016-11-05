@@ -1,9 +1,10 @@
-package dvoraka.avservice.server.configuration.jms;
+package dvoraka.avservice.server.configuration.bridge;
 
-import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.ServerComponentBridge;
+import dvoraka.avservice.server.configuration.ServerCommonConfig;
 import dvoraka.avservice.server.configuration.amqp.AmqpBridgeOutputConfig;
+import dvoraka.avservice.server.configuration.jms.JmsBridgeInputConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Import({
-        ServiceConfig.class,
+        ServerCommonConfig.class,
         JmsBridgeInputConfig.class,
         AmqpBridgeOutputConfig.class
 })
@@ -24,7 +25,8 @@ public class JmsToAmqpConfig {
     @Bean
     public ServerComponentBridge componentBridge(
             ServerComponent inComponent,
-            ServerComponent outComponent) {
+            ServerComponent outComponent
+    ) {
         return new ServerComponentBridge(inComponent, outComponent);
     }
 }

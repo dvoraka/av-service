@@ -4,7 +4,6 @@ import dvoraka.avservice.server.jms.JmsClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**

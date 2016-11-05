@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 /**
- * AMQP common configuration.
+ * AMQP common configuration for import.
  */
 @Configuration
 @Import({ServerCommonConfig.class})
@@ -59,7 +59,8 @@ public class AmqpCommonConfig {
 
     @Bean
     public RabbitTemplate amqpTemplate(
-            ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+            ConnectionFactory connectionFactory,
+            MessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
         template.setRoutingKey("test");

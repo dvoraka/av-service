@@ -40,7 +40,8 @@ public class JmsServerConfig {
     @Bean
     public ServerComponent serverComponent(
             JmsTemplate jmsTemplate,
-            MessageInfoService messageInfoService) {
+            MessageInfoService messageInfoService
+    ) {
         return new JmsComponent(resultDestination, serviceId, jmsTemplate, messageInfoService);
     }
 

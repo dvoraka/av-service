@@ -15,7 +15,7 @@ import org.springframework.jms.support.converter.MessageConverter;
 import javax.jms.ConnectionFactory;
 
 /**
- * JMS common configuration.
+ * JMS common configuration for import.
  */
 @Configuration
 @Import({ServerCommonConfig.class})
@@ -34,16 +34,12 @@ public class JmsCommonConfig {
 
     @Bean
     public ActiveMQConnectionFactory activeMQConnFactory() {
-        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
-
-        return factory;
+        return new ActiveMQConnectionFactory(brokerUrl);
     }
 
     @Bean
     public ConnectionFactory connectionFactory(ConnectionFactory activeMQConnFactory) {
-        ConnectionFactory factory = new CachingConnectionFactory(activeMQConnFactory);
-
-        return factory;
+        return new CachingConnectionFactory(activeMQConnFactory);
     }
 
     @Bean

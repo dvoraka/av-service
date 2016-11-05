@@ -1,7 +1,6 @@
 package dvoraka.avservice.server.configuration.jms
 
 import dvoraka.avservice.server.AvServer
-import dvoraka.avservice.server.configuration.amqp.AmqpConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
