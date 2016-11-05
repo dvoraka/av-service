@@ -10,6 +10,7 @@ import org.springframework.jms.support.converter.MessageConversionException
 import org.springframework.jms.support.converter.MessageConverter
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
+import spock.lang.Subject
 
 import javax.jms.Message
 
@@ -18,26 +19,29 @@ import javax.jms.Message
  */
 class JmsComponentSpec extends Specification {
 
+    @Subject
     JmsComponent component
+
+    JmsTemplate jmsTemplate
+    MessageInfoService messageInfoService
     String destination
 
 
     def setup() {
         destination = "TEST-DESTINATION"
-        component = new JmsComponent(destination, "TEST1")
+        jmsTemplate = Mock()
+        messageInfoService = Mock()
 
-        MessageInfoService infoService = Mock()
-        ReflectionTestUtils.setField(component, null, infoService, MessageInfoService.class)
+        component = new JmsComponent(destination, "TEST1", jmsTemplate, messageInfoService)
     }
 
     def "on message"() {
         given:
             AvMessageListener listener = Mock()
             AvMessage message = Utils.genNormalMessage()
-
             MessageConverter converter = Stub()
             converter.fromMessage(_) >> message
-            ReflectionTestUtils.setField(component, null, converter, MessageConverter.class)
+            jmsTemplate.getMessageConverter() >> converter
 
             component.addAvMessageListener(listener)
 
@@ -51,12 +55,11 @@ class JmsComponentSpec extends Specification {
     def "on message with bad message"() {
         given:
             AvMessageListener listener = Mock()
-
             MessageConverter converter = Stub()
             converter.fromMessage(_) >> {
                 throw new MessageConversionException("TEST")
             }
-            ReflectionTestUtils.setField(component, null, converter, MessageConverter.class)
+            jmsTemplate.getMessageConverter() >> converter
 
             component.addAvMessageListener(listener)
 

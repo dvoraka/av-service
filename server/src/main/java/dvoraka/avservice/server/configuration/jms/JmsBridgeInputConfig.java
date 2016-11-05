@@ -1,5 +1,6 @@
 package dvoraka.avservice.server.configuration.jms;
 
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.jms.JmsComponent;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -37,8 +38,10 @@ public class JmsBridgeInputConfig {
 
 
     @Bean
-    public ServerComponent inComponent() {
-        return new JmsComponent(resultDestination, serviceId);
+    public ServerComponent inComponent(
+            JmsTemplate jmsTemplate,
+            MessageInfoService messageInfoService) {
+        return new JmsComponent(resultDestination, serviceId, jmsTemplate, messageInfoService);
     }
 
     @Bean

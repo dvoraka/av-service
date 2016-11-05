@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConversionException;
-import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -20,14 +20,11 @@ import java.util.List;
 /**
  * JMS component.
  */
+@Component
 public class JmsComponent implements ServerComponent {
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
-    @Autowired
-    private MessageConverter messageConverter;
-    @Autowired
-    private MessageInfoService messageInfoService;
+    private final JmsTemplate jmsTemplate;
+    private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(JmsComponent.class.getName());
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.JMS_COMPONENT;
@@ -37,20 +34,27 @@ public class JmsComponent implements ServerComponent {
     private final List<AvMessageListener> listeners = new ArrayList<>();
 
 
-    public JmsComponent(String responseDestination, String serviceId) {
+    @Autowired
+    public JmsComponent(String responseDestination,
+                        String serviceId,
+                        JmsTemplate jmsTemplate,
+                        MessageInfoService messageInfoService
+    ) {
         this.responseDestination = responseDestination;
         this.serviceId = serviceId;
+        this.messageInfoService = messageInfoService;
+        this.jmsTemplate = jmsTemplate;
     }
 
     @Override
     public void onMessage(Message message) {
         if (message == null) {
-            throw new IllegalArgumentException("Message may not be null!");
+            throw new IllegalArgumentException("Message must not be null!");
         }
 
         AvMessage avMessage;
         try {
-            avMessage = (AvMessage) messageConverter.fromMessage(message);
+            avMessage = (AvMessage) jmsTemplate.getMessageConverter().fromMessage(message);
             messageInfoService.save(avMessage, MESSAGE_SOURCE, serviceId);
         } catch (JMSException | MessageConversionException e) {
             log.warn("Conversion error!", e);

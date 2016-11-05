@@ -10,12 +10,14 @@ import dvoraka.avservice.db.service.DefaultMessageInfoService
 import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.amqp.core.Message
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * AMQP component test.
  */
 class AmqpComponentSpec extends Specification {
 
+    @Subject
     AmqpComponent component
 
     AmqpTemplate amqpTemplate

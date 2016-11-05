@@ -1,5 +1,6 @@
 package dvoraka.avservice.server.configuration.jms;
 
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ServerComponent;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
 
 import javax.jms.MessageListener;
@@ -36,13 +38,15 @@ public class JmsServerConfig {
     }
 
     @Bean
-    public ServerComponent serverComponent() {
-        return new JmsComponent(resultDestination, serviceId);
+    public ServerComponent serverComponent(
+            JmsTemplate jmsTemplate,
+            MessageInfoService messageInfoService) {
+        return new JmsComponent(resultDestination, serviceId, jmsTemplate, messageInfoService);
     }
 
     @Bean
-    public MessageListener messageListener() {
-        return serverComponent();
+    public MessageListener messageListener(ServerComponent serverComponent) {
+        return serverComponent;
     }
 
     @Bean
