@@ -1,9 +1,11 @@
 package dvoraka.avservice.server.configuration.amqp;
 
 import dvoraka.avservice.common.amqp.AvMessageConverter;
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -43,8 +45,11 @@ public class AmqpBridgeOutputConfig {
 
 
     @Bean
-    public ServerComponent outComponent() {
-        return new AmqpComponent(checkExchange, serviceId);
+    public ServerComponent outComponent(
+            AmqpTemplate outAmqpTemplate,
+            MessageInfoService messageInfoService
+    ) {
+        return new AmqpComponent(checkExchange, serviceId, outAmqpTemplate, messageInfoService);
     }
 
     @Bean

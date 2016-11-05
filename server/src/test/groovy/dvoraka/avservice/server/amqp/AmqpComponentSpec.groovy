@@ -7,10 +7,8 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.db.repository.MessageInfoRepository
 import dvoraka.avservice.db.service.DefaultMessageInfoService
-import dvoraka.avservice.db.service.MessageInfoService
+import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.amqp.core.Message
-import org.springframework.amqp.rabbit.core.RabbitTemplate
-import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 
 /**
@@ -20,13 +18,15 @@ class AmqpComponentSpec extends Specification {
 
     AmqpComponent component
 
+    AmqpTemplate amqpTemplate
+
 
     def setup() {
-        component = new AmqpComponent("NONE", "TEST1")
         MessageInfoRepository infoRepository = Mock()
         DefaultMessageInfoService infoService = new DefaultMessageInfoService(infoRepository)
+        amqpTemplate = Mock()
 
-        ReflectionTestUtils.setField(component, null, infoService, MessageInfoService.class)
+        component = new AmqpComponent("NONE", "TEST1", amqpTemplate, infoService)
     }
 
     def "on message"() {
@@ -78,24 +78,18 @@ class AmqpComponentSpec extends Specification {
 
     def "send normal message"() {
         given:
-            RabbitTemplate rabbitTemplate = Mock()
-            ReflectionTestUtils.setField(component, null, rabbitTemplate, RabbitTemplate.class)
-
             AvMessage message = Utils.genNormalMessage()
 
         when:
             component.sendMessage(message)
 
         then:
-            1 * rabbitTemplate.convertAndSend(_, _, _)
+            1 * amqpTemplate.convertAndSend(_, _, _)
     }
 
     // TODO: improve
     def "send broken message"() {
         given:
-            RabbitTemplate rabbitTemplate = Mock()
-            ReflectionTestUtils.setField(component, null, rabbitTemplate, RabbitTemplate.class)
-
             AvMessage message = new DefaultAvMessage.Builder(null)
                     .build()
 
@@ -103,7 +97,7 @@ class AmqpComponentSpec extends Specification {
             component.sendMessage(message)
 
         then: "send error response"
-            1 * rabbitTemplate.convertAndSend(_, _, _)
+            1 * amqpTemplate.convertAndSend(_, _, _)
     }
 
     def "add listeners"() {

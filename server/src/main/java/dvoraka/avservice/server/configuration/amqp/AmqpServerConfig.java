@@ -1,9 +1,11 @@
 package dvoraka.avservice.server.configuration.amqp;
 
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
@@ -43,8 +45,11 @@ public class AmqpServerConfig {
     }
 
     @Bean
-    public ServerComponent serverComponent() {
-        return new AmqpComponent(resultExchange, serviceId);
+    public ServerComponent serverComponent(
+            AmqpTemplate amqpTemplate,
+            MessageInfoService messageInfoService
+    ) {
+        return new AmqpComponent(resultExchange, serviceId, amqpTemplate, messageInfoService);
     }
 
     @Bean

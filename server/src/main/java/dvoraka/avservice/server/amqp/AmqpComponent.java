@@ -10,9 +10,10 @@ import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,11 @@ import java.util.List;
 /**
  * AMQP component.
  */
+@Component
 public class AmqpComponent implements ServerComponent {
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-    @Autowired
-    private MessageInfoService messageInfoService;
+    private final AmqpTemplate amqpTemplate;
+    private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.AMQP_COMPONENT;
@@ -36,9 +36,17 @@ public class AmqpComponent implements ServerComponent {
     private final List<AvMessageListener> listeners = new ArrayList<>();
 
 
-    public AmqpComponent(String responseExchange, String serviceId) {
+    @Autowired
+    public AmqpComponent(
+            String responseExchange,
+            String serviceId,
+            AmqpTemplate amqpTemplate,
+            MessageInfoService messageInfoService
+    ) {
         this.responseExchange = responseExchange;
         this.serviceId = serviceId;
+        this.amqpTemplate = amqpTemplate;
+        this.messageInfoService = messageInfoService;
     }
 
     @Override
@@ -70,14 +78,14 @@ public class AmqpComponent implements ServerComponent {
 
         // TODO: improve exception handling
         try {
-            rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
+            amqpTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
         } catch (AmqpException e) {
             log.warn("Message send problem!", e);
 
             // create error response
             AvMessage errorResponse = message.createErrorResponse(e.getMessage());
 
-            rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, errorResponse);
+            amqpTemplate.convertAndSend(responseExchange, ROUTING_KEY, errorResponse);
         }
     }
 
