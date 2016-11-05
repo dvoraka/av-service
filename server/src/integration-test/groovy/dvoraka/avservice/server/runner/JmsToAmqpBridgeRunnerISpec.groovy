@@ -13,7 +13,6 @@ class JmsToAmqpBridgeRunnerISpec extends Specification {
             JmsToAmqpBridgeRunner.main([] as String[])
 
         then:
-            thrown(UnsupportedOperationException)
-//            notThrown(Exception)
+            notThrown(Exception)
     }
 }

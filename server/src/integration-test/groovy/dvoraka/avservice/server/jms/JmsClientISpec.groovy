@@ -73,6 +73,15 @@ class JmsClientISpec extends Specification {
     }
 
     @Ignore
+    def "send infected AvMessage"() {
+        setup:
+            AvMessage message = Utils.genInfectedMessage()
+
+        expect:
+            client.sendMessage(message, JmsClient.TEST_DESTINATION)
+    }
+
+    @Ignore
     def "send 10 AvMessages"() {
         setup:
             AvMessage message = Utils.genNormalMessage()

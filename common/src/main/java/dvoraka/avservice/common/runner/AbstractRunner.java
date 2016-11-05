@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Base class for runners.
  */
-public abstract class AbstractRunner {
+public abstract class AbstractRunner implements Runner {
 
     private static boolean testRun;
 

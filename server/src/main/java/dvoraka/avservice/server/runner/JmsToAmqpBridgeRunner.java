@@ -1,6 +1,7 @@
 package dvoraka.avservice.server.runner;
 
 import dvoraka.avservice.common.runner.AbstractRunner;
+import dvoraka.avservice.common.runner.Runner;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.ServerComponentBridge;
 import dvoraka.avservice.server.configuration.jms.JmsToAmqpConfig;
@@ -13,7 +14,7 @@ import java.io.IOException;
 public class JmsToAmqpBridgeRunner extends AbstractRunner {
 
     public static void main(String[] args) throws IOException {
-        JmsToAmqpBridgeRunner runner = new JmsToAmqpBridgeRunner();
+        Runner runner = new JmsToAmqpBridgeRunner();
         runner.run();
     }
 
