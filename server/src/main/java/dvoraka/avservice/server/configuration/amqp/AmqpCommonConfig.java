@@ -38,20 +38,8 @@ public class AmqpCommonConfig {
 
 
     @Bean
-    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
-        return new RabbitAdmin(connectionFactory);
-    }
-
-    @Bean
-    public RabbitTemplate amqpTemplate(
-            ConnectionFactory connectionFactory, MessageConverter messageConverter) {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setReceiveTimeout(listeningTimeout);
-        template.setRoutingKey("test");
-//        template.setQueue(checkQueue);
-        template.setMessageConverter(messageConverter);
-
-        return template;
+    public MessageConverter messageConverter() {
+        return new AvMessageConverter();
     }
 
     @Bean
@@ -65,7 +53,18 @@ public class AmqpCommonConfig {
     }
 
     @Bean
-    public MessageConverter messageConverter() {
-        return new AvMessageConverter();
+    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
+    }
+
+    @Bean
+    public RabbitTemplate amqpTemplate(
+            ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setReceiveTimeout(listeningTimeout);
+        template.setRoutingKey("test");
+        template.setMessageConverter(messageConverter);
+
+        return template;
     }
 }

@@ -1,7 +1,8 @@
 package dvoraka.avservice.server.configuration.jms
 
+import dvoraka.avservice.server.AvServer
+import dvoraka.avservice.server.configuration.amqp.AmqpConfig
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.jms.core.JmsTemplate
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -9,12 +10,12 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [JmsCommonConfig.class])
-@ActiveProfiles(["jms", "no-db"])
-class JmsCommonConfigISpec extends Specification {
+@ContextConfiguration(classes = [JmsConfig.class])
+@ActiveProfiles(['core', 'jms', 'jms-server', 'no-db'])
+class JmsServerConfigISpec extends Specification {
 
     @Autowired
-    JmsTemplate jmsTemplate
+    AvServer avServer
 
 
     def "test"() {
