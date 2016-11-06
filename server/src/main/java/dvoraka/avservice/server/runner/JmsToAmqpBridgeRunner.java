@@ -20,7 +20,7 @@ public class JmsToAmqpBridgeRunner extends AbstractRunner {
 
     @Override
     public String[] profiles() {
-        return new String[]{"core", "jms2amqp", "db-solr"};
+        return new String[]{"core", "jms2amqp", "db"};
     }
 
     @Override

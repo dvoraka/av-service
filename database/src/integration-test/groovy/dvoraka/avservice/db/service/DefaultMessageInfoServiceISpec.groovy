@@ -12,7 +12,7 @@ import spock.lang.Specification
  * Service test.
  */
 @ContextConfiguration(classes = [DatabaseConfig.class])
-@ActiveProfiles(["database"])
+@ActiveProfiles(['db'])
 class DefaultMessageInfoServiceISpec extends Specification {
 
     @Autowired

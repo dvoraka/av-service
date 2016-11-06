@@ -27,7 +27,7 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "dvoraka.avservice.db.repository")
 @EnableTransactionManagement
 @PropertySource("classpath:avservice.properties")
-@Profile("database")
+@Profile("db")
 public class DatabaseConfig {
 
     @Autowired

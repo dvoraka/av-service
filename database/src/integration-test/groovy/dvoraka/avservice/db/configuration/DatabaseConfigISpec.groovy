@@ -10,7 +10,7 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [DatabaseConfig.class])
-@ActiveProfiles(["database"])
+@ActiveProfiles(['db'])
 class DatabaseConfigISpec extends Specification {
 
     @Autowired
