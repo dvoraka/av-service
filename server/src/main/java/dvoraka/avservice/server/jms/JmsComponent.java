@@ -27,7 +27,6 @@ public class JmsComponent implements ServerComponent {
     private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(JmsComponent.class.getName());
-    private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.JMS_COMPONENT;
 
     private final String responseDestination;
     private final String serviceId;
@@ -55,7 +54,7 @@ public class JmsComponent implements ServerComponent {
         AvMessage avMessage;
         try {
             avMessage = (AvMessage) jmsTemplate.getMessageConverter().fromMessage(message);
-            messageInfoService.save(avMessage, MESSAGE_SOURCE, serviceId);
+            messageInfoService.save(avMessage, AvMessageSource.JMS_COMPONENT_IN, serviceId);
         } catch (JMSException | MessageConversionException e) {
             log.warn("Conversion error!", e);
 
@@ -74,6 +73,7 @@ public class JmsComponent implements ServerComponent {
         }
 
         jmsTemplate.convertAndSend(responseDestination, message);
+        messageInfoService.save(message, AvMessageSource.JMS_COMPONENT_OUT, serviceId);
     }
 
     @Override

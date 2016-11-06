@@ -28,7 +28,6 @@ public class AmqpComponent implements ServerComponent {
     private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
-    private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.AMQP_COMPONENT;
     public static final String ROUTING_KEY = "ROUTINGKEY";
 
     private final String responseExchange;
@@ -58,7 +57,7 @@ public class AmqpComponent implements ServerComponent {
         AvMessage avMessage;
         try {
             avMessage = AvMessageMapper.transform(message);
-            messageInfoService.save(avMessage, MESSAGE_SOURCE, serviceId);
+            messageInfoService.save(avMessage, AvMessageSource.AMQP_COMPONENT_IN, serviceId);
         } catch (MapperException e) {
             log.warn("Transformation error!", e);
 
@@ -79,6 +78,7 @@ public class AmqpComponent implements ServerComponent {
         // TODO: improve exception handling
         try {
             amqpTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
+            messageInfoService.save(message, AvMessageSource.AMQP_COMPONENT_OUT, serviceId);
         } catch (AmqpException e) {
             log.warn("Message send problem!", e);
 
