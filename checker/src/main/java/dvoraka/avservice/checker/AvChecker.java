@@ -1,9 +1,9 @@
 package dvoraka.avservice.checker;
 
-import dvoraka.avservice.common.exception.LastMessageException;
-import dvoraka.avservice.common.exception.ProtocolException;
 import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.sender.AvSender;
+import dvoraka.avservice.common.exception.LastMessageException;
+import dvoraka.avservice.common.exception.ProtocolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package dvoraka.avservice.checker
 
+import dvoraka.avservice.checker.receiver.AvReceiver
 import dvoraka.avservice.common.exception.LastMessageException
 import dvoraka.avservice.common.exception.ProtocolException
-import dvoraka.avservice.checker.receiver.AvReceiver
 import spock.lang.Specification
 
 /**

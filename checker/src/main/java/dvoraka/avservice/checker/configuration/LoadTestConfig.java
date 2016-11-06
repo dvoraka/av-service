@@ -6,8 +6,8 @@ import dvoraka.avservice.checker.LoadTester;
 import dvoraka.avservice.checker.Tester;
 import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.receiver.amqp.AmqpReceiver;
-import dvoraka.avservice.checker.sender.amqp.AmqpSender;
 import dvoraka.avservice.checker.sender.AvSender;
+import dvoraka.avservice.checker.sender.amqp.AmqpSender;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

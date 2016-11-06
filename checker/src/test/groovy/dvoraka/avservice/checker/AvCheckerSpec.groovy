@@ -1,10 +1,10 @@
 package dvoraka.avservice.checker
 
-import dvoraka.avservice.common.exception.LastMessageException
 import dvoraka.avservice.checker.receiver.AvReceiver
 import dvoraka.avservice.checker.sender.AvSender
+import dvoraka.avservice.common.exception.LastMessageException
 import org.springframework.test.util.ReflectionTestUtils
-import spock.lang.Specification;
+import spock.lang.Specification
 
 class AvCheckerSpec extends Specification {
 
