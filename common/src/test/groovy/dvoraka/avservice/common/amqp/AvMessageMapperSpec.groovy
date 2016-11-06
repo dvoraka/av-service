@@ -1,13 +1,11 @@
 package dvoraka.avservice.common.amqp
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageType
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.exception.MapperException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets

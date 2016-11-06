@@ -74,6 +74,7 @@ class DefaultAvServiceSpec extends Specification {
         then:
             result == expected
     }
+
     def "scan bytes with too big array"() {
         given:
             long bigSize = service.getMaxArraySize() + 1
