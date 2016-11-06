@@ -11,27 +11,27 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * AMQP bridge output configuration for import.
+ * AMQP bridge input configuration for import.
  */
-public class AmqpBridgeOutputConfig {
+@Configuration
+public class AmqpBridgeInputConfig {
 
     @Value("${avservice.amqp.host:localhost}")
     private String host;
     @Value("${avservice.amqp.vhost:antivirus}")
     private String virtualHost;
 
-    @Value("${avservice.amqp.resultQueue:av-result}")
-    private String resultQueue;
-    @Value("${avservice.amqp.checkExchange:check}")
-    private String checkExchange;
-
+    @Value("${avservice.amqp.checkQueue:av-check}")
+    private String checkQueue;
+    @Value("${avservice.amqp.resultExchange:result}")
+    private String resultExchange;
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
 
@@ -45,15 +45,12 @@ public class AmqpBridgeOutputConfig {
 
 
     @Bean
-    public ServerComponent outComponent(
-            AmqpTemplate outAmqpTemplate,
-            MessageInfoService messageInfoService
-    ) {
-        return new AmqpComponent(checkExchange, serviceId, outAmqpTemplate, messageInfoService);
+    public MessageConverter inMessageConverter() {
+        return new AvMessageConverter();
     }
 
     @Bean
-    public ConnectionFactory outConnectionFactory() {
+    public ConnectionFactory inConnectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
         connectionFactory.setUsername(userName);
         connectionFactory.setPassword(userPassword);
@@ -63,40 +60,41 @@ public class AmqpBridgeOutputConfig {
     }
 
     @Bean
-    public AmqpAdmin amqpAdmin(ConnectionFactory outConnectionFactory) {
-        return new RabbitAdmin(outConnectionFactory);
+    public AmqpAdmin inAmqpAdmin(ConnectionFactory inConnectionFactory) {
+        return new RabbitAdmin(inConnectionFactory);
     }
 
     @Bean
-    public MessageConverter outMessageConverter() {
-        return new AvMessageConverter();
-    }
-
-    @Bean
-    public AmqpTemplate outAmqpTemplate(
-            ConnectionFactory outConnectionFactory,
-            MessageConverter outMessageConverter) {
-        RabbitTemplate template = new RabbitTemplate(outConnectionFactory);
+    public AmqpTemplate inAmqpTemplate(
+            ConnectionFactory connectionFactory,
+            MessageConverter messageConverter) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
-        template.setQueue(resultQueue);
-        template.setMessageConverter(outMessageConverter);
+        template.setMessageConverter(messageConverter);
 
         return template;
     }
 
     @Bean
-    public MessageListener outMessageListener(ServerComponent outComponent) {
-        return outComponent;
+    public ServerComponent inServerComponent(
+            AmqpTemplate inAmqpTemplate,
+            MessageInfoService messageInfoService
+    ) {
+        return new AmqpComponent(resultExchange, serviceId, inAmqpTemplate, messageInfoService);
     }
 
     @Bean
-    public MessageListenerContainer outMessageListenerContainer(
-            ConnectionFactory outConnectionFactory,
-            MessageListener outMessageListener) {
+    public MessageListener inMessageListener(ServerComponent inServerComponent) {
+        return inServerComponent;
+    }
+
+    @Bean
+    public SimpleMessageListenerContainer inMessageListenerContainer(
+            ConnectionFactory connectionFactory, MessageListener inMessageListener) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(outConnectionFactory);
-        container.setQueueNames(resultQueue);
-        container.setMessageListener(outMessageListener);
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(checkQueue);
+        container.setMessageListener(inMessageListener);
 
         return container;
     }
