@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Profile;
         JmsBridgeOutputConfig.class
 })
 @Profile("amqp2jms")
-public class AmqToJmsConfig {
+public class AmqpToJmsConfig {
 
     @Bean
     public ServerComponentBridge componentBridge(

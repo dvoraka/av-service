@@ -4,7 +4,7 @@ import dvoraka.avservice.common.runner.AbstractRunner;
 import dvoraka.avservice.common.runner.Runner;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.ServerComponentBridge;
-import dvoraka.avservice.server.configuration.bridge.AmqToJmsConfig;
+import dvoraka.avservice.server.configuration.bridge.AmqpToJmsConfig;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ public class AmqpToJmsBridgeRunner extends AbstractRunner {
 
     @Override
     public Class<?>[] configClasses() {
-        return new Class<?>[]{AmqToJmsConfig.class};
+        return new Class<?>[]{AmqpToJmsConfig.class};
     }
 
     @Override
