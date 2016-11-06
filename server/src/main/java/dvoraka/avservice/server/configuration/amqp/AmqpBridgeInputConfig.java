@@ -40,7 +40,7 @@ public class AmqpBridgeInputConfig {
     @Value("${avservice.amqp.pass:guest}")
     private String userPassword;
 
-    @Value("${avservice.serviceId:default1")
+    @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
 
@@ -76,7 +76,7 @@ public class AmqpBridgeInputConfig {
     }
 
     @Bean
-    public ServerComponent inServerComponent(
+    public ServerComponent inComponent(
             AmqpTemplate inAmqpTemplate,
             MessageInfoService messageInfoService
     ) {
@@ -84,8 +84,8 @@ public class AmqpBridgeInputConfig {
     }
 
     @Bean
-    public MessageListener inMessageListener(ServerComponent inServerComponent) {
-        return inServerComponent;
+    public MessageListener inMessageListener(ServerComponent inComponent) {
+        return inComponent;
     }
 
     @Bean

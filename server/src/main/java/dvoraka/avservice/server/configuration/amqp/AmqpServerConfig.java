@@ -35,7 +35,7 @@ public class AmqpServerConfig {
     @Value("${avservice.amqp.resultExchange:result}")
     private String resultExchange;
 
-    @Value("${avservice.serviceId:default1")
+    @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
 

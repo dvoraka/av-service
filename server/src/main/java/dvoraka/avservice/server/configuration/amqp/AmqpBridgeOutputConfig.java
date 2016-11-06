@@ -40,7 +40,7 @@ public class AmqpBridgeOutputConfig {
     @Value("${avservice.amqp.pass:guest}")
     private String userPassword;
 
-    @Value("${avservice.serviceId:default1")
+    @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
 
@@ -63,7 +63,7 @@ public class AmqpBridgeOutputConfig {
     }
 
     @Bean
-    public AmqpAdmin amqpAdmin(ConnectionFactory outConnectionFactory) {
+    public AmqpAdmin outAmqpAdmin(ConnectionFactory outConnectionFactory) {
         return new RabbitAdmin(outConnectionFactory);
     }
 

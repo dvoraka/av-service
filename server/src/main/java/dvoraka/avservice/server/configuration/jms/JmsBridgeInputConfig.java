@@ -33,15 +33,15 @@ public class JmsBridgeInputConfig {
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
 
-    @Value("${avservice.serviceId:default1")
+    @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
 
     @Bean
     public ServerComponent inComponent(
-            JmsTemplate jmsTemplate,
+            JmsTemplate inJmsTemplate,
             MessageInfoService messageInfoService) {
-        return new JmsComponent(resultDestination, serviceId, jmsTemplate, messageInfoService);
+        return new JmsComponent(resultDestination, serviceId, inJmsTemplate, messageInfoService);
     }
 
     @Bean
