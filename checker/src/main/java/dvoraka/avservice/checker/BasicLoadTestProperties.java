@@ -1,6 +1,6 @@
 package dvoraka.avservice.checker;
 
-import dvoraka.avservice.checker.utils.LoadTestConfigParser;
+import dvoraka.avservice.common.LoadTestConfigParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

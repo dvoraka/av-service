@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker.utils;
+package dvoraka.avservice.common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,11 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Simple XML parser for reading load test properties.
+ * Simple XML parser for reading load test configuration.
  */
 public class LoadTestConfigParser extends DefaultHandler {
 
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger(LoadTestConfigParser.class.getName());
 
     private Map<String, String> props = new HashMap<>();
     private StringBuilder buffer = new StringBuilder();
@@ -42,7 +42,8 @@ public class LoadTestConfigParser extends DefaultHandler {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) {
+    public void startElement(
+            String namespaceURI, String localName, String qName, Attributes attrs) {
         // clear buffer
         buffer.setLength(0);
     }

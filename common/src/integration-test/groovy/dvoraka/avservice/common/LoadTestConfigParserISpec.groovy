@@ -1,12 +1,14 @@
-package dvoraka.avservice.checker.utils
+package dvoraka.avservice.common
 
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
- * Config parser test.
+ * Load test config parser test.
  */
 class LoadTestConfigParserISpec extends Specification {
 
+    @Subject
     LoadTestConfigParser configParser
 
 
@@ -24,13 +26,15 @@ class LoadTestConfigParserISpec extends Specification {
             props = configParser.getProperties()
 
         then:
-            props.get("appId").equals("TestId")
-            props.get("destinationQueue").equals("TestDestination")
-            props.get("host").equals("TestHost")
-            props.get("messageCount").equals("10")
-            props.get("sendOnly").equals("false")
-            props.get("synchronous").equals("true")
-            props.get("virtualHost").equals("AntivirusTest")
+            with(props) {
+                get("appId") == "TestId"
+                get("destinationQueue") == "TestDestination"
+                get("host") == "TestHost"
+                get("messageCount") == "10"
+                get("sendOnly") == "false"
+                get("synchronous") == "true"
+                get("virtualHost") == "AntivirusTest"
+            }
     }
 
     def "parsing test with a parse error"() {
@@ -45,8 +49,8 @@ class LoadTestConfigParserISpec extends Specification {
         then:
             notThrown(Exception)
             props.size() == 2
-            props.get("host").equals("TestHost")
-            props.get("virtualHost").equals("AntivirusTest")
+            props.get("host") == "TestHost"
+            props.get("virtualHost") == "AntivirusTest"
     }
 
     def "parsing test without a file"() {
