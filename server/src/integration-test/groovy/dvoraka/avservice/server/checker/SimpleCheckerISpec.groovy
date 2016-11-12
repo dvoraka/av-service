@@ -42,11 +42,12 @@ class SimpleCheckerISpec extends Specification {
             AvMessage message = Utils.genInfectedMessage()
 
         when:
+            println('Send: ' + message)
             checker.sendMessage(message)
             AvMessage receivedMessage = checker.receiveMessage(message.getId())
 
         then:
-            println(receivedMessage)
+            println('Receive: ' + receivedMessage)
             notThrown(Exception)
     }
 
