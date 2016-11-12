@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultLoadTester implements ServiceManagement {
 
+    private static final float MS_PER_SECOND = 1000f;
+
     private final Checker checker;
 
 
@@ -24,10 +26,12 @@ public class DefaultLoadTester implements ServiceManagement {
     @Override
     public void start() {
         final int loops = 10_000;
+        System.out.println("Load test start for " + loops + " messages...");
+
+        long start = System.currentTimeMillis();
         AvMessage message;
         for (int i = 0; i < loops; i++) {
             message = Utils.genInfectedMessage();
-
             checker.sendMessage(message);
             try {
                 checker.receiveMessage(message.getId());
@@ -35,6 +39,13 @@ public class DefaultLoadTester implements ServiceManagement {
                 e.printStackTrace();
             }
         }
+
+        long duration = System.currentTimeMillis() - start;
+        System.out.println("Load test end.");
+
+        float durationSeconds = duration / MS_PER_SECOND;
+        System.out.println("\nDuration: " + durationSeconds + " s");
+        System.out.println("Messages: " + loops / durationSeconds + "/s");
     }
 
     @Override

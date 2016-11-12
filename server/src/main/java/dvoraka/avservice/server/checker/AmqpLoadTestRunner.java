@@ -19,7 +19,7 @@ public class AmqpLoadTestRunner extends AbstractRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"core", "amqp", "amqp-checker", "db"};
+        return new String[]{"core", "amqp", "amqp-checker", "no-db"};
     }
 
     @Override
@@ -30,5 +30,9 @@ public class AmqpLoadTestRunner extends AbstractRunner {
     @Override
     protected Class<? extends ServiceManagement> runClass() {
         return DefaultLoadTester.class;
+    }
+
+    @Override
+    protected void waitForKey() throws IOException {
     }
 }
