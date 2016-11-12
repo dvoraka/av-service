@@ -6,11 +6,13 @@ import dvoraka.avservice.server.configuration.amqp.AmqpConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
  * Simple checker spec.
  */
+@Ignore("manual testing")
 @ContextConfiguration(classes = [AmqpConfig.class])
 @ActiveProfiles(['core', 'amqp', 'amqp-checker', 'no-db'])
 class SimpleCheckerISpec extends Specification {
@@ -30,6 +32,34 @@ class SimpleCheckerISpec extends Specification {
 
         when:
             checker.sendMessage(message)
+
+        then:
+            notThrown(Exception)
+    }
+
+    def "send and receive message"() {
+        given:
+            AvMessage message = Utils.genInfectedMessage()
+
+        when:
+            checker.sendMessage(message)
+            AvMessage receivedMessage = checker.receiveMessage(message.getId())
+
+        then:
+            println(receivedMessage)
+            notThrown(Exception)
+    }
+
+    def "load test concept"() {
+        given:
+            int cycles = 10_000
+
+        when:
+            cycles.times {
+                AvMessage message = Utils.genInfectedMessage()
+                checker.sendMessage(message)
+                checker.receiveMessage(message.getId())
+            }
 
         then:
             notThrown(Exception)

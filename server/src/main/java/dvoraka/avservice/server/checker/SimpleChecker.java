@@ -7,6 +7,9 @@ import dvoraka.avservice.server.ServerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * New checker concept.
  */
@@ -15,11 +18,15 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     private final ServerComponent component;
 
+    private final List<AvMessage> receivedMessages;
+
 
     @Autowired
     public SimpleChecker(ServerComponent component) {
         this.component = component;
         this.component.addAvMessageListener(this);
+
+        receivedMessages = new LinkedList<>();
     }
 
 
@@ -30,11 +37,30 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public AvMessage receiveMessage(String correlationId) throws MessageNotFoundException {
-        return null;
+        while (true) {
+            synchronized (receivedMessages) {
+                for (AvMessage message : receivedMessages) {
+
+                    if (message.getCorrelationId().equals(correlationId)) {
+                        receivedMessages.remove(message);
+
+                        return message;
+                    }
+                }
+            }
+
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
-    public void onAvMessage(AvMessage message) {
-        System.out.println("Message: " + message);
+    public synchronized void onAvMessage(AvMessage message) {
+        synchronized (receivedMessages) {
+            receivedMessages.add(message);
+        }
     }
 }
