@@ -67,7 +67,7 @@ class AmqpComponentSpec extends Specification {
             component.onMessage((Message) null)
 
         then:
-            thrown(IllegalArgumentException)
+            thrown(NullPointerException)
     }
 
     def "send null message"() {
@@ -75,7 +75,7 @@ class AmqpComponentSpec extends Specification {
             component.sendMessage(null)
 
         then:
-            thrown(IllegalArgumentException)
+            thrown(NullPointerException)
     }
 
     def "send normal message"() {

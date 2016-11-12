@@ -75,7 +75,7 @@ class JmsComponentSpec extends Specification {
             component.onMessage((Message) null)
 
         then:
-            thrown(IllegalArgumentException)
+            thrown(NullPointerException)
     }
 
     def "send null message"() {
@@ -83,7 +83,7 @@ class JmsComponentSpec extends Specification {
             component.sendMessage(null)
 
         then:
-            thrown(IllegalArgumentException)
+            thrown(NullPointerException)
     }
 
     def "send normal message"() {

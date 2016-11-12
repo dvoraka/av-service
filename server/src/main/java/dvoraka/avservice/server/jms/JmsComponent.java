@@ -17,6 +17,8 @@ import javax.jms.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * JMS component.
  */
@@ -47,9 +49,7 @@ public class JmsComponent implements ServerComponent {
 
     @Override
     public void onMessage(Message message) {
-        if (message == null) {
-            throw new IllegalArgumentException("Message must not be null!");
-        }
+        requireNonNull(message, "Message must not be null!");
 
         AvMessage avMessage;
         try {
@@ -68,9 +68,7 @@ public class JmsComponent implements ServerComponent {
 
     @Override
     public void sendMessage(AvMessage message) {
-        if (message == null) {
-            throw new IllegalArgumentException("Message may not be null!");
-        }
+        requireNonNull(message, "Message must not be null!");
 
         jmsTemplate.convertAndSend(responseDestination, message);
         messageInfoService.save(message, AvMessageSource.JMS_COMPONENT_OUT, serviceId);

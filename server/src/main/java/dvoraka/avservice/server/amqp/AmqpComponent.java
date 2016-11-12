@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * AMQP component.
  */
@@ -50,9 +52,7 @@ public class AmqpComponent implements ServerComponent {
 
     @Override
     public void onMessage(Message message) {
-        if (message == null) {
-            throw new IllegalArgumentException("Message may not be null!");
-        }
+        requireNonNull(message, "Message must not be null!");
 
         AvMessage avMessage;
         try {
@@ -71,9 +71,7 @@ public class AmqpComponent implements ServerComponent {
 
     @Override
     public void sendMessage(AvMessage message) {
-        if (message == null) {
-            throw new IllegalArgumentException("Message may not be null!");
-        }
+        requireNonNull(message, "Message must not be null!");
 
         // TODO: improve exception handling
         try {
