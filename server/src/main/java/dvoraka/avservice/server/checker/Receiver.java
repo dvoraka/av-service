@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker.receiver;
+package dvoraka.avservice.server.checker;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
@@ -15,5 +15,5 @@ public interface Receiver {
      * @return the AV message with the given correlationId
      * @throws MessageNotFoundException when it is not possible to find the message
      */
-    AvMessage receive(String correlationId) throws MessageNotFoundException;
+    AvMessage receiveMessage(String correlationId) throws MessageNotFoundException;
 }
