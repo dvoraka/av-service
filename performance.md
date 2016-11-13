@@ -2,21 +2,57 @@
 
 Based on PC3 (NB, i3 2.40 GHz (2 cores), SSD) and everything runs on localhost.
 
-## AMQP server
+## Servers
 
-Current load test is really simple and can't use all performance of the server. New test is on the way.
+New prototype for a load test is prepared. It is a bit slower than the old
+one but the old one was tuned several times to have better performance. 
 
 AMQP server run command: `./gradlew runAmqpServer`
 
-Load test run command: `./gradlew loadTest`
+JMS server run command: `./gradlew runJmsServer`
+
+Old load test run command: `./gradlew loadTest`
 
 Log level: INFO
 
 DB logging: no
 
-First run is for a warm-up and it is not counted.
+First run is for a warm-up and is not counted.
 
-### Oct 28, 2016
+### AMQP
+
+#### Nov 13, 2016
+run | messages/second
+--- | ---
+1. | 365
+2. | 366
+3. | 372
+4. | 376
+5. | 372
+
+### JMS
+
+#### Nov 13, 2016
+run | messages/second
+--- | ---
+1. | 91
+2. | 91
+3. | 91
+4. | 91
+5. | 91
+
+### AMQP results for the old load test.
+
+#### Nov 13, 2016
+run | messages/second
+--- | ---
+1. | 533
+2. | 549
+3. | 561
+4. | 546
+5. | 551
+
+#### Oct 28, 2016
 run | messages/second
 --- | ---
 1. | 526
@@ -25,7 +61,7 @@ run | messages/second
 4. | 534
 5. | 531
 
-### Load test results for the old service written in Python (retested February 20, 2016):
+### AMQP load test results for the old service written in Python (retested February 20, 2016):
 
 Message broker, server and anti-virus program were on the same machine. Sending file is EICAR.
 
