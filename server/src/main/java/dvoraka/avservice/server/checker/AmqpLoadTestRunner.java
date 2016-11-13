@@ -19,7 +19,7 @@ public class AmqpLoadTestRunner extends AbstractRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"core", "amqp", "amqp-checker", "no-db"};
+        return new String[]{"amqp", "amqp-checker", "no-db"};
     }
 
     @Override
