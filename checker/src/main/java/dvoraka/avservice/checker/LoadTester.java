@@ -3,6 +3,8 @@ package dvoraka.avservice.checker;
 import dvoraka.avservice.checker.configuration.LoadTestConfig;
 import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.sender.AvSender;
+import dvoraka.avservice.common.BasicLoadTestProperties;
+import dvoraka.avservice.common.LoadTestProperties;
 import dvoraka.avservice.common.exception.LastMessageException;
 import dvoraka.avservice.common.exception.MaxLoopsReachedException;
 import dvoraka.avservice.common.exception.ProtocolException;

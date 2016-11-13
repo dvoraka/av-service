@@ -1,6 +1,8 @@
 package dvoraka.avservice.checker
 
 import dvoraka.avservice.checker.configuration.LoadTestConfig
+import dvoraka.avservice.common.BasicLoadTestProperties
+import dvoraka.avservice.common.LoadTestProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification

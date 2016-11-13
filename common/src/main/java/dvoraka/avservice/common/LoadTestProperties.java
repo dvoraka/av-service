@@ -1,4 +1,4 @@
-package dvoraka.avservice.checker;
+package dvoraka.avservice.common;
 
 /**
  * Interface for load test properties.
