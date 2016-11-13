@@ -11,7 +11,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
  * [How to send a message](#how-to-send-a-message-for-check)
  * [Installation](#installation)
  * [Run services](#run-service)
- * [Load tests](#load-results-for-the-old-service-retested-february-20-2016)
+ * [Load tests](#load-tests)
 
 --
 
@@ -200,6 +200,9 @@ And output should be:
 ...
 Test OK
 ```
+
+## Load tests
+[tests](https://github.com/dvoraka/av-service/blob/master/performance.md)
 
 ## Load results for the old service (retested February 20, 2016):
 
