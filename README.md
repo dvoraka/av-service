@@ -202,39 +202,4 @@ Test OK
 ```
 
 ## Load tests
-[tests](https://github.com/dvoraka/av-service/blob/master/performance.md)
-
-## Load results for the old service (retested February 20, 2016):
-
-Message broker, server and anti-virus program are on the same machine. Sending file is EICAR.
-
-Client is on a different machine.
-
-* Receiver: AVReceiver
-* Sender: AVSender
-
-##### How to run load test
-```
-$ ./gradlew loadTest
-```
-Configuration file is loadTest.xml in resources directory.
-
-##### Load tests
-```
-Load test start for 1000 messages...
-Load test end
-Duration: 20 s
-Messages: 50/s
-```
-```
-Load test start for 10 000 messages...
-Load test end
-Duration: 178 s
-Messages: 56/s
-```
-```
-Load test start for 100 000 messages...
-Load test end
-Duration: 1800 s
-Messages: 56/s
-```
+[TESTS](https://github.com/dvoraka/av-service/blob/master/performance.md)
