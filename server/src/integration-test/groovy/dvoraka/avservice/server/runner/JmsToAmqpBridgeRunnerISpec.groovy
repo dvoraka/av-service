@@ -7,7 +7,7 @@ import spock.lang.Specification
  */
 class JmsToAmqpBridgeRunnerISpec extends Specification {
 
-    def "Run JMS server"() {
+    def "Run JMS to AMQP bridge"() {
         when:
             JmsToAmqpBridgeRunner.setTestRun(true)
             JmsToAmqpBridgeRunner.main([] as String[])
