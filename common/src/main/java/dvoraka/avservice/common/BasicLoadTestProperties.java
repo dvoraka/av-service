@@ -4,7 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Basic load test properties.
@@ -118,8 +120,10 @@ public class BasicLoadTestProperties implements LoadTestProperties {
     @Override
     public void loadPropertiesFromXML() throws IOException {
         LoadTestConfigParser parser = new LoadTestConfigParser();
-        parser.parseFileSax(getClass().getResource(CONF_FILE_NAME).toString());
-
+        parser.parseFileSax(Optional
+                .ofNullable(getClass().getResource(CONF_FILE_NAME))
+                .map(URL::toString)
+                .orElse("/loadTest.xml"));
         Map<String, String> properties = parser.getProperties();
         loadProperties(properties);
     }

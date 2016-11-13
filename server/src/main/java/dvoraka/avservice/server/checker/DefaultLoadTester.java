@@ -1,5 +1,6 @@
 package dvoraka.avservice.server.checker;
 
+import dvoraka.avservice.common.LoadTestProperties;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
@@ -16,16 +17,18 @@ public class DefaultLoadTester implements ServiceManagement {
     private static final float MS_PER_SECOND = 1000f;
 
     private final Checker checker;
+    private final LoadTestProperties testProperties;
 
 
     @Autowired
-    public DefaultLoadTester(Checker checker) {
+    public DefaultLoadTester(Checker checker, LoadTestProperties testProperties) {
         this.checker = checker;
+        this.testProperties = testProperties;
     }
 
     @Override
     public void start() {
-        final int loops = 10_000;
+        int loops = testProperties.getMsgCount();
         System.out.println("Load test start for " + loops + " messages...");
 
         long start = System.currentTimeMillis();
