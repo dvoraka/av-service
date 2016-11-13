@@ -16,6 +16,8 @@ import java.util.List;
 @Component
 public class SimpleChecker implements Checker, AvMessageListener {
 
+    private static final long MAX_TIMEOUT = 1_000;
+
     private final ServerComponent component;
 
     private final List<AvMessage> receivedMessages;
@@ -37,6 +39,8 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public AvMessage receiveMessage(String correlationId) throws MessageNotFoundException {
+        long start = System.currentTimeMillis();
+
         while (true) {
             synchronized (receivedMessages) {
                 for (AvMessage message : receivedMessages) {
@@ -53,6 +57,11 @@ public class SimpleChecker implements Checker, AvMessageListener {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+
+            long now = System.currentTimeMillis();
+            if ((now - start) > MAX_TIMEOUT) {
+                throw new MessageNotFoundException();
             }
         }
     }

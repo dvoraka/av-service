@@ -13,7 +13,8 @@ import java.util.Optional;
  */
 public class BasicLoadTestProperties implements LoadTestProperties {
 
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger log =
+            LogManager.getLogger(BasicLoadTestProperties.class.getName());
 
     private static final String CONF_FILE_NAME = "/loadTest.xml";
 

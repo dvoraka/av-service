@@ -5,8 +5,11 @@ import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
 import dvoraka.avservice.common.service.ServiceManagement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 
 /**
  * Class for load testing.
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultLoadTester implements ServiceManagement {
 
+    private static final Logger log = LogManager.getLogger(DefaultLoadTester.class.getName());
     private static final float MS_PER_SECOND = 1000f;
 
     private final Checker checker;
@@ -39,7 +43,7 @@ public class DefaultLoadTester implements ServiceManagement {
             try {
                 checker.receiveMessage(message.getId());
             } catch (MessageNotFoundException e) {
-                e.printStackTrace();
+                log.warn("Message not found.", e);
             }
         }
 
