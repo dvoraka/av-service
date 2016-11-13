@@ -9,7 +9,11 @@ one but the old one was tuned several times to have better performance.
 
 AMQP server run command: `./gradlew runAmqpServer`
 
+AMQP load test run command: `./gradlew runAmqpLoadTest`
+
 JMS server run command: `./gradlew runJmsServer`
+
+JMS load test run command: `./gradlew runJmsLoadTest`
 
 Old load test run command: `./gradlew loadTest`
 
@@ -41,7 +45,7 @@ run | messages/second
 4. | 91
 5. | 91
 
-### AMQP results for the old load test.
+### AMQP results for the old load test
 
 #### Nov 13, 2016
 run | messages/second

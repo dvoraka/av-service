@@ -49,3 +49,19 @@ task runAmqpToJmsBridge(type: JavaExec) {
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }
+
+task runAmqpLoadTest(type: JavaExec) {
+    description = 'Run AMQP load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.runner.AmqpLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runJmsLoadTest(type: JavaExec) {
+    description = 'Run JMS load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.runner.JmsLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}

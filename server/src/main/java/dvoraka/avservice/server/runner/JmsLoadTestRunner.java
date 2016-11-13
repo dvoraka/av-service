@@ -1,30 +1,31 @@
-package dvoraka.avservice.server.checker;
+package dvoraka.avservice.server.runner;
 
 import dvoraka.avservice.common.runner.AbstractRunner;
 import dvoraka.avservice.common.runner.Runner;
 import dvoraka.avservice.common.service.ServiceManagement;
-import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
+import dvoraka.avservice.server.checker.DefaultLoadTester;
+import dvoraka.avservice.server.configuration.jms.JmsConfig;
 
 import java.io.IOException;
 
 /**
- * AMQP load test runner.
+ * JMS load test runner.
  */
-public class AmqpLoadTestRunner extends AbstractRunner {
+public class JmsLoadTestRunner extends AbstractRunner {
 
     public static void main(String[] args) throws IOException {
-        Runner runner = new AmqpLoadTestRunner();
+        Runner runner = new JmsLoadTestRunner();
         runner.run();
     }
 
     @Override
     protected String[] profiles() {
-        return new String[]{"amqp", "amqp-checker", "no-db"};
+        return new String[]{"jms", "jms-checker", "no-db"};
     }
 
     @Override
     protected Class<?>[] configClasses() {
-        return new Class<?>[]{AmqpConfig.class};
+        return new Class<?>[]{JmsConfig.class};
     }
 
     @Override
