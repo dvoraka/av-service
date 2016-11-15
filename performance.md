@@ -25,6 +25,19 @@ First run is for a warm-up and is not counted.
 
 ### AMQP
 
+Actual prototype load test results.
+
+#### Nov 15, 2016
+run | messages/second
+--- | ---
+1. | 474
+2. | 452
+3. | 460
+4. | 463
+5. | 465
+
+Old prototype load test results.
+
 #### Nov 13, 2016
 run | messages/second
 --- | ---
