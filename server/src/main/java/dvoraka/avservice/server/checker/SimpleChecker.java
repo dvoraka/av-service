@@ -7,8 +7,9 @@ import dvoraka.avservice.server.ServerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * New checker concept.
@@ -17,18 +18,18 @@ import java.util.List;
 public class SimpleChecker implements Checker, AvMessageListener {
 
     private static final long MAX_TIMEOUT = 1_000;
+    private static final int QUEUE_CAPACITY = 10;
 
     private final ServerComponent component;
 
-    private final List<AvMessage> receivedMessages;
+    private final BlockingQueue<AvMessage> queue;
 
 
     @Autowired
     public SimpleChecker(ServerComponent component) {
         this.component = component;
         this.component.addAvMessageListener(this);
-
-        receivedMessages = new LinkedList<>();
+        queue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
     }
 
 
@@ -39,37 +40,31 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public AvMessage receiveMessage(String correlationId) throws MessageNotFoundException {
-        long start = System.currentTimeMillis();
-
-        while (true) {
-            synchronized (receivedMessages) {
-                for (AvMessage message : receivedMessages) {
-
-                    if (message.getCorrelationId().equals(correlationId)) {
-                        receivedMessages.remove(message);
-
-                        return message;
-                    }
-                }
-            }
-
+        AvMessage message;
+        for (;;) {
             try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                message = queue.poll(MAX_TIMEOUT, TimeUnit.MILLISECONDS);
+                if (message == null) {
+                    throw new MessageNotFoundException();
+                }
 
-            long now = System.currentTimeMillis();
-            if ((now - start) > MAX_TIMEOUT) {
+                if (message.getCorrelationId().equals(correlationId)) {
+                    return message;
+                } else {
+                    queue.offer(message, MAX_TIMEOUT, TimeUnit.MILLISECONDS);
+                }
+            } catch (InterruptedException e) {
                 throw new MessageNotFoundException();
             }
         }
     }
 
     @Override
-    public synchronized void onAvMessage(AvMessage message) {
-        synchronized (receivedMessages) {
-            receivedMessages.add(message);
+    public void onAvMessage(AvMessage message) {
+        try {
+            queue.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
