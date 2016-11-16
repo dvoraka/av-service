@@ -7,6 +7,8 @@ import dvoraka.avservice.server.ServerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -40,8 +42,10 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public AvMessage receiveMessage(String correlationId) throws MessageNotFoundException {
+        List<AvMessage> savedMessages = new ArrayList<>(QUEUE_CAPACITY);
+
         AvMessage message;
-        for (;;) {
+        while (true) {
             try {
                 message = queue.poll(MAX_TIMEOUT, TimeUnit.MILLISECONDS);
                 if (message == null) {
@@ -49,9 +53,16 @@ public class SimpleChecker implements Checker, AvMessageListener {
                 }
 
                 if (message.getCorrelationId().equals(correlationId)) {
+                    for (AvMessage msg : savedMessages) {
+                        if (!queue.offer(msg, MAX_TIMEOUT, TimeUnit.MILLISECONDS)) {
+                            // we lost the message
+                        }
+                    }
+                    savedMessages.clear();
+
                     return message;
                 } else {
-                    queue.offer(message, MAX_TIMEOUT, TimeUnit.MILLISECONDS);
+                    savedMessages.add(message);
                 }
             } catch (InterruptedException e) {
                 throw new MessageNotFoundException();
