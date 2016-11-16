@@ -4,6 +4,8 @@ import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
 import dvoraka.avservice.server.ServerComponent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class SimpleChecker implements Checker, AvMessageListener {
+
+    private static final Logger log = LogManager.getLogger(SimpleChecker.class.getName());
 
     private static final long MAX_TIMEOUT = 1_000;
     private static final int QUEUE_CAPACITY = 10;
@@ -55,7 +59,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
                 if (message.getCorrelationId().equals(correlationId)) {
                     for (AvMessage msg : savedMessages) {
                         if (!queue.offer(msg, MAX_TIMEOUT, TimeUnit.MILLISECONDS)) {
-                            // we lost the message
+                            log.warn("Lost message: " + message);
                         }
                     }
                     savedMessages.clear();
