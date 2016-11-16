@@ -42,6 +42,7 @@ class JmsClientISpec extends Specification {
             client.receiveTestMessage()
     }
 
+    @Ignore
     def "send and receive test message"() {
         given:
             String expectedCorrId = JmsClient.TEST_CORRELATION_ID
@@ -92,6 +93,7 @@ class JmsClientISpec extends Specification {
             }
     }
 
+    @Ignore
     def "send and receive AvMessage"() {
         given:
             AvMessage message = Utils.genNormalMessage()
