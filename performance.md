@@ -25,38 +25,17 @@ First run is for a warm-up and is not counted.
 
 ### AMQP
 
-Actual prototype load test results.
-
-#### Nov 15, 2016
-run | messages/second
---- | ---
-1. | 474
-2. | 452
-3. | 460
-4. | 463
-5. | 465
-
-Old prototype load test results.
-
-#### Nov 13, 2016
-run | messages/second
---- | ---
-1. | 365
-2. | 366
-3. | 372
-4. | 376
-5. | 372
+#### Nov 17, 2016
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 471 | 470 | 480 | 480 | 481
 
 ### JMS
 
-#### Nov 13, 2016
-run | messages/second
---- | ---
-1. | 91
-2. | 91
-3. | 91
-4. | 91
-5. | 91
+#### Nov 17, 2016
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 91 | 91 | 92 | 91 | 90
 
 ### AMQP results for the old load test
 
@@ -68,15 +47,6 @@ run | messages/second
 3. | 561
 4. | 546
 5. | 551
-
-#### Oct 28, 2016
-run | messages/second
---- | ---
-1. | 526
-2. | 526
-3. | 542
-4. | 534
-5. | 531
 
 ### AMQP load test results for the old service written in Python (retested February 20, 2016):
 
