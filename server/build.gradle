@@ -65,3 +65,19 @@ task runJmsLoadTest(type: JavaExec) {
     main = 'dvoraka.avservice.server.runner.JmsLoadTestRunner'
     classpath = sourceSets.main.runtimeClasspath
 }
+
+task runAmqpCheck(type: JavaExec) {
+    description = 'Run AMQP infrastructure check'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.runner.AmqpCheckRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runJmsCheck(type: JavaExec) {
+    description = 'Run JMS infrastructure check'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.runner.JmsCheckRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
