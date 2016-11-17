@@ -16,7 +16,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * New checker concept.
+ * Simple checker class for checking if a transport of messages works. Class has a buffer
+ * for incoming messages but if the buffer is full some messages will be lost. Also foreign
+ * messages are consumed and thrown out. It is mainly for an infrastructure testing.
  */
 @Component
 public class SimpleChecker implements Checker, AvMessageListener {
