@@ -21,11 +21,6 @@ class SimpleCheckerISpec extends Specification {
     Checker checker
 
 
-    def "test"() {
-        expect:
-            true
-    }
-
     def "send message"() {
         given:
             AvMessage message = Utils.genInfectedMessage()
@@ -49,6 +44,11 @@ class SimpleCheckerISpec extends Specification {
         then:
             println('Receive: ' + receivedMessage)
             notThrown(Exception)
+    }
+
+    def "check method testing"() {
+        expect:
+            println(checker.check())
     }
 
     def "load test concept"() {

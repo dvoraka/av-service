@@ -1,6 +1,7 @@
 package dvoraka.avservice.server.checker;
 
 import dvoraka.avservice.common.AvMessageListener;
+import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
 import dvoraka.avservice.server.ServerComponent;
@@ -74,6 +75,36 @@ public class SimpleChecker implements Checker, AvMessageListener {
                 throw new MessageNotFoundException();
             }
         }
+    }
+
+    @Override
+    public boolean check() {
+        AvMessage normalMessage = Utils.genNormalMessage();
+        AvMessage infectedMessage = Utils.genInfectedMessage();
+
+        sendMessage(normalMessage);
+        try {
+            AvMessage receivedMessage = receiveMessage(normalMessage.getId());
+
+            if (!receivedMessage.getVirusInfo().equals(Utils.OK_VIRUS_INFO)) {
+                return false;
+            }
+        } catch (MessageNotFoundException e) {
+            return false;
+        }
+
+        sendMessage(infectedMessage);
+        try {
+            AvMessage receivedMessage = receiveMessage(infectedMessage.getId());
+
+            if (receivedMessage.getVirusInfo().equals(Utils.OK_VIRUS_INFO)) {
+                return false;
+            }
+        } catch (MessageNotFoundException e) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
