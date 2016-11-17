@@ -86,7 +86,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
         try {
             AvMessage receivedMessage = receiveMessage(normalMessage.getId());
 
-            if (!receivedMessage.getVirusInfo().equals(Utils.OK_VIRUS_INFO)) {
+            if (isInfected(receivedMessage)) {
                 return false;
             }
         } catch (MessageNotFoundException e) {
@@ -97,7 +97,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
         try {
             AvMessage receivedMessage = receiveMessage(infectedMessage.getId());
 
-            if (receivedMessage.getVirusInfo().equals(Utils.OK_VIRUS_INFO)) {
+            if (!isInfected(receivedMessage)) {
                 return false;
             }
         } catch (MessageNotFoundException e) {
@@ -105,6 +105,10 @@ public class SimpleChecker implements Checker, AvMessageListener {
         }
 
         return true;
+    }
+
+    private boolean isInfected(AvMessage message) {
+        return !message.getVirusInfo().equals(Utils.OK_VIRUS_INFO);
     }
 
     @Override
