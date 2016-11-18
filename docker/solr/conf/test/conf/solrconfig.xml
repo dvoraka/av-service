@@ -1113,21 +1113,21 @@
        results for a given query regardless of the normal lucene
        scoring.
     -->
-  <searchComponent name="elevator" class="solr.QueryElevationComponent" >
-    <!-- pick a fieldType to analyze queries -->
-    <str name="queryFieldType">string</str>
-    <str name="config-file">elevate.xml</str>
-  </searchComponent>
+  <!--<searchComponent name="elevator" class="solr.QueryElevationComponent" >-->
+    <!--&lt;!&ndash; pick a fieldType to analyze queries &ndash;&gt;-->
+    <!--<str name="queryFieldType">string</str>-->
+    <!--<str name="config-file">elevate.xml</str>-->
+  <!--</searchComponent>-->
 
-  <!-- A request handler for demonstrating the elevator component -->
-  <requestHandler name="/elevate" class="solr.SearchHandler" startup="lazy">
-    <lst name="defaults">
-      <str name="echoParams">explicit</str>
-    </lst>
-    <arr name="last-components">
-      <str>elevator</str>
-    </arr>
-  </requestHandler>
+  <!--&lt;!&ndash; A request handler for demonstrating the elevator component &ndash;&gt;-->
+  <!--<requestHandler name="/elevate" class="solr.SearchHandler" startup="lazy">-->
+    <!--<lst name="defaults">-->
+      <!--<str name="echoParams">explicit</str>-->
+    <!--</lst>-->
+    <!--<arr name="last-components">-->
+      <!--<str>elevator</str>-->
+    <!--</arr>-->
+  <!--</requestHandler>-->
 
   <!-- Highlighting Component
 
