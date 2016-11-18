@@ -1,10 +1,10 @@
 package dvoraka.avservice.server.checker;
 
-import dvoraka.avservice.common.LoadTestProperties;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
 import dvoraka.avservice.common.service.ServiceManagement;
+import dvoraka.avservice.common.testing.LoadTestProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.configuration.jms;
 
-import dvoraka.avservice.common.BasicLoadTestProperties;
-import dvoraka.avservice.common.LoadTestProperties;
+import dvoraka.avservice.common.testing.BasicLoadTestProperties;
+import dvoraka.avservice.common.testing.LoadTestProperties;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.checker.CheckApp;

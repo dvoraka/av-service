@@ -1,4 +1,4 @@
-package dvoraka.avservice.common;
+package dvoraka.avservice.common.testing;
 
 import java.io.IOException;
 
