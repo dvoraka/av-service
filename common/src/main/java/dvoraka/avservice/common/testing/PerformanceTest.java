@@ -5,5 +5,10 @@ package dvoraka.avservice.common.testing;
  */
 public interface PerformanceTest extends Test {
 
+    /**
+     * Returns a result for the test.
+     *
+     * @return the test result
+     */
     long getResult();
 }
