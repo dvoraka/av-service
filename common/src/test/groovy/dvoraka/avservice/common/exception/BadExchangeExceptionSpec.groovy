@@ -16,6 +16,6 @@ class BadExchangeExceptionSpec extends Specification {
 
         then:
             def e = thrown(BadExchangeException)
-            msg.equals(e.getMessage())
+            msg == e.getMessage()
     }
 }
