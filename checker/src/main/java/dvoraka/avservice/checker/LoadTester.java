@@ -6,8 +6,8 @@ import dvoraka.avservice.checker.sender.AvSender;
 import dvoraka.avservice.common.exception.LastMessageException;
 import dvoraka.avservice.common.exception.MaxLoopsReachedException;
 import dvoraka.avservice.common.exception.ProtocolException;
-import dvoraka.avservice.common.testing.DefaultLoadTestProperties;
-import dvoraka.avservice.common.testing.LoadTestProperties;
+import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
+import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +35,15 @@ public class LoadTester implements Tester {
     private static final int MAX_LOOPS = 10;
     private static final float MS_PER_SECOND = 1000f;
 
-    private LoadTestProperties props;
+    private PerformanceTestProperties props;
 
     private int maxLoops;
     private int maxMsgExceptions;
 
 
-    public LoadTester(LoadTestProperties props) {
+    public LoadTester(PerformanceTestProperties props) {
         if (props == null) {
-            this.props = new DefaultLoadTestProperties();
+            this.props = new DefaultPerformanceTestProperties();
         } else {
             this.props = props;
         }
@@ -223,11 +223,11 @@ public class LoadTester implements Tester {
         System.out.println("");
     }
 
-    public LoadTestProperties getProps() {
+    public PerformanceTestProperties getProps() {
         return props;
     }
 
-    public void setProps(LoadTestProperties props) {
+    public void setProps(PerformanceTestProperties props) {
         this.props = props;
     }
 

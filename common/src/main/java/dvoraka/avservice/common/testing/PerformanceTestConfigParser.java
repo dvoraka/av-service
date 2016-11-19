@@ -1,4 +1,4 @@
-package dvoraka.avservice.common;
+package dvoraka.avservice.common.testing;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,11 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Simple XML parser for reading load test configuration.
+ * Simple XML parser for reading performance test configuration.
  */
-public class LoadTestConfigParser extends DefaultHandler {
+public class PerformanceTestConfigParser extends DefaultHandler {
 
-    private static final Logger log = LogManager.getLogger(LoadTestConfigParser.class.getName());
+    private static final Logger log = LogManager.getLogger(
+            PerformanceTestConfigParser.class.getName());
 
     private Map<String, String> props = new HashMap<>();
     private StringBuilder buffer = new StringBuilder();

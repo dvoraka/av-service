@@ -1,9 +1,9 @@
 package dvoraka.avservice.common.testing;
 
 /**
- * Interface for load test properties.
+ * Interface for performance test properties.
  */
-public interface LoadTestProperties extends TestProperties {
+public interface PerformanceTestProperties extends TestProperties {
 
     String getHost();
 

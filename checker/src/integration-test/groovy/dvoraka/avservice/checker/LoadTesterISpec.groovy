@@ -1,8 +1,8 @@
 package dvoraka.avservice.checker
 
 import dvoraka.avservice.checker.configuration.LoadTestConfig
-import dvoraka.avservice.common.testing.DefaultLoadTestProperties
-import dvoraka.avservice.common.testing.LoadTestProperties
+import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties
+import dvoraka.avservice.common.testing.PerformanceTestProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -27,7 +27,7 @@ class LoadTesterISpec extends Specification {
 
     def "run load test"() {
         given:
-            LoadTestProperties props = new DefaultLoadTestProperties.Builder()
+            PerformanceTestProperties props = new DefaultPerformanceTestProperties.Builder()
                     .msgCount(2)
                     .virtualHost("antivirus")
                     .destinationQueue("av-result")

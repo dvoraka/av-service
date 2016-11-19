@@ -1,5 +1,6 @@
 package dvoraka.avservice.common
 
+import dvoraka.avservice.common.testing.PerformanceTestConfigParser
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -9,11 +10,11 @@ import spock.lang.Subject
 class LoadTestConfigParserISpec extends Specification {
 
     @Subject
-    LoadTestConfigParser configParser
+    PerformanceTestConfigParser configParser
 
 
     def setup() {
-        configParser = new LoadTestConfigParser()
+        configParser = new PerformanceTestConfigParser()
     }
 
     def "parsing test"() {

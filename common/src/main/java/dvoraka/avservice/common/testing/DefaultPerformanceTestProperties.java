@@ -1,6 +1,5 @@
 package dvoraka.avservice.common.testing;
 
-import dvoraka.avservice.common.LoadTestConfigParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,10 +11,10 @@ import java.util.Optional;
 /**
  * Basic load test properties.
  */
-public class DefaultLoadTestProperties implements LoadTestProperties {
+public class DefaultPerformanceTestProperties implements PerformanceTestProperties {
 
     private static final Logger log =
-            LogManager.getLogger(DefaultLoadTestProperties.class.getName());
+            LogManager.getLogger(DefaultPerformanceTestProperties.class.getName());
 
     private static final String CONF_FILE_NAME = "/loadTest.xml";
 
@@ -28,7 +27,7 @@ public class DefaultLoadTestProperties implements LoadTestProperties {
     private boolean sendOnly;
 
 
-    public DefaultLoadTestProperties() {
+    public DefaultPerformanceTestProperties() {
         this(new Builder());
 
         this.sendOnly = false;
@@ -40,7 +39,7 @@ public class DefaultLoadTestProperties implements LoadTestProperties {
         }
     }
 
-    private DefaultLoadTestProperties(Builder builder) {
+    private DefaultPerformanceTestProperties(Builder builder) {
         this.host = builder.host;
         this.virtualHost = builder.virtualHost;
         this.appId = builder.appId;
@@ -121,7 +120,7 @@ public class DefaultLoadTestProperties implements LoadTestProperties {
 
     @Override
     public void loadPropertiesFromXML() throws IOException {
-        LoadTestConfigParser parser = new LoadTestConfigParser();
+        PerformanceTestConfigParser parser = new PerformanceTestConfigParser();
         parser.parseFileSax(Optional
                 .ofNullable(getClass().getResource(CONF_FILE_NAME))
                 .map(URL::toString)
@@ -220,8 +219,8 @@ public class DefaultLoadTestProperties implements LoadTestProperties {
             return this;
         }
 
-        public DefaultLoadTestProperties build() {
-            return new DefaultLoadTestProperties(this);
+        public DefaultPerformanceTestProperties build() {
+            return new DefaultPerformanceTestProperties(this);
         }
     }
 }

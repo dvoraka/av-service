@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.checker
 
 import dvoraka.avservice.common.exception.MessageNotFoundException
-import dvoraka.avservice.common.testing.DefaultLoadTestProperties
-import dvoraka.avservice.common.testing.LoadTestProperties
+import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties
+import dvoraka.avservice.common.testing.PerformanceTestProperties
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -14,12 +14,12 @@ class DefaultLoadTesterSpec extends Specification {
     @Subject
     DefaultLoadTester tester
 
-    LoadTestProperties props
+    PerformanceTestProperties props
 
 
     def setup() {
         Checker checker = Stub()
-        props = new DefaultLoadTestProperties.Builder()
+        props = new DefaultPerformanceTestProperties.Builder()
                 .msgCount(1)
                 .build()
 

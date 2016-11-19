@@ -4,7 +4,7 @@ import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
 import dvoraka.avservice.common.service.ServiceManagement;
-import dvoraka.avservice.common.testing.LoadTestProperties;
+import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class DefaultLoadTester implements ServiceManagement {
     private static final float MS_PER_SECOND = 1000f;
 
     private final Checker checker;
-    private final LoadTestProperties testProperties;
+    private final PerformanceTestProperties testProperties;
 
     private boolean running;
     private boolean started;
@@ -31,7 +31,7 @@ public class DefaultLoadTester implements ServiceManagement {
 
 
     @Autowired
-    public DefaultLoadTester(Checker checker, LoadTestProperties testProperties) {
+    public DefaultLoadTester(Checker checker, PerformanceTestProperties testProperties) {
         Objects.requireNonNull(testProperties, "Test properties must not be null!");
 
         this.checker = checker;

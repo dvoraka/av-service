@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.configuration.jms;
 
-import dvoraka.avservice.common.testing.DefaultLoadTestProperties;
-import dvoraka.avservice.common.testing.LoadTestProperties;
+import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
+import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.checker.CheckApp;
@@ -67,14 +67,14 @@ public class JmsCheckerConfig {
     }
 
     @Bean
-    public LoadTestProperties testProperties() {
-        return new DefaultLoadTestProperties();
+    public PerformanceTestProperties testProperties() {
+        return new DefaultPerformanceTestProperties();
     }
 
     @Bean
     public DefaultLoadTester defaultLoadTester(
             Checker checker,
-            LoadTestProperties testProperties
+            PerformanceTestProperties testProperties
     ) {
         return new DefaultLoadTester(checker, testProperties);
     }
