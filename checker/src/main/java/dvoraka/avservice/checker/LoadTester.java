@@ -6,7 +6,7 @@ import dvoraka.avservice.checker.sender.AvSender;
 import dvoraka.avservice.common.exception.LastMessageException;
 import dvoraka.avservice.common.exception.MaxLoopsReachedException;
 import dvoraka.avservice.common.exception.ProtocolException;
-import dvoraka.avservice.common.testing.BasicLoadTestProperties;
+import dvoraka.avservice.common.testing.DefaultLoadTestProperties;
 import dvoraka.avservice.common.testing.LoadTestProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +43,7 @@ public class LoadTester implements Tester {
 
     public LoadTester(LoadTestProperties props) {
         if (props == null) {
-            this.props = new BasicLoadTestProperties();
+            this.props = new DefaultLoadTestProperties();
         } else {
             this.props = props;
         }

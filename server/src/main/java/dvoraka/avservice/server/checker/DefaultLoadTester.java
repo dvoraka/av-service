@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 
 /**
  * Class for load testing.
@@ -23,15 +25,25 @@ public class DefaultLoadTester implements ServiceManagement {
     private final Checker checker;
     private final LoadTestProperties testProperties;
 
+    private boolean running;
+    private boolean started;
+    private boolean stopped;
+
 
     @Autowired
     public DefaultLoadTester(Checker checker, LoadTestProperties testProperties) {
+        Objects.requireNonNull(testProperties, "Test properties must not be null!");
+
         this.checker = checker;
         this.testProperties = testProperties;
     }
 
     @Override
     public void start() {
+        stopped = false;
+        started = true;
+        running = true;
+
         int loops = testProperties.getMsgCount();
         System.out.println("Load test start for " + loops + " messages...");
 
@@ -57,26 +69,27 @@ public class DefaultLoadTester implements ServiceManagement {
 
     @Override
     public void stop() {
-
+        stopped = true;
     }
 
     @Override
     public void restart() {
-
+        stop();
+        start();
     }
 
     @Override
     public boolean isRunning() {
-        return false;
+        return running;
     }
 
     @Override
     public boolean isStarted() {
-        return false;
+        return started;
     }
 
     @Override
     public boolean isStopped() {
-        return false;
+        return stopped;
     }
 }

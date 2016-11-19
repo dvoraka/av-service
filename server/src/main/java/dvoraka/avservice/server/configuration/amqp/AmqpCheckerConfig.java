@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.amqp;
 
-import dvoraka.avservice.common.testing.BasicLoadTestProperties;
+import dvoraka.avservice.common.testing.DefaultLoadTestProperties;
 import dvoraka.avservice.common.testing.LoadTestProperties;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
@@ -66,7 +66,7 @@ public class AmqpCheckerConfig {
 
     @Bean
     public LoadTestProperties testProperties() {
-        return new BasicLoadTestProperties();
+        return new DefaultLoadTestProperties();
     }
 
     @Bean

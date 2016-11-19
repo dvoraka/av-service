@@ -12,10 +12,10 @@ import java.util.Optional;
 /**
  * Basic load test properties.
  */
-public class BasicLoadTestProperties implements LoadTestProperties {
+public class DefaultLoadTestProperties implements LoadTestProperties {
 
     private static final Logger log =
-            LogManager.getLogger(BasicLoadTestProperties.class.getName());
+            LogManager.getLogger(DefaultLoadTestProperties.class.getName());
 
     private static final String CONF_FILE_NAME = "/loadTest.xml";
 
@@ -28,7 +28,7 @@ public class BasicLoadTestProperties implements LoadTestProperties {
     private boolean sendOnly;
 
 
-    public BasicLoadTestProperties() {
+    public DefaultLoadTestProperties() {
         this(new Builder());
 
         this.sendOnly = false;
@@ -40,7 +40,7 @@ public class BasicLoadTestProperties implements LoadTestProperties {
         }
     }
 
-    private BasicLoadTestProperties(Builder builder) {
+    private DefaultLoadTestProperties(Builder builder) {
         this.host = builder.host;
         this.virtualHost = builder.virtualHost;
         this.appId = builder.appId;
@@ -220,8 +220,8 @@ public class BasicLoadTestProperties implements LoadTestProperties {
             return this;
         }
 
-        public BasicLoadTestProperties build() {
-            return new BasicLoadTestProperties(this);
+        public DefaultLoadTestProperties build() {
+            return new DefaultLoadTestProperties(this);
         }
     }
 }

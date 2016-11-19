@@ -6,7 +6,7 @@ import dvoraka.avservice.checker.receiver.AvReceiver;
 import dvoraka.avservice.checker.receiver.amqp.AmqpReceiver;
 import dvoraka.avservice.checker.sender.AvSender;
 import dvoraka.avservice.checker.sender.amqp.AmqpSender;
-import dvoraka.avservice.common.testing.BasicLoadTestProperties;
+import dvoraka.avservice.common.testing.DefaultLoadTestProperties;
 import dvoraka.avservice.common.testing.LoadTestProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +34,6 @@ public class LoadTestConfig {
 
     @Bean
     public LoadTestProperties loadTestProperties() {
-        return new BasicLoadTestProperties();
+        return new DefaultLoadTestProperties();
     }
 }
