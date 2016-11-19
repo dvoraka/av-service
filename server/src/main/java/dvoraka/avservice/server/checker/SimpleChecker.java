@@ -72,7 +72,8 @@ public class SimpleChecker implements Checker, AvMessageListener {
                     savedMessages.add(message);
                 }
             } catch (InterruptedException e) {
-                throw new MessageNotFoundException();
+                log.warn("Waiting interrupted!", e);
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -90,6 +91,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
                 return false;
             }
         } catch (MessageNotFoundException e) {
+            log.debug("Message not found.", e);
             return false;
         }
 
@@ -101,6 +103,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
                 return false;
             }
         } catch (MessageNotFoundException e) {
+            log.debug("Message not found.", e);
             return false;
         }
 
@@ -116,7 +119,8 @@ public class SimpleChecker implements Checker, AvMessageListener {
         try {
             queue.put(message);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.warn("Waiting interrupted!", e);
+            Thread.currentThread().interrupt();
         }
     }
 }
