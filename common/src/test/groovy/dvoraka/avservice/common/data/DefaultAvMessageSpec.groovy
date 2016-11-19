@@ -5,7 +5,7 @@ import spock.lang.Specification
 import java.nio.charset.StandardCharsets
 
 /**
- * DefaultAvMessage test.
+ * Default AV message spec.
  */
 class DefaultAvMessageSpec extends Specification {
 
@@ -32,18 +32,6 @@ class DefaultAvMessageSpec extends Specification {
             message.getVirusInfo() == testString
     }
 
-    def "create normal response test"() {
-        setup:
-            DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
-            String expCorrId = message.getId()
-
-            AvMessage response = message.createResponse(false)
-
-        expect:
-            response.getCorrelationId() == expCorrId
-            response.getType() == AvMessageType.RESPONSE
-    }
-
     def "create normal response with string test"() {
         setup:
             DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
@@ -56,18 +44,6 @@ class DefaultAvMessageSpec extends Specification {
             response.getCorrelationId() == expCorrId
             response.getType() == AvMessageType.RESPONSE
             response.getVirusInfo() == virusInfo
-    }
-
-    def "create infected response test"() {
-        setup:
-            DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
-            String expCorrId = message.getId()
-
-            AvMessage response = message.createResponse(true)
-
-        expect:
-            response.getCorrelationId() == expCorrId
-            response.getType() == AvMessageType.RESPONSE
     }
 
     def "create error response test"() {
@@ -108,5 +84,34 @@ class DefaultAvMessageSpec extends Specification {
 
         expect:
             msg1 == msg2
+    }
+
+    def "not equality test"() {
+        setup:
+            AvMessage msg1 = new DefaultAvMessage.Builder(testId).build()
+            AvMessage msg2 = new DefaultAvMessage.Builder(testId)
+                    .virusInfo("some cool info")
+                    .build()
+
+        expect:
+            msg1 != msg2
+    }
+
+    def "hashcode equality test"() {
+        setup:
+            AvMessage msg1 = new DefaultAvMessage.Builder(testId).build()
+            AvMessage msg2 = new DefaultAvMessage.Builder(testId).build()
+
+        expect:
+            msg1.hashCode() == msg2.hashCode()
+    }
+
+    def "hashcode not equality test"() {
+        setup:
+            AvMessage msg1 = new DefaultAvMessage.Builder(null).build()
+            AvMessage msg2 = new DefaultAvMessage.Builder(null).build()
+
+        expect:
+            msg1.hashCode() != msg2.hashCode()
     }
 }

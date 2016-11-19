@@ -65,17 +65,6 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
-    public AvMessage createResponse(boolean virus) {
-        String virusInfoMsg = virus ? "virus info" : "";
-
-        return new Builder(null)
-                .correlationId(this.getId())
-                .virusInfo(virusInfoMsg)
-                .type(AvMessageType.RESPONSE)
-                .build();
-    }
-
-    @Override
     public AvMessage createResponseWithString(String virusInfo) {
         return new Builder(null)
                 .correlationId(this.getId())
@@ -93,6 +82,12 @@ public final class DefaultAvMessage implements AvMessage {
                 .build();
     }
 
+    /**
+     * Compares the whole messages - all fields.
+     *
+     * @param o the other message
+     * @return true if messages are completely equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

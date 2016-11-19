@@ -28,8 +28,6 @@ public interface AvMessage {
 
     String getVirusInfo();
 
-    AvMessage createResponse(boolean virus);
-
     AvMessage createResponseWithString(String virusInfo);
 
     AvMessage createErrorResponse(String errorMessage);
