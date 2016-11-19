@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Basic load test properties.
+ * Default performance test properties implementation.
  */
 public class DefaultPerformanceTestProperties implements PerformanceTestProperties {
 
@@ -30,12 +30,10 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     public DefaultPerformanceTestProperties() {
         this(new Builder());
 
-        this.sendOnly = false;
-
         try {
             loadPropertiesFromXML();
         } catch (IOException e) {
-            log.warn("XML file problem!", e);
+            log.warn("XML file reading problem!", e);
         }
     }
 
@@ -46,6 +44,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         this.destinationQueue = builder.destinationQueue;
         this.msgCount = builder.msgCount;
         this.synchronous = builder.synchronous;
+        this.sendOnly = builder.sendOnly;
     }
 
     @Override
@@ -179,6 +178,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         private String destinationQueue;
         private int msgCount;
         private boolean synchronous;
+        private boolean sendOnly;
 
         public Builder() {
             this.host = "localhost";
@@ -187,6 +187,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
             this.destinationQueue = "";
             this.msgCount = 1;
             this.synchronous = false;
+            this.sendOnly = false;
         }
 
         public Builder host(String host) {
@@ -216,6 +217,11 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
 
         public Builder synchronous(boolean synchronous) {
             this.synchronous = synchronous;
+            return this;
+        }
+
+        public Builder sendOnly(boolean sendOnly) {
+            this.sendOnly = sendOnly;
             return this;
         }
 
