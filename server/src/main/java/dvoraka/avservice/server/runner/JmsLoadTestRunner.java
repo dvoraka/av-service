@@ -3,7 +3,7 @@ package dvoraka.avservice.server.runner;
 import dvoraka.avservice.common.runner.AbstractRunner;
 import dvoraka.avservice.common.runner.Runner;
 import dvoraka.avservice.common.service.ServiceManagement;
-import dvoraka.avservice.server.checker.DefaultLoadTester;
+import dvoraka.avservice.server.checker.DefaultPerformanceTester;
 import dvoraka.avservice.server.configuration.jms.JmsConfig;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class JmsLoadTestRunner extends AbstractRunner {
 
     @Override
     protected Class<? extends ServiceManagement> runClass() {
-        return DefaultLoadTester.class;
+        return DefaultPerformanceTester.class;
     }
 
     @Override

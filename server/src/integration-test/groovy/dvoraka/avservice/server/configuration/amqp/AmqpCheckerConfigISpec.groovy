@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.amqp
 
-import dvoraka.avservice.server.checker.DefaultLoadTester
+import dvoraka.avservice.server.checker.DefaultPerformanceTester
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -14,7 +14,7 @@ import spock.lang.Specification
 class AmqpCheckerConfigISpec extends Specification {
 
     @Autowired
-    DefaultLoadTester loadTester
+    DefaultPerformanceTester loadTester
 
 
     def "test"() {

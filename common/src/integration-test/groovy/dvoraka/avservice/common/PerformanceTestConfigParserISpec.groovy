@@ -5,9 +5,9 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * Load test config parser test.
+ * Performance test config parser spec.
  */
-class LoadTestConfigParserISpec extends Specification {
+class PerformanceTestConfigParserISpec extends Specification {
 
     @Subject
     PerformanceTestConfigParser configParser

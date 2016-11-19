@@ -6,7 +6,7 @@ import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.checker.CheckApp;
 import dvoraka.avservice.server.checker.Checker;
-import dvoraka.avservice.server.checker.DefaultLoadTester;
+import dvoraka.avservice.server.checker.DefaultPerformanceTester;
 import dvoraka.avservice.server.checker.SimpleChecker;
 import dvoraka.avservice.server.jms.JmsComponent;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -72,11 +72,11 @@ public class JmsCheckerConfig {
     }
 
     @Bean
-    public DefaultLoadTester defaultLoadTester(
+    public DefaultPerformanceTester defaultLoadTester(
             Checker checker,
             PerformanceTestProperties testProperties
     ) {
-        return new DefaultLoadTester(checker, testProperties);
+        return new DefaultPerformanceTester(checker, testProperties);
     }
 
     @Bean

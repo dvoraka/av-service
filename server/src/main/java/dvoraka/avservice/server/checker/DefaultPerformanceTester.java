@@ -14,12 +14,13 @@ import java.util.Objects;
 
 
 /**
- * Class for load testing.
+ * Common class performance testing.
  */
 @Component
-public class DefaultLoadTester implements ServiceManagement {
+public class DefaultPerformanceTester implements ServiceManagement {
 
-    private static final Logger log = LogManager.getLogger(DefaultLoadTester.class.getName());
+    private static final Logger log =
+            LogManager.getLogger(DefaultPerformanceTester.class.getName());
     private static final float MS_PER_SECOND = 1000f;
 
     private final Checker checker;
@@ -31,7 +32,7 @@ public class DefaultLoadTester implements ServiceManagement {
 
 
     @Autowired
-    public DefaultLoadTester(Checker checker, PerformanceTestProperties testProperties) {
+    public DefaultPerformanceTester(Checker checker, PerformanceTestProperties testProperties) {
         Objects.requireNonNull(testProperties, "Test properties must not be null!");
 
         this.checker = checker;
