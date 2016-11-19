@@ -5,16 +5,24 @@ import org.springframework.context.ApplicationContext;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Spring utils.
+ * Various Spring utilities.
  */
 public final class SpringUtils {
 
     private SpringUtils() {
     }
 
-    public static void printBeansInfo(ApplicationContext context) {
+    /**
+     * Prints sorted list of bean names according to a given context.
+     *
+     * @param context the context
+     */
+    public static void printBeansList(ApplicationContext context) {
+        Objects.requireNonNull(context, "Context must not be null!");
+
         List<String> list = Arrays.asList(context.getBeanDefinitionNames());
         Collections.sort(list);
 

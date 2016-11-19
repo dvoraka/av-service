@@ -23,7 +23,7 @@ class CustomConfigISpec extends Specification {
 
     def "show context"() {
         setup:
-            SpringUtils.printBeansInfo(applicationContext)
+            SpringUtils.printBeansList(applicationContext)
 
         expect:
             true
