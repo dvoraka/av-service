@@ -28,10 +28,14 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
 
 
     public DefaultPerformanceTestProperties() {
+        this(CONF_FILE_NAME);
+    }
+
+    public DefaultPerformanceTestProperties(String confName) {
         this(new Builder());
 
         try {
-            loadPropertiesFromXML();
+            loadPropertiesFromXML(confName);
         } catch (IOException e) {
             log.warn("XML file reading problem!", e);
         }
@@ -118,10 +122,10 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     }
 
     @Override
-    public void loadPropertiesFromXML() throws IOException {
+    public void loadPropertiesFromXML(String filename) throws IOException {
         PerformanceTestConfigParser parser = new PerformanceTestConfigParser();
         parser.parseFileSax(Optional
-                .ofNullable(getClass().getResource(CONF_FILE_NAME))
+                .ofNullable(getClass().getResource(filename))
                 .map(URL::toString)
                 .orElse("/loadTest.xml"));
         Map<String, String> properties = parser.getProperties();

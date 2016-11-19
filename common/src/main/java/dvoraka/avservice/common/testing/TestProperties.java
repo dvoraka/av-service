@@ -8,5 +8,5 @@ import java.io.IOException;
 @FunctionalInterface
 public interface TestProperties {
 
-    void loadPropertiesFromXML() throws IOException;
+    void loadPropertiesFromXML(String filename) throws IOException;
 }
