@@ -59,6 +59,9 @@ public class DefaultCachingService implements CachingService {
 
     @Override
     public String get(String digest) {
+        if (digest == null) {
+            return null;
+        }
         return scanCache.get(digest);
     }
 

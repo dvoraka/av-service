@@ -43,12 +43,30 @@ class DefaultCachingServiceSpec extends Specification {
             cachingService.get(digest) == info
     }
 
-    def "create digest"() {
+    def "retrieving with null key"() {
+        when:
+            String result = cachingService.get(null)
+
+        then:
+            !result
+    }
+
+    def "create digest for OK size array"() {
         given:
             byte[] bytes = 'Some text'.getBytes('UTF-8')
+            cachingService.setMaxCachedFileSize(bytes.length)
 
         expect: "we get something"
             cachingService.arrayDigest(bytes)
+    }
+
+    def "create digest for too big array"() {
+        given:
+            byte[] bytes = 'Some text'.getBytes('UTF-8')
+            cachingService.setMaxCachedFileSize(bytes.length - 1)
+
+        expect: "we should get null"
+            !cachingService.arrayDigest(bytes)
     }
 
     def "you can insert null digest, info or both without NPE"() {
