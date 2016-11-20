@@ -13,8 +13,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 public class AvMessageConverter implements MessageConverter {
 
     @Override
-    public Message toMessage(Object object, MessageProperties messageProperties)
-            throws MessageConversionException {
+    public Message toMessage(Object object, MessageProperties messageProperties) {
         Message message;
         if (object instanceof AvMessage) {
             try {
@@ -30,7 +29,7 @@ public class AvMessageConverter implements MessageConverter {
     }
 
     @Override
-    public Object fromMessage(Message message) throws MessageConversionException {
+    public Object fromMessage(Message message) {
         AvMessage avMessage;
         try {
             avMessage = AvMessageMapper.transform(message);
