@@ -1,12 +1,14 @@
 package dvoraka.avservice.common.service
 
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * DefaultCachingService spec.
  */
 class DefaultCachingServiceSpec extends Specification {
 
+    @Subject
     DefaultCachingService cachingService
 
 
@@ -41,6 +43,24 @@ class DefaultCachingServiceSpec extends Specification {
             cachingService.get(digest) == info
     }
 
+    def "create digest"() {
+        given:
+            byte[] bytes = 'Some text'.getBytes('UTF-8')
+
+        expect: "we get something"
+            cachingService.arrayDigest(bytes)
+    }
+
+    def "you can insert null digest, info or both without NPE"() {
+        when:
+            cachingService.put(null, "info")
+            cachingService.put("digest", null)
+            cachingService.put(null, null)
+
+        then:
+            notThrown(NullPointerException)
+    }
+
     def "size synchronization test"() {
         given:
             String info = 'INFO'
@@ -70,5 +90,27 @@ class DefaultCachingServiceSpec extends Specification {
 
         then:
             cachingService.cacheSize() == maxSize
+    }
+
+    def "set max cache size"() {
+        given:
+            long maxSize = 10
+
+        when:
+            cachingService.setMaxCacheSize(maxSize)
+
+        then:
+            cachingService.getMaxCacheSize() == maxSize
+    }
+
+    def "set max cached file size"() {
+        given:
+            long maxFileSize = 11
+
+        when:
+            cachingService.setMaxCachedFileSize(maxFileSize)
+
+        then:
+            cachingService.getMaxCachedFileSize() == maxFileSize
     }
 }

@@ -2,6 +2,7 @@ package dvoraka.avservice.common.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,6 +13,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Default caching service implementation.
  */
+@Service
 public class DefaultCachingService implements CachingService {
 
     private static final Logger log = LogManager.getLogger(DefaultCachingService.class.getName());
