@@ -10,23 +10,23 @@ distributions {
     main {
     }
 
-    checker {
-        baseName = 'checker'
-        contents {
-            from('checker/build/libs/') {
-                into 'lib/'
-            }
-            from('checker/LICENSE') {
-                into ''
-            }
-            from('checker/bin') {
-                into 'bin/'
-            }
-            from('checker/src/main/resources/log4j2.xml') {
-                into 'conf/'
-            }
-        }
-    }
+//    checker {
+//        baseName = 'checker'
+//        contents {
+//            from('checker/build/libs/') {
+//                into 'lib/'
+//            }
+//            from('checker/LICENSE') {
+//                into ''
+//            }
+//            from('checker/bin') {
+//                into 'bin/'
+//            }
+//            from('checker/src/main/resources/log4j2.xml') {
+//                into 'conf/'
+//            }
+//        }
+//    }
 }
 
 allprojects {
