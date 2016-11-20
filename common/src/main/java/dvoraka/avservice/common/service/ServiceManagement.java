@@ -22,6 +22,8 @@ public interface ServiceManagement {
 
     /**
      * Check service status.
+     *
+     * @return the running status
      */
     boolean isRunning();
 

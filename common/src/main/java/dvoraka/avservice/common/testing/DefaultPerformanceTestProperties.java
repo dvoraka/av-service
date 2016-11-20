@@ -174,6 +174,9 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
                 + '}';
     }
 
+    /**
+     * Properties builder.
+     */
     public static class Builder {
 
         private String host;

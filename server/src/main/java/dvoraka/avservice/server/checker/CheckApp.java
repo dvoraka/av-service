@@ -36,10 +36,13 @@ public class CheckApp implements ServiceManagement {
 
     @Override
     public void stop() {
+        // TODO: implement
     }
 
     @Override
     public void restart() {
+        stop();
+        start();
     }
 
     @Override

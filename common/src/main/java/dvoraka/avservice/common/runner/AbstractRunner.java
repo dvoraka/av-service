@@ -40,6 +40,7 @@ public abstract class AbstractRunner implements Runner {
         return "Press Enter to stop.";
     }
 
+    @Override
     public void run() {
         AnnotationConfigApplicationContext context = applicationContext();
         ServiceManagement service = context.getBean(runClass());

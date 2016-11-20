@@ -60,11 +60,8 @@ public class SimpleChecker implements Checker, AvMessageListener {
                 }
 
                 if (message.getCorrelationId().equals(correlationId)) {
-                    for (AvMessage msg : savedMessages) {
-                        if (!queue.offer(msg, MAX_TIMEOUT, TimeUnit.MILLISECONDS)) {
-                            log.warn("Lost message: " + message);
-                        }
-                    }
+
+                    returnMessagesToQueue(savedMessages);
                     savedMessages.clear();
 
                     return message;
@@ -77,6 +74,16 @@ public class SimpleChecker implements Checker, AvMessageListener {
             }
         }
     }
+
+    private void returnMessagesToQueue(List<AvMessage> messages)
+            throws InterruptedException {
+        for (AvMessage msg : messages) {
+            if (!queue.offer(msg, MAX_TIMEOUT, TimeUnit.MILLISECONDS)) {
+                log.warn("Lost message: " + msg);
+            }
+        }
+    }
+
 
     @Override
     public boolean check() {

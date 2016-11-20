@@ -35,5 +35,6 @@ public class JmsCheckRunner extends AbstractRunner {
 
     @Override
     protected void waitForKey() throws IOException {
+        // no waiting
     }
 }
