@@ -12,6 +12,22 @@ class DefaultPerformanceTestPropertiesSpec extends Specification {
     DefaultPerformanceTestProperties properties
 
 
+    def "configuration without a configuration file"() {
+        when:
+            properties = new DefaultPerformanceTestProperties("NonEfile")
+
+        then:
+            notThrown(Exception)
+    }
+
+    def "configuration with a default configuration file"() {
+        when:
+            properties = new DefaultPerformanceTestProperties()
+
+        then:
+            properties.getHost() == 'testhost'
+    }
+
     def "builder test"() {
         given:
             String host = 'testHost'

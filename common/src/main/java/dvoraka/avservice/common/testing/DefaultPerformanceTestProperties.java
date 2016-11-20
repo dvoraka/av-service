@@ -3,7 +3,6 @@ package dvoraka.avservice.common.testing;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
@@ -34,11 +33,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     public DefaultPerformanceTestProperties(String confName) {
         this(new Builder());
 
-        try {
-            loadPropertiesFromXML(confName);
-        } catch (IOException e) {
-            log.warn("XML file reading problem!", e);
-        }
+        loadPropertiesFromXML(confName);
     }
 
     private DefaultPerformanceTestProperties(Builder builder) {
@@ -122,7 +117,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     }
 
     @Override
-    public void loadPropertiesFromXML(String filename) throws IOException {
+    public void loadPropertiesFromXML(String filename) {
         PerformanceTestConfigParser parser = new PerformanceTestConfigParser();
         parser.parseFileSax(Optional
                 .ofNullable(getClass().getResource(filename))
