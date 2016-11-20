@@ -95,10 +95,7 @@ public class ClamAvProgram implements AvProgram {
      */
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
-        if (bytes.length > getMaxArraySize()) {
-            throw new ScanErrorException(
-                    "Array is too big: " + bytes.length + ", max is " + getMaxArraySize());
-        }
+        checkArraySize(bytes);
 
         String arrayDigest = null;
         if (caching) {
@@ -106,6 +103,7 @@ public class ClamAvProgram implements AvProgram {
             String cachedValue = cachingService.get(arrayDigest);
             if (cachedValue != null) {
                 log.debug("Taking from the cache: " + arrayDigest);
+
                 return cachedValue;
             }
         }
@@ -132,10 +130,7 @@ public class ClamAvProgram implements AvProgram {
 
             log.debug("scanning done.");
             if (response != null) {
-                if (caching && arrayDigest != null) {
-                    log.debug("Adding to the cache: " + arrayDigest);
-                    cachingService.put(arrayDigest, response);
-                }
+                addToCache(arrayDigest, response);
 
                 return response;
             } else {
@@ -145,6 +140,20 @@ public class ClamAvProgram implements AvProgram {
         } catch (IOException e) {
             log.warn("Scanning problem!", e);
             throw new ScanErrorException("Scanning problem.", e);
+        }
+    }
+
+    private void addToCache(String arrayDigest, String response) {
+        if (caching && arrayDigest != null) {
+            log.debug("Adding to the cache: " + arrayDigest);
+            cachingService.put(arrayDigest, response);
+        }
+    }
+
+    private void checkArraySize(byte[] bytes) throws ScanErrorException {
+        if (bytes.length > getMaxArraySize()) {
+            throw new ScanErrorException(
+                    "Array is too big: " + bytes.length + ", max is " + getMaxArraySize());
         }
     }
 
