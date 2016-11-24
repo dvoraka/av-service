@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Docker commands for cleaning space
+# Docker commands for cleaning space on a disk
 #
 
 # Delete all containers

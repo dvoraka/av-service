@@ -3,8 +3,11 @@
 # Starts all docker containers with "docker-compose up" command
 #
 
+# virtual environment name
 ENV=docker
+# root of all virtual environments
 VIRT_ENVS=~/.virtenvs
+# root of project
 PROJECT_DIR=~/projects/av-service
 
 
