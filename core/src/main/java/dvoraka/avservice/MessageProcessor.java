@@ -32,7 +32,7 @@ public interface MessageProcessor {
     boolean hasProcessedMessage();
 
     /**
-     * Returns a processed message.
+     * Returns one processed message.
      *
      * @return the processed message
      */

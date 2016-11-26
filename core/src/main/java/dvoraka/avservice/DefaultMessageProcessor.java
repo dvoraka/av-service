@@ -202,7 +202,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         String error = null;
         try {
             byte[] data = message.getData();
-            if (data != null) {
+            if (data != null && data.length != 0) {
                 virusInfo = avService.scanBytesWithInfo(data);
             } else {
                 throw new ScanErrorException("No data in the message.");

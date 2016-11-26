@@ -76,20 +76,46 @@ class DefaultMessageProcessorSpec extends Specification {
     }
 
     def "send normal message"() {
-        setup:
+        given:
             AvService service = Stub()
-            service.scanBytes(_) >> false
-
+            service.scanBytesWithInfo(_) >> Utils.OK_VIRUS_INFO
             setProcessorService(service)
 
             AvMessage message = Utils.genNormalMessage()
+
+        when:
             processor.sendMessage(message)
 
-        expect:
+        then:
             conditions.eventually {
                 processor.hasProcessedMessage()
-                processor.getProcessedMessage().getCorrelationId().equals(message.getId())
             }
+
+        and:
+            AvMessage resultMessage = processor.getProcessedMessage()
+            resultMessage.getCorrelationId() == message.getId()
+            resultMessage.getVirusInfo() == Utils.OK_VIRUS_INFO
+    }
+
+    def "send message without data"() {
+        given:
+            AvMessage message = new DefaultAvMessage.Builder(null)
+                    .data(null)
+                    .build()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            conditions.eventually {
+                processor.hasProcessedMessage()
+            }
+
+        and:
+            AvMessage resultMessage = processor.getProcessedMessage()
+            resultMessage.getCorrelationId() == message.getId()
+            //TODO: Check error message after its implementation
+            resultMessage.getData()
     }
 
     def "responding test with a listener"() {
@@ -206,7 +232,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "send message with a service error"() {
         given:
             AvService service = Stub()
-            service.scanBytes(_) >> {
+            service.scanBytesWithInfo(_) >> {
                 throw new ScanErrorException("Service is dead")
             }
 

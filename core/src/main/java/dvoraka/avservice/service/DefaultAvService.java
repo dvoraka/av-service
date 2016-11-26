@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Objects;
 
 /**
  * Default AV service implementation.
@@ -50,6 +51,8 @@ public class DefaultAvService implements AvService {
 
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
+        Objects.requireNonNull(bytes, "Bytes must not be null");
+
         if (bytes.length == 0) {
             return "";
         }
