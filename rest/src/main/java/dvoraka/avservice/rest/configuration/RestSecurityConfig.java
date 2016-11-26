@@ -20,9 +20,13 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
+
+    @Autowired
+    public RestSecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Bean
     @Override
