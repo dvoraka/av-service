@@ -38,4 +38,12 @@ class AvMessageConverterSpec extends Specification {
         then:
             thrown(MessageConversionException)
     }
+
+    def "conversion from null"() {
+        when:
+            converter.fromMessage(null)
+
+        then:
+            thrown(NullPointerException)
+    }
 }

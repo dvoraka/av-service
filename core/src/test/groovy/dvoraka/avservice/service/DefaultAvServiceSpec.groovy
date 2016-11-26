@@ -1,6 +1,7 @@
 package dvoraka.avservice.service
 
 import dvoraka.avservice.avprogram.AvProgram
+import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.FileSizeException
 import dvoraka.avservice.common.exception.ScanErrorException
 import spock.lang.Specification
@@ -21,6 +22,7 @@ class DefaultAvServiceSpec extends Specification {
     void setup() {
         avProgram = Mock()
         avProgram.getMaxArraySize() >> 100
+        avProgram.getNoVirusResponse() >> Utils.OK_VIRUS_INFO
 
         service = new DefaultAvService(avProgram)
     }
@@ -73,6 +75,17 @@ class DefaultAvServiceSpec extends Specification {
 
         then:
             result == expected
+    }
+
+    def "scan bytes with info without infection"() {
+        given:
+            avProgram.scanBytesWithInfo(_) >> Utils.OK_VIRUS_INFO
+
+        when:
+            String result = service.scanBytesWithInfo(new byte[10])
+
+        then:
+            result == Utils.OK_VIRUS_INFO
     }
 
     def "scan bytes with too big array"() {

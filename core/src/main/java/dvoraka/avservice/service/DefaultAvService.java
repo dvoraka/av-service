@@ -7,6 +7,7 @@ import dvoraka.avservice.common.exception.ScanErrorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.nio.file.Files;
 /**
  * Default AV service implementation.
  */
+@Service
 public class DefaultAvService implements AvService {
 
     private static final Logger log = LogManager.getLogger(DefaultAvService.class.getName());
