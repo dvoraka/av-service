@@ -11,9 +11,19 @@ public interface Runner {
     void run();
 
     /**
+     * Runs asynchronously.
+     */
+    void runAsync();
+
+    /**
      * Returns a running status.
      *
      * @return the running flag
      */
     boolean isRunning();
+
+    /**
+     * Stops something.
+     */
+    void stop();
 }

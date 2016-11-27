@@ -14,6 +14,7 @@ public abstract class AbstractRunner implements Runner {
 
     private static boolean testRun;
     private boolean running;
+    private volatile boolean stopped;
 
     @SuppressWarnings("checkstyle:VisibilityModifier")
     protected Logger log = LogManager.getLogger(this.getClass().getName());
@@ -86,8 +87,18 @@ public abstract class AbstractRunner implements Runner {
     }
 
     @Override
+    public void runAsync() {
+        new Thread(this::run).start();
+    }
+
+    @Override
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public void stop() {
+        setStopped(true);
     }
 
     /**
@@ -106,10 +117,37 @@ public abstract class AbstractRunner implements Runner {
      * @throws IOException if reading from keyboard problem occurs
      */
     protected void waitForKey() throws IOException {
-        if (!testRun) {
-            System.out.println(stopMessage());
-            System.in.read();
+        if (testRun) {
+            return;
         }
+
+        System.out.println(stopMessage());
+
+        while (true) {
+            if (isStopped()) {
+                break;
+            }
+
+            if (System.in.available() == 0) {
+                final long sleepTime = 1_000;
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    log.warn("Sleeping interrupted!", e);
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    public boolean isStopped() {
+        return stopped;
+    }
+
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
     }
 
     /**
