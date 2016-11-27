@@ -13,6 +13,7 @@ import java.io.IOException;
 public abstract class AbstractRunner implements Runner {
 
     private static boolean testRun;
+    private boolean running;
 
     @SuppressWarnings("checkstyle:VisibilityModifier")
     protected Logger log = LogManager.getLogger(this.getClass().getName());
@@ -46,6 +47,8 @@ public abstract class AbstractRunner implements Runner {
         ServiceManagement service = context.getBean(runClass());
         service.start();
 
+        setRunning(true);
+
         log.info("Runner started.");
         try {
             waitForKey();
@@ -53,9 +56,19 @@ public abstract class AbstractRunner implements Runner {
             log.error("Runner problem!", e);
         } finally {
             service.stop();
+            setRunning(false);
             context.close();
             log.info("Runner stopped.");
         }
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    protected void setRunning(boolean running) {
+        this.running = running;
     }
 
     protected void waitForKey() throws IOException {
