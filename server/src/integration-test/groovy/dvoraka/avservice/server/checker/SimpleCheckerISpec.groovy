@@ -9,14 +9,12 @@ import dvoraka.avservice.server.runner.AmqpServerRunner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
 /**
  * Simple checker spec.
  */
-@Ignore("WIP")
 @ContextConfiguration(classes = [AmqpConfig.class])
 @ActiveProfiles(['core', 'amqp', 'amqp-checker', 'no-db'])
 class SimpleCheckerISpec extends Specification {
