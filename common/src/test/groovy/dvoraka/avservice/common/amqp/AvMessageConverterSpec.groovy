@@ -15,7 +15,8 @@ class AvMessageConverterSpec extends Specification {
 
 
     def setup() {
-        converter = new AvMessageConverter()
+        AvMessageMapper mapper = new AvMessageMapper()
+        converter = new AvMessageConverter(mapper)
     }
 
     def "conversion to and from Message"() {

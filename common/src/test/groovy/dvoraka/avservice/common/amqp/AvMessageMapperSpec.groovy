@@ -7,6 +7,7 @@ import dvoraka.avservice.common.exception.MapperException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.nio.charset.StandardCharsets
 
@@ -14,6 +15,9 @@ import java.nio.charset.StandardCharsets
  * AvMessage mapper test.
  */
 class AvMessageMapperSpec extends Specification {
+
+    @Subject
+    AvMessageMapper mapper
 
     String testId = 'TEST-ID'
     String testCorrId = 'TEST-CORR-ID'
@@ -23,9 +27,13 @@ class AvMessageMapperSpec extends Specification {
     int dataSize = 10
 
 
+    def setup() {
+        mapper = new AvMessageMapper()
+    }
+
     def "transform Message to AvMessage with null argument"() {
         when:
-            AvMessageMapper.transform((Message) null)
+            mapper.transform((Message) null)
 
         then:
             thrown(NullPointerException)
@@ -33,7 +41,7 @@ class AvMessageMapperSpec extends Specification {
 
     def "transform AvMessage to Message with null argument"() {
         when:
-            AvMessageMapper.transform((AvMessage) null)
+            mapper.transform((AvMessage) null)
 
         then:
             thrown(NullPointerException)
@@ -64,7 +72,7 @@ class AvMessageMapperSpec extends Specification {
             // create AMQP message
             Message message = new Message(body, props)
             // transform to AvMessage
-            AvMessage avMessage = AvMessageMapper.transform(message)
+            AvMessage avMessage = mapper.transform(message)
 
         expect:
             avMessage.getId() == testId
@@ -87,7 +95,7 @@ class AvMessageMapperSpec extends Specification {
             Message message = new Message(null, props)
 
         when:
-            AvMessageMapper.transform(message)
+            mapper.transform(message)
 
         then:
             thrown(MapperException)
@@ -105,7 +113,7 @@ class AvMessageMapperSpec extends Specification {
             Message message = new Message(null, props)
 
         when:
-            AvMessageMapper.transform(message)
+            mapper.transform(message)
 
         then:
             thrown(MapperException)
@@ -123,7 +131,7 @@ class AvMessageMapperSpec extends Specification {
             Message message = new Message(null, props)
 
         when:
-            AvMessageMapper.transform(message)
+            mapper.transform(message)
 
         then:
             thrown(MapperException)
@@ -142,7 +150,7 @@ class AvMessageMapperSpec extends Specification {
             Message message = new Message(null, props)
 
         when:
-            AvMessageMapper.transform(message)
+            mapper.transform(message)
 
         then:
             notThrown(MapperException)
@@ -161,7 +169,7 @@ class AvMessageMapperSpec extends Specification {
             Message message = new Message(null, props)
 
         when:
-            AvMessageMapper.transform(message)
+            mapper.transform(message)
 
         then:
             thrown(MapperException)
@@ -178,7 +186,7 @@ class AvMessageMapperSpec extends Specification {
                     .build()
 
             // transform to Message
-            Message message = AvMessageMapper.transform(avMessage)
+            Message message = mapper.transform(avMessage)
             MessageProperties props = message.getMessageProperties()
             Map<String, Object> headers = props.getHeaders()
 

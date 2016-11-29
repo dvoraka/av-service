@@ -1,6 +1,7 @@
 package dvoraka.avservice.server.configuration.amqp;
 
 import dvoraka.avservice.common.amqp.AvMessageConverter;
+import dvoraka.avservice.common.amqp.AvMessageMapper;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
@@ -68,8 +69,13 @@ public class AmqpBridgeOutputConfig {
     }
 
     @Bean
-    public MessageConverter outMessageConverter() {
-        return new AvMessageConverter();
+    public AvMessageMapper avMessageMapper() {
+        return new AvMessageMapper();
+    }
+
+    @Bean
+    public MessageConverter outMessageConverter(AvMessageMapper messageMapper) {
+        return new AvMessageConverter(messageMapper);
     }
 
     @Bean

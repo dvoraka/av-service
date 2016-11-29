@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -17,7 +18,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * AMQP AV message mapper.
  */
-public final class AvMessageMapper {
+@Component
+public class AvMessageMapper {
 
     private static final Logger log = LogManager.getLogger(AvMessageMapper.class.getName());
 
@@ -27,9 +29,6 @@ public final class AvMessageMapper {
     public static final String DEFAULT_SERVICE_ID = "noservice";
 
 
-    private AvMessageMapper() {
-    }
-
     /**
      * Transforms AMQP message to AV message.
      *
@@ -37,7 +36,7 @@ public final class AvMessageMapper {
      * @return the AV message
      * @throws MapperException if mapping failed
      */
-    public static AvMessage transform(Message msg) throws MapperException {
+    public AvMessage transform(Message msg) throws MapperException {
         log.debug("Transform: " + msg);
         requireNonNull(msg, "Message may not be null!");
 
@@ -64,7 +63,7 @@ public final class AvMessageMapper {
                 .build();
     }
 
-    private static void checkMandatoryFields(MessageProperties msgProps) throws MapperException {
+    private void checkMandatoryFields(MessageProperties msgProps) throws MapperException {
         if (msgProps.getMessageId() == null) {
             throw new MapperException("Message ID can't be null");
         } else if (msgProps.getType() == null) {
@@ -72,7 +71,7 @@ public final class AvMessageMapper {
         }
     }
 
-    private static String getVirusInfo(Map<String, Object> headers) {
+    private String getVirusInfo(Map<String, Object> headers) {
         Object virusInfoObj = headers.get(VIRUS_INFO_KEY);
         String virusInfo;
         if (virusInfoObj != null) {
@@ -84,7 +83,7 @@ public final class AvMessageMapper {
         return virusInfo;
     }
 
-    private static String getServiceId(Map<String, Object> headers) {
+    private String getServiceId(Map<String, Object> headers) {
         Object serviceIdObj = headers.get(SERVICE_ID_KEY);
         String serviceId;
         if (serviceIdObj != null) {
@@ -96,7 +95,7 @@ public final class AvMessageMapper {
         return serviceId;
     }
 
-    private static AvMessageType getMessageType(MessageProperties msgProps) throws MapperException {
+    private AvMessageType getMessageType(MessageProperties msgProps) throws MapperException {
         String messageTypeStr = msgProps.getType().toUpperCase();
         AvMessageType messageType;
         try {
@@ -109,7 +108,7 @@ public final class AvMessageMapper {
         return messageType;
     }
 
-    private static String getCorrelationId(MessageProperties props) {
+    private String getCorrelationId(MessageProperties props) {
         String corrId = "";
         if (props.getCorrelationId() != null) {
             corrId = new String(props.getCorrelationId(), StandardCharsets.UTF_8);
@@ -125,7 +124,7 @@ public final class AvMessageMapper {
      * @return the AMQP message
      * @throws MapperException if mapping failed
      */
-    public static Message transform(AvMessage msg) throws MapperException {
+    public Message transform(AvMessage msg) throws MapperException {
         log.debug("AVTransform: " + msg);
         requireNonNull(msg, "Message may not be null!");
 

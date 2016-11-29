@@ -21,6 +21,7 @@ class AmqpComponentSpec extends Specification {
     AmqpComponent component
 
     AmqpTemplate amqpTemplate
+    AvMessageMapper messageMapper
 
 
     def setup() {
@@ -29,13 +30,15 @@ class AmqpComponentSpec extends Specification {
         amqpTemplate = Mock()
 
         component = new AmqpComponent("NONE", "TEST1", amqpTemplate, infoService)
+
+        messageMapper = new AvMessageMapper()
     }
 
     def "on message"() {
         given:
             AvMessageListener listener = Mock()
             AvMessage message = Utils.genNormalMessage()
-            Message amqpMsg = AvMessageMapper.transform(message)
+            Message amqpMsg = messageMapper.transform(message)
 
             component.addAvMessageListener(listener)
 
@@ -50,7 +53,7 @@ class AmqpComponentSpec extends Specification {
         given:
             AvMessageListener listener = Mock()
             AvMessage message = Utils.genNormalMessage()
-            Message amqpMsg = AvMessageMapper.transform(message)
+            Message amqpMsg = messageMapper.transform(message)
             amqpMsg.getMessageProperties().setType(null)
 
             component.addAvMessageListener(listener)

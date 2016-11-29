@@ -1,6 +1,7 @@
 package dvoraka.avservice.server.configuration.amqp;
 
 import dvoraka.avservice.common.amqp.AvMessageConverter;
+import dvoraka.avservice.common.amqp.AvMessageMapper;
 import dvoraka.avservice.server.configuration.ServerCommonConfig;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -38,8 +39,13 @@ public class AmqpCommonConfig {
 
 
     @Bean
-    public MessageConverter messageConverter() {
-        return new AvMessageConverter();
+    public AvMessageMapper avMessageMapper() {
+        return new AvMessageMapper();
+    }
+
+    @Bean
+    public MessageConverter messageConverter(AvMessageMapper messageMapper) {
+        return new AvMessageConverter(messageMapper);
     }
 
     @Bean
