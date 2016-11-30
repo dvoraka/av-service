@@ -9,9 +9,9 @@ import dvoraka.avservice.server.checker.CheckApp;
 import dvoraka.avservice.server.checker.Checker;
 import dvoraka.avservice.server.checker.DefaultPerformanceTester;
 import dvoraka.avservice.server.checker.SimpleChecker;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -37,10 +37,10 @@ public class AmqpCheckerConfig {
 
     @Bean
     public ServerComponent serverComponent(
-            AmqpTemplate amqpTemplate,
+            RabbitTemplate rabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new AmqpComponent(checkExchange, serviceId, amqpTemplate, messageInfoService);
+        return new AmqpComponent(checkExchange, serviceId, rabbitTemplate, messageInfoService);
     }
 
     @Bean

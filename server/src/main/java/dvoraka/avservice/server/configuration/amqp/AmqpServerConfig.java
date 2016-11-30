@@ -5,13 +5,13 @@ import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -46,10 +46,10 @@ public class AmqpServerConfig {
 
     @Bean
     public ServerComponent serverComponent(
-            AmqpTemplate amqpTemplate,
+            RabbitTemplate rabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new AmqpComponent(resultExchange, serviceId, amqpTemplate, messageInfoService);
+        return new AmqpComponent(resultExchange, serviceId, rabbitTemplate, messageInfoService);
     }
 
     @Bean

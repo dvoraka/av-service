@@ -6,7 +6,6 @@ import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -71,7 +70,7 @@ public class AmqpBridgeInputConfig {
     }
 
     @Bean
-    public AmqpTemplate inAmqpTemplate(
+    public RabbitTemplate inRabbitTemplate(
             ConnectionFactory connectionFactory,
             MessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
@@ -83,10 +82,10 @@ public class AmqpBridgeInputConfig {
 
     @Bean
     public ServerComponent inComponent(
-            AmqpTemplate inAmqpTemplate,
+            RabbitTemplate inRabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new AmqpComponent(resultExchange, serviceId, inAmqpTemplate, messageInfoService);
+        return new AmqpComponent(resultExchange, serviceId, inRabbitTemplate, messageInfoService);
     }
 
     @Bean

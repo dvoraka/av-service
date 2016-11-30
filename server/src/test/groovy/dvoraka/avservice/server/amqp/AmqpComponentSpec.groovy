@@ -7,8 +7,10 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.db.repository.MessageInfoRepository
 import dvoraka.avservice.db.service.DefaultMessageInfoService
-import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.amqp.core.Message
+import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.amqp.support.converter.MessageConversionException
+import org.springframework.amqp.support.converter.MessageConverter
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -20,16 +22,22 @@ class AmqpComponentSpec extends Specification {
     @Subject
     AmqpComponent component
 
-    AmqpTemplate amqpTemplate
+    RabbitTemplate rabbitTemplate
     AvMessageMapper messageMapper
+    MessageConverter converter
 
 
     def setup() {
         MessageInfoRepository infoRepository = Mock()
         DefaultMessageInfoService infoService = new DefaultMessageInfoService(infoRepository)
-        amqpTemplate = Mock()
 
-        component = new AmqpComponent("NONE", "TEST1", amqpTemplate, infoService)
+        converter = Mock()
+        converter.fromMessage(_) >> Mock(AvMessage)
+
+        rabbitTemplate = Mock()
+        rabbitTemplate.getMessageConverter() >> converter
+
+        component = new AmqpComponent("NONE", "TEST1", rabbitTemplate, infoService)
 
         messageMapper = new AvMessageMapper()
     }
@@ -49,7 +57,7 @@ class AmqpComponentSpec extends Specification {
             1 * listener.onAvMessage(_)
     }
 
-    def "on message with mapper exception"() {
+    def "on message with conversion exception"() {
         given:
             AvMessageListener listener = Mock()
             AvMessage message = Utils.genNormalMessage()
@@ -62,6 +70,9 @@ class AmqpComponentSpec extends Specification {
             component.onMessage(amqpMsg)
 
         then:
+            converter.fromMessage(amqpMsg) >> {
+                throw new MessageConversionException("TEST conversion")
+            }
             0 * listener.onAvMessage(_)
     }
 
@@ -89,7 +100,7 @@ class AmqpComponentSpec extends Specification {
             component.sendMessage(message)
 
         then:
-            1 * amqpTemplate.convertAndSend(_, _, _)
+            1 * rabbitTemplate.convertAndSend(_, _, _)
     }
 
     // TODO: improve
@@ -102,7 +113,7 @@ class AmqpComponentSpec extends Specification {
             component.sendMessage(message)
 
         then: "send error response"
-            1 * amqpTemplate.convertAndSend(_, _, _)
+            1 * rabbitTemplate.convertAndSend(_, _, _)
     }
 
     def "add listeners"() {

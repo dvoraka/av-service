@@ -1,17 +1,17 @@
 package dvoraka.avservice.server.amqp;
 
 import dvoraka.avservice.common.AvMessageListener;
-import dvoraka.avservice.common.amqp.AvMessageMapper;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
-import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.MessageConversionException;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class AmqpComponent implements ServerComponent {
 
-    private final AmqpTemplate amqpTemplate;
+    private final RabbitTemplate rabbitTemplate;
     private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
@@ -35,21 +35,21 @@ public class AmqpComponent implements ServerComponent {
     private final String responseExchange;
     private final String serviceId;
     private final List<AvMessageListener> listeners = new ArrayList<>();
-    private final AvMessageMapper mapper;
+    private final MessageConverter messageConverter;
 
 
     @Autowired
     public AmqpComponent(
             String responseExchange,
             String serviceId,
-            AmqpTemplate amqpTemplate,
+            RabbitTemplate rabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        this.responseExchange = responseExchange;
-        this.serviceId = serviceId;
-        this.amqpTemplate = amqpTemplate;
+        this.responseExchange = requireNonNull(responseExchange);
+        this.serviceId = requireNonNull(serviceId);
+        this.rabbitTemplate = rabbitTemplate;
         this.messageInfoService = messageInfoService;
-        mapper = new AvMessageMapper();
+        messageConverter = requireNonNull(rabbitTemplate.getMessageConverter());
     }
 
     @Override
@@ -58,10 +58,11 @@ public class AmqpComponent implements ServerComponent {
 
         AvMessage avMessage;
         try {
-            avMessage = mapper.transform(message);
+            avMessage = (AvMessage) messageConverter.fromMessage(message);
+
             messageInfoService.save(avMessage, AvMessageSource.AMQP_COMPONENT_IN, serviceId);
-        } catch (MapperException e) {
-            log.warn("Transformation error!", e);
+        } catch (MessageConversionException e) {
+            log.warn("Conversion error!", e);
 
             return;
         }
@@ -77,7 +78,7 @@ public class AmqpComponent implements ServerComponent {
 
         // TODO: improve exception handling
         try {
-            amqpTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
+            rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
             messageInfoService.save(message, AvMessageSource.AMQP_COMPONENT_OUT, serviceId);
         } catch (AmqpException e) {
             log.warn("Message send problem!", e);
@@ -85,7 +86,7 @@ public class AmqpComponent implements ServerComponent {
             // create error response
             AvMessage errorResponse = message.createErrorResponse(e.getMessage());
 
-            amqpTemplate.convertAndSend(responseExchange, ROUTING_KEY, errorResponse);
+            rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, errorResponse);
         }
     }
 
