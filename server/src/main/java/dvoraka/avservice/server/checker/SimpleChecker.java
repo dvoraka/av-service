@@ -36,11 +36,14 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Autowired
     public SimpleChecker(ServerComponent component) {
-        this.component = component;
-        this.component.addAvMessageListener(this);
-        queue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
+        this(component, QUEUE_CAPACITY);
     }
 
+    public SimpleChecker(ServerComponent component, int queueSize) {
+        this.component = component;
+        this.component.addAvMessageListener(this);
+        queue = new ArrayBlockingQueue<>(queueSize);
+    }
 
     @Override
     public void sendMessage(AvMessage message) {
@@ -83,7 +86,6 @@ public class SimpleChecker implements Checker, AvMessageListener {
             }
         }
     }
-
 
     @Override
     public boolean check() {
