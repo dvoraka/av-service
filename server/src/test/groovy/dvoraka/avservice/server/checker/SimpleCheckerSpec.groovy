@@ -21,7 +21,7 @@ class SimpleCheckerSpec extends Specification {
             ServerComponent serverComponent = Mock()
             checker = new SimpleChecker(serverComponent, 1)
 
-            String corrId = 'TEST'
+            String corrId = 'X-CID-TEST'
             AvMessage message = new DefaultAvMessage.Builder(null)
                     .correlationId(corrId)
                     .build()
@@ -38,6 +38,6 @@ class SimpleCheckerSpec extends Specification {
             ).start()
 
         then: "receiving lost some messages"
-            checker.receiveMessage(corrId)
+            checker.receiveMessage(corrId) == message
     }
 }
