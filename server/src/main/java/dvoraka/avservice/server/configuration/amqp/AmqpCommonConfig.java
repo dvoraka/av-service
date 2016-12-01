@@ -64,7 +64,7 @@ public class AmqpCommonConfig {
     }
 
     @Bean
-    public RabbitTemplate amqpTemplate(
+    public RabbitTemplate rabbitTemplate(
             ConnectionFactory connectionFactory,
             MessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
