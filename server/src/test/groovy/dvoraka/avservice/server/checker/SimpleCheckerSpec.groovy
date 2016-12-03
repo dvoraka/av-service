@@ -3,6 +3,7 @@ package dvoraka.avservice.server.checker
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
+import dvoraka.avservice.common.exception.MessageNotFoundException
 import dvoraka.avservice.server.ServerComponent
 import spock.lang.Specification
 import spock.lang.Subject
@@ -21,6 +22,11 @@ class SimpleCheckerSpec extends Specification {
             ServerComponent serverComponent = Mock()
             checker = new SimpleChecker(serverComponent, 1)
 
+            List<AvMessage> messages = []
+            2.times {
+                messages << Utils.genNormalMessage()
+            }
+
             String corrId = 'X-CID-TEST'
             AvMessage message = new DefaultAvMessage.Builder(null)
                     .correlationId(corrId)
@@ -29,15 +35,23 @@ class SimpleCheckerSpec extends Specification {
         when: "fill the queue"
             new Thread(
                     {
-                        4.times {
-                            checker.onAvMessage(Utils.genNormalMessage())
+                        messages.each {
+                            checker.onAvMessage(it)
                         }
-                        // 5th message
+                        // 3rd message
                         checker.onAvMessage(message)
                     }
             ).start()
 
-        then: "receiving lost some messages"
+        then: "receiving last message lost some older messages"
             checker.receiveMessage(corrId) == message
+
+        when: "we want all sent messages"
+            messages.each {
+                checker.receiveMessage(it.getCorrelationId())
+            }
+
+        then: "it is not possible to find them"
+            thrown(MessageNotFoundException)
     }
 }
