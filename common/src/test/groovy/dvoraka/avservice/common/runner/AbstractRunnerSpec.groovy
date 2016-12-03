@@ -49,6 +49,17 @@ class AbstractRunnerSpec extends Specification {
             !runner.isStopped()
     }
 
+    def "testing wait for key method"() {
+        given:
+            AbstractRunner.setTestRun(true)
+
+        when:
+            runner.waitForKey()
+
+        then:
+            notThrown(Exception)
+    }
+
     def "runner status after stop"() {
         when:
             runner.stop()
