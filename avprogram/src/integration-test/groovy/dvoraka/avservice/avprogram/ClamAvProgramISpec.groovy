@@ -1,6 +1,7 @@
 package dvoraka.avservice.avprogram
 
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.exception.ScanErrorException
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -53,6 +54,17 @@ class ClamAvProgramISpec extends Specification {
     def "scan infected bytes"() {
         expect:
             program.scanBytes(eicarString.getBytes())
+    }
+
+    def "scan too big array"() {
+        given:
+            long size = program.getMaxArraySize()
+
+        when:
+            program.scanBytes(new byte[size + 1])
+
+        then:
+            thrown(ScanErrorException)
     }
 
     def "connection test"() {

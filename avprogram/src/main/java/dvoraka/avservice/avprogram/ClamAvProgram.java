@@ -1,5 +1,6 @@
 package dvoraka.avservice.avprogram;
 
+import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.service.CachingService;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +20,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * ClamAV wrapper.
@@ -35,7 +37,7 @@ public class ClamAvProgram implements AvProgram {
     public static final int DEFAULT_PORT = 3310;
     public static final int DEFAULT_MAX_ARRAY_SIZE = 10_000;
 
-    public static final String CLEAN_STREAM_RESPONSE = "stream: OK";
+    public static final String CLEAN_STREAM_RESPONSE = Utils.OK_VIRUS_INFO;
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
@@ -95,6 +97,7 @@ public class ClamAvProgram implements AvProgram {
      */
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
+        Objects.requireNonNull(bytes);
         checkArraySize(bytes);
 
         String arrayDigest = null;

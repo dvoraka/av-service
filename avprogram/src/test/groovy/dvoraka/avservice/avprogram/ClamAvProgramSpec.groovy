@@ -1,12 +1,22 @@
 package dvoraka.avservice.avprogram
 
+import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.ScanErrorException
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * ClamAV program test.
  */
 class ClamAvProgramSpec extends Specification {
+
+    @Subject
+    ClamAvProgram avProgram
+
+
+    def setup() {
+        avProgram = new ClamAvProgram()
+    }
 
     def "scan stream (empty array)"() {
         given:
@@ -134,5 +144,24 @@ class ClamAvProgramSpec extends Specification {
 
         expect:
             !program.testConnection()
+    }
+
+    def "get no virus string"() {
+        expect:
+            avProgram.getNoVirusResponse() == Utils.OK_VIRUS_INFO
+    }
+
+    def "set and get caching flag"() {
+        when:
+            avProgram.setCaching(false)
+
+        then:
+            !avProgram.isCaching()
+
+        when:
+            avProgram.setCaching(true)
+
+        then:
+            avProgram.isCaching()
     }
 }
