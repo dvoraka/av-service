@@ -1,5 +1,7 @@
 package dvoraka.avservice.common.data
 
+import nl.jqno.equalsverifier.EqualsVerifier
+import nl.jqno.equalsverifier.Warning
 import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
@@ -95,6 +97,16 @@ class DefaultAvMessageSpec extends Specification {
 
         expect:
             msg1 != msg2
+    }
+
+    def "equals and hashcode verify"() {
+        when:
+            EqualsVerifier.forClass(DefaultAvMessage.class)
+                    .suppress(Warning.NULL_FIELDS, Warning.STRICT_HASHCODE)
+                    .verify()
+
+        then:
+            notThrown(Exception)
     }
 
     def "hashcode equality test"() {

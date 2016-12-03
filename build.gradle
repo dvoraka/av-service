@@ -147,6 +147,8 @@ subprojects {
         // Cglib
         testCompile("cglib:cglib-nodep:${cglibVersion}")
         testCompile("org.objenesis:objenesis:2.4")
+        // EqualsVerifier
+        testCompile("nl.jqno.equalsverifier:equalsverifier:2.1.7")
     }
 
     jar {

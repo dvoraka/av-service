@@ -14,12 +14,12 @@ import java.util.UUID;
 @JsonDeserialize(builder = DefaultAvMessage.Builder.class)
 public final class DefaultAvMessage implements AvMessage {
 
-    private String id;
-    private String correlationId;
-    private byte[] data;
-    private String serviceId;
-    private String virusInfo;
-    private AvMessageType type;
+    private final String id;
+    private final String correlationId;
+    private final byte[] data;
+    private final String serviceId;
+    private final String virusInfo;
+    private final AvMessageType type;
 
 
     private DefaultAvMessage(Builder builder) {
