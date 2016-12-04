@@ -89,7 +89,8 @@ Here will be the best combinations for various usages soon.
 
 
 ### How to send a message for check
-You can use AMQP client from this project for first steps. For sending simple message you need only:
+You can use AMQP checker from this project for first steps. For sending simple message
+you need only:
 
 ```java
     public static void main(String[] args) {

@@ -16,7 +16,7 @@ import spock.lang.Specification
  * Simple checker spec.
  */
 @ContextConfiguration(classes = [AmqpConfig.class])
-@ActiveProfiles(['core', 'amqp', 'amqp-checker', 'no-db'])
+@ActiveProfiles(['amqp', 'amqp-checker', 'no-db'])
 class SimpleCheckerISpec extends Specification {
 
     @Autowired
