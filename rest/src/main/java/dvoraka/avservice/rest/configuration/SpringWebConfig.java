@@ -35,8 +35,8 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public RestStrategy restStrategy() {
-        return new DirectRestStrategy();
+    public RestStrategy restStrategy(MessageProcessor restMessageProcessor) {
+        return new DirectRestStrategy(restMessageProcessor);
     }
 
     @Bean

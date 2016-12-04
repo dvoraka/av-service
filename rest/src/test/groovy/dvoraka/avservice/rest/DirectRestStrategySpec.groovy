@@ -23,8 +23,7 @@ class DirectRestStrategySpec extends Specification {
 
     def setup() {
         processor = Mock()
-        strategy = new DirectRestStrategy()
-        strategy.setRestMessageProcessor(processor)
+        strategy = new DirectRestStrategy(processor)
         conditions = new PollingConditions(timeout: 2)
     }
 
