@@ -14,7 +14,7 @@ import spock.lang.Specification
  * Configuration spec.
  */
 @ContextConfiguration(classes = SpringWebConfig.class)
-@ActiveProfiles(['core', 'rest', 'db'])
+@ActiveProfiles(['core', 'rest', 'rest-local', 'db'])
 @WebAppConfiguration
 class SpringWebConfigISpec extends Specification {
 
