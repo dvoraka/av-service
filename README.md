@@ -63,7 +63,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
 
 ### Spring profiles
 Application is configurable and it's possible to run many configurations. Here is a list
-with all profiles and description.
+with all profiles and descriptions.
 
 profile | description
 ---|---
@@ -95,15 +95,15 @@ You can use AMQP client from this project for first steps. For sending simple me
     public static void main(String[] args) {
     
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles("amqp-client");
-        context.register(AmqpClientConfig.class);
+        context.getEnvironment().setActiveProfiles("amqp", "amqp-checker", "no-db");
+        context.register(AmqpConfig.class);
         context.refresh();
 
-        AmqpClient client = context.getBean(AmqpClient.class);
+        Checker checker = context.getBean(Checker.class);
 
         AvMessage message = Utils.genNormalMessage();
         // send message to check exchange
-        client.sendMessage(message, "check");
+        checker.sendMessage(message);
 
         context.close();
     }
