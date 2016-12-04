@@ -67,23 +67,26 @@ with all profiles and description.
 
 profile | description
 ---|---
-amqp |
-amqp2jms |
-amqp-checker |
-amqp-rest |
-amqp-server |
-core |
-db |
-db-solr |
-jms |
-jms2amqp |
-jms-checker |
-jms-server |
-no-db |
-rest |
-rest-amqp |
-rest-client |
-rest-local |
+amqp | enable AMQP infrastructure
+amqp2jms | bridging AMQP to JMS
+amqp-checker | AMQP checker
+amqp-rest | AMQP infrastructure for REST
+amqp-server | AMQP server
+core | core functionality
+db | use SQL DB for message logging
+db-solr | use SOLR for message logging
+jms | enable JMS infrastructure
+jms2amqp | bridging JMS to AMQP
+jms-checker | JMS checker
+jms-server | JMS server
+no-db | disable message logging
+rest | enable REST
+rest-amqp | REST to AMQP
+rest-client | REST client
+rest-local | REST with direct connection
+
+Here will be the best combinations for various usages soon.
+
 
 ### How to send a message for check
 You can use AMQP client from this project for first steps. For sending simple message you need only:
