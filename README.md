@@ -61,6 +61,30 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
 **Development**
  * **ELK Stack** (Elasticsearch, Logstash, Kibana) - logs analyzing
 
+### Spring profiles
+Application is configurable and it's possible to run many configurations. Here is a list
+with all profiles and description.
+
+profile | description
+---|---
+amqp |
+amqp2jms |
+amqp-checker |
+amqp-rest |
+amqp-server |
+core |
+db |
+db-solr |
+jms |
+jms2amqp |
+jms-checker |
+jms-server |
+no-db |
+rest |
+rest-amqp |
+rest-client |
+rest-local |
+
 ### How to send a message for check
 You can use AMQP client from this project for first steps. For sending simple message you need only:
 
