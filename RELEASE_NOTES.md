@@ -1,3 +1,31 @@
+## v0.4-rc1 (Dec 5, 2016)
+ * New Spring profile for disabling AV message logging
+ * Full implementation of AV message logging
+ * Added Solr as a AV message logging backend
+ * New Docker image for Solr
+ * Code style updated
+ * Added performance.md file for performance notes
+ * Spring configuration redesign for better extensibility
+ * Used Spring converter for message converting
+ * Runners redesign
+ * New custom runner for custom app configuration
+ * New Docker image for SonarQube
+ * Added AMQP to JMS bridge
+ * Added JMS to AMQP bridge
+ * Added checker module replacement
+ * New checker for AMQP
+ * New checker for JMS
+ * New performance test for AMQP
+ * New perfromance test for JMS
+ * Removed JMS client (new checker is replacement)
+ * Removed AMQP client (new checker is replacement)
+ * Exceptions cleaning
+ * Updated 3rd party libraries
+ * Improved build configuration
+
+#### modules
+ * Removed checker module
+
 ## v0.3 (Oct 8, 2016)
 
 ## v0.3-rc1 (Oct 2, 2016)
