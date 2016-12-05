@@ -13,6 +13,9 @@ and then completely rewritten and the old code was removed.
  * [How to send a message](#how-to-send-a-message-for-check)
  * [Installation](#installation)
  * [Run services](#run-service)
+ * [AMQP checker](#amqp-checker)
+ * [JMS checker](#jms-checker)
+ * [Legacy checker](#old-checker)
  * [Load tests](#load-tests)
 
 --
@@ -231,6 +234,19 @@ Checking... failed!
 
 ### Old checker
 You can find old checker under **legacy-checker** release.
+
+### AMQP checker
+Utility for testing AMQP infrastructure.
+
+#### Run
+```
+$ ./gradlew -q amqpCheck
+```
+And output should be:
+```
+...
+Test OK
+```
 #### Create jar with dependencies
 ```
 $ ./gradlew :checker:shadowJar
