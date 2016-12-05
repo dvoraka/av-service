@@ -32,11 +32,11 @@ task runJmsServer(type: JavaExec) {
 //    environment('spring.profiles.active', '')
 }
 
-task runJmsToAmqpBridge(type: JavaExec) {
-    description = 'Run JMS to AMQP bridge'
+task runCustomServer(type: JavaExec) {
+    description = 'Run custom server'
     group = "${taskGroupName}"
 
-    main = 'dvoraka.avservice.server.runner.JmsToAmqpBridgeRunner'
+    main = 'dvoraka.avservice.server.runner.CustomServerRunner'
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }
@@ -46,6 +46,15 @@ task runAmqpToJmsBridge(type: JavaExec) {
     group = "${taskGroupName}"
 
     main = 'dvoraka.avservice.server.runner.AmqpToJmsBridgeRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runJmsToAmqpBridge(type: JavaExec) {
+    description = 'Run JMS to AMQP bridge'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.runner.JmsToAmqpBridgeRunner'
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }
