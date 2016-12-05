@@ -3,7 +3,9 @@
 [![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service/branch/master)
 [![Latest release](https://img.shields.io/badge/release-0.3-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.3)
 
-Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus service supports JMS, AMQP and HTTP for communication. AV-checker project was integrated as checker submodule.
+Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus service supports
+JMS, AMQP and HTTP for communication. AV-checker project was integrated as the checker submodule
+and then completely rewritten and the old code was removed.
 
  * [Features](#features)
  * [Planned features](#planned-features)
@@ -19,7 +21,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
  * AMQP 0.9.1 support
  * JMS support
  * REST support
- * Message tracking DB service (useful for bigger deployments)
+ * Message tracking DB service (PostgreSQL or Solr)
  * Highly scalable architecture
  * Robust design
  
@@ -200,13 +202,35 @@ Utility for testing AMQP infrastructure.
 
 #### Run
 ```
-$ ./gradlew -q amqpCheck
+$ ./gradlew -q runAmqpCheck
 ```
-And output should be:
+And output:
 ```
-...
-Test OK
+Checking... OK
 ```
+or
+```
+Checking... failed!
+```
+
+### JMS checker
+Utility for testing JMS infrastructure.
+
+#### Run
+```
+$ ./gradlew -q runJmsCheck
+```
+And output:
+```
+Checking... OK
+```
+or
+```
+Checking... failed!
+```
+
+### Old checker
+You can find old checker under **legacy-checker** release.
 #### Create jar with dependencies
 ```
 $ ./gradlew :checker:shadowJar
@@ -230,4 +254,5 @@ Test OK
 ```
 
 ## Load tests
+Various performance testing:
 [TESTS](https://github.com/dvoraka/av-service/blob/master/performance.md)
