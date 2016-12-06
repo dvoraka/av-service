@@ -59,7 +59,7 @@ public abstract class AbstractRunner implements Runner {
     protected abstract Class<? extends ServiceManagement> runClass();
 
     protected String stopMessage() {
-        return "Press Enter to stop.";
+        return "Press Enter to stop."; //NOSONAR
     }
 
     /**
@@ -116,6 +116,7 @@ public abstract class AbstractRunner implements Runner {
      *
      * @throws IOException if reading from keyboard problem occurs
      */
+    // TODO: improve
     protected void waitForKey() throws IOException {
         if (testRun) {
             return;
@@ -134,6 +135,7 @@ public abstract class AbstractRunner implements Runner {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     log.warn("Sleeping interrupted!", e);
+                    Thread.currentThread().interrupt();
                     break;
                 }
             } else {

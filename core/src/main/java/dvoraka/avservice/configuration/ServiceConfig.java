@@ -23,7 +23,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
         SolrConfig.class
 })
 @SuppressWarnings("checkstyle:HideUtilityClassConstructor")
-public class ServiceConfig {
+public class ServiceConfig { //NOSONAR
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
