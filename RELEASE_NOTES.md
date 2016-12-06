@@ -1,3 +1,5 @@
+## v0.4 (Dec 6, 2016)
+
 ## v0.4-rc1 (Dec 5, 2016)
  * New Spring profile for disabling AV message logging
  * Full implementation of AV message logging
