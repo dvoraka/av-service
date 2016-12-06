@@ -225,7 +225,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     private AvMessage prepareResponse(AvMessage message, String virusInfo) {
-        return message.createResponseWithString(virusInfo);
+        return message.createResponse(virusInfo);
     }
 
     private AvMessage prepareErrorResponse(AvMessage message, String errorMessage) {

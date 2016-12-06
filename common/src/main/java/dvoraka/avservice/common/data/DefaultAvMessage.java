@@ -65,7 +65,7 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
-    public AvMessage createResponseWithString(String virusInfo) {
+    public AvMessage createResponse(String virusInfo) {
         return new Builder(null)
                 .correlationId(this.getId())
                 .virusInfo(virusInfo)

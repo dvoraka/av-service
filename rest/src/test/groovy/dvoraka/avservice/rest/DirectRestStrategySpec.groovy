@@ -72,7 +72,7 @@ class DirectRestStrategySpec extends Specification {
     def "get real response"() {
         setup:
             AvMessage request = new DefaultAvMessage.Builder(testId).build()
-            AvMessage response = request.createResponseWithString(Utils.OK_VIRUS_INFO)
+            AvMessage response = request.createResponse(Utils.OK_VIRUS_INFO)
 
             processor.hasProcessedMessage() >>> [true, false]
             processor.getProcessedMessage() >> response
