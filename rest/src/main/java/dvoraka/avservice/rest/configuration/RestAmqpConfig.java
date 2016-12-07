@@ -1,6 +1,6 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.rest.AmqpRestStrategy;
+import dvoraka.avservice.rest.RemoteRestStrategy;
 import dvoraka.avservice.rest.RestStrategy;
 import dvoraka.avservice.server.ServerComponent;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +16,6 @@ public class RestAmqpConfig {
 
     @Bean
     public RestStrategy restStrategy(ServerComponent serverComponent) {
-        return new AmqpRestStrategy(serverComponent);
+        return new RemoteRestStrategy(serverComponent);
     }
 }

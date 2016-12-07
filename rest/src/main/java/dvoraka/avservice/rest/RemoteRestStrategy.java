@@ -8,17 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * AMQP REST strategy. Receives requests over REST and sends it along over AMQP.
+ * Remote REST strategy. Receives requests over REST and sends it along over network.
  */
 @Service
-public class AmqpRestStrategy implements RestStrategy, AvMessageListener {
+public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
-    private final ServerComponent amqpComponent;
+    private final ServerComponent serverComponent;
 
 
     @Autowired
-    public AmqpRestStrategy(ServerComponent amqpComponent) {
-        this.amqpComponent = amqpComponent;
+    public RemoteRestStrategy(ServerComponent serverComponent) {
+        this.serverComponent = serverComponent;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class AmqpRestStrategy implements RestStrategy, AvMessageListener {
 
     @Override
     public void messageCheck(AvMessage message) {
-        amqpComponent.sendMessage(message);
+        serverComponent.sendMessage(message);
     }
 
     @Override
@@ -48,12 +48,12 @@ public class AmqpRestStrategy implements RestStrategy, AvMessageListener {
 
     @Override
     public void start() {
-        amqpComponent.addAvMessageListener(this);
+        serverComponent.addAvMessageListener(this);
     }
 
     @Override
     public void stop() {
-        amqpComponent.removeAvMessageListener(this);
+        serverComponent.removeAvMessageListener(this);
     }
 
     @Override
