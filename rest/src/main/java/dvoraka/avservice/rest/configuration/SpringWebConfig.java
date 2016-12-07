@@ -1,13 +1,10 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.DefaultMessageProcessor;
-import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.configuration.ServiceConfig;
-import dvoraka.avservice.rest.DirectRestStrategy;
-import dvoraka.avservice.rest.RestStrategy;
 import dvoraka.avservice.rest.controller.AvRestController;
 import dvoraka.avservice.rest.service.DefaultRestService;
 import dvoraka.avservice.rest.service.RestService;
+import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -21,7 +18,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 @Configuration
 @Profile("rest")
-@Import({RestSecurityConfig.class, ServiceConfig.class})
+@Import({
+        RestLocalConfig.class,
+        RestAmqpConfig.class,
+        RestSecurityConfig.class,
+        ServiceConfig.class,
+        AmqpConfig.class
+})
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
@@ -32,16 +35,5 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public RestService restService() {
         return new DefaultRestService();
-    }
-
-    @Bean
-    public RestStrategy restStrategy() {
-        return new DirectRestStrategy();
-    }
-
-    @Bean
-    public MessageProcessor restMessageProcessor() {
-        final int threads = 20;
-        return new DefaultMessageProcessor(threads, "service1");
     }
 }

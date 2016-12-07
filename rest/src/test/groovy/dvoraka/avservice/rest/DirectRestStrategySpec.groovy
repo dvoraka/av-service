@@ -23,8 +23,7 @@ class DirectRestStrategySpec extends Specification {
 
     def setup() {
         processor = Mock()
-        strategy = new DirectRestStrategy()
-        strategy.setRestMessageProcessor(processor)
+        strategy = new DirectRestStrategy(processor)
         conditions = new PollingConditions(timeout: 2)
     }
 
@@ -73,7 +72,7 @@ class DirectRestStrategySpec extends Specification {
     def "get real response"() {
         setup:
             AvMessage request = new DefaultAvMessage.Builder(testId).build()
-            AvMessage response = request.createResponseWithString(Utils.OK_VIRUS_INFO)
+            AvMessage response = request.createResponse(Utils.OK_VIRUS_INFO)
 
             processor.hasProcessedMessage() >>> [true, false]
             processor.getProcessedMessage() >> response

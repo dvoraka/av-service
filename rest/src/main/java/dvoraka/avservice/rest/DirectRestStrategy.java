@@ -14,6 +14,7 @@ import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -24,10 +25,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * Implementation for a local calling.
  */
+@Service
 public class DirectRestStrategy implements RestStrategy {
 
-    @Autowired
-    private MessageProcessor restMessageProcessor;
+    private final MessageProcessor restMessageProcessor;
 
     private static final Logger log = LogManager.getLogger(DirectRestStrategy.class.getName());
 
@@ -38,8 +39,10 @@ public class DirectRestStrategy implements RestStrategy {
     private boolean cacheUpdating;
 
 
-    public DirectRestStrategy() {
+    @Autowired
+    public DirectRestStrategy(MessageProcessor restMessageProcessor) {
         executorService = Executors.newSingleThreadExecutor();
+        this.restMessageProcessor = restMessageProcessor;
         initializeCache();
     }
 
@@ -119,9 +122,5 @@ public class DirectRestStrategy implements RestStrategy {
         restMessageProcessor.stop();
         executorService.shutdown();
         cacheManager.close();
-    }
-
-    public void setRestMessageProcessor(MessageProcessor restMessageProcessor) {
-        this.restMessageProcessor = restMessageProcessor;
     }
 }
