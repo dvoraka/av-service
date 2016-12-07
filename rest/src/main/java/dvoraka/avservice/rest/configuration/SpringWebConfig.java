@@ -22,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Import({
         RestLocalConfig.class,
         RestAmqpConfig.class,
+        RestJmsConfig.class,
         RestSecurityConfig.class,
         ServiceConfig.class,
         AmqpConfig.class

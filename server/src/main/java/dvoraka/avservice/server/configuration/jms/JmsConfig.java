@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Profile;
 @Import({
         JmsCommonConfig.class,
         JmsServerConfig.class,
-        JmsCheckerConfig.class
+        JmsCheckerConfig.class,
+        JmsRestConfig.class
 })
 @Profile("jms")
 public class JmsConfig {
