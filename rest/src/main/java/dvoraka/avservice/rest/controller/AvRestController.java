@@ -21,8 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AvRestController {
 
+    private final RestService restService;
+
+
     @Autowired
-    private RestService restService;
+    public AvRestController(RestService restService) {
+        this.restService = restService;
+    }
 
     /**
      * Testing method.

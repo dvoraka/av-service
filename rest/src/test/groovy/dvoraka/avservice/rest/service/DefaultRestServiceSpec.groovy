@@ -17,10 +17,8 @@ class DefaultRestServiceSpec extends Specification {
 
 
     def setup() {
-        service = new DefaultRestService()
         strategy = Stub()
-
-        ReflectionTestUtils.setField(service, null, strategy, RestStrategy.class)
+        service = new DefaultRestService(strategy)
     }
 
     def "message status with processed status"() {

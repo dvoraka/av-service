@@ -18,15 +18,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 /**
- * AV controller test.
+ * AV controller spec.
  */
 class AvRestControllerSpec extends Specification {
 
-    MockMvc mockMvc;
+    MockMvc mockMvc
+    RestService service
 
 
     def setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new AvRestController()).build()
+        service = Stub()
+        mockMvc = MockMvcBuilders.standaloneSetup(new AvRestController(service))
+                .build()
     }
 
     def "test info"() {
@@ -44,11 +47,7 @@ class AvRestControllerSpec extends Specification {
         setup:
             MessageStatus messageStatus = MessageStatus.PROCESSED
             String messageId = 'TID'
-            RestService service = Stub()
             service.messageStatus(messageId) >> messageStatus
-
-            mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvRestController(restService: service)).build()
 
             ResultActions response = mockMvc.perform(
                     get("/msg-status/${messageId}"))
@@ -67,11 +66,7 @@ class AvRestControllerSpec extends Specification {
             MessageStatus messageStatus = MessageStatus.PROCESSING
             String messageId = 'TID'
             String serviceId = "SID"
-            RestService service = Stub()
             service.messageStatus(messageId, serviceId) >> messageStatus
-
-            mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvRestController(restService: service)).build()
 
             ResultActions response = mockMvc.perform(
                     get("/msg-status/${messageId}/${serviceId}"))
@@ -89,11 +84,7 @@ class AvRestControllerSpec extends Specification {
         setup:
             String messageId = 'TID'
             String serviceId = "SID"
-            RestService service = Stub()
             service.messageServiceId(messageId) >> serviceId
-
-            mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvRestController(restService: service)).build()
 
             ResultActions response = mockMvc.perform(
                     get("/msg-service-id/${messageId}"))
@@ -107,10 +98,6 @@ class AvRestControllerSpec extends Specification {
     def "test messageCheck(AVMessage)"() {
         setup:
             AvMessage message = Utils.genNormalMessage()
-            RestService service = Mock()
-
-            mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvRestController(restService: service)).build()
 
             ObjectMapper mapper = new ObjectMapper()
             String content = mapper.writeValueAsString(message)
@@ -129,11 +116,7 @@ class AvRestControllerSpec extends Specification {
         setup:
             String messageId = "TID"
             AvMessage responseMsg = Utils.genNormalMessage()
-            RestService service = Stub()
             service.getResponse(messageId) >> responseMsg
-
-            mockMvc = MockMvcBuilders.standaloneSetup(
-                    new AvRestController(restService: service)).build()
 
             ResultActions response = mockMvc.perform(
                     get("/get-response/${messageId}"))

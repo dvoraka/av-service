@@ -4,6 +4,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.rest.RestStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,16 +12,18 @@ import java.util.Set;
 /**
  * Default REST service implementation.
  */
+@Service
 public class DefaultRestService implements RestService {
 
-    @Autowired
-    private RestStrategy restStrategy;
+    private final RestStrategy restStrategy;
 
     private Set<String> processingMessages;
 
 
-    public DefaultRestService() {
+    @Autowired
+    public DefaultRestService(RestStrategy restStrategy) {
         processingMessages = new HashSet<>();
+        this.restStrategy = restStrategy;
     }
 
     @Override
