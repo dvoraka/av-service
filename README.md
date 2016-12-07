@@ -34,7 +34,7 @@ and then completely rewritten and the old code was removed.
  * AMQP 1.0
 
 ### Used components
- * **ClamaAV** - open source anti-virus engine
+ * **ClamAV** - open source anti-virus engine
  * **RabbitMQ** - open source message broker for AMQP
  * **ActiveMQ** - open source message broker for JMS
  * **PostgreSQL** - open source DB
