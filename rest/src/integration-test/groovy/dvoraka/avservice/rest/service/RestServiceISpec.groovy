@@ -9,6 +9,7 @@ import dvoraka.avservice.rest.configuration.RestClientConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -16,6 +17,7 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [RestClientConfig.class])
 @ActiveProfiles("rest-client")
+@Ignore("WIP")
 class RestServiceISpec extends Specification {
 
     @Autowired
@@ -79,5 +81,15 @@ class RestServiceISpec extends Specification {
             status == MessageStatus.PROCESSED
             response.type == AvMessageType.RESPONSE
             response.getVirusInfo() != Utils.OK_VIRUS_INFO
+    }
+
+    def "check message validation"() {
+        setup:
+            AvMessage message = Utils.genNormalMessage()
+
+            AvMessage response = client.postMessage(message, "/msg-check")
+
+        expect:
+            println(response)
     }
 }

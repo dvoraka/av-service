@@ -8,12 +8,18 @@ import dvoraka.avservice.rest.service.RestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.ConstraintViolationException;
+import java.util.Map;
 
 /**
  * AV REST controller.
@@ -102,5 +108,14 @@ public class AvRestController {
                 .data(new byte[dataSize])
                 .type(AvMessageType.RESPONSE)
                 .build();
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public
+    @ResponseBody
+    Map<String, Object>
+    handleConstraintViolationException(ConstraintViolationException exception) {
+        return null;
     }
 }

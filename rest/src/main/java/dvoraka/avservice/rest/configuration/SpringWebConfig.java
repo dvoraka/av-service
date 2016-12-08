@@ -10,8 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import javax.validation.Validator;
 
 /**
  * Spring REST configuration.
@@ -37,5 +41,18 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public AvRestController avController(RestService restService) {
         return new AvRestController(restService);
+    }
+
+    @Bean
+    public Validator validator() {
+        return new LocalValidatorFactoryBean();
+    }
+
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor(Validator validator) {
+        MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
+        processor.setValidator(validator);
+
+        return processor;
     }
 }

@@ -21,9 +21,9 @@ public class RestClient {
         this.baseUrl = baseUrl;
     }
 
-    public void postMessage(AvMessage message, String service) {
+    public AvMessage postMessage(AvMessage message, String service) {
 
-        restTemplate.postForObject(baseUrl + service, message, DefaultAvMessage.class);
+        return restTemplate.postForObject(baseUrl + service, message, DefaultAvMessage.class);
     }
 
     public MessageStatus getMessageStatus(String service) {

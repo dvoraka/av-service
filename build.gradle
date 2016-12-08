@@ -137,6 +137,11 @@ subprojects {
             exclude group: 'org.springframework', module: 'spring-messaging'
         }
 
+        // Hibernate validator
+        compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.3.3.Final'
+        compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+        compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
+
         // Groovy
         testCompile("org.codehaus.groovy:groovy-all:${groovyVersion}")
         // Spring test
