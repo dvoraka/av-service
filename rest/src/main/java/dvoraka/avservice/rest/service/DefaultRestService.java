@@ -5,7 +5,6 @@ import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.rest.RestStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +12,6 @@ import java.util.Set;
 /**
  * Default REST service implementation.
  */
-@Validated
 @Service
 public class DefaultRestService implements RestService {
 

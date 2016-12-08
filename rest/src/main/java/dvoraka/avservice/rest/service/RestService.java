@@ -2,12 +2,14 @@ package dvoraka.avservice.rest.service;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 
 /**
  * REST service.
  */
+@Validated
 public interface RestService {
 
     MessageStatus messageStatus(String id);
