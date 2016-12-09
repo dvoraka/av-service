@@ -10,6 +10,9 @@ import javax.servlet.ServletException;
  */
 public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+    private String profiles = "core, rest, rest-local, db";
+
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{SpringWebConfig.class};
@@ -28,6 +31,6 @@ public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServ
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        servletContext.setInitParameter("spring.profiles.active", "core, rest, rest-local, db");
+        servletContext.setInitParameter("spring.profiles.active", profiles);
     }
 }

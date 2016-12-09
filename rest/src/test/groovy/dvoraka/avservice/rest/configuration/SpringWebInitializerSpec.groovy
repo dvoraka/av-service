@@ -3,6 +3,10 @@ package dvoraka.avservice.rest.configuration
 import spock.lang.Specification
 import spock.lang.Subject
 
+import javax.servlet.Servlet
+import javax.servlet.ServletContext
+import javax.servlet.ServletRegistration
+
 /**
  * Initializer spec.
  */
@@ -12,6 +16,7 @@ class SpringWebInitializerSpec extends Specification {
     SpringWebInitializer webInitializer
 
     Class<?> configClass = SpringWebConfig.class
+    String profilesParam = 'spring.profiles.active'
 
 
     def setup() {
@@ -19,20 +24,32 @@ class SpringWebInitializerSpec extends Specification {
     }
 
 
-    def "GetRootConfigClasses"() {
+    def "getRootConfigClasses"() {
         expect:
             webInitializer.getRootConfigClasses()
             webInitializer.getRootConfigClasses().length == 1
             webInitializer.getRootConfigClasses()[0] == configClass
     }
 
-    def "GetServletConfigClasses"() {
+    def "getServletConfigClasses"() {
         expect:
             webInitializer.getServletConfigClasses() != null
     }
 
-    def "GetServletMappings"() {
+    def "getServletMappings"() {
         expect:
             webInitializer.getServletMappings()
+    }
+
+    def "onStartup"() {
+        given:
+            ServletContext servletContext = Mock()
+            servletContext.addServlet((String) _, (Servlet) _) >> Mock(ServletRegistration.Dynamic)
+
+        when:
+            webInitializer.onStartup(servletContext)
+
+        then:
+            1 * servletContext.setInitParameter(profilesParam, (String) _)
     }
 }
