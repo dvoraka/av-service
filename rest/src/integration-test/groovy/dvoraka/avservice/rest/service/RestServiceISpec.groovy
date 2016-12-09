@@ -17,11 +17,12 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [RestClientConfig.class])
 @ActiveProfiles("rest-client")
-@Ignore("WIP")
 class RestServiceISpec extends Specification {
 
     @Autowired
-    RestClient client;
+    RestClient client
+
+    String checkPath = "/msg-check"
 
 
     def "get testing message"() {
@@ -34,11 +35,14 @@ class RestServiceISpec extends Specification {
     }
 
     def "send normal message"() {
-        setup:
+        given:
             AvMessage message = Utils.genNormalMessage()
 
-        expect:
-            client.postMessage(message, "/msg-check")
+        when:
+            client.postMessage(message, checkPath)
+
+        then:
+            notThrown(Exception)
     }
 
     def "check normal message"() {
@@ -46,7 +50,7 @@ class RestServiceISpec extends Specification {
             AvMessage message = Utils.genNormalMessage()
             String id = message.getId()
 
-            client.postMessage(message, "/msg-check")
+            client.postMessage(message, checkPath)
             sleep(2000)
 
             MessageStatus status = client.getMessageStatus("/msg-status/" + id)
@@ -59,11 +63,14 @@ class RestServiceISpec extends Specification {
     }
 
     def "send infected message"() {
-        setup:
+        given:
             AvMessage message = Utils.genInfectedMessage()
 
-        expect:
-            client.postMessage(message, "/msg-check")
+        when:
+            client.postMessage(message, checkPath)
+
+        then:
+            notThrown(Exception)
     }
 
     def "check infected message"() {
@@ -71,7 +78,7 @@ class RestServiceISpec extends Specification {
             AvMessage message = Utils.genInfectedMessage()
             String id = message.getId()
 
-            client.postMessage(message, "/msg-check")
+            client.postMessage(message, checkPath)
             sleep(2000)
 
             MessageStatus status = client.getMessageStatus("/msg-status/" + id)
@@ -83,11 +90,12 @@ class RestServiceISpec extends Specification {
             response.getVirusInfo() != Utils.OK_VIRUS_INFO
     }
 
+    @Ignore
     def "check message validation"() {
         setup:
             AvMessage message = Utils.genNormalMessage()
 
-            AvMessage response = client.postMessage(message, "/msg-check")
+            AvMessage response = client.postMessage(message, checkPath)
 
         expect:
             println(response)
