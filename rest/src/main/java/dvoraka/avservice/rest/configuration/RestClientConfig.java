@@ -26,7 +26,7 @@ public class RestClientConfig {
     }
 
     @Bean
-    public RestClient restClient() {
-        return new RestClient(restUrl);
+    public RestClient restClient(RestTemplate restTemplate) {
+        return new RestClient(restUrl, restTemplate);
     }
 }
