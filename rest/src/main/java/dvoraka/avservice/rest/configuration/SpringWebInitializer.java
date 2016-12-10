@@ -1,5 +1,7 @@
 package dvoraka.avservice.rest.configuration;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;
@@ -10,7 +12,10 @@ import javax.servlet.ServletException;
  */
 public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    private String profiles = "core, rest, rest-local, db";
+    private static final Logger log = LogManager.getLogger(SpringWebInitializer.class);
+
+    private static final String DEFAULT_PROFILES = "core, rest, rest-local, db";
+    private static final String SPRING_PROFILES_ACTIVE_KEY = "spring.profiles.active";
 
 
     @Override
@@ -31,6 +36,15 @@ public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServ
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        servletContext.setInitParameter("spring.profiles.active", profiles);
+
+        String profiles = System.getProperty(SPRING_PROFILES_ACTIVE_KEY);
+        if (profiles == null) {
+            servletContext.setInitParameter(SPRING_PROFILES_ACTIVE_KEY, DEFAULT_PROFILES);
+        } else {
+            servletContext.setInitParameter(SPRING_PROFILES_ACTIVE_KEY, profiles);
+        }
+
+        log.info("Active profiles: {}",
+                servletContext.getInitParameter(SPRING_PROFILES_ACTIVE_KEY));
     }
 }
