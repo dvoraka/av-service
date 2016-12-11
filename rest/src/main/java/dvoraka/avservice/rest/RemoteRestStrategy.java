@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,7 +35,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     private static final String CACHE_NAME = "remoteRestCache";
 
     private final TimedStorage<String> processingMsgs = new TimedStorage<>();
-    private final ConcurrentHashMap<String, Long> processedMsgs = new ConcurrentHashMap<>();
+    private final TimedStorage<String> processedMsgs = new TimedStorage<>();
 
     // messages caching
     private CacheManager cacheManager;
@@ -78,7 +77,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
     @Override
     public MessageStatus messageStatus(String id, String serviceId) {
-        if (processedMsgs.containsKey(id)) {
+        if (processedMsgs.contains(id)) {
             return MessageStatus.PROCESSED;
         } else if (processingMsgs.contains(id)) {
             return MessageStatus.PROCESSING;
@@ -129,7 +128,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
             log.debug("Saving response: {}", response);
 
             messageCache.put(response.getCorrelationId(), response);
-            processedMsgs.put(response.getCorrelationId(), System.currentTimeMillis());
+            processedMsgs.put(response.getCorrelationId());
 
             processingMsgs.remove(response.getCorrelationId());
         }
