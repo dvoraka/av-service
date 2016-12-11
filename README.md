@@ -1,4 +1,4 @@
-# Anti-virus service
+# Network anti-virus service
 [![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
 [![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service/branch/master)
 [![Latest release](https://img.shields.io/badge/release-0.4-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.4)
@@ -79,7 +79,7 @@ amqp-rest | AMQP infrastructure for REST
 amqp-server | AMQP server
 core | core functionality
 db | use SQL DB for message logging
-db-solr | use SOLR for message logging
+db-solr | use Solr for message logging
 jms | enable JMS infrastructure
 jms2amqp | bridging JMS to AMQP
 jms-checker | JMS checker
