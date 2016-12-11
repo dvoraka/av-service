@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * REST strategy implementation for a local calling.
+ * Local REST strategy. Uses directly the message processor.
  */
 @Service
 public class LocalRestStrategy implements RestStrategy {

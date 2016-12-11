@@ -6,12 +6,21 @@ import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.ehcache.Cache;
+import org.ehcache.CacheManager;
+import org.ehcache.config.CacheConfiguration;
+import org.ehcache.config.builders.CacheConfigurationBuilder;
+import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.config.builders.ResourcePoolsBuilder;
+import org.ehcache.expiry.Duration;
+import org.ehcache.expiry.Expirations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Remote REST strategy. Receives requests over REST and sends it along over network.
@@ -23,12 +32,42 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
     private static final Logger log = LogManager.getLogger(RemoteRestStrategy.class);
 
+    private static final String CACHE_NAME = "remoteRestCache";
+
     private final ConcurrentHashMap<String, Long> processingMsgs = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Long> processedMsgs = new ConcurrentHashMap<>();
+
+    // messages caching
+    private CacheManager cacheManager;
+    private Cache<String, AvMessage> messageCache;
 
 
     @Autowired
     public RemoteRestStrategy(ServerComponent serverComponent) {
         this.serverComponent = serverComponent;
+    }
+
+    private void initializeCache() {
+        final long expirationTime = 10_000;
+        final long heapEntries = 10;
+
+        cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+                .withCache(CACHE_NAME, getCacheConfiguration())
+                .build(true);
+
+        messageCache = cacheManager.getCache(CACHE_NAME, String.class, AvMessage.class);
+    }
+
+    private CacheConfiguration<String, AvMessage> getCacheConfiguration() {
+        final long expirationTime = 10_000;
+        final long heapEntries = 10;
+
+        return CacheConfigurationBuilder
+                .newCacheConfigurationBuilder(
+                        String.class, AvMessage.class, ResourcePoolsBuilder.heap(heapEntries))
+                .withExpiry(Expirations.timeToLiveExpiration(
+                        new Duration(expirationTime, TimeUnit.MILLISECONDS)))
+                .build();
     }
 
     @Override
@@ -38,7 +77,9 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
     @Override
     public MessageStatus messageStatus(String id, String serviceId) {
-        if (processingMsgs.containsKey(id)) {
+        if (processedMsgs.containsKey(id)) {
+            return MessageStatus.PROCESSED;
+        } else if (processingMsgs.containsKey(id)) {
             return MessageStatus.PROCESSING;
         }
 
@@ -59,13 +100,14 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
     @Override
     public AvMessage getResponse(String id) {
-        return null;
+        return messageCache.get(id);
     }
 
     @PostConstruct
     @Override
     public void start() {
         log.info("Started.");
+        initializeCache();
         serverComponent.addAvMessageListener(this);
     }
 
@@ -74,10 +116,18 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     public void stop() {
         log.info("Stopped.");
         serverComponent.removeAvMessageListener(this);
+        cacheManager.close();
     }
 
     @Override
-    public void onAvMessage(AvMessage message) {
-        log.info("REST on message: {}", message);
+    public void onAvMessage(AvMessage response) {
+        log.debug("REST on message: {}", response);
+
+        // skip other messages
+        if (processingMsgs.containsKey(response.getCorrelationId())) {
+            log.debug("Saving response: {}", response);
+            messageCache.put(response.getCorrelationId(), response);
+            processedMsgs.put(response.getCorrelationId(), System.currentTimeMillis());
+        }
     }
 }

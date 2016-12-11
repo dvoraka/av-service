@@ -25,7 +25,7 @@ public interface RestStrategy {
      * Returns a response AV message.
      *
      * @param id the request message ID
-     * @return the response AV message
+     * @return the response AV message or null if message is not available
      */
     AvMessage getResponse(String id);
 
