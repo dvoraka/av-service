@@ -6,24 +6,26 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import spock.lang.Specification
+import spock.lang.Subject
 import spock.util.concurrent.PollingConditions
 
 /**
- * Direct REST strategy test.
+ * Local REST strategy spec.
  */
-class DirectRestStrategySpec extends Specification {
+class LocalRestStrategySpec extends Specification {
 
-    String testId = 'TEST-ID'
+    @Subject
+    LocalRestStrategy strategy
 
-    DirectRestStrategy strategy
     MessageProcessor processor
+    String testId = 'TEST-ID'
 
     PollingConditions conditions
 
 
     def setup() {
         processor = Mock()
-        strategy = new DirectRestStrategy(processor)
+        strategy = new LocalRestStrategy(processor)
         conditions = new PollingConditions(timeout: 2)
     }
 

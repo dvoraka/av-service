@@ -23,14 +23,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Implementation for a local calling.
+ * REST strategy implementation for a local calling.
  */
 @Service
-public class DirectRestStrategy implements RestStrategy {
+public class LocalRestStrategy implements RestStrategy {
 
     private final MessageProcessor restMessageProcessor;
 
-    private static final Logger log = LogManager.getLogger(DirectRestStrategy.class.getName());
+    private static final Logger log = LogManager.getLogger(LocalRestStrategy.class.getName());
 
     private ExecutorService executorService;
 
@@ -40,7 +40,7 @@ public class DirectRestStrategy implements RestStrategy {
 
 
     @Autowired
-    public DirectRestStrategy(MessageProcessor restMessageProcessor) {
+    public LocalRestStrategy(MessageProcessor restMessageProcessor) {
         executorService = Executors.newSingleThreadExecutor();
         this.restMessageProcessor = restMessageProcessor;
         initializeCache();
