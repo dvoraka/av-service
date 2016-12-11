@@ -3,6 +3,7 @@ package dvoraka.avservice.rest;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import dvoraka.avservice.common.service.TimedStorage;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +35,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
     private static final String CACHE_NAME = "remoteRestCache";
 
-    private final ConcurrentHashMap<String, Long> processingMsgs = new ConcurrentHashMap<>();
+    private final TimedStorage<String> processingMsgs = new TimedStorage<>();
     private final ConcurrentHashMap<String, Long> processedMsgs = new ConcurrentHashMap<>();
 
     // messages caching
@@ -79,7 +80,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     public MessageStatus messageStatus(String id, String serviceId) {
         if (processedMsgs.containsKey(id)) {
             return MessageStatus.PROCESSED;
-        } else if (processingMsgs.containsKey(id)) {
+        } else if (processingMsgs.contains(id)) {
             return MessageStatus.PROCESSING;
         }
 
@@ -94,7 +95,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     @Override
     public void messageCheck(AvMessage message) {
         log.debug("Checking: {}", message);
-        processingMsgs.put(message.getId(), System.currentTimeMillis());
+        processingMsgs.put(message.getId());
         serverComponent.sendMessage(message);
     }
 
@@ -124,10 +125,13 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
         log.debug("REST on message: {}", response);
 
         // skip other messages
-        if (processingMsgs.containsKey(response.getCorrelationId())) {
+        if (processingMsgs.contains(response.getCorrelationId())) {
             log.debug("Saving response: {}", response);
+
             messageCache.put(response.getCorrelationId(), response);
             processedMsgs.put(response.getCorrelationId(), System.currentTimeMillis());
+
+            processingMsgs.remove(response.getCorrelationId());
         }
     }
 }
