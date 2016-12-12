@@ -70,12 +70,12 @@ and then completely rewritten and the old code was removed.
 Application is configurable and it's possible to run many configurations. Here is a list
 with all profiles and descriptions.
 
-profile | description
----|---
+profile | description | from version
+---|---|---
 amqp | enable AMQP infrastructure
 amqp2jms | bridging AMQP to JMS
 amqp-checker | AMQP checker
-amqp-rest | AMQP infrastructure for REST
+amqp-rest | AMQP infrastructure for REST | 0.5
 amqp-server | AMQP server
 core | core functionality
 db | use SQL DB for message logging
@@ -83,11 +83,13 @@ db-solr | use Solr for message logging
 jms | enable JMS infrastructure
 jms2amqp | bridging JMS to AMQP
 jms-checker | JMS checker
+jms-rest | JMS infrastructure for REST | 0.5
 jms-server | JMS server
 no-db | disable message logging
 rest | enable REST
-rest-amqp | REST to AMQP
+rest-amqp | REST to AMQP | 0.5
 rest-client | REST client
+rest-jms | REST to JMS | 0.5
 rest-local | REST with direct connection
 
 Here will be the best combinations for various usages soon.
