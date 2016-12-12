@@ -23,7 +23,7 @@ import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Remote REST strategy. Receives requests over REST and sends it along over network.
+ * Remote REST strategy. Receives requests through REST and sends it along over network.
  */
 @Service
 public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
@@ -48,9 +48,6 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     }
 
     private void initializeCache() {
-        final long expirationTime = 10_000;
-        final long heapEntries = 10;
-
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache(CACHE_NAME, getCacheConfiguration())
                 .build(true);

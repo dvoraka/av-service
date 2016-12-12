@@ -34,7 +34,7 @@ public class JmsRestConfig {
             JmsTemplate jmsTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new JmsComponent(resultDestination, serviceId, jmsTemplate, messageInfoService);
+        return new JmsComponent(checkDestination, serviceId, jmsTemplate, messageInfoService);
     }
 
     @Bean
@@ -48,7 +48,7 @@ public class JmsRestConfig {
             MessageListener messageListener) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(activeMQConnectionFactory);
-        container.setDestinationName(checkDestination);
+        container.setDestinationName(resultDestination);
         container.setMessageListener(messageListener);
 
         return container;
