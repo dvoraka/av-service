@@ -300,8 +300,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
                 log.debug("Thread pool stopping done.");
             }
         } catch (InterruptedException e) {
+            log.warn("Stopping interrupted!", e);
             executorService.shutdownNow();
-            log.warn("Stopping the thread pool interrupted!", e);
             Thread.currentThread().interrupt();
         }
     }

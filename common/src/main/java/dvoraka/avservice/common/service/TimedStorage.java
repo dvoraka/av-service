@@ -1,6 +1,8 @@
 package dvoraka.avservice.common.service;
 
 import dvoraka.avservice.common.CustomThreadFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -16,9 +18,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class TimedStorage<T> {
 
+    private static final Logger log = LogManager.getLogger(TimedStorage.class);
+
     private static final long MAX_TIME = 60_000;
 
+    /**
+     * Maximum time in milliseconds.
+     */
     private long maxTime;
+    private volatile boolean running;
     private final ConcurrentHashMap<T, Long> storage;
     private final ExecutorService executorService;
 
@@ -30,13 +38,14 @@ public class TimedStorage<T> {
         this.maxTime = maxTime;
         storage = new ConcurrentHashMap<>();
 
+        running = true;
         ThreadFactory threadFactory = new CustomThreadFactory("storage-cleaner-");
         executorService = Executors.newSingleThreadExecutor(threadFactory);
         executorService.execute(this::cleanStorage);
     }
 
     private void cleanStorage() {
-        while (true) {
+        while (running) {
             long now = System.currentTimeMillis();
             storage.entrySet()
                     .removeIf(entry -> (entry.getValue() + maxTime) < now);
@@ -67,6 +76,22 @@ public class TimedStorage<T> {
     }
 
     public void stop() {
-        //TODO: stop the service
+        running = false;
+
+        final long timeout = 5;
+        log.info("Stopping thread pool...");
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(timeout, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+                if (!executorService.awaitTermination(timeout, TimeUnit.SECONDS)) {
+                    log.warn("Can't stop thread pool!");
+                }
+            }
+        } catch (InterruptedException e) {
+            log.warn("Stopping interrupted!", e);
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 }
