@@ -113,6 +113,10 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     public void stop() {
         log.info("Stopped.");
         serverComponent.removeAvMessageListener(this);
+
+        processingMsgs.stop();
+        processedMsgs.stop();
+
         cacheManager.close();
     }
 

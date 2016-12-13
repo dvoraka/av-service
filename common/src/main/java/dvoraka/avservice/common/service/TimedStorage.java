@@ -4,6 +4,7 @@ import dvoraka.avservice.common.CustomThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -68,7 +69,9 @@ public class TimedStorage<T> {
     }
 
     public long remove(T data) {
-        return storage.remove(data);
+        return Optional.ofNullable(data)
+                .map(storage::remove)
+                .orElse(0L);
     }
 
     public long size() {

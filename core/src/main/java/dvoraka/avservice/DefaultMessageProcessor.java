@@ -6,6 +6,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanErrorException;
+import dvoraka.avservice.common.service.TimedStorage;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
 import org.apache.logging.log4j.LogManager;
@@ -19,10 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -41,19 +39,15 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class);
 
-    private static final int DEFAULT_CACHE_SIZE = 100;
-    public static final int DEFAULT_CACHE_TIMEOUT = 100 * 1_000;
+    public static final int DEFAULT_CACHE_TIMEOUT = 10 * 60 * 1_000;
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
 
-    private ConcurrentMap<String, Long> processingMessages;
-    private ConcurrentMap<String, Long> processedMessages;
+    private TimedStorage<String> processingMessages;
+    private TimedStorage<String> processedMessages;
+
     private AtomicLong receivedMsgCount = new AtomicLong();
     private AtomicLong processedMsgCount = new AtomicLong();
-    /**
-     * In milliseconds
-     */
-    private long processedMsgTimeout = DEFAULT_CACHE_TIMEOUT;
 
     private List<AvMessageListener> avMessageListeners;
     private ExecutorService executorService;
@@ -84,8 +78,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
         ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
 
-        processingMessages = new ConcurrentHashMap<>(DEFAULT_CACHE_SIZE);
-        processedMessages = new ConcurrentHashMap<>(DEFAULT_CACHE_SIZE);
+        processingMessages = new TimedStorage<>(DEFAULT_CACHE_TIMEOUT);
+        processedMessages = new TimedStorage<>(DEFAULT_CACHE_TIMEOUT);
 
         avMessageListeners = Collections.synchronizedList(new ArrayList<>());
     }
@@ -112,7 +106,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
     public void start() {
         if (!isRunning()) {
             setRunning(true);
-            executorService.execute(this::cacheUpdating);
             log.debug("Cache updating started.");
         }
     }
@@ -122,7 +115,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         receivedMsgCount.getAndIncrement();
 
         log.debug("Processing message...");
-        addProcessingMessage(message.getId());
+        processingMessages.put(message.getId());
 
         messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
 
@@ -134,37 +127,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
     public MessageStatus messageStatus(String id) {
         log.debug("Message status call from: " + Thread.currentThread().getName());
 
-        if (processedMessages.containsKey(id)) {
+        if (processedMessages.contains(id)) {
             return MessageStatus.PROCESSED;
-        } else if (processingMessages.containsKey(id)) {
+        } else if (processingMessages.contains(id)) {
             return MessageStatus.PROCESSING;
         } else {
             return MessageStatus.UNKNOWN;
-        }
-    }
-
-    private void cacheUpdating() {
-        HashSet<String> toRemove = new HashSet<>();
-        while (isRunning()) {
-            long now = System.currentTimeMillis();
-
-            processedMessages.entrySet()
-                    .stream()
-                    .filter(entry -> (entry.getValue() + processedMsgTimeout) < now)
-                    .forEach(entry -> {
-                        toRemove.add(entry.getKey());
-                        log.debug("Removing ID: " + entry.getKey());
-                    });
-
-            processedMessages.keySet().removeAll(toRemove);
-            toRemove.clear();
-
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                log.warn("Sleep interrupted!", e);
-                Thread.currentThread().interrupt();
-            }
         }
     }
 
@@ -186,8 +154,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
         log.debug("Scanning done in: " + Thread.currentThread().getName());
 
-        addProcessedMessage(message.getId());
-        removeProcessingMessage(message.getId());
+        processedMessages.put(message.getId());
+        processingMessages.remove(message.getId());
+
         processedMsgCount.getAndIncrement();
 
         if (error == null) {
@@ -213,6 +182,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
     public void stop() {
         log.debug("Stopping thread pool...");
         setRunning(false);
+
+        processingMessages.stop();
+        processedMessages.stop();
 
         executorService.shutdown();
         try {
@@ -260,18 +232,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     public int getThreadCount() {
         return threadCount;
-    }
-
-    private void addProcessingMessage(String id) {
-        processingMessages.put(id, System.currentTimeMillis());
-    }
-
-    private void removeProcessingMessage(String id) {
-        processingMessages.remove(id);
-    }
-
-    private void addProcessedMessage(String id) {
-        processedMessages.put(id, System.currentTimeMillis());
     }
 
     @ManagedAttribute
