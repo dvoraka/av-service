@@ -3,7 +3,10 @@ package dvoraka.avservice.common.service;
 import dvoraka.avservice.common.CustomThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PreDestroy;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -17,6 +20,8 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * Thread-safe.
  */
+@Service
+@Scope("prototype")
 public class TimedStorage<T> {
 
     private static final Logger log = LogManager.getLogger(TimedStorage.class);
@@ -78,6 +83,7 @@ public class TimedStorage<T> {
         return storage.size();
     }
 
+    @PreDestroy
     public void stop() {
         running = false;
 
