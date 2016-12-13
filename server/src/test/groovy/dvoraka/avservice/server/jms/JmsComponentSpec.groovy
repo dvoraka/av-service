@@ -80,7 +80,7 @@ class JmsComponentSpec extends Specification {
 
     def "send null message"() {
         when:
-            component.sendMessage(null)
+            component.sendAvMessage(null)
 
         then:
             thrown(NullPointerException)
@@ -94,7 +94,7 @@ class JmsComponentSpec extends Specification {
             AvMessage message = Utils.genNormalMessage()
 
         when:
-            component.sendMessage(message)
+            component.sendAvMessage(message)
 
         then:
             1 * jmsTemplate.convertAndSend(destination, message)

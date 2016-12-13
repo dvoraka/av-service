@@ -67,7 +67,7 @@ public class JmsComponent implements ServerComponent {
     }
 
     @Override
-    public void sendMessage(AvMessage message) {
+    public void sendAvMessage(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
 
         jmsTemplate.convertAndSend(responseDestination, message);

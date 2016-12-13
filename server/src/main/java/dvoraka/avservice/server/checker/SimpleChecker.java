@@ -47,7 +47,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public void sendAvMessage(AvMessage message) {
-        component.sendMessage(message);
+        component.sendAvMessage(message);
     }
 
     @Override

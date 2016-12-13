@@ -33,8 +33,8 @@ public class ServerComponentBridge implements ServiceManagement {
         this.inComponent = inComponent;
         this.outComponent = outComponent;
 
-        inListener = outComponent::sendMessage;
-        outListener = inComponent::sendMessage;
+        inListener = outComponent::sendAvMessage;
+        outListener = inComponent::sendAvMessage;
     }
 
     @Override

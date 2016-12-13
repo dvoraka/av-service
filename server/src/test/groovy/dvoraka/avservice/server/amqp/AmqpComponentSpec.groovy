@@ -86,7 +86,7 @@ class AmqpComponentSpec extends Specification {
 
     def "send null message"() {
         when:
-            component.sendMessage(null)
+            component.sendAvMessage(null)
 
         then:
             thrown(NullPointerException)
@@ -97,7 +97,7 @@ class AmqpComponentSpec extends Specification {
             AvMessage message = Utils.genNormalMessage()
 
         when:
-            component.sendMessage(message)
+            component.sendAvMessage(message)
 
         then:
             1 * rabbitTemplate.convertAndSend(_, _, _)
@@ -110,7 +110,7 @@ class AmqpComponentSpec extends Specification {
                     .build()
 
         when:
-            component.sendMessage(message)
+            component.sendAvMessage(message)
 
         then: "send error response"
             1 * rabbitTemplate.convertAndSend(_, _, _)

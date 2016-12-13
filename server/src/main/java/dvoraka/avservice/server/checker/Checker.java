@@ -1,11 +1,11 @@
 package dvoraka.avservice.server.checker;
 
-import dvoraka.avservice.common.AvSender;
+import dvoraka.avservice.common.AvMessageSender;
 
 /**
  * Interface for various message checkers.
  */
-public interface Checker extends Receiver, AvSender {
+public interface Checker extends Receiver, AvMessageSender {
 
     /**
      * Checks a message sending and receiving and returns the status.

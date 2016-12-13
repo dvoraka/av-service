@@ -5,7 +5,8 @@ import dvoraka.avservice.common.data.AvMessage;
 /**
  * Interface for sending AV message.
  */
-public interface AvSender {
+@FunctionalInterface
+public interface AvMessageSender {
 
     /**
      * Sends AV message.

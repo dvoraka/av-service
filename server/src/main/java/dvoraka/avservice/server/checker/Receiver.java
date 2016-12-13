@@ -6,6 +6,7 @@ import dvoraka.avservice.common.exception.MessageNotFoundException;
 /**
  * Interface for receiving AV message.
  */
+@FunctionalInterface
 public interface Receiver {
 
     /**

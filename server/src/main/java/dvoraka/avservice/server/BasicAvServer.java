@@ -103,7 +103,7 @@ public class BasicAvServer implements AvServer {
 
     @Override
     public void sendAvMessage(AvMessage message) {
-        serverComponent.sendMessage(message);
+        serverComponent.sendAvMessage(message);
     }
 
     class ProcessedAvMessageListener implements AvMessageListener {

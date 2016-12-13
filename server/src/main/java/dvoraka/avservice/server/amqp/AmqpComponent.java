@@ -73,7 +73,7 @@ public class AmqpComponent implements ServerComponent {
     }
 
     @Override
-    public void sendMessage(AvMessage message) {
+    public void sendAvMessage(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
 
         // TODO: improve exception handling
