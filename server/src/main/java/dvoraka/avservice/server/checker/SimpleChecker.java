@@ -46,7 +46,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
     }
 
     @Override
-    public void sendMessage(AvMessage message) {
+    public void sendAvMessage(AvMessage message) {
         component.sendMessage(message);
     }
 
@@ -92,7 +92,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
         AvMessage normalMessage = Utils.genNormalMessage();
         AvMessage infectedMessage = Utils.genInfectedMessage();
 
-        sendMessage(normalMessage);
+        sendAvMessage(normalMessage);
         try {
             AvMessage receivedMessage = receiveMessage(normalMessage.getId());
 
@@ -104,7 +104,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
             return false;
         }
 
-        sendMessage(infectedMessage);
+        sendAvMessage(infectedMessage);
         try {
             AvMessage receivedMessage = receiveMessage(infectedMessage.getId());
 

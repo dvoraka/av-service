@@ -52,7 +52,7 @@ public class DefaultPerformanceTester implements ServiceManagement {
         AvMessage message;
         for (int i = 0; i < loops; i++) {
             message = Utils.genInfectedMessage();
-            checker.sendMessage(message);
+            checker.sendAvMessage(message);
             try {
                 checker.receiveMessage(message.getId());
             } catch (MessageNotFoundException e) {

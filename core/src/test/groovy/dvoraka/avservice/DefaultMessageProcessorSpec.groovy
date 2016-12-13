@@ -1,6 +1,6 @@
 package dvoraka.avservice
 
-import dvoraka.avservice.common.ProcessedAvMessageListener
+import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
@@ -63,9 +63,9 @@ class DefaultMessageProcessorSpec extends Specification {
             avService.scanBytesWithInfo((byte[]) _) >> Utils.OK_VIRUS_INFO
 
             AvMessage response = null
-            ProcessedAvMessageListener messageListener = new ProcessedAvMessageListener() {
+            AvMessageListener messageListener = new AvMessageListener() {
                 @Override
-                void onProcessedAvMessage(AvMessage message) {
+                void onAvMessage(AvMessage message) {
                     response = message
                 }
             }
@@ -87,7 +87,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def "add and remove listeners"() {
         given:
-            ProcessedAvMessageListener messageListener = Mock()
+            AvMessageListener messageListener = Mock()
             processor.start()
 
         expect:
@@ -187,7 +187,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "add observers from different threads"() {
         given:
             int observers = 50
-            ProcessedAvMessageListener messageListener = {}
+            AvMessageListener messageListener = {}
 
             Runnable addObserver = {
                 processor.addProcessedAVMessageListener(messageListener)
@@ -213,7 +213,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "remove observers from different threads"() {
         given:
             int observers = 50
-            ProcessedAvMessageListener messageListener = {}
+            AvMessageListener messageListener = {}
 
             Runnable removeObserver = {
                 processor.removeProcessedAVMessageListener(messageListener)

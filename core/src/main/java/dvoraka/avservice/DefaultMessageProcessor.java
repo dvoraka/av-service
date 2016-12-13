@@ -1,7 +1,7 @@
 package dvoraka.avservice;
 
+import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
-import dvoraka.avservice.common.ProcessedAvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
@@ -41,7 +41,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class);
 
-    public static final int DEFAULT_CACHE_SIZE = 100;
+    private static final int DEFAULT_CACHE_SIZE = 100;
     public static final int DEFAULT_CACHE_TIMEOUT = 100 * 1_000;
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
@@ -55,7 +55,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
      */
     private long processedMsgTimeout = DEFAULT_CACHE_TIMEOUT;
 
-    private List<ProcessedAvMessageListener> observers;
+    private List<AvMessageListener> observers;
     private ExecutorService executorService;
 
     private int threadCount;
@@ -232,12 +232,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     @Override
-    public void addProcessedAVMessageListener(ProcessedAvMessageListener listener) {
+    public void addProcessedAVMessageListener(AvMessageListener listener) {
         observers.add(listener);
     }
 
     @Override
-    public void removeProcessedAVMessageListener(ProcessedAvMessageListener listener) {
+    public void removeProcessedAVMessageListener(AvMessageListener listener) {
         observers.remove(listener);
     }
 
@@ -251,8 +251,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     private void notifyObservers(AvMessage avMessage) {
-        for (ProcessedAvMessageListener listener : observers) {
-            listener.onProcessedAvMessage(avMessage);
+        for (AvMessageListener listener : observers) {
+            listener.onAvMessage(avMessage);
         }
     }
 

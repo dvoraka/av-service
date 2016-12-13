@@ -1,6 +1,7 @@
 package dvoraka.avservice.rest;
 
 import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import org.apache.logging.log4j.LogManager;
@@ -18,30 +19,24 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Local REST strategy. Uses directly the message processor.
  */
 @Service
-public class LocalRestStrategy implements RestStrategy {
+public class LocalRestStrategy implements RestStrategy, AvMessageListener {
 
     private final MessageProcessor restMessageProcessor;
 
     private static final Logger log = LogManager.getLogger(LocalRestStrategy.class.getName());
 
-    private ExecutorService executorService;
-
     private CacheManager cacheManager;
     private Cache<String, AvMessage> messageCache;
-    private boolean cacheUpdating;
 
 
     @Autowired
     public LocalRestStrategy(MessageProcessor restMessageProcessor) {
-        executorService = Executors.newSingleThreadExecutor();
         this.restMessageProcessor = restMessageProcessor;
         initializeCache();
     }
@@ -61,24 +56,6 @@ public class LocalRestStrategy implements RestStrategy {
                 .build(true);
 
         messageCache = cacheManager.getCache("restCache", String.class, AvMessage.class);
-    }
-
-    private void updateCache() {
-        while (cacheUpdating) {
-            if (restMessageProcessor.hasProcessedMessage()) {
-                AvMessage message = restMessageProcessor.getProcessedMessage();
-                messageCache.put(message.getCorrelationId(), message);
-                log.debug("Saving message: " + message.getId());
-            } else {
-                final long sleepTime = 200;
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                    log.warn("Sleeping interrupted!", e);
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
     }
 
     @Override
@@ -111,16 +88,19 @@ public class LocalRestStrategy implements RestStrategy {
     @Override
     public void start() {
         log.debug("Starting cache updating...");
-        cacheUpdating = true;
-        executorService.execute(this::updateCache);
+        restMessageProcessor.addProcessedAVMessageListener(this);
     }
 
     @Override
     @PreDestroy
     public void stop() {
-        cacheUpdating = false;
         restMessageProcessor.stop();
-        executorService.shutdown();
         cacheManager.close();
+    }
+
+    @Override
+    public void onAvMessage(AvMessage message) {
+        messageCache.put(message.getCorrelationId(), message);
+        log.debug("Saving message: " + message.getId());
     }
 }

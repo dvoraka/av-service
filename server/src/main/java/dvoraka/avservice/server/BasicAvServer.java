@@ -1,6 +1,7 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.service.MessageInfoService;
@@ -28,6 +29,8 @@ public class BasicAvServer implements AvServer {
     private boolean running;
     private String serviceId;
 
+    private ProcessedAvMessageListener processedAvMessageListener;
+
 
     public BasicAvServer(String serviceId) {
         this.serviceId = serviceId;
@@ -40,7 +43,9 @@ public class BasicAvServer implements AvServer {
         setStarted(true);
 
         serverComponent.addAvMessageListener(this);
-        messageProcessor.addProcessedAVMessageListener(this);
+
+        processedAvMessageListener = new ProcessedAvMessageListener();
+        messageProcessor.addProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(true);
         log.debug("Server is running.");
@@ -51,6 +56,7 @@ public class BasicAvServer implements AvServer {
         log.debug("Server stopped.");
         setStopped(true);
         serverComponent.removeAvMessageListener(this);
+        messageProcessor.removeProcessedAVMessageListener(processedAvMessageListener);
         setRunning(false);
 
         log.debug("Server has stopped");
@@ -87,16 +93,23 @@ public class BasicAvServer implements AvServer {
         messageProcessor.sendMessage(message);
     }
 
-    @Override
-    public void onProcessedAvMessage(AvMessage message) {
-        serverComponent.sendMessage(message);
-    }
-
     public void setStarted(boolean started) {
         this.started = started;
     }
 
     public void setStopped(boolean stopped) {
         this.stopped = stopped;
+    }
+
+    @Override
+    public void sendAvMessage(AvMessage message) {
+        serverComponent.sendMessage(message);
+    }
+
+    class ProcessedAvMessageListener implements AvMessageListener {
+        @Override
+        public void onAvMessage(AvMessage message) {
+            sendAvMessage(message);
+        }
     }
 }

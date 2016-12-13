@@ -1,6 +1,6 @@
 package dvoraka.avservice;
 
-import dvoraka.avservice.common.ProcessedAvMessageListener;
+import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 
@@ -39,12 +39,12 @@ public interface MessageProcessor {
      *
      * @param listener the listener
      */
-    void addProcessedAVMessageListener(ProcessedAvMessageListener listener);
+    void addProcessedAVMessageListener(AvMessageListener listener);
 
     /**
      * Removes a listener.
      *
      * @param listener the listener
      */
-    void removeProcessedAVMessageListener(ProcessedAvMessageListener listener);
+    void removeProcessedAVMessageListener(AvMessageListener listener);
 }

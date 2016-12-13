@@ -36,12 +36,11 @@ class LocalRestStrategySpec extends Specification {
     def "unknown message status"() {
         setup:
             processor.messageStatus(_) >> MessageStatus.UNKNOWN
-
             strategy.start()
 
         expect:
-            strategy.messageStatus("NEWID") == MessageStatus.UNKNOWN
-            strategy.messageStatus("NEWID", "SERVICEID") == MessageStatus.UNKNOWN
+            strategy.messageStatus('NEWID') == MessageStatus.UNKNOWN
+            strategy.messageStatus('NEWID', 'SERVICEID') == MessageStatus.UNKNOWN
     }
 
     def "message check"() {
@@ -60,7 +59,7 @@ class LocalRestStrategySpec extends Specification {
             strategy.start()
 
         then:
-            strategy.messageServiceId("TEST") == null
+            strategy.messageServiceId('TEST') == null
     }
 
     def "get null response"() {
@@ -68,22 +67,21 @@ class LocalRestStrategySpec extends Specification {
             strategy.start()
 
         expect:
-            strategy.getResponse("NEWID") == null
+            strategy.getResponse('NEWID') == null
     }
 
     def "get real response"() {
-        setup:
+        given:
             AvMessage request = new DefaultAvMessage.Builder(testId).build()
             AvMessage response = request.createResponse(Utils.OK_VIRUS_INFO)
 
-            processor.hasProcessedMessage() >>> [true, false]
-            processor.getProcessedMessage() >> response
-
+        when:
             strategy.start()
+            strategy.onAvMessage(response)
 
-        expect:
+        then:
             conditions.eventually {
-                (strategy.getResponse(testId) == response)
+                strategy.getResponse(testId) == response
             }
     }
 }

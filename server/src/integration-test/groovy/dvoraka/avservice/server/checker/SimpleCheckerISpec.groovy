@@ -47,7 +47,7 @@ class SimpleCheckerISpec extends Specification {
             AvMessage message = Utils.genNormalMessage()
 
         when:
-            checker.sendMessage(message)
+            checker.sendAvMessage(message)
             AvMessage receivedMessage = checker.receiveMessage(message.getId())
 
         then:
@@ -60,7 +60,7 @@ class SimpleCheckerISpec extends Specification {
             AvMessage message = Utils.genInfectedMessage()
 
         when:
-            checker.sendMessage(message)
+            checker.sendAvMessage(message)
             AvMessage receivedMessage = checker.receiveMessage(message.getId())
 
         then:
@@ -74,9 +74,9 @@ class SimpleCheckerISpec extends Specification {
             AvMessage message = Utils.genInfectedMessage()
 
         when:
-            checker.sendMessage(message)
+            checker.sendAvMessage(message)
             count.times {
-                checker.sendMessage(Utils.genNormalMessage())
+                checker.sendAvMessage(Utils.genNormalMessage())
             }
             AvMessage resultMessage = checker.receiveMessage(message.getId())
 
