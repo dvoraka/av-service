@@ -1,5 +1,6 @@
 package dvoraka.avservice.server;
 
+import dvoraka.avservice.common.AvMessageNotifier;
 import dvoraka.avservice.common.AvMessageSender;
 import org.springframework.amqp.core.MessageListener;
 

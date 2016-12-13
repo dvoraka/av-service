@@ -55,7 +55,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
      */
     private long processedMsgTimeout = DEFAULT_CACHE_TIMEOUT;
 
-    private List<AvMessageListener> observers;
+    private List<AvMessageListener> avMessageListeners;
     private ExecutorService executorService;
 
     private int threadCount;
@@ -87,7 +87,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processingMessages = new ConcurrentHashMap<>(DEFAULT_CACHE_SIZE);
         processedMessages = new ConcurrentHashMap<>(DEFAULT_CACHE_SIZE);
 
-        observers = Collections.synchronizedList(new ArrayList<>());
+        avMessageListeners = Collections.synchronizedList(new ArrayList<>());
     }
 
     /**
@@ -206,7 +206,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     private void sendResponse(AvMessage message) {
-        notifyObservers(message);
+        notifyListeners(avMessageListeners, message);
     }
 
     @Override
@@ -233,12 +233,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void addProcessedAVMessageListener(AvMessageListener listener) {
-        observers.add(listener);
+        avMessageListeners.add(listener);
     }
 
     @Override
     public void removeProcessedAVMessageListener(AvMessageListener listener) {
-        observers.remove(listener);
+        avMessageListeners.remove(listener);
     }
 
     /**
@@ -247,13 +247,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
      * @return the observer count
      */
     public int observersCount() {
-        return observers.size();
-    }
-
-    private void notifyObservers(AvMessage avMessage) {
-        for (AvMessageListener listener : observers) {
-            listener.onAvMessage(avMessage);
-        }
+        return avMessageListeners.size();
     }
 
     public boolean isRunning() {
