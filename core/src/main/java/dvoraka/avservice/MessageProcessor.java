@@ -25,20 +25,6 @@ public interface MessageProcessor {
     MessageStatus messageStatus(String id);
 
     /**
-     * Returns true if any message is prepared.
-     *
-     * @return true if any message is prepared
-     */
-    boolean hasProcessedMessage();
-
-    /**
-     * Returns one processed message.
-     *
-     * @return the processed message
-     */
-    AvMessage getProcessedMessage();
-
-    /**
      * Starts processing.
      */
     void start();

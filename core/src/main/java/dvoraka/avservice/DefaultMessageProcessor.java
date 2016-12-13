@@ -2,7 +2,6 @@ package dvoraka.avservice;
 
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.ProcessedAvMessageListener;
-import dvoraka.avservice.common.ReceivingType;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
@@ -14,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -21,12 +21,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,19 +32,17 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Main AV message processor.
  */
+@Component
 @ManagedResource
 public class DefaultMessageProcessor implements MessageProcessor {
 
-    @Autowired
-    private AvService avService;
-    @Autowired
-    private MessageInfoService messageInfoService;
+    private final AvService avService;
+    private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class.getName());
+    private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class);
 
-    public static final int DEFAULT_QUEUE_SIZE = 100;
+    public static final int DEFAULT_CACHE_SIZE = 100;
     public static final int DEFAULT_CACHE_TIMEOUT = 100 * 1_000;
-    public static final ReceivingType DEFAULT_RECEIVING_TYPE = ReceivingType.POLLING;
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
 
@@ -59,14 +55,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
      */
     private long processedMsgTimeout = DEFAULT_CACHE_TIMEOUT;
 
-    private Queue<AvMessage> processedMessagesQueue;
     private List<ProcessedAvMessageListener> observers;
     private ExecutorService executorService;
-    private ReceivingType serverReceivingType;
 
     private int threadCount;
     private volatile boolean running;
-    private int queueSize;
     private String serviceId;
 
 
@@ -76,47 +69,25 @@ public class DefaultMessageProcessor implements MessageProcessor {
      * @param threadCount the processing thread count
      * @param serviceId   the service ID string
      */
-    public DefaultMessageProcessor(int threadCount, String serviceId) {
-        this(threadCount, DEFAULT_RECEIVING_TYPE, DEFAULT_QUEUE_SIZE, serviceId);
-    }
-
-    /**
-     * Creates a processor with a given thread count and service ID. Receiving type is for how to
-     * get processed messages back. Queue size is a buffer for polling type only and can be null if
-     * you use different type of receiving.
-     *
-     * @param threadCount         the processing thread count
-     * @param serverReceivingType the type of processed message receiving
-     * @param queueSize           the queue size (for polling only)
-     * @param serviceId           the service ID string
-     */
+    @Autowired
     public DefaultMessageProcessor(
             int threadCount,
-            ReceivingType serverReceivingType,
-            Integer queueSize,
-            String serviceId) {
-
+            String serviceId,
+            AvService avService,
+            MessageInfoService messageInfoService
+    ) {
         this.threadCount = threadCount;
         this.serviceId = serviceId;
-
-        if (queueSize != null) {
-            this.queueSize = queueSize;
-        } else {
-            this.queueSize = DEFAULT_QUEUE_SIZE;
-        }
+        this.avService = avService;
+        this.messageInfoService = messageInfoService;
 
         ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
 
-        processingMessages = new ConcurrentHashMap<>(this.queueSize);
-        processedMessages = new ConcurrentHashMap<>(this.queueSize);
+        processingMessages = new ConcurrentHashMap<>(DEFAULT_CACHE_SIZE);
+        processedMessages = new ConcurrentHashMap<>(DEFAULT_CACHE_SIZE);
 
         observers = Collections.synchronizedList(new ArrayList<>());
-        this.serverReceivingType = serverReceivingType;
-
-        if (serverReceivingType == ReceivingType.POLLING) {
-            processedMessagesQueue = new LinkedBlockingQueue<>(this.queueSize);
-        }
     }
 
     /**
@@ -139,9 +110,11 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void start() {
-        setRunning(true);
-        executorService.execute(this::cacheUpdating);
-        log.debug("Cache updating started.");
+        if (!isRunning()) {
+            setRunning(true);
+            executorService.execute(this::cacheUpdating);
+            log.debug("Cache updating started.");
+        }
     }
 
     @Override
@@ -153,8 +126,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
 
-        Runnable process = () -> processMessage(message);
-        executorService.execute(process);
+        executorService.execute(() -> processMessage(message));
         log.debug("Message accepted.");
     }
 
@@ -176,7 +148,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
         while (isRunning()) {
             long now = System.currentTimeMillis();
 
-            processedMessages.entrySet().stream()
+            processedMessages.entrySet()
+                    .stream()
                     .filter(entry -> (entry.getValue() + processedMsgTimeout) < now)
                     .forEach(entry -> {
                         toRemove.add(entry.getKey());
@@ -233,55 +206,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
     }
 
     private void sendResponse(AvMessage message) {
-        if (getServerReceivingType() == ReceivingType.LISTENER) {
-            notifyObservers(message);
-        } else if (getServerReceivingType() == ReceivingType.POLLING) {
-            saveMessage(message);
-        }
-    }
-
-    private void saveMessage(AvMessage message) {
-        while (isRunning()) {
-            try {
-                log.debug("Saving message to the queue...");
-                processedMessagesQueue.add(message);
-                log.debug("Saved.");
-                break;
-            } catch (IllegalStateException e) {
-                // full queue
-                log.warn("Processed queue for the thread " + Thread.currentThread().getName()
-                        + " is full");
-                final long sleepTime = 500;
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e1) {
-                    log.warn("Waiting interrupted!", e);
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean hasProcessedMessage() {
-        if (serverReceivingType == ReceivingType.POLLING) {
-            return !processedMessagesQueue.isEmpty();
-        } else {
-            throw new UnsupportedOperationException("Supported for POLLING type only.");
-        }
-    }
-
-    @Override
-    public AvMessage getProcessedMessage() {
-        if (serverReceivingType == ReceivingType.POLLING) {
-            return processedMessagesQueue.poll();
-        } else {
-            throw new UnsupportedOperationException("Supported for POLLING type only.");
-        }
-    }
-
-    public boolean isProcessedQueueFull() {
-        return processedMessagesQueue.size() == getQueueSize();
+        notifyObservers(message);
     }
 
     @Override
@@ -308,11 +233,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     @Override
     public void addProcessedAVMessageListener(ProcessedAvMessageListener listener) {
-        if (serverReceivingType == ReceivingType.LISTENER) {
-            observers.add(listener);
-        } else {
-            throw new UnsupportedOperationException("Supported for LISTENER type only.");
-        }
+        observers.add(listener);
     }
 
     @Override
@@ -351,20 +272,12 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processingMessages.put(id, System.currentTimeMillis());
     }
 
-    private void addProcessedMessage(String id) {
-        processedMessages.put(id, System.currentTimeMillis());
-    }
-
     private void removeProcessingMessage(String id) {
         processingMessages.remove(id);
     }
 
-    public ReceivingType getServerReceivingType() {
-        return serverReceivingType;
-    }
-
-    public int getQueueSize() {
-        return queueSize;
+    private void addProcessedMessage(String id) {
+        processedMessages.put(id, System.currentTimeMillis());
     }
 
     @ManagedAttribute

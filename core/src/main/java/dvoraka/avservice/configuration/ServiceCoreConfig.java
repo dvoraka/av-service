@@ -3,7 +3,7 @@ package dvoraka.avservice.configuration;
 import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.avprogram.AvProgram;
-import dvoraka.avservice.common.ReceivingType;
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.service.DefaultAvService;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,11 +44,12 @@ public class ServiceCoreConfig {
     }
 
     @Bean
-    public MessageProcessor messageProcessor() {
+    public MessageProcessor messageProcessor(
+            AvService avService, MessageInfoService messageInfoService) {
         return new DefaultMessageProcessor(
                 cpuCores,
-                ReceivingType.LISTENER,
-                null,
-                serviceId);
+                serviceId,
+                avService,
+                messageInfoService);
     }
 }
