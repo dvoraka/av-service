@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * ClamAV wrapper.
+ * ClamAV wrapper. Uses network socket.
  */
 @Component
 public class ClamAvProgram implements AvProgram {
@@ -111,7 +111,7 @@ public class ClamAvProgram implements AvProgram {
             }
         }
 
-        log.debug("Scanning stream...");
+        log.debug("Scanning bytes...");
         try (
                 Socket socket = createSocket();
                 OutputStream outStream = socket.getOutputStream();

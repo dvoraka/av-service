@@ -22,10 +22,10 @@ class ClamAvProgramPSpec extends Specification {
 
     def "single thread performance"() {
         given:
-            int filesCount = 200_000
+            int fileCount = 200_000
 
         when:
-            filesCount.times {
+            fileCount.times {
                 program.scanBytes(eicarString.getBytes())
             }
 
@@ -34,17 +34,18 @@ class ClamAvProgramPSpec extends Specification {
     }
 
     @Unroll
-    def "threading performance: #threadsCount threads"() {
+    def "threading performance: #threadCount threads"() {
         given:
             int filesCount = 20_000
-            int loops = filesCount / threadsCount
+            int loops = filesCount / threadCount
+
             Runnable scanBytes = {
                 loops.times {
                     program.scanBytes(eicarString.getBytes())
                 }
             }
 
-            Thread[] threads = new Thread[threadsCount]
+            Thread[] threads = new Thread[threadCount]
             for (int i = 0; i < threads.length; i++) {
                 threads[i] = new Thread(scanBytes)
             }
@@ -61,6 +62,6 @@ class ClamAvProgramPSpec extends Specification {
             notThrown(Exception)
 
         where:
-            threadsCount << [1, 2, 4, 6, 8, 10]
+            threadCount << [1, 2, 4, 6, 8, 10]
     }
 }
