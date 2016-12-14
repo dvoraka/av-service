@@ -1,6 +1,7 @@
 # Performance notes
 
-Based on PC3 (NB, i3 2.40 GHz (2 cores), SSD) and everything runs on localhost.
+Based on PC3 (NB, i3 2.40 GHz (2 cores), SSD) and everything runs on localhost. Setting is
+4 threads for the message processor.
 
 ## Servers
 
@@ -25,12 +26,26 @@ First run is for a warm-up and is not counted.
 
 ### AMQP
 
+#### Dec 14, 2016
+After message processor redesign.
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 501 | 484 | 507 | 492 | 513
+
 #### Nov 17, 2016
 run | 1. | 2. | 3. | 4. | 5.
 ---|---|---|---|---|---
 msg/s | 471 | 470 | 480 | 480 | 481
 
 ### JMS
+
+#### Dec 14, 2016
+After message processor redesign.
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 91 | 92 | 92 | 91 | 91
 
 #### Nov 17, 2016
 run | 1. | 2. | 3. | 4. | 5.
