@@ -43,18 +43,20 @@ public class DefaultMessageProcessor implements MessageProcessor {
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
 
-    private TimedStorage<String> processingMessages;
-    private TimedStorage<String> processedMessages;
+    private final TimedStorage<String> processingMessages;
+    private final TimedStorage<String> processedMessages;
 
-    private AtomicLong receivedMsgCount = new AtomicLong();
-    private AtomicLong processedMsgCount = new AtomicLong();
+    private final AtomicLong receivedMsgCount = new AtomicLong();
+    private final AtomicLong processedMsgCount = new AtomicLong();
 
-    private List<AvMessageListener> avMessageListeners;
-    private ExecutorService executorService;
+    private final List<AvMessageListener> avMessageListeners;
 
-    private int threadCount;
+    private final ExecutorService executorService;
+
+    private final int threadCount;
+    private final String serviceId;
+
     private volatile boolean running;
-    private String serviceId;
 
 
     /**
