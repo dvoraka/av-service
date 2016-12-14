@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Timed storage for a temporary data saving. It is up to client to delete the data but
@@ -27,6 +28,8 @@ public class TimedStorage<T> {
     private static final Logger log = LogManager.getLogger(TimedStorage.class);
 
     private static final long MAX_TIME = 60_000;
+    @SuppressWarnings("checkstyle:ConstantName")
+    private static final AtomicLong storageNumber = new AtomicLong();
 
     /**
      * Maximum time in milliseconds.
@@ -45,7 +48,8 @@ public class TimedStorage<T> {
         storage = new ConcurrentHashMap<>();
 
         running = true;
-        ThreadFactory threadFactory = new CustomThreadFactory("storage-cleaner-");
+        String name = "storage-" + storageNumber.getAndIncrement() + "-cleaner-";
+        ThreadFactory threadFactory = new CustomThreadFactory(name);
         executorService = Executors.newSingleThreadExecutor(threadFactory);
         executorService.execute(this::cleanStorage);
     }
