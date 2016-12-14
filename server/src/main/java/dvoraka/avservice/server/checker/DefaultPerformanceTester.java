@@ -45,6 +45,7 @@ public class DefaultPerformanceTester implements ServiceManagement {
         started = true;
         running = true;
 
+        boolean perfect = true;
         int loops = testProperties.getMsgCount();
         System.out.println("Load test start for " + loops + " messages...");
 
@@ -57,6 +58,7 @@ public class DefaultPerformanceTester implements ServiceManagement {
                 checker.receiveMessage(message.getId());
             } catch (MessageNotFoundException e) {
                 log.warn("Message not found.", e);
+                perfect = false;
             }
         }
 
@@ -66,6 +68,10 @@ public class DefaultPerformanceTester implements ServiceManagement {
         float durationSeconds = duration / MS_PER_SECOND;
         System.out.println("\nDuration: " + durationSeconds + " s");
         System.out.println("Messages: " + loops / durationSeconds + "/s");
+
+        if (!perfect) {
+            System.out.println("\nSome messages were lost.");
+        }
     }
 
     @Override
