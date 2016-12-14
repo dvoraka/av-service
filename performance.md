@@ -25,6 +25,7 @@ DB logging: no
 ### Other scenarios
  * 1 million messages with AMQP server. It didn't show any memory leaks.
  * Result: **557** msgs/s
+ 
 ---
 
 ### Default scenarios
