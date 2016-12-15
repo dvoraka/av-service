@@ -9,7 +9,6 @@ import dvoraka.avservice.rest.configuration.RestClientConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -90,14 +89,21 @@ class RestServiceISpec extends Specification {
             response.getVirusInfo() != Utils.OK_VIRUS_INFO
     }
 
-    @Ignore
-    def "check message validation"() {
-        setup:
-            AvMessage message = Utils.genNormalMessage()
+    // validations
 
-            AvMessage response = client.postMessage(message, checkPath)
+    def "normal message validation"() {
+        when:
+            client.postMessage(Utils.genNormalMessage(), checkPath)
 
-        expect:
-            println(response)
+        then:
+            notThrown(Exception)
+    }
+
+    def "infected message validation"() {
+        when:
+            client.postMessage(Utils.genInfectedMessage(), checkPath)
+
+        then:
+            notThrown(Exception)
     }
 }

@@ -21,10 +21,10 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class AvMessageMapper {
 
-    private static final Logger log = LogManager.getLogger(AvMessageMapper.class.getName());
+    private static final Logger log = LogManager.getLogger(AvMessageMapper.class);
 
     public static final String VIRUS_INFO_KEY = "virusInfo";
-    public static final String DEFAULT_VIRUS_INFO = "noinfo";
+    public static final String DEFAULT_VIRUS_INFO = null;
     public static final String SERVICE_ID_KEY = "serviceId";
     public static final String DEFAULT_SERVICE_ID = "noservice";
 

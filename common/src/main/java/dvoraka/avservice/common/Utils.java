@@ -24,7 +24,6 @@ public final class Utils {
         final int dataSize = 20;
         return new DefaultAvMessage.Builder(null)
                 .serviceId(SERVICE_ID)
-                .virusInfo(OK_VIRUS_INFO)
                 .correlationId("1-2-3")
                 .data(new byte[dataSize])
                 .type(AvMessageType.REQUEST)
@@ -34,7 +33,6 @@ public final class Utils {
     public static AvMessage genInfectedMessage() {
         return new DefaultAvMessage.Builder(null)
                 .serviceId(SERVICE_ID)
-                .virusInfo("UNKNOWN")
                 .correlationId("1-2-3")
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
                 .type(AvMessageType.REQUEST)

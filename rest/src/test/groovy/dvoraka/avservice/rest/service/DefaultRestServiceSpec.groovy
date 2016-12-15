@@ -6,13 +6,16 @@ import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.rest.RestStrategy
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * DefaultRestService spec.
  */
 class DefaultRestServiceSpec extends Specification {
 
+    @Subject
     DefaultRestService service
+
     RestStrategy strategy
 
 

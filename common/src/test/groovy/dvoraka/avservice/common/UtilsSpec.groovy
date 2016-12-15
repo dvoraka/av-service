@@ -17,7 +17,6 @@ class UtilsSpec extends Specification {
 
         expect:
             checkMessageFields(message)
-            message.getVirusInfo() == Utils.OK_VIRUS_INFO
     }
 
     def "generate infected message"() {
@@ -36,6 +35,5 @@ class UtilsSpec extends Specification {
         assert message.getData()
         assert message.getType()
         assert message.getServiceId()
-        assert message.getVirusInfo()
     }
 }
