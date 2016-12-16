@@ -1,5 +1,6 @@
 package dvoraka.avservice.common.data
 
+import dvoraka.avservice.common.Utils
 import nl.jqno.equalsverifier.EqualsVerifier
 import nl.jqno.equalsverifier.Warning
 import spock.lang.Specification
@@ -120,8 +121,8 @@ class DefaultAvMessageSpec extends Specification {
 
     def "hashcode not equality test"() {
         setup:
-            AvMessage msg1 = new DefaultAvMessage.Builder(null).build()
-            AvMessage msg2 = new DefaultAvMessage.Builder(null).build()
+            AvMessage msg1 = new DefaultAvMessage.Builder(Utils.genUuidString()).build()
+            AvMessage msg2 = new DefaultAvMessage.Builder(Utils.genUuidString()).build()
 
         expect:
             msg1.hashCode() != msg2.hashCode()

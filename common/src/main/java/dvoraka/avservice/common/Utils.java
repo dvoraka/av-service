@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 /**
  * Utility class.
@@ -20,9 +21,13 @@ public final class Utils {
     private Utils() {
     }
 
+    public static String genUuidString() {
+        return UUID.randomUUID().toString();
+    }
+
     public static AvMessage genNormalMessage() {
         final int dataSize = 20;
-        return new DefaultAvMessage.Builder(null)
+        return new DefaultAvMessage.Builder(genUuidString())
                 .serviceId(SERVICE_ID)
                 .correlationId("1-2-3")
                 .data(new byte[dataSize])
@@ -31,7 +36,7 @@ public final class Utils {
     }
 
     public static AvMessage genInfectedMessage() {
-        return new DefaultAvMessage.Builder(null)
+        return new DefaultAvMessage.Builder(genUuidString())
                 .serviceId(SERVICE_ID)
                 .correlationId("1-2-3")
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))

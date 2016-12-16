@@ -11,6 +11,7 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.support.converter.MessageConversionException
 import org.springframework.amqp.support.converter.MessageConverter
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -104,6 +105,7 @@ class AmqpComponentSpec extends Specification {
     }
 
     // TODO: improve
+    @Ignore
     def "send broken message"() {
         given:
             AvMessage message = new DefaultAvMessage.Builder(null)

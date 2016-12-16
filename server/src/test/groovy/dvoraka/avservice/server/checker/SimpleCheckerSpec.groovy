@@ -28,7 +28,7 @@ class SimpleCheckerSpec extends Specification {
             }
 
             String corrId = 'X-CID-TEST'
-            AvMessage message = new DefaultAvMessage.Builder(null)
+            AvMessage message = new DefaultAvMessage.Builder(Utils.genUuidString())
                     .correlationId(corrId)
                     .build()
 

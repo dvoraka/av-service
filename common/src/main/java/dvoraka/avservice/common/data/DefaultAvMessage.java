@@ -3,10 +3,11 @@ package dvoraka.avservice.common.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import dvoraka.avservice.common.Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.UUID;
+import java.util.Objects;
 
 /**
  * Default AV message implementation.
@@ -66,7 +67,7 @@ public final class DefaultAvMessage implements AvMessage {
 
     @Override
     public AvMessage createResponse(String virusInfo) {
-        return new Builder(null)
+        return new Builder(Utils.genUuidString())
                 .correlationId(this.getId())
                 .virusInfo(virusInfo)
                 .type(AvMessageType.RESPONSE)
@@ -75,7 +76,7 @@ public final class DefaultAvMessage implements AvMessage {
 
     @Override
     public AvMessage createErrorResponse(String errorMessage) {
-        return new Builder(null)
+        return new Builder(Utils.genUuidString())
                 .correlationId(this.getId())
                 .type(AvMessageType.RESPONSE_ERROR)
                 .data(errorMessage.getBytes(StandardCharsets.UTF_8))
@@ -147,11 +148,7 @@ public final class DefaultAvMessage implements AvMessage {
         private String virusInfo;
 
         public Builder(@JsonProperty("id") String id) {
-            if (id != null) {
-                this.id = id;
-            } else {
-                this.id = UUID.randomUUID().toString();
-            }
+            this.id = Objects.requireNonNull(id, "ID must not be null!");
         }
 
         public Builder correlationId(String id) {

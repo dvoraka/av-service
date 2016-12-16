@@ -1,5 +1,6 @@
 package dvoraka.avservice.rest.controller;
 
+import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
@@ -106,7 +107,7 @@ public class AvRestController {
     @RequestMapping(value = "/gen-msg")
     public AvMessage generateMessage() {
         final int dataSize = 10;
-        return new DefaultAvMessage.Builder(null)
+        return new DefaultAvMessage.Builder(Utils.genUuidString())
                 .serviceId("testing-service")
                 .virusInfo("bad")
                 .correlationId("corrId")
