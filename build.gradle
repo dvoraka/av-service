@@ -1,5 +1,8 @@
 plugins {
+    // SonarQube
     id "org.sonarqube" version "2.2"
+    // Dependency management
+    id "io.spring.dependency-management" version "1.0.0.RC1"
 }
 
 apply plugin: 'distribution'
@@ -64,6 +67,7 @@ subprojects {
     apply plugin: 'findbugs'
     apply plugin: 'pmd'
     apply plugin: 'jacoco'
+    apply plugin: "io.spring.dependency-management"
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -116,6 +120,15 @@ subprojects {
         performanceTestRuntime.extendsFrom testRuntime
     }
 
+    dependencyManagement {
+        imports {
+            mavenBom('io.spring.platform:platform-bom:Athens-SR1') {
+                bomProperty 'guava.version', '18.0'
+                bomProperty 'logback.version', '1.1.6'
+            }
+        }
+    }
+
     dependencies {
         //
         // Logging
@@ -127,37 +140,37 @@ subprojects {
         // JCL to SLF4J
         compile("org.slf4j:jcl-over-slf4j:1.7.21")
         // Logback
-        compile("ch.qos.logback:logback-classic:${logbackVersion}")
+        compile("ch.qos.logback:logback-classic")
         // Logstash encoder
         compile("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
 
         // Spring
-        compile("org.springframework:spring-core:${springVersion}")
-        compile("org.springframework:spring-context:${springVersion}")
+        compile("org.springframework:spring-core")
+        compile("org.springframework:spring-context")
         // AMQP
-        compile("org.springframework.amqp:spring-rabbit:${springRabbitVersion}")
+        compile 'org.springframework.amqp:spring-rabbit'
         // from core
         // Spring aspects
-        compile("org.springframework:spring-aspects:${springVersion}")
+        compile("org.springframework:spring-aspects")
         // Spring JMS
-        compile("org.springframework:spring-jms:${springVersion}")
+        compile("org.springframework:spring-jms")
         compile("org.apache.activemq:activemq-broker:${activemqVersion}")
         // from database
         // Spring
-        compile("org.springframework:spring-orm:${springVersion}")
-        compile("org.springframework.data:spring-data-jpa:${springDataJpaVersion}")
-        compile("org.springframework.data:spring-data-solr:2.0.4.RELEASE")
+        compile("org.springframework:spring-orm")
+        compile("org.springframework.data:spring-data-jpa")
+        compile("org.springframework.data:spring-data-solr")
         // Hibernate
-        compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
+        compile("org.hibernate:hibernate-entitymanager")
         // PostgreSQL
         compile("postgresql:postgresql:9.1-901-1.jdbc4")
         // from rest
         // Spring
-        compile("org.springframework:spring-webmvc:${springVersion}")
-        compile("org.springframework.security:spring-security-config:${springSecurityVersion}")
-        compile("org.springframework.security:spring-security-web:${springSecurityVersion}")
+        compile("org.springframework:spring-webmvc")
+        compile("org.springframework.security:spring-security-config")
+        compile("org.springframework.security:spring-security-web")
         // Ehcache
-        compile("org.ehcache:ehcache:${ehcacheVersion}")
+        compile("org.ehcache:ehcache")
 
         // Hibernate validator
         compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.3.3.Final'
