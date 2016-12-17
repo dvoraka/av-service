@@ -18,9 +18,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -83,7 +82,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processingMessages = new TimedStorage<>(DEFAULT_CACHE_TIMEOUT);
         processedMessages = new TimedStorage<>(DEFAULT_CACHE_TIMEOUT);
 
-        avMessageListeners = Collections.synchronizedList(new ArrayList<>());
+        avMessageListeners = new CopyOnWriteArrayList<>();
     }
 
     /**
