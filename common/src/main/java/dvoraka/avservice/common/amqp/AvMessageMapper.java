@@ -10,7 +10,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
@@ -111,7 +110,7 @@ public class AvMessageMapper {
     private String getCorrelationId(MessageProperties props) {
         String corrId = "";
         if (props.getCorrelationId() != null) {
-            corrId = new String(props.getCorrelationId(), StandardCharsets.UTF_8);
+            corrId = props.getCorrelationId();
         }
 
         return corrId;
@@ -140,7 +139,7 @@ public class AvMessageMapper {
         props.setType(msg.getType().toString());
         // correlation ID
         if (msg.getCorrelationId() != null) {
-            props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
+            props.setCorrelationId(msg.getCorrelationId());
         }
 
         // service ID

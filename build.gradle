@@ -78,18 +78,18 @@ subprojects {
     repositories {
         mavenCentral()
 
-//        // Spring snapshots
-//        maven {
-//            url "http://repo.spring.io/snapshot"
-//        }
-//        // Spring milestones
-//        maven {
-//            url "http://repo.spring.io/milestone"
-//        }
-//        // Spring libs milestones
-//        maven {
-//            url "http://repo.spring.io/libs-milestone"
-//        }
+        // Spring snapshots
+        maven {
+            url "http://repo.spring.io/snapshot"
+        }
+        // Spring milestones
+        maven {
+            url "http://repo.spring.io/milestone"
+        }
+        // Spring libs milestones
+        maven {
+            url "http://repo.spring.io/libs-milestone"
+        }
     }
 
     sourceSets {
@@ -125,6 +125,8 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom('io.spring.platform:platform-bom:Athens-SR1') {
+                bomProperty 'spring.version', '5.0.0.M3'
+                bomProperty 'spring-amqp.version', '2.0.0.M1'
                 bomProperty 'guava.version', '18.0'
                 bomProperty 'logback.version', '1.1.6'
                 bomProperty 'log4j2.version', '2.7'
@@ -173,6 +175,9 @@ subprojects {
         // Security
         compile('org.springframework.security:spring-security-config')
         compile('org.springframework.security:spring-security-web')
+
+        // Spring 5 deps
+        compile group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
 
         // Ehcache
         compile("org.ehcache:ehcache")
