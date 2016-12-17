@@ -117,6 +117,9 @@ subprojects {
     }
 
     dependencies {
+        //
+        // Logging
+        //
         // Log4j
         compile("org.apache.logging.log4j:log4j-api:${log4jVersion}")
         // Log4j to SLF4J
@@ -127,23 +130,18 @@ subprojects {
         compile("ch.qos.logback:logback-classic:${logbackVersion}")
         // Logstash encoder
         compile("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
+
         // Spring
         compile("org.springframework:spring-core:${springVersion}")
         compile("org.springframework:spring-context:${springVersion}")
         // AMQP
-        compile("org.springframework.amqp:spring-rabbit:${springRabbitVersion}") {
-            exclude group: 'org.springframework', module: 'spring-web'
-            exclude group: 'org.springframework', module: 'spring-tx'
-            exclude group: 'org.springframework', module: 'spring-messaging'
-        }
-
+        compile("org.springframework.amqp:spring-rabbit:${springRabbitVersion}")
         // from core
         // Spring aspects
         compile("org.springframework:spring-aspects:${springVersion}")
         // Spring JMS
         compile("org.springframework:spring-jms:${springVersion}")
         compile("org.apache.activemq:activemq-broker:${activemqVersion}")
-
         // from database
         // Spring
         compile("org.springframework:spring-orm:${springVersion}")
@@ -153,7 +151,6 @@ subprojects {
         compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
         // PostgreSQL
         compile("postgresql:postgresql:9.1-901-1.jdbc4")
-
         // from rest
         // Spring
         compile("org.springframework:spring-webmvc:${springVersion}")
@@ -167,6 +164,9 @@ subprojects {
         compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
         compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
 
+        //
+        // Testing
+        //
         // Groovy
         testCompile("org.codehaus.groovy:groovy-all:${groovyVersion}")
         // Spring test
