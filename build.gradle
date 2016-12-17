@@ -125,6 +125,7 @@ subprojects {
             mavenBom('io.spring.platform:platform-bom:Athens-SR1') {
                 bomProperty 'guava.version', '18.0'
                 bomProperty 'logback.version', '1.1.6'
+                bomProperty 'log4j2.version', '2.7'
             }
         }
     }
@@ -134,7 +135,7 @@ subprojects {
         // Logging
         //
         // Log4j
-        compile("org.apache.logging.log4j:log4j-api:${log4jVersion}")
+        compile("org.apache.logging.log4j:log4j-api")
         // Log4j to SLF4J
         compile("org.apache.logging.log4j:log4j-to-slf4j:${log4jVersion}")
         // JCL to SLF4J
@@ -144,19 +145,19 @@ subprojects {
         // Logstash encoder
         compile("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
 
+        //
         // Spring
+        //
         compile("org.springframework:spring-core")
         compile("org.springframework:spring-context")
         // AMQP
         compile 'org.springframework.amqp:spring-rabbit'
-        // from core
-        // Spring aspects
+        // Aspects
         compile("org.springframework:spring-aspects")
-        // Spring JMS
+        // JMS
         compile("org.springframework:spring-jms")
-        compile("org.apache.activemq:activemq-broker:${activemqVersion}")
-        // from database
-        // Spring
+        compile("org.apache.activemq:activemq-broker")
+        // Data
         compile("org.springframework:spring-orm")
         compile("org.springframework.data:spring-data-jpa")
         compile("org.springframework.data:spring-data-solr")
@@ -164,17 +165,18 @@ subprojects {
         compile("org.hibernate:hibernate-entitymanager")
         // PostgreSQL
         compile("postgresql:postgresql:9.1-901-1.jdbc4")
-        // from rest
-        // Spring
+        // MVC
         compile("org.springframework:spring-webmvc")
+        // Security
         compile("org.springframework.security:spring-security-config")
         compile("org.springframework.security:spring-security-web")
+
         // Ehcache
         compile("org.ehcache:ehcache")
 
         // Hibernate validator
-        compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.3.3.Final'
-        compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+        compile group: 'org.hibernate', name: 'hibernate-validator'
+        compile group: 'javax.el', name: 'javax.el-api'
         compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
 
         //
@@ -189,7 +191,7 @@ subprojects {
         testCompile("org.spockframework:spock-spring:${spockVersion}")
         // Cglib
         testCompile("cglib:cglib-nodep:${cglibVersion}")
-        testCompile("org.objenesis:objenesis:2.4")
+        testCompile("org.objenesis:objenesis")
         // EqualsVerifier
         testCompile("nl.jqno.equalsverifier:equalsverifier:2.1.7")
     }
