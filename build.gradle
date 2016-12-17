@@ -126,6 +126,7 @@ subprojects {
                 bomProperty 'guava.version', '18.0'
                 bomProperty 'logback.version', '1.1.6'
                 bomProperty 'log4j2.version', '2.7'
+                bomProperty 'spock.version', '1.1-groovy-2.4-rc-3'
             }
         }
     }
@@ -164,7 +165,7 @@ subprojects {
         // Hibernate
         compile("org.hibernate:hibernate-entitymanager")
         // PostgreSQL
-        compile("postgresql:postgresql:9.1-901-1.jdbc4")
+        compile('org.postgresql:postgresql')
         // MVC
         compile("org.springframework:spring-webmvc")
         // Security
@@ -175,7 +176,8 @@ subprojects {
         compile("org.ehcache:ehcache")
 
         // Hibernate validator
-        compile group: 'org.hibernate', name: 'hibernate-validator'
+        compile('org.hibernate:hibernate-validator')
+
         compile group: 'javax.el', name: 'javax.el-api'
         compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
 
@@ -183,12 +185,12 @@ subprojects {
         // Testing
         //
         // Groovy
-        testCompile("org.codehaus.groovy:groovy-all:${groovyVersion}")
+        testCompile('org.codehaus.groovy:groovy-all')
         // Spring test
-        testCompile("org.springframework:spring-test:${springVersion}")
+        testCompile('org.springframework:spring-test')
         // Spock
-        testCompile("org.spockframework:spock-core:${spockVersion}")
-        testCompile("org.spockframework:spock-spring:${spockVersion}")
+        testCompile('org.spockframework:spock-core')
+        testCompile('org.spockframework:spock-spring')
         // Cglib
         testCompile("cglib:cglib-nodep:${cglibVersion}")
         testCompile("org.objenesis:objenesis")
