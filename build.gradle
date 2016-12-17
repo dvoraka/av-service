@@ -137,6 +137,31 @@ subprojects {
             exclude group: 'org.springframework', module: 'spring-messaging'
         }
 
+        // from core
+        // Spring aspects
+        compile("org.springframework:spring-aspects:${springVersion}")
+        // Spring JMS
+        compile("org.springframework:spring-jms:${springVersion}")
+        compile("org.apache.activemq:activemq-broker:${activemqVersion}")
+
+        // from database
+        // Spring
+        compile("org.springframework:spring-orm:${springVersion}")
+        compile("org.springframework.data:spring-data-jpa:${springDataJpaVersion}")
+        compile("org.springframework.data:spring-data-solr:2.0.4.RELEASE")
+        // Hibernate
+        compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
+        // PostgreSQL
+        compile("postgresql:postgresql:9.1-901-1.jdbc4")
+
+        // from rest
+        // Spring
+        compile("org.springframework:spring-webmvc:${springVersion}")
+        compile("org.springframework.security:spring-security-config:${springSecurityVersion}")
+        compile("org.springframework.security:spring-security-web:${springSecurityVersion}")
+        // Ehcache
+        compile("org.ehcache:ehcache:${ehcacheVersion}")
+
         // Hibernate validator
         compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.3.3.Final'
         compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'

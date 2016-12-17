@@ -8,13 +8,6 @@ description = 'REST components'
 dependencies {
     compile project(':common')
     compile project(':server')
-
-    // Spring
-    compile("org.springframework:spring-webmvc:${springVersion}")
-    compile("org.springframework.security:spring-security-config:${springSecurityVersion}")
-    compile("org.springframework.security:spring-security-web:${springSecurityVersion}")
-    // Ehcache
-    compile("org.ehcache:ehcache:${ehcacheVersion}")
 }
 
 gretty {
