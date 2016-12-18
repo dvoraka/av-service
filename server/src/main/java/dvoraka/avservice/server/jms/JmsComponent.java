@@ -8,6 +8,7 @@ import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.stereotype.Component;
@@ -70,8 +71,18 @@ public class JmsComponent implements ServerComponent {
     public void sendAvMessage(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
 
-        jmsTemplate.convertAndSend(responseDestination, message);
-        messageInfoService.save(message, AvMessageSource.JMS_COMPONENT_OUT, serviceId);
+        try {
+            jmsTemplate.convertAndSend(responseDestination, message);
+            messageInfoService.save(message, AvMessageSource.JMS_COMPONENT_OUT, serviceId);
+        } catch (MessageConversionException e) {
+            log.warn("Conversion problem!", e);
+
+            String errorMessage = e.getMessage() == null ? "" : e.getMessage();
+            AvMessage errorResponse = message.createErrorResponse(errorMessage);
+            jmsTemplate.convertAndSend(responseDestination, errorResponse);
+        } catch (JmsException e) {
+            log.warn("Message send problem!", e);
+        }
     }
 
     @Override
