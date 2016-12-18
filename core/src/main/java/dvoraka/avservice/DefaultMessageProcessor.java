@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -150,7 +151,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
                 throw new ScanErrorException("No data in the message.");
             }
         } catch (ScanErrorException e) {
-            error = e.getMessage();
+            error = Objects.requireNonNull(e.getMessage());
             log.warn("Scanning error!", e);
         }
         log.debug("Scanning done in: " + Thread.currentThread().getName());
