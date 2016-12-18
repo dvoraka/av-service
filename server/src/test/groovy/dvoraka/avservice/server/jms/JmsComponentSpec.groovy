@@ -23,14 +23,18 @@ class JmsComponentSpec extends Specification {
     JmsComponent component
 
     JmsTemplate jmsTemplate
-    MessageInfoService messageInfoService
     String destination
+    MessageConverter converter
 
 
     def setup() {
         destination = "TEST-DESTINATION"
+        MessageInfoService messageInfoService = Mock()
+
+        converter = Mock()
+
         jmsTemplate = Mock()
-        messageInfoService = Mock()
+        jmsTemplate.getMessageConverter() >> converter
 
         component = new JmsComponent(destination, "TEST1", jmsTemplate, messageInfoService)
     }
@@ -39,9 +43,7 @@ class JmsComponentSpec extends Specification {
         given:
             AvMessageListener listener = Mock()
             AvMessage message = Utils.genNormalMessage()
-            MessageConverter converter = Stub()
             converter.fromMessage(_) >> message
-            jmsTemplate.getMessageConverter() >> converter
 
             component.addAvMessageListener(listener)
 
@@ -55,11 +57,9 @@ class JmsComponentSpec extends Specification {
     def "on message with bad message"() {
         given:
             AvMessageListener listener = Mock()
-            MessageConverter converter = Stub()
             converter.fromMessage(_) >> {
                 throw new MessageConversionException("TEST")
             }
-            jmsTemplate.getMessageConverter() >> converter
 
             component.addAvMessageListener(listener)
 
@@ -67,7 +67,7 @@ class JmsComponentSpec extends Specification {
             component.onMessage(new ActiveMQMessage())
 
         then:
-            0 * listener.onAvMessage(_)
+            0 * listener.onAvMessage((AvMessage) _)
     }
 
     def "on message with null"() {

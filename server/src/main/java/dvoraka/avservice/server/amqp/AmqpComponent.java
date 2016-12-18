@@ -110,7 +110,7 @@ public class AmqpComponent implements ServerComponent {
     /**
      * JMS method.
      *
-     * @param message
+     * @param message JMS message
      */
     @Override
     public void onMessage(javax.jms.Message message) {
