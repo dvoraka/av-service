@@ -12,8 +12,8 @@ services:
     image: "activemq-dev-server"
     network_mode: "host"
 
-  clamavd-dev:
-    build: ./clamavd
+  clamav-dev:
+    build: ./clamav
     image: "clamav-dev-server"
     network_mode: "host"
 #    ports:

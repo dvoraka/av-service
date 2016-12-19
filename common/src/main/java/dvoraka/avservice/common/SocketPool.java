@@ -2,8 +2,10 @@ package dvoraka.avservice.common;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -22,10 +24,6 @@ public class SocketPool {
     private BlockingQueue<SocketWrapper> availableSocketWrappers;
 
 
-    public static void main(String[] args) {
-        SocketPool pool = new SocketPool(5, "localhost", 3310);
-    }
-
     public SocketPool(int socketCount, String host, int port) {
         this.host = host;
         this.port = port;
@@ -40,15 +38,26 @@ public class SocketPool {
                 .forEach(availableSocketWrappers::add);
     }
 
+    /**
+     * Returns an available socket.
+     *
+     * @return the socket
+     */
     public SocketWrapper getSocket() {
-        return availableSocketWrappers.poll();
+//        return availableSocketWrappers.poll();
+        return socketWrappers.get(0);
     }
 
+    /**
+     * Returns an used socket.
+     *
+     * @param socket the used socket
+     */
     public void returnSocket(SocketWrapper socket) {
         availableSocketWrappers.add(socket);
     }
 
-    static class SocketWrapper {
+    public class SocketWrapper {
 
         private String host;
         private int port;
@@ -61,12 +70,46 @@ public class SocketPool {
             this.port = port;
         }
 
+        private void initialize() {
+            if (socket == null) {
+                try {
+                    socket = new Socket(host, port);
+                    OutputStream out = socket.getOutputStream();
+                    out.write("nIDSESSION\n".getBytes("UTF-8"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (socket.isClosed()) {
+                socket = null;
+                initialize();
+            }
+        }
+
         public OutputStream getOutputStream() {
-            return null;
+            initialize();
+
+            OutputStream outStream = null;
+            try {
+                outStream = socket.getOutputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return outStream;
         }
 
         public BufferedReader getBufferedReader() {
-            return null;
+            initialize();
+
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(
+                                socket.getInputStream(), StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return reader;
         }
 
         public void releaseSocket() {
