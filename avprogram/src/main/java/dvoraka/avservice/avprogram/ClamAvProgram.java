@@ -46,6 +46,8 @@ public class ClamAvProgram implements AvProgram {
     private final int socketPort;
     private final long maxArraySize;
 
+    private SocketPool socketPool;
+
     private volatile boolean caching;
 
 
@@ -57,6 +59,9 @@ public class ClamAvProgram implements AvProgram {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
         this.maxArraySize = maxArraySize;
+
+        final int socketCount = 4;
+        socketPool = new SocketPool(socketCount, socketHost, socketPort);
     }
 
     @Override
@@ -77,9 +82,15 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
-    private SocketPool pool = new SocketPool(5, "localhost", 3310);
+    /**
+     * New checking prototype.
+     *
+     * @param bytes
+     * @return
+     * @throws IOException
+     */
     public String scanBytesNew(byte[] bytes) throws IOException {
-        SocketPool.SocketWrapper socket = pool.getSocket();
+        SocketPool.SocketWrapper socket = socketPool.getSocket();
         OutputStream outStream = socket.getOutputStream();
         BufferedReader in = socket.getBufferedReader();
 
@@ -94,6 +105,8 @@ public class ClamAvProgram implements AvProgram {
 
         // read check result
         String response = in.readLine();
+
+        socketPool.returnSocket(socket);
 
         return response;
     }

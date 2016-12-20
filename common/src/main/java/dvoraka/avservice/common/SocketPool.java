@@ -54,7 +54,7 @@ public class SocketPool {
      * @param socket the used socket
      */
     public void returnSocket(SocketWrapper socket) {
-        availableSocketWrappers.add(socket);
+//        availableSocketWrappers.add(socket);
     }
 
     public class SocketWrapper {
@@ -74,6 +74,7 @@ public class SocketPool {
             if (socket == null) {
                 try {
                     socket = new Socket(host, port);
+                    socket.setTcpNoDelay(true);
                     OutputStream out = socket.getOutputStream();
                     out.write("nIDSESSION\n".getBytes("UTF-8"));
                 } catch (IOException e) {

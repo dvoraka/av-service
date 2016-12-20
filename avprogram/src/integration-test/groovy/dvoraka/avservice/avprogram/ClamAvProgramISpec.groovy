@@ -59,13 +59,22 @@ class ClamAvProgramISpec extends Specification {
 
     @Ignore('WIP')
     def "scan bytes new"() {
-        expect:
-            50.times {
-                println(program.scanBytesNew(eicarString.getBytes()))
+        when:
+            int count = 100000
+            long start = System.currentTimeMillis()
+            count.times {
+                program.scanBytesNew(eicarString.getBytes())
             }
-            50.times {
-                println(program.scanBytesWithInfo(eicarString.getBytes()))
+            println(System.currentTimeMillis() - start)
+
+            start = System.currentTimeMillis()
+            count.times {
+                program.scanBytesWithInfo(eicarString.getBytes())
             }
+            println(System.currentTimeMillis() - start)
+
+        then:
+            true
     }
 
     def "scan too big array"() {
