@@ -57,12 +57,22 @@ public class SocketPool {
 //        availableSocketWrappers.add(socket);
     }
 
-    public class SocketWrapper {
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public static class SocketWrapper {
 
         private String host;
         private int port;
 
         private Socket socket;
+        private OutputStream outputStream;
+        private BufferedReader reader;
 
 
         SocketWrapper(String host, int port) {
@@ -73,8 +83,8 @@ public class SocketPool {
         private void initialize() {
             if (socket == null) {
                 try {
-                    socket = new Socket(host, port);
-                    socket.setTcpNoDelay(true);
+                    socket = createSocket(host, port);
+
                     OutputStream out = socket.getOutputStream();
                     out.write("nIDSESSION\n".getBytes("UTF-8"));
                 } catch (IOException e) {
@@ -89,38 +99,52 @@ public class SocketPool {
         public OutputStream getOutputStream() {
             initialize();
 
-            OutputStream outStream = null;
-            try {
-                outStream = socket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (outputStream == null) {
+                try {
+                    outputStream = socket.getOutputStream();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
-            return outStream;
+            return outputStream;
         }
 
         public BufferedReader getBufferedReader() {
             initialize();
 
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new InputStreamReader(
-                                socket.getInputStream(), StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (reader == null) {
+                try {
+                    reader = new BufferedReader(new InputStreamReader(
+                            socket.getInputStream(), StandardCharsets.UTF_8));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             return reader;
         }
 
         public void releaseSocket() {
+            initialize();
 
+            try {
+                OutputStream out = socket.getOutputStream();
+                out.write("nEND\n".getBytes("UTF-8"));
+
+                getBufferedReader().close();
+                getOutputStream().close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        private Socket createSocket() {
+        private Socket createSocket(String host, int port) {
             Socket s = null;
             try {
                 s = new Socket(host, port);
+                s.setTcpNoDelay(true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

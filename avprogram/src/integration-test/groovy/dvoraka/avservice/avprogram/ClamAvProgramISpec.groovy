@@ -60,7 +60,13 @@ class ClamAvProgramISpec extends Specification {
     @Ignore('WIP')
     def "scan bytes new"() {
         when:
-            int count = 100000
+            // warm up
+            1000.times {
+                program.scanBytesNew(eicarString.getBytes())
+                program.scanBytesWithInfo(eicarString.getBytes())
+            }
+
+            int count = 100_000
             long start = System.currentTimeMillis()
             count.times {
                 program.scanBytesNew(eicarString.getBytes())
