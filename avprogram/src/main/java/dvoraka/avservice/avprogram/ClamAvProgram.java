@@ -1,5 +1,6 @@
 package dvoraka.avservice.avprogram;
 
+import dvoraka.avservice.common.SocketPool;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.service.CachingService;
@@ -45,6 +46,8 @@ public class ClamAvProgram implements AvProgram {
     private final int socketPort;
     private final long maxArraySize;
 
+    private SocketPool socketPool;
+
     private volatile boolean caching;
 
 
@@ -56,6 +59,9 @@ public class ClamAvProgram implements AvProgram {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
         this.maxArraySize = maxArraySize;
+
+        final int socketCount = 4;
+        socketPool = new SocketPool(socketCount, socketHost, socketPort);
     }
 
     @Override
@@ -74,6 +80,35 @@ public class ClamAvProgram implements AvProgram {
             log.debug("Virus found: " + response);
             return true;
         }
+    }
+
+    /**
+     * New checking prototype.
+     *
+     * @param bytes
+     * @return
+     * @throws IOException
+     */
+    public String scanBytesNew(byte[] bytes) throws IOException {
+        SocketPool.SocketWrapper socket = socketPool.getSocket();
+        OutputStream outStream = socket.getOutputStream();
+        BufferedReader in = socket.getBufferedReader();
+
+        // send bytes
+        outStream.write("nINSTREAM\n".getBytes("UTF-8"));
+        outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
+        outStream.write(bytes);
+
+        // terminate stream with a zero length chunk
+        outStream.write(intBytes(0, CHUNK_LENGTH_BYTE_SIZE));
+        outStream.flush();
+
+        // read check result
+        String response = in.readLine();
+
+        socketPool.returnSocket(socket);
+
+        return response;
     }
 
     /**
