@@ -37,7 +37,7 @@ public class AvMessageMapper {
      */
     public AvMessage transform(Message msg) throws MapperException {
         log.debug("Transform: " + msg);
-        requireNonNull(msg, "Message may not be null!");
+        requireNonNull(msg, "Message must not be null!");
 
         MessageProperties props = msg.getMessageProperties();
         Map<String, Object> headers = props.getHeaders();
@@ -125,13 +125,13 @@ public class AvMessageMapper {
      */
     public Message transform(AvMessage msg) throws MapperException {
         log.debug("AVTransform: " + msg);
-        requireNonNull(msg, "Message may not be null!");
+        requireNonNull(msg, "Message must not be null!");
 
         // mandatory fields
         if (msg.getId() == null) {
-            throw new MapperException("Message ID may not be null");
+            throw new MapperException("Message ID must not be null");
         } else if (msg.getType() == null) {
-            throw new MapperException("Message type may not be null");
+            throw new MapperException("Message type must not be null");
         }
 
         MessageProperties props = new MessageProperties();
