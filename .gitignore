@@ -8,3 +8,7 @@
 build/
 classes/
 reports/
+
+# Haskell
+*.o
+*.hi
