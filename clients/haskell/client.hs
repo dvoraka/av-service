@@ -1,3 +1,11 @@
+#!/usr/bin/env stack
+{- stack --install-ghc
+    runghc
+    --package amqp
+    --package bytestring
+    --package uuid
+-}
+
 -- Anti-virus client
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -19,7 +27,7 @@ exchange = "check"
 
 testMessage :: UUID -> Message
 testMessage uuid = newMsg {
-        msgID = Just "TestID",
+        msgID = Just $ toText uuid,
         msgType = Just "REQUEST",
         msgBody = "TEST MESSAGE"
     }
