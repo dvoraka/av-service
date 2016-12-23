@@ -34,6 +34,13 @@ First run is for a warm-up and is not counted.
 
 ### AMQP
 
+#### Dec 23, 2016
+Spring 5 and small tuning.
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 516 | 512 | 506 | 507 | 514
+
 #### Dec 14, 2016
 After message processor redesign.
 
