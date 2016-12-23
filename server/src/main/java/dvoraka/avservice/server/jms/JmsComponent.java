@@ -8,8 +8,10 @@ import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConversionException;
+import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
@@ -33,6 +35,7 @@ public class JmsComponent implements ServerComponent {
     private final String responseDestination;
     private final String serviceId;
     private final List<AvMessageListener> listeners = new ArrayList<>();
+    private final MessageConverter messageConverter;
 
 
     @Autowired
@@ -41,10 +44,11 @@ public class JmsComponent implements ServerComponent {
                         JmsTemplate jmsTemplate,
                         MessageInfoService messageInfoService
     ) {
-        this.responseDestination = responseDestination;
-        this.serviceId = serviceId;
-        this.messageInfoService = messageInfoService;
+        this.responseDestination = requireNonNull(responseDestination);
+        this.serviceId = requireNonNull(serviceId);
         this.jmsTemplate = jmsTemplate;
+        this.messageInfoService = messageInfoService;
+        messageConverter = requireNonNull(jmsTemplate.getMessageConverter());
     }
 
     @Override
@@ -53,7 +57,7 @@ public class JmsComponent implements ServerComponent {
 
         AvMessage avMessage;
         try {
-            avMessage = (AvMessage) jmsTemplate.getMessageConverter().fromMessage(message);
+            avMessage = (AvMessage) messageConverter.fromMessage(message);
             messageInfoService.save(avMessage, AvMessageSource.JMS_COMPONENT_IN, serviceId);
         } catch (JMSException | MessageConversionException e) {
             log.warn("Conversion error!", e);
@@ -70,8 +74,18 @@ public class JmsComponent implements ServerComponent {
     public void sendAvMessage(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
 
-        jmsTemplate.convertAndSend(responseDestination, message);
-        messageInfoService.save(message, AvMessageSource.JMS_COMPONENT_OUT, serviceId);
+        try {
+            jmsTemplate.convertAndSend(responseDestination, message);
+            messageInfoService.save(message, AvMessageSource.JMS_COMPONENT_OUT, serviceId);
+        } catch (MessageConversionException e) {
+            log.warn("Conversion problem!", e);
+
+            String errorMessage = e.getMessage() == null ? "" : e.getMessage();
+            AvMessage errorResponse = message.createErrorResponse(errorMessage);
+            jmsTemplate.convertAndSend(responseDestination, errorResponse);
+        } catch (JmsException e) {
+            log.warn("Message send problem!", e);
+        }
     }
 
     @Override
@@ -95,7 +109,7 @@ public class JmsComponent implements ServerComponent {
     /**
      * AMQP method.
      *
-     * @param message
+     * @param message AMQP message
      */
     @Override
     public void onMessage(org.springframework.amqp.core.Message message) {

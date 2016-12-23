@@ -59,7 +59,6 @@ public class AmqpComponent implements ServerComponent {
         AvMessage avMessage;
         try {
             avMessage = (AvMessage) messageConverter.fromMessage(message);
-
             messageInfoService.save(avMessage, AvMessageSource.AMQP_COMPONENT_IN, serviceId);
         } catch (MessageConversionException e) {
             log.warn("Conversion error!", e);
@@ -76,17 +75,17 @@ public class AmqpComponent implements ServerComponent {
     public void sendAvMessage(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
 
-        // TODO: improve exception handling
         try {
             rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
             messageInfoService.save(message, AvMessageSource.AMQP_COMPONENT_OUT, serviceId);
+        } catch (MessageConversionException e) {
+            log.warn("Conversion problem!", e);
+
+            String errorMessage = e.getMessage() == null ? "" : e.getMessage();
+            AvMessage errorResponse = message.createErrorResponse(errorMessage);
+            rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, errorResponse);
         } catch (AmqpException e) {
             log.warn("Message send problem!", e);
-
-            // create error response
-            AvMessage errorResponse = message.createErrorResponse(e.getMessage());
-
-            rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, errorResponse);
         }
     }
 
@@ -111,7 +110,7 @@ public class AmqpComponent implements ServerComponent {
     /**
      * JMS method.
      *
-     * @param message
+     * @param message JMS message
      */
     @Override
     public void onMessage(javax.jms.Message message) {

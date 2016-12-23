@@ -10,7 +10,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
@@ -38,7 +37,7 @@ public class AvMessageMapper {
      */
     public AvMessage transform(Message msg) throws MapperException {
         log.debug("Transform: " + msg);
-        requireNonNull(msg, "Message may not be null!");
+        requireNonNull(msg, "Message must not be null!");
 
         MessageProperties props = msg.getMessageProperties();
         Map<String, Object> headers = props.getHeaders();
@@ -111,7 +110,7 @@ public class AvMessageMapper {
     private String getCorrelationId(MessageProperties props) {
         String corrId = "";
         if (props.getCorrelationId() != null) {
-            corrId = new String(props.getCorrelationId(), StandardCharsets.UTF_8);
+            corrId = props.getCorrelationId();
         }
 
         return corrId;
@@ -126,13 +125,13 @@ public class AvMessageMapper {
      */
     public Message transform(AvMessage msg) throws MapperException {
         log.debug("AVTransform: " + msg);
-        requireNonNull(msg, "Message may not be null!");
+        requireNonNull(msg, "Message must not be null!");
 
         // mandatory fields
         if (msg.getId() == null) {
-            throw new MapperException("Message ID may not be null");
+            throw new MapperException("Message ID must not be null");
         } else if (msg.getType() == null) {
-            throw new MapperException("Message type may not be null");
+            throw new MapperException("Message type must not be null");
         }
 
         MessageProperties props = new MessageProperties();
@@ -140,7 +139,7 @@ public class AvMessageMapper {
         props.setType(msg.getType().toString());
         // correlation ID
         if (msg.getCorrelationId() != null) {
-            props.setCorrelationId(msg.getCorrelationId().getBytes(StandardCharsets.UTF_8));
+            props.setCorrelationId(msg.getCorrelationId());
         }
 
         // service ID
