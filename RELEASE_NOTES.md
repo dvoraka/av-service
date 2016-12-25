@@ -22,7 +22,7 @@
  * Removed JMS client (new checker is replacement)
  * Removed AMQP client (new checker is replacement)
  * Exceptions cleaning
- * Updated 3rd party libraries
+ * Updated 3rd party libraries versions
  * Improved build configuration
 
 #### modules

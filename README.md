@@ -7,6 +7,7 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
 JMS, AMQP and HTTP for communication. AV-checker project was integrated as the checker submodule
 and then completely rewritten and the old code was removed.
 
+ * [Release notes](#release-notes)
  * [Features](#features)
  * [Planned features](#planned-features)
  * [Used components](#used-components)
@@ -19,6 +20,9 @@ and then completely rewritten and the old code was removed.
  * [Load tests](#load-tests)
 
 --
+
+### Release notes
+Release [notes](RELEASE_NOTES.md)
 
 ### Features
  * AMQP 0.9.1 support
@@ -90,7 +94,7 @@ rest | enable REST
 rest-amqp | REST to AMQP | 0.5
 rest-client | REST client
 rest-jms | REST to JMS | 0.5
-rest-local | REST with direct connection
+rest-local | REST with direct connection | 0.5
 
 Here will be the best combinations for various usages soon.
 
@@ -273,4 +277,4 @@ Test OK
 
 ## Load tests
 Various performance testing:
-[TESTS](https://github.com/dvoraka/av-service/blob/master/performance.md)
+[TESTS](performance.md)
