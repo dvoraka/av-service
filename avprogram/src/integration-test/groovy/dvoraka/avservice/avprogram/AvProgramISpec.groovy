@@ -48,10 +48,14 @@ class AvProgramISpec extends Specification {
             !shouldBeFalse
     }
 
+    // TODO: disable when no caching service is loaded
     def "scan normal bytes with caching enabled"() {
         setup:
             byte[] bytes = "No virus here".getBytes("UTF-8")
             avProgram.setCaching(true)
+
+        expect:
+            avProgram.isCaching()
 
         when:
             boolean shouldBeFalse = avProgram.scanBytes(bytes)

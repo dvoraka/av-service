@@ -29,7 +29,6 @@ import java.util.Objects;
 @Component
 public class ClamAvProgram implements AvProgram {
 
-    @Autowired
     private CachingService cachingService;
 
     private static final Logger log = LogManager.getLogger(ClamAvProgram.class.getName());
@@ -215,6 +214,13 @@ public class ClamAvProgram implements AvProgram {
 
     @Override
     public void setCaching(boolean caching) {
+        if (cachingService == null) {
+            log.warn("Caching service is not set.");
+            this.caching = false;
+
+            return;
+        }
+
         this.caching = caching;
     }
 
@@ -288,5 +294,10 @@ public class ClamAvProgram implements AvProgram {
     @Override
     public long getMaxArraySize() {
         return maxArraySize;
+    }
+
+    @Autowired(required = false)
+    public void setCachingService(CachingService cachingService) {
+        this.cachingService = cachingService;
     }
 }

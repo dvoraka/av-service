@@ -2,6 +2,7 @@ package dvoraka.avservice.avprogram
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.ScanErrorException
+import dvoraka.avservice.common.service.CachingService
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -152,6 +153,9 @@ class ClamAvProgramSpec extends Specification {
     }
 
     def "set and get caching flag"() {
+        setup:
+            avProgram.setCachingService(Mock(CachingService))
+
         when:
             avProgram.setCaching(false)
 
@@ -163,5 +167,19 @@ class ClamAvProgramSpec extends Specification {
 
         then:
             avProgram.isCaching()
+    }
+
+    def "set and get caching flag without caching service"() {
+        when:
+            avProgram.setCaching(false)
+
+        then:
+            !avProgram.isCaching()
+
+        when:
+            avProgram.setCaching(true)
+
+        then:
+            !avProgram.isCaching()
     }
 }
