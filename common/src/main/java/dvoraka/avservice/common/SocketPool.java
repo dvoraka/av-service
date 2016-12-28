@@ -1,5 +1,8 @@
 package dvoraka.avservice.common;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +19,8 @@ import java.util.stream.Stream;
  * Socket pool prototype.
  */
 public class SocketPool {
+
+    private static final Logger log = LogManager.getLogger(SocketPool.class);
 
     private String host;
     private int port;
@@ -34,8 +39,11 @@ public class SocketPool {
                 .collect(Collectors.toList());
 
         availableSocketWrappers = new ArrayBlockingQueue<>(socketCount);
-        socketWrappers
-                .forEach(availableSocketWrappers::add);
+        socketWrappers.forEach(availableSocketWrappers::add);
+    }
+
+    public void close() {
+        socketWrappers.forEach(SocketWrapper::releaseSocket);
     }
 
     /**
@@ -44,8 +52,7 @@ public class SocketPool {
      * @return the socket
      */
     public SocketWrapper getSocket() {
-//        return availableSocketWrappers.poll();
-        return socketWrappers.get(0);
+        return availableSocketWrappers.poll();
     }
 
     /**
@@ -54,7 +61,7 @@ public class SocketPool {
      * @param socket the used socket
      */
     public void returnSocket(SocketWrapper socket) {
-//        availableSocketWrappers.add(socket);
+        availableSocketWrappers.add(socket);
     }
 
     public String getHost() {
@@ -88,7 +95,7 @@ public class SocketPool {
                     OutputStream out = socket.getOutputStream();
                     out.write("nIDSESSION\n".getBytes("UTF-8"));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Socket problem!", e);
                 }
             } else if (socket.isClosed()) {
                 socket = null;
@@ -103,7 +110,7 @@ public class SocketPool {
                 try {
                     outputStream = socket.getOutputStream();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("OutputStream error!", e);
                 }
             }
 
@@ -118,7 +125,7 @@ public class SocketPool {
                     reader = new BufferedReader(new InputStreamReader(
                             socket.getInputStream(), StandardCharsets.UTF_8));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Reader problem!", e);
                 }
             }
 
@@ -126,7 +133,9 @@ public class SocketPool {
         }
 
         public void releaseSocket() {
-            initialize();
+            if (socket == null) {
+                return;
+            }
 
             try {
                 OutputStream out = socket.getOutputStream();

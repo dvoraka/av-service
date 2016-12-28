@@ -60,7 +60,7 @@ public class ClamAvProgram implements AvProgram {
         this.socketPort = socketPort;
         this.maxArraySize = maxArraySize;
 
-        final int socketCount = 4;
+        final int socketCount = 1;
         socketPool = new SocketPool(socketCount, socketHost, socketPort);
     }
 
