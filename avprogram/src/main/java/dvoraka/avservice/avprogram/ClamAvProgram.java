@@ -29,9 +29,7 @@ import java.util.Objects;
 @Component
 public class ClamAvProgram implements AvProgram {
 
-    private CachingService cachingService;
-
-    private static final Logger log = LogManager.getLogger(ClamAvProgram.class.getName());
+    private static final Logger log = LogManager.getLogger(ClamAvProgram.class);
 
     public static final String DEFAULT_HOST = "localhost";
     public static final int DEFAULT_PORT = 3310;
@@ -41,13 +39,14 @@ public class ClamAvProgram implements AvProgram {
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
+    private CachingService cachingService;
+    private volatile boolean caching;
+
     private final String socketHost;
     private final int socketPort;
     private final long maxArraySize;
 
-    private SocketPool socketPool;
-
-    private volatile boolean caching;
+    private final SocketPool socketPool;
 
 
     public ClamAvProgram() {
@@ -89,6 +88,8 @@ public class ClamAvProgram implements AvProgram {
      * @throws IOException
      */
     public String scanBytesNew(byte[] bytes) throws IOException {
+        Objects.requireNonNull(bytes);
+
         SocketPool.SocketWrapper socket = socketPool.getSocket();
         OutputStream outStream = socket.getOutputStream();
         BufferedReader in = socket.getBufferedReader();
