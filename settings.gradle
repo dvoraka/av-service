@@ -1,6 +1,7 @@
 include 'avprogram'
-include 'core'
 include 'common'
+include 'core'
 include 'database'
 include 'rest'
 include 'server'
+include 'stats'
