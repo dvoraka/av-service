@@ -16,6 +16,6 @@ class DummyMessageInfoServiceSpec extends Specification {
 
     def "message info should be null"() {
         expect:
-            infoService.getMessageInfo(null) == null
+            infoService.loadInfo(null) == null
     }
 }

@@ -1,1 +1,6 @@
 description = 'Statistics module'
+
+dependencies {
+    compile project(':common')
+    compile project(':database')
+}

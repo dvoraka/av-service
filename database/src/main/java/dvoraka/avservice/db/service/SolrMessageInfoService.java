@@ -10,10 +10,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * Solr message info service implementation.
@@ -72,7 +74,12 @@ public class SolrMessageInfoService implements MessageInfoService {
     }
 
     @Override
-    public MessageInfo getMessageInfo(String uuid) {
+    public MessageInfo loadInfo(String uuid) {
         return null;
+    }
+
+    @Override
+    public Stream<MessageInfo> loadInfoStream(Instant from, Instant to) {
+        return Stream.empty();
     }
 }

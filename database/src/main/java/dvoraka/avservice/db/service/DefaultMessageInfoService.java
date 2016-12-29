@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Date;
+import java.util.stream.Stream;
 
 /**
  * Default message info service implementation.
@@ -43,7 +45,12 @@ public class DefaultMessageInfoService implements MessageInfoService {
     }
 
     @Override
-    public MessageInfo getMessageInfo(String uuid) {
+    public MessageInfo loadInfo(String uuid) {
         return null;
+    }
+
+    @Override
+    public Stream<MessageInfo> loadInfoStream(Instant from, Instant to) {
+        return Stream.empty();
     }
 }

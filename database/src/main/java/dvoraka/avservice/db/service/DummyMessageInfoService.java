@@ -5,6 +5,9 @@ import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.model.MessageInfo;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.stream.Stream;
+
 /**
  * Dummy service implementation.
  */
@@ -17,7 +20,12 @@ public class DummyMessageInfoService implements MessageInfoService {
     }
 
     @Override
-    public MessageInfo getMessageInfo(String uuid) {
+    public MessageInfo loadInfo(String uuid) {
         return null;
+    }
+
+    @Override
+    public Stream<MessageInfo> loadInfoStream(Instant from, Instant to) {
+        return Stream.empty();
     }
 }
