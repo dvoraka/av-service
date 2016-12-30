@@ -241,7 +241,7 @@ subprojects {
         reportsDir = file("${project.rootDir}/reports/checkstyle/${project.name}")
         sourceSets = [sourceSets.main]
 
-        ignoreFailures = true // false
+        ignoreFailures = false
     }
 
     findbugs {
