@@ -111,7 +111,7 @@ subprojects {
         imports {
             mavenBom('io.spring.platform:platform-bom:Athens-SR1') {
                 // temporary BOM override for Spring 5
-                bomProperty 'spring.version', '5.0.0.M3'
+                bomProperty 'spring.version', '5.0.0.M4'
                 bomProperty 'spring-amqp.version', '2.0.0.M1'
                 bomProperty 'spring-data-releasetrain.version', 'Kay-M1'
 
