@@ -46,6 +46,14 @@ distributions {
 //    }
 }
 
+// Temporary overrides for BOMs
+ext['spring.version'] = '5.0.0.M4'
+ext['spring-data-releasetrain.version'] = 'Kay-M1'
+ext['spring-amqp.version'] = '2.0.0.M1'
+ext['spock.version'] = '1.1-groovy-2.4-rc-3'
+ext['guava.version'] = '18.0'
+ext['log4j2.version'] = '2.7'
+
 allprojects {
     ext {
         taskGroupName = 'AV-service'
@@ -128,18 +136,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('io.spring.platform:platform-bom:Athens-SR1') {
-                // temporary BOM override for Spring 5
-                bomProperty 'spring.version', '5.0.0.M4'
-                bomProperty 'spring-amqp.version', '2.0.0.M1'
-                bomProperty 'spring-data-releasetrain.version', 'Kay-M1'
-
-                // temporary override for compatibility
-                bomProperty 'guava.version', '18.0'
-//                bomProperty 'logback.version', '1.1.6'
-                bomProperty 'log4j2.version', '2.7'
-                bomProperty 'spock.version', '1.1-groovy-2.4-rc-3'
-            }
+            mavenBom('io.spring.platform:platform-bom:Athens-SR1')
         }
     }
 
@@ -174,7 +171,7 @@ subprojects {
         // JMS
 //        compile('org.springframework:spring-jms')
         compile("org.springframework.boot:spring-boot-starter-activemq")
-        compile('org.apache.activemq:activemq-broker')
+//        compile('org.apache.activemq:activemq-broker')
         // Data
 //        compile('org.springframework:spring-orm')
 //        compile('org.springframework.data:spring-data-jpa')
@@ -211,7 +208,7 @@ subprojects {
 //        testCompile('org.codehaus.groovy:groovy-all')
         // Spring test
 //        testCompile('org.springframework:spring-test')
-        compile 'org.springframework.boot:spring-boot-starter-test'
+        testCompile 'org.springframework.boot:spring-boot-starter-test'
 
         // Spock
         testCompile('org.spockframework:spock-core')
