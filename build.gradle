@@ -1,8 +1,22 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 plugins {
     // SonarQube
     id 'org.sonarqube' version '2.2.1'
     // Spring Boot and dependency management
-    id 'org.springframework.boot' version '1.4.3.RELEASE'
+//    id 'org.springframework.boot' version '2.0.0.'
 }
 
 apply plugin: 'distribution'
@@ -46,10 +60,10 @@ allprojects {
         equalsVerifierVersion = '2.1.7'
     }
 
-    springBoot {
-        // Main class will be in REST module
-        mainClass = ''
-    }
+//    springBoot {
+//        // Main class will be in REST module
+//        mainClass = 'dvoraka.avservice.rest.Application'
+//    }
 }
 
 subprojects {
@@ -122,7 +136,7 @@ subprojects {
 
                 // temporary override for compatibility
                 bomProperty 'guava.version', '18.0'
-                bomProperty 'logback.version', '1.1.6'
+//                bomProperty 'logback.version', '1.1.6'
                 bomProperty 'log4j2.version', '2.7'
                 bomProperty 'spock.version', '1.1-groovy-2.4-rc-3'
             }
@@ -138,9 +152,10 @@ subprojects {
         // Log4j to SLF4J
         compile("org.apache.logging.log4j:log4j-to-slf4j:${log4jVersion}")
         // JCL to SLF4J
-        compile('org.slf4j:jcl-over-slf4j')
+//        compile('org.slf4j:jcl-over-slf4j')
         // Logback
-        compile('ch.qos.logback:logback-classic')
+//        compile('ch.qos.logback:logback-classic')
+        compile('org.springframework.boot:spring-boot-starter-logging')
         // Logstash encoder
         compile("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
 
@@ -148,28 +163,33 @@ subprojects {
         // Spring
         //
         // core
-        compile('org.springframework:spring-core')
-        compile('org.springframework:spring-context')
+//        compile('org.springframework:spring-core')
+//        compile('org.springframework:spring-context')
         // AMQP
-        compile 'org.springframework.amqp:spring-rabbit'
+//        compile 'org.springframework.amqp:spring-rabbit'
+        compile('org.springframework.boot:spring-boot-starter-amqp')
+
         // Aspects
-        compile('org.springframework:spring-aspects')
+//        compile('org.springframework:spring-aspects')
         // JMS
-        compile('org.springframework:spring-jms')
+//        compile('org.springframework:spring-jms')
+        compile("org.springframework.boot:spring-boot-starter-activemq")
         compile('org.apache.activemq:activemq-broker')
         // Data
-        compile('org.springframework:spring-orm')
-        compile('org.springframework.data:spring-data-jpa')
-        compile('org.springframework.data:spring-data-solr')
+//        compile('org.springframework:spring-orm')
+//        compile('org.springframework.data:spring-data-jpa')
+//        compile('org.springframework.data:spring-data-solr')
+        compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+        compile 'org.springframework.boot:spring-boot-starter-data-solr'
         // Hibernate
-        compile('org.hibernate:hibernate-entitymanager')
+//        compile('org.hibernate:hibernate-entitymanager')
         // PostgreSQL
         compile('org.postgresql:postgresql')
         // MVC
-        compile('org.springframework:spring-webmvc')
+//        compile('org.springframework:spring-webmvc')
         // Security
-        compile('org.springframework.security:spring-security-config')
-        compile('org.springframework.security:spring-security-web')
+//        compile('org.springframework.security:spring-security-config')
+//        compile('org.springframework.security:spring-security-web')
 
         // Spring 5 deps
         compile group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
@@ -178,7 +198,7 @@ subprojects {
         compile("org.ehcache:ehcache")
 
         // Hibernate validator
-        compile('org.hibernate:hibernate-validator')
+//        compile('org.hibernate:hibernate-validator')
 
         // EL
         compile group: 'javax.el', name: 'javax.el-api'
@@ -188,9 +208,11 @@ subprojects {
         // Testing
         //
         // Groovy
-        testCompile('org.codehaus.groovy:groovy-all')
+//        testCompile('org.codehaus.groovy:groovy-all')
         // Spring test
-        testCompile('org.springframework:spring-test')
+//        testCompile('org.springframework:spring-test')
+        compile 'org.springframework.boot:spring-boot-starter-test'
+
         // Spock
         testCompile('org.spockframework:spock-core')
         testCompile('org.spockframework:spock-spring')
