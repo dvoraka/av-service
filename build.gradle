@@ -1,22 +1,22 @@
-buildscript {
-    ext {
-        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
-    }
-    repositories {
-        mavenCentral()
-        maven { url "https://repo.spring.io/snapshot" }
-        maven { url "https://repo.spring.io/milestone" }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
-}
+//buildscript {
+//    ext {
+//        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+//    }
+//    repositories {
+//        mavenCentral()
+//        maven { url "https://repo.spring.io/snapshot" }
+//        maven { url "https://repo.spring.io/milestone" }
+//    }
+//    dependencies {
+//        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//    }
+//}
 
 plugins {
     // SonarQube
     id 'org.sonarqube' version '2.2.1'
     // Spring Boot and dependency management
-//    id 'org.springframework.boot' version '2.0.0.'
+    id 'org.springframework.boot' version '1.4.3.RELEASE'
 }
 
 apply plugin: 'distribution'
@@ -68,10 +68,10 @@ allprojects {
         equalsVerifierVersion = '2.1.7'
     }
 
-//    springBoot {
-//        // Main class will be in REST module
-//        mainClass = 'dvoraka.avservice.rest.Application'
-//    }
+    springBoot {
+        // Main class will be in REST module
+        mainClass = 'dvoraka.avservice.rest.Application'
+    }
 }
 
 subprojects {
@@ -82,6 +82,7 @@ subprojects {
     apply plugin: 'pmd'
     apply plugin: 'jacoco'
     apply plugin: 'io.spring.dependency-management'
+//    apply plugin: 'org.springframework.boot'
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -136,7 +137,8 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('io.spring.platform:platform-bom:Athens-SR1')
+//            mavenBom('io.spring.platform:platform-bom:Athens-SR1')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.4.3.RELEASE')
         }
     }
 
