@@ -9,6 +9,7 @@ import dvoraka.avservice.rest.configuration.RestClientConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -16,6 +17,7 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [RestClientConfig.class])
 @ActiveProfiles("rest-client")
+@Ignore
 class RestServiceISpec extends Specification {
 
     @Autowired
