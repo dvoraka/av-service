@@ -144,8 +144,6 @@ subprojects {
         //
         // AMQP
         compile('org.springframework.boot:spring-boot-starter-amqp')
-        // AOP
-//        compile('org.springframework.boot:spring-boot-starter-aop')
         // JMS
         compile('org.springframework.boot:spring-boot-starter-activemq')
         // Data JPA & Hibernate
