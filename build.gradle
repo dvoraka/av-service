@@ -32,6 +32,14 @@ distributions {
 //    }
 }
 
+// Temporary overrides for BOMs
+ext['spring.version'] = '5.0.0.M4'
+ext['spring-data-releasetrain.version'] = 'Kay-M1'
+ext['spring-amqp.version'] = '2.0.0.M1'
+ext['spock.version'] = '1.1-groovy-2.4-rc-3'
+ext['guava.version'] = '18.0'
+ext['log4j2.version'] = '2.7'
+
 allprojects {
     ext {
         taskGroupName = 'AV-service'
@@ -47,8 +55,7 @@ allprojects {
     }
 
     springBoot {
-        // Main class will be in REST module
-        mainClass = ''
+        mainClass = 'dvoraka.avservice.rest.Application'
     }
 }
 
@@ -114,18 +121,8 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('io.spring.platform:platform-bom:Athens-SR1') {
-                // temporary BOM override for Spring 5
-                bomProperty 'spring.version', '5.0.0.M4'
-                bomProperty 'spring-amqp.version', '2.0.0.M1'
-                bomProperty 'spring-data-releasetrain.version', 'Kay-M1'
-
-                // temporary override for compatibility
-                bomProperty 'guava.version', '18.0'
-                bomProperty 'logback.version', '1.1.6'
-                bomProperty 'log4j2.version', '2.7'
-                bomProperty 'spock.version', '1.1-groovy-2.4-rc-3'
-            }
+//            mavenBom('io.spring.platform:platform-bom:Athens-SR1')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.4.3.RELEASE')
         }
     }
 
@@ -137,39 +134,29 @@ subprojects {
         compile('org.apache.logging.log4j:log4j-api')
         // Log4j to SLF4J
         compile("org.apache.logging.log4j:log4j-to-slf4j:${log4jVersion}")
-        // JCL to SLF4J
-        compile('org.slf4j:jcl-over-slf4j')
-        // Logback
-        compile('ch.qos.logback:logback-classic')
+        // JCL to SLF4J & Logback
+        compile('org.springframework.boot:spring-boot-starter-logging')
         // Logstash encoder
         compile("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
 
         //
         // Spring
         //
-        // core
-        compile('org.springframework:spring-core')
-        compile('org.springframework:spring-context')
         // AMQP
-        compile 'org.springframework.amqp:spring-rabbit'
-        // Aspects
-        compile('org.springframework:spring-aspects')
+        compile('org.springframework.boot:spring-boot-starter-amqp')
+        // AOP
+//        compile('org.springframework.boot:spring-boot-starter-aop')
         // JMS
-        compile('org.springframework:spring-jms')
-        compile('org.apache.activemq:activemq-broker')
-        // Data
-        compile('org.springframework:spring-orm')
-        compile('org.springframework.data:spring-data-jpa')
-        compile('org.springframework.data:spring-data-solr')
-        // Hibernate
-        compile('org.hibernate:hibernate-entitymanager')
+        compile('org.springframework.boot:spring-boot-starter-activemq')
+        // Data JPA & Hibernate
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        // Solr
+        compile('org.springframework.boot:spring-boot-starter-data-solr')
         // PostgreSQL
         compile('org.postgresql:postgresql')
-        // MVC
-        compile('org.springframework:spring-webmvc')
-        // Security
-        compile('org.springframework.security:spring-security-config')
-        compile('org.springframework.security:spring-security-web')
+
+        // MVC & Security
+        // Moved to REST module
 
         // Spring 5 deps
         compile group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
@@ -178,7 +165,7 @@ subprojects {
         compile("org.ehcache:ehcache")
 
         // Hibernate validator
-        compile('org.hibernate:hibernate-validator')
+//        compile('org.hibernate:hibernate-validator')
 
         // EL
         compile group: 'javax.el', name: 'javax.el-api'
@@ -187,10 +174,11 @@ subprojects {
         //
         // Testing
         //
-        // Groovy
-        testCompile('org.codehaus.groovy:groovy-all')
-        // Spring test
-        testCompile('org.springframework:spring-test')
+        testCompile('org.springframework.boot:spring-boot-starter-test') {
+            exclude module: 'assertj-core'
+            exclude module: 'jsonassert'
+            exclude module: 'json-path'
+        }
         // Spock
         testCompile('org.spockframework:spock-core')
         testCompile('org.spockframework:spock-spring')
