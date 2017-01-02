@@ -134,8 +134,7 @@ subprojects {
         compile('org.apache.logging.log4j:log4j-api')
         // Log4j to SLF4J
         compile("org.apache.logging.log4j:log4j-to-slf4j:${log4jVersion}")
-        // JCL to SLF4J
-        // Logback
+        // JCL to SLF4J & Logback
         compile('org.springframework.boot:spring-boot-starter-logging')
         // Logstash encoder
         compile("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
@@ -145,15 +144,14 @@ subprojects {
         //
         // AMQP
         compile('org.springframework.boot:spring-boot-starter-amqp')
-        // Aspects
-//        compile('org.springframework:spring-aspects')
+        // AOP
+//        compile('org.springframework.boot:spring-boot-starter-aop')
         // JMS
-        compile("org.springframework.boot:spring-boot-starter-activemq")
-        // Data
-        compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-        compile 'org.springframework.boot:spring-boot-starter-data-solr'
-        // Hibernate
-//        compile('org.hibernate:hibernate-entitymanager')
+        compile('org.springframework.boot:spring-boot-starter-activemq')
+        // Data JPA & Hibernate
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        // Solr
+        compile('org.springframework.boot:spring-boot-starter-data-solr')
         // PostgreSQL
         compile('org.postgresql:postgresql')
 
@@ -176,10 +174,11 @@ subprojects {
         //
         // Testing
         //
-        // Groovy
-        // Spring test
-        testCompile 'org.springframework.boot:spring-boot-starter-test'
-
+        testCompile('org.springframework.boot:spring-boot-starter-test') {
+            exclude module: 'assertj-core'
+            exclude module: 'jsonassert'
+            exclude module: 'json-path'
+        }
         // Spock
         testCompile('org.spockframework:spock-core')
         testCompile('org.spockframework:spock-spring')
