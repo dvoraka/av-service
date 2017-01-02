@@ -1,7 +1,3 @@
-plugins {
-//    id "org.akhikhl.gretty" version "1.4.0"
-}
-//apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 
 description = 'REST components'
@@ -12,22 +8,9 @@ dependencies {
 
     compile 'org.springframework.boot:spring-boot-starter'
     compile 'org.springframework.boot:spring-boot-starter-web'
-//    compile 'org.springframework.boot:spring-boot-starter-tomcat'
     compile 'org.springframework.boot:spring-boot-starter-security'
 }
 
 springBoot {
     mainClass = 'dvoraka.avservice.rest.Application'
 }
-
-//gretty {
-////    jvmArgs = ['-Dspring.profiles.active=rest,database']
-//    integrationTestTask = 'integrationTest'
-//    springBoot = true
-//    springBootVersion = '2.0.0.BUILD-SNAPSHOT'
-////    servletContainer = 'tomcat8'
-//    contextPath = 'av-service'
-////    loggingLevel = 'DEBUG'
-//    fileLogEnabled = false
-//    consoleLogEnabled = false
-//}
