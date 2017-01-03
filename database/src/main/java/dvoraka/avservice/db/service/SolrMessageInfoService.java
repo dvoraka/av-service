@@ -14,7 +14,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -80,6 +82,22 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     @Override
     public Stream<MessageInfo> loadInfoStream(Instant from, Instant to) {
-        return Stream.empty();
+
+        List<MessageInfoDocument> infoDocuments = messageInfoRepository.findByCreatedBetween(
+                Date.from(from),
+                Date.from(to));
+
+        return infoDocuments.stream()
+                .map(this::toMessageInfo)
+                .collect(Collectors.toList())
+                .stream();
+    }
+
+    private MessageInfo toMessageInfo(MessageInfoDocument document) {
+        return null;
+    }
+
+    private MessageInfoDocument fromMessageInfo(MessageInfo info) {
+        return null;
     }
 }

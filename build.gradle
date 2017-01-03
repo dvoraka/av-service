@@ -159,11 +159,11 @@ subprojects {
         // Spring 5 deps
         compile group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
 
+        // Joda time (for Spring Solr)
+        compile group: 'joda-time', name: 'joda-time'
+
         // Ehcache
         compile("org.ehcache:ehcache")
-
-        // Hibernate validator
-//        compile('org.hibernate:hibernate-validator')
 
         // EL
         compile group: 'javax.el', name: 'javax.el-api'
