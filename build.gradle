@@ -6,6 +6,7 @@ plugins {
 }
 
 apply plugin: 'distribution'
+apply plugin: 'idea'
 
 description = 'Project for anti-virus service'
 
@@ -117,6 +118,14 @@ subprojects {
         // PT
         performanceTestCompile.extendsFrom testCompile
         performanceTestRuntime.extendsFrom testRuntime
+    }
+
+    idea {
+        module {
+            // add integration test source dirs to IDEA
+            testSourceDirs += file('src/integration-test')
+            scopes.TEST.plus += [configurations.integrationTestCompile]
+        }
     }
 
     dependencyManagement {
