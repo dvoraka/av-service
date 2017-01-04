@@ -10,6 +10,9 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
+import java.time.Instant
+import java.util.stream.Stream
+
 /**
  * Service test.
  */
@@ -30,7 +33,7 @@ class SolrMessageInfoServiceISpec extends Specification {
     }
 
     def "save message and then load info"() {
-        setup:
+        given:
             AvMessage message = Utils.genNormalMessage()
 
         expect:
@@ -43,5 +46,30 @@ class SolrMessageInfoServiceISpec extends Specification {
             messageInfo
             messageInfo.getSource() == AvMessageSource.TEST
             messageInfo.getServiceId() == Utils.SERVICE_TEST_ID
+    }
+
+    def "save messages and then load info stream"() {
+        given:
+            AvMessage message = Utils.genNormalMessage()
+            int count = 5
+            Instant start = Instant.now()
+
+        expect:
+            count.times {
+                service.save(message, AvMessageSource.TEST, Utils.SERVICE_TEST_ID)
+            }
+
+        when:
+            Instant afterSave = Instant.now()
+            Stream<AvMessageInfo> infoStream = service.loadInfoStream(
+                    start,
+                    afterSave
+            )
+
+        then:
+            infoStream
+                    .filter { info -> info.getId() == message.getId() }
+                    .filter { info -> info.getCreated().isAfter(start) && info.getCreated().isBefore(afterSave) }
+                    .count() == count
     }
 }

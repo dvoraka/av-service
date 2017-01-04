@@ -30,6 +30,8 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     private final SolrMessageInfoRepository messageInfoRepository;
 
+    // batching
+    private boolean batching;
     private Collection<MessageInfoDocument> documents = new ArrayList<>();
     private int batchSize = DEFAULT_BATCH_SIZE;
     //    private long commitEveryMs = 10_000L;
@@ -49,8 +51,11 @@ public class SolrMessageInfoService implements MessageInfoService {
         MessageInfoDocument messageInfoDocument =
                 toMessageInfoDocument(message, source, serviceId);
 
-//        save(messageInfoDocument);
-        messageInfoRepository.save(messageInfoDocument);
+        if (batching) {
+            save(messageInfoDocument);
+        } else {
+            messageInfoRepository.save(messageInfoDocument);
+        }
     }
 
     /**
