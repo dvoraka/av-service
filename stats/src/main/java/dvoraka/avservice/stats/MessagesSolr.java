@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.stream.Stream;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Solr messages implementation.
  */
@@ -19,7 +21,7 @@ public class MessagesSolr implements Messages {
 
     @Autowired
     public MessagesSolr(MessageInfoService messageService) {
-        this.messageService = messageService;
+        this.messageService = requireNonNull(messageService);
     }
 
     @Override
