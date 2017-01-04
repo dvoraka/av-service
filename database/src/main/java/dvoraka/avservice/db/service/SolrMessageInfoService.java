@@ -49,9 +49,15 @@ public class SolrMessageInfoService implements MessageInfoService {
         MessageInfoDocument messageInfoDocument =
                 toMessageInfoDocument(message, source, serviceId);
 
-        save(messageInfoDocument);
+//        save(messageInfoDocument);
+        messageInfoRepository.save(messageInfoDocument);
     }
 
+    /**
+     * Save a document in a batch and then save it later at once.
+     *
+     * @param document the document to save in the batch
+     */
     private synchronized void save(MessageInfoDocument document) {
         if (docsInCollection == batchSize) {
 
@@ -71,7 +77,9 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     @Override
     public AvMessageInfo loadInfo(String uuid) {
-        return null;
+        MessageInfoDocument document = messageInfoRepository.findByUuid(uuid);
+
+        return document.avMessageInfo();
     }
 
     @Override
@@ -81,7 +89,7 @@ public class SolrMessageInfoService implements MessageInfoService {
                 Date.from(to));
 
         return infoDocuments.stream()
-                .map(MessageInfoDocument::messageInfo);
+                .map(MessageInfoDocument::avMessageInfo);
     }
 
     private MessageInfoDocument toMessageInfoDocument(

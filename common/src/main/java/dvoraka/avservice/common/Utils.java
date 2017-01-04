@@ -15,6 +15,7 @@ public final class Utils {
     public static final String EICAR =
             "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
     public static final String SERVICE_ID = "UTILS-SERVICE";
+    public static final String SERVICE_TEST_ID = "TEST-SERVICE";
     public static final String OK_VIRUS_INFO = "stream: OK";
 
 

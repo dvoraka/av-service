@@ -1,9 +1,11 @@
 package dvoraka.avservice.db.model;
 
 import dvoraka.avservice.common.data.AvMessageInfo;
+import dvoraka.avservice.common.data.AvMessageSource;
 import org.apache.solr.client.solrj.beans.Field;
 
 import javax.persistence.Id;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -64,7 +66,27 @@ public class MessageInfoDocument {
         this.created = new Date(created.getTime());
     }
 
-    public AvMessageInfo messageInfo() {
-        return null;
+    public AvMessageInfo avMessageInfo() {
+        return new AvMessageInfo() {
+            @Override
+            public String getId() {
+                return getUuid();
+            }
+
+            @Override
+            public AvMessageSource getSource() {
+                return AvMessageSource.valueOf(MessageInfoDocument.this.getSource());
+            }
+
+            @Override
+            public String getServiceId() {
+                return MessageInfoDocument.this.getServiceId();
+            }
+
+            @Override
+            public Instant getCreated() {
+                return MessageInfoDocument.this.getCreated().toInstant();
+            }
+        };
     }
 }

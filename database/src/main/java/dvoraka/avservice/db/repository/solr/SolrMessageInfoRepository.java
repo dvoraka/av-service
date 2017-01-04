@@ -16,4 +16,6 @@ public interface SolrMessageInfoRepository extends
         SolrMessageInfoRepositoryCustom {
 
     List<MessageInfoDocument> findByCreatedBetween(Date from, Date to);
+
+    MessageInfoDocument findByUuid(String uuid);
 }
