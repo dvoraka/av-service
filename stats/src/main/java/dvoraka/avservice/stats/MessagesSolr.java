@@ -1,6 +1,6 @@
 package dvoraka.avservice.stats;
 
-import dvoraka.avservice.db.model.MessageInfo;
+import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.db.service.MessageInfoService;
 
 import java.time.Instant;
@@ -19,7 +19,7 @@ public class MessagesSolr implements Messages {
     }
 
     @Override
-    public Stream<MessageInfo> when(Instant from, Instant to) {
+    public Stream<AvMessageInfo> when(Instant from, Instant to) {
         return messageService.loadInfoStream(from, to);
     }
 }

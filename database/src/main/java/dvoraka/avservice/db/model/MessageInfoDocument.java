@@ -1,5 +1,6 @@
 package dvoraka.avservice.db.model;
 
+import dvoraka.avservice.common.data.AvMessageInfo;
 import org.apache.solr.client.solrj.beans.Field;
 
 import javax.persistence.Id;
@@ -61,5 +62,9 @@ public class MessageInfoDocument {
 
     public void setCreated(Date created) {
         this.created = new Date(created.getTime());
+    }
+
+    public AvMessageInfo messageInfo() {
+        return null;
     }
 }

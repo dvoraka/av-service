@@ -1,8 +1,8 @@
 package dvoraka.avservice.db.service;
 
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
-import dvoraka.avservice.db.model.MessageInfo;
 
 import java.time.Instant;
 import java.util.stream.Stream;
@@ -27,7 +27,7 @@ public interface MessageInfoService {
      * @param uuid the AV message UUID string
      * @return the AV message info
      */
-    MessageInfo loadInfo(String uuid);
+    AvMessageInfo loadInfo(String uuid);
 
     /**
      * Loads a stream of a message info for a given time window.
@@ -36,5 +36,5 @@ public interface MessageInfoService {
      * @param to   the end time
      * @return the stream of the message info
      */
-    Stream<MessageInfo> loadInfoStream(Instant from, Instant to);
+    Stream<AvMessageInfo> loadInfoStream(Instant from, Instant to);
 }

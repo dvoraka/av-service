@@ -1,6 +1,7 @@
 package dvoraka.avservice.db.service;
 
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.model.MessageInfo;
 import dvoraka.avservice.db.repository.MessageInfoRepository;
@@ -45,12 +46,12 @@ public class DefaultMessageInfoService implements MessageInfoService {
     }
 
     @Override
-    public MessageInfo loadInfo(String uuid) {
+    public AvMessageInfo loadInfo(String uuid) {
         return null;
     }
 
     @Override
-    public Stream<MessageInfo> loadInfoStream(Instant from, Instant to) {
+    public Stream<AvMessageInfo> loadInfoStream(Instant from, Instant to) {
         return Stream.empty();
     }
 }

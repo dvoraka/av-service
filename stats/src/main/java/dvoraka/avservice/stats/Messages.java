@@ -1,6 +1,6 @@
 package dvoraka.avservice.stats;
 
-import dvoraka.avservice.db.model.MessageInfo;
+import dvoraka.avservice.common.data.AvMessageInfo;
 
 import java.time.Instant;
 import java.util.stream.Stream;
@@ -10,5 +10,5 @@ import java.util.stream.Stream;
  */
 public interface Messages {
 
-    Stream<MessageInfo> when(Instant from, Instant to);
+    Stream<AvMessageInfo> when(Instant from, Instant to);
 }
