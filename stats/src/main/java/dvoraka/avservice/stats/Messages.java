@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.stream.Stream;
 
 /**
- * Interface for working with message statistics.
+ * Interface for working with AV message statistics.
  */
 public interface Messages {
 

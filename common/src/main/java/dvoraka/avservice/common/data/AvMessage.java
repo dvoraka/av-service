@@ -14,7 +14,6 @@ package dvoraka.avservice.common.data;
  * <li>virusInfo - info about infection</li>
  * </ul>
  */
-@SuppressWarnings("checkstyle:MagicNumber")
 public interface AvMessage {
 
     String getId();

@@ -3,7 +3,6 @@ package dvoraka.avservice.db.service;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
-import dvoraka.avservice.db.model.MessageInfo;
 import dvoraka.avservice.db.model.MessageInfoDocument;
 import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;
@@ -20,13 +19,12 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 /**
- * Solr message info service implementation.
+ * Solr AV message info service implementation.
  */
 @Service
 public class SolrMessageInfoService implements MessageInfoService {
 
-    private static final Logger log =
-            LogManager.getLogger(SolrMessageInfoService.class.getName());
+    private static final Logger log = LogManager.getLogger(SolrMessageInfoService.class);
 
     private static final int DEFAULT_BATCH_SIZE = 199;
 
@@ -48,12 +46,8 @@ public class SolrMessageInfoService implements MessageInfoService {
     public void save(AvMessage message, AvMessageSource source, String serviceId) {
         log.debug("Saving: " + message.getId());
 
-        MessageInfoDocument messageInfoDocument = new MessageInfoDocument();
-        messageInfoDocument.setId(UUID.randomUUID().toString());
-        messageInfoDocument.setUuid(message.getId());
-        messageInfoDocument.setSource(source.toString());
-        messageInfoDocument.setServiceId(serviceId);
-        messageInfoDocument.setCreated(new Date());
+        MessageInfoDocument messageInfoDocument =
+                toMessageInfoDocument(message, source, serviceId);
 
         save(messageInfoDocument);
     }
@@ -82,7 +76,6 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     @Override
     public Stream<AvMessageInfo> loadInfoStream(Instant from, Instant to) {
-
         List<MessageInfoDocument> infoDocuments = messageInfoRepository.findByCreatedBetween(
                 Date.from(from),
                 Date.from(to));
@@ -91,11 +84,18 @@ public class SolrMessageInfoService implements MessageInfoService {
                 .map(MessageInfoDocument::messageInfo);
     }
 
-    private MessageInfo toMessageInfo(MessageInfoDocument document) {
-        return null;
-    }
+    private MessageInfoDocument toMessageInfoDocument(
+            AvMessage message,
+            AvMessageSource source,
+            String serviceId
+    ) {
+        MessageInfoDocument messageInfoDocument = new MessageInfoDocument();
+        messageInfoDocument.setId(UUID.randomUUID().toString());
+        messageInfoDocument.setUuid(message.getId());
+        messageInfoDocument.setSource(source.toString());
+        messageInfoDocument.setServiceId(serviceId);
+        messageInfoDocument.setCreated(new Date());
 
-    private MessageInfoDocument fromMessageInfo(MessageInfo info) {
-        return null;
+        return messageInfoDocument;
     }
 }
