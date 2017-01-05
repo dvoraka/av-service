@@ -8,6 +8,7 @@ import dvoraka.avservice.rest.service.DefaultRestService;
 import dvoraka.avservice.rest.service.RestService;
 import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
 import dvoraka.avservice.server.configuration.jms.JmsConfig;
+import dvoraka.avservice.stats.StatsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -42,13 +43,18 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
+    public StatsService statsService() {
+        return null;
+    }
+
+    @Bean
     public AvController avController(RestService restService) {
         return new AvController(restService);
     }
 
     @Bean
-    public AvStatsController avStatsController() {
-        return new AvStatsController();
+    public AvStatsController avStatsController(StatsService statsService) {
+        return new AvStatsController(statsService);
     }
 
     @Bean

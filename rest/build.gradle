@@ -5,6 +5,7 @@ description = 'REST components'
 dependencies {
     compile project(':common')
     compile project(':server')
+    compile project(':stats')
 
     compile('org.springframework.boot:spring-boot-starter')
     compile('org.springframework.boot:spring-boot-starter-web') {
