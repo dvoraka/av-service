@@ -27,15 +27,15 @@ import javax.validation.ConstraintViolationException;
  * AV REST controller.
  */
 @RestController
-public class AvRestController {
+public class AvController {
 
     private final RestService restService;
 
-    private static final Logger log = LogManager.getLogger(AvRestController.class);
+    private static final Logger log = LogManager.getLogger(AvController.class);
 
 
     @Autowired
-    public AvRestController(RestService restService) {
+    public AvController(RestService restService) {
         this.restService = restService;
     }
 

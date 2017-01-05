@@ -2,7 +2,8 @@ package dvoraka.avservice.rest.configuration;
 
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.rest.RestStrategy;
-import dvoraka.avservice.rest.controller.AvRestController;
+import dvoraka.avservice.rest.controller.AvController;
+import dvoraka.avservice.rest.controller.AvStatsController;
 import dvoraka.avservice.rest.service.DefaultRestService;
 import dvoraka.avservice.rest.service.RestService;
 import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
@@ -41,8 +42,13 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public AvRestController avController(RestService restService) {
-        return new AvRestController(restService);
+    public AvController avController(RestService restService) {
+        return new AvController(restService);
+    }
+
+    @Bean
+    public AvStatsController avStatsController() {
+        return new AvStatsController();
     }
 
     @Bean
