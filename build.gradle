@@ -131,7 +131,8 @@ subprojects {
     dependencyManagement {
         imports {
 //            mavenBom('io.spring.platform:platform-bom:Athens-SR1')
-            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.4.3.RELEASE')
+//            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.4.3.RELEASE')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.5.0.RC1')
         }
     }
 
@@ -314,5 +315,5 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '3.3'
 }
