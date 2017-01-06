@@ -2,10 +2,8 @@ package dvoraka.avservice.stats.configuration;
 
 import dvoraka.avservice.db.configuration.SolrConfig;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.stats.DefaultStatsService;
 import dvoraka.avservice.stats.Messages;
 import dvoraka.avservice.stats.MessagesSolr;
-import dvoraka.avservice.stats.StatsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -22,10 +20,5 @@ public class StatsSolrConfig {
     @Bean
     public Messages messages(MessageInfoService messageInfoService) {
         return new MessagesSolr(messageInfoService);
-    }
-
-    @Bean
-    public StatsService statsService(Messages messages) {
-        return new DefaultStatsService(messages);
     }
 }
