@@ -6,8 +6,6 @@ import dvoraka.avservice.rest.controller.AvController;
 import dvoraka.avservice.rest.controller.AvStatsController;
 import dvoraka.avservice.rest.service.DefaultRestService;
 import dvoraka.avservice.rest.service.RestService;
-import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
-import dvoraka.avservice.server.configuration.jms.JmsConfig;
 import dvoraka.avservice.stats.StatsService;
 import dvoraka.avservice.stats.configuration.StatsConfig;
 import org.springframework.context.annotation.Bean;
@@ -28,13 +26,8 @@ import javax.validation.Validator;
 @Configuration
 @Profile("rest")
 @Import({
-        RestLocalConfig.class,
-        RestAmqpConfig.class,
-        RestJmsConfig.class,
-        RestSecurityConfig.class,
+        RestConfig.class,
         ServiceConfig.class,
-        AmqpConfig.class,
-        JmsConfig.class,
         StatsConfig.class
 })
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
