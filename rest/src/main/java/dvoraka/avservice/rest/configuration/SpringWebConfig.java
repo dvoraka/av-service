@@ -3,12 +3,10 @@ package dvoraka.avservice.rest.configuration;
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.rest.RestStrategy;
 import dvoraka.avservice.rest.controller.AvController;
-import dvoraka.avservice.rest.controller.AvStatsController;
 import dvoraka.avservice.rest.service.DefaultRestService;
 import dvoraka.avservice.rest.service.RestService;
 import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
 import dvoraka.avservice.server.configuration.jms.JmsConfig;
-import dvoraka.avservice.stats.StatsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -33,7 +31,9 @@ import javax.validation.Validator;
         RestSecurityConfig.class,
         ServiceConfig.class,
         AmqpConfig.class,
-        JmsConfig.class
+        JmsConfig.class,
+        // StatsConfig later
+//        StatsSolrConfig.class
 })
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
@@ -43,19 +43,14 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public StatsService statsService() {
-        return null;
-    }
-
-    @Bean
     public AvController avController(RestService restService) {
         return new AvController(restService);
     }
 
-    @Bean
-    public AvStatsController avStatsController(StatsService statsService) {
-        return new AvStatsController(statsService);
-    }
+//    @Bean
+//    public AvStatsController avStatsController(StatsService statsService) {
+//        return new AvStatsController(statsService);
+//    }
 
     @Bean
     public Validator validator() {
