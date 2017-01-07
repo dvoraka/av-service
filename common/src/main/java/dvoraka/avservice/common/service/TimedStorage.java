@@ -27,10 +27,12 @@ public class TimedStorage<T> {
 
     private static final Logger log = LogManager.getLogger(TimedStorage.class);
 
-    private static final long MAX_TIME = 60_000;
+    /**
+     * Default maximum time in milliseconds.
+     */
+    public static final long MAX_TIME = 60_000;
     @SuppressWarnings("checkstyle:ConstantName")
     private static final AtomicLong storageNumber = new AtomicLong();
-
     /**
      * Maximum time in milliseconds.
      */
@@ -38,6 +40,7 @@ public class TimedStorage<T> {
     private volatile boolean running;
     private final ConcurrentHashMap<T, Long> storage;
     private final ExecutorService executorService;
+
 
     public TimedStorage() {
         this(MAX_TIME);
@@ -85,6 +88,10 @@ public class TimedStorage<T> {
 
     public long size() {
         return storage.size();
+    }
+
+    public long getMaxTime() {
+        return maxTime;
     }
 
     @PreDestroy

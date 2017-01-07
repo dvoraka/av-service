@@ -21,6 +21,18 @@ class TimedStorageSpec extends Specification {
         conditions = new PollingConditions(timeout: 3)
     }
 
+    def cleanup() {
+        storage.stop()
+    }
+
+    def "constructor without parameter"() {
+        given:
+            storage = new TimedStorage<>()
+
+        expect:
+            storage.getMaxTime() == TimedStorage.MAX_TIME
+    }
+
     def "insert data"() {
         when:
             long size = storage.size()
