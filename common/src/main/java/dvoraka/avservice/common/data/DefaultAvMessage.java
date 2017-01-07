@@ -7,7 +7,8 @@ import dvoraka.avservice.common.Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Default AV message implementation.
@@ -150,7 +151,7 @@ public final class DefaultAvMessage implements AvMessage {
 
 
         public Builder(@JsonProperty("id") String id) {
-            this.id = Objects.requireNonNull(id, "ID must not be null!");
+            this.id = requireNonNull(id);
         }
 
         public Builder correlationId(String id) {

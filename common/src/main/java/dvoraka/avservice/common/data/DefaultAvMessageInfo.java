@@ -2,6 +2,8 @@ package dvoraka.avservice.common.data;
 
 import java.time.Instant;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Default AV message info implementation.
  */
@@ -49,7 +51,7 @@ public final class DefaultAvMessageInfo implements AvMessageInfo {
 
 
         public Builder(String id) {
-            this.id = id;
+            this.id = requireNonNull(id);
         }
 
         public Builder source(AvMessageSource source) {
