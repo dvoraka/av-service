@@ -6,10 +6,9 @@ import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.exception.MapperException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
+import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 import spock.lang.Subject
-
-import java.nio.charset.StandardCharsets
 
 /**
  * AvMessage mapper test.
@@ -156,6 +155,26 @@ class AvMessageMapperSpec extends Specification {
             notThrown(MapperException)
     }
 
+    def "AMQP Message -> AvMessage, message ID, type and correlation ID"() {
+        given:
+            MessageProperties props = new MessageProperties()
+
+            // PROPERTIES
+            props.setMessageId(testId)
+            props.setType(AvMessageType.REQUEST.toString())
+            props.setCorrelationId(testCorrId)
+            // HEADERS
+            // BODY
+
+            Message message = new Message(null, props)
+
+        when:
+            mapper.transform(message)
+
+        then:
+            notThrown(MapperException)
+    }
+
     def "AMQP Message -> AvMessage, with bad message type"() {
         given:
             MessageProperties props = new MessageProperties()
@@ -208,5 +227,31 @@ class AvMessageMapperSpec extends Specification {
             headers.get(AvMessageMapper.VIRUS_INFO_KEY) == testVirusInfo
 
             message.getBody().length == dataSize
+    }
+
+    def "AvMessage -> AMQP Message, v1, without message type"() {
+        given:
+            AvMessage avMessage = new DefaultAvMessage.Builder(testId)
+                    .build()
+
+        when:
+            mapper.transform(avMessage)
+
+        then:
+            thrown(MapperException)
+    }
+
+    def "AvMessage -> AMQP Message, v1, without message ID"() {
+
+        given: "normally it's not possible to build a message without ID"
+            AvMessage avMessage = new DefaultAvMessage.Builder(testId)
+                    .build()
+            ReflectionTestUtils.setField(avMessage, "id", null, null)
+
+        when:
+            mapper.transform(avMessage)
+
+        then:
+            thrown(MapperException)
     }
 }
