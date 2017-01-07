@@ -1,10 +1,13 @@
 package dvoraka.avservice.common;
 
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageInfo;
+import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -43,5 +46,53 @@ public final class Utils {
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
                 .type(AvMessageType.REQUEST)
                 .build();
+    }
+
+    public static AvMessageInfo genTestAvMessageInfo() {
+        return new AvMessageInfo() {
+            @Override
+            public String getId() {
+                return genUuidString();
+            }
+
+            @Override
+            public AvMessageSource getSource() {
+                return AvMessageSource.TEST;
+            }
+
+            @Override
+            public String getServiceId() {
+                return SERVICE_TEST_ID;
+            }
+
+            @Override
+            public Instant getCreated() {
+                return Instant.now();
+            }
+        };
+    }
+
+    public static AvMessageInfo genAvMessageInfo() {
+        return new AvMessageInfo() {
+            @Override
+            public String getId() {
+                return genUuidString();
+            }
+
+            @Override
+            public AvMessageSource getSource() {
+                return AvMessageSource.PROCESSOR;
+            }
+
+            @Override
+            public String getServiceId() {
+                return SERVICE_TEST_ID;
+            }
+
+            @Override
+            public Instant getCreated() {
+                return Instant.now();
+            }
+        };
     }
 }
