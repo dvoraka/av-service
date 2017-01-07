@@ -140,12 +140,14 @@ public final class DefaultAvMessage implements AvMessage {
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
+
         private String id;
         private String correlationId;
         private byte[] data;
         private AvMessageType type;
         private String serviceId;
         private String virusInfo;
+
 
         public Builder(@JsonProperty("id") String id) {
             this.id = Objects.requireNonNull(id, "ID must not be null!");

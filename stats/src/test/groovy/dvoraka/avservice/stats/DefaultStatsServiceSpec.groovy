@@ -2,6 +2,7 @@ package dvoraka.avservice.stats
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessageInfo
+import dvoraka.avservice.common.data.AvMessageSource
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -27,7 +28,7 @@ class DefaultStatsServiceSpec extends Specification {
         given:
             long count = 5
             Stream<AvMessageInfo> infoStream = Stream
-                    .generate({ Utils.genAvMessageInfo() })
+                    .generate({ Utils.genAvMessageInfo(AvMessageSource.PROCESSOR) })
                     .limit(count)
 
             messages.when(_, _) >> infoStream

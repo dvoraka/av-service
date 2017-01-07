@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
+import dvoraka.avservice.common.data.DefaultAvMessageInfo;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -48,51 +49,11 @@ public final class Utils {
                 .build();
     }
 
-    public static AvMessageInfo genTestAvMessageInfo() {
-        return new AvMessageInfo() {
-            @Override
-            public String getId() {
-                return genUuidString();
-            }
-
-            @Override
-            public AvMessageSource getSource() {
-                return AvMessageSource.TEST;
-            }
-
-            @Override
-            public String getServiceId() {
-                return SERVICE_TEST_ID;
-            }
-
-            @Override
-            public Instant getCreated() {
-                return Instant.now();
-            }
-        };
-    }
-
-    public static AvMessageInfo genAvMessageInfo() {
-        return new AvMessageInfo() {
-            @Override
-            public String getId() {
-                return genUuidString();
-            }
-
-            @Override
-            public AvMessageSource getSource() {
-                return AvMessageSource.PROCESSOR;
-            }
-
-            @Override
-            public String getServiceId() {
-                return SERVICE_TEST_ID;
-            }
-
-            @Override
-            public Instant getCreated() {
-                return Instant.now();
-            }
-        };
+    public static AvMessageInfo genAvMessageInfo(AvMessageSource source) {
+        return new DefaultAvMessageInfo.Builder(genUuidString())
+                .source(source)
+                .serviceId(SERVICE_TEST_ID)
+                .created(Instant.now())
+                .build();
     }
 }
