@@ -17,6 +17,8 @@ import java.util.stream.Stream;
 
 /**
  * Socket pool prototype.
+ *
+ * Current class is a mix of ClamAvSocketPool and abstract BaseSocketPool.
  */
 public class SocketPool {
 
@@ -29,6 +31,7 @@ public class SocketPool {
     private BlockingQueue<SocketWrapper> availableSocketWrappers;
 
 
+    // TODO: add connection factory
     public SocketPool(int socketCount, String host, int port) {
         this.host = host;
         this.port = port;
@@ -62,6 +65,10 @@ public class SocketPool {
      */
     public void returnSocket(SocketWrapper socket) {
         availableSocketWrappers.add(socket);
+    }
+
+    public int availableSockets() {
+        return availableSocketWrappers.size();
     }
 
     public String getHost() {
