@@ -41,7 +41,7 @@ class SpringWebInitializerSpec extends Specification {
             webInitializer.getServletMappings()
     }
 
-    def "onStartup"() {
+    def "onStartup without profiles"() {
         given:
             ServletContext servletContext = Mock()
             servletContext.addServlet((String) _, (Servlet) _) >> Mock(ServletRegistration.Dynamic)
@@ -51,5 +51,23 @@ class SpringWebInitializerSpec extends Specification {
 
         then:
             1 * servletContext.setInitParameter(profilesParam, (String) _)
+    }
+
+    def "onStartup with profiles"() {
+        given:
+            ServletContext servletContext = Mock()
+            servletContext.addServlet((String) _, (Servlet) _) >> Mock(ServletRegistration.Dynamic)
+
+            String profileProperty = "spring.profiles.active"
+            System.setProperty(profileProperty, "profiles")
+
+        when:
+            webInitializer.onStartup(servletContext)
+
+        then:
+            1 * servletContext.setInitParameter(profilesParam, (String) _)
+
+        cleanup:
+            System.clearProperty(profileProperty)
     }
 }
