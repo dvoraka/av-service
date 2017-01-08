@@ -87,6 +87,10 @@ public class SocketPool implements SocketFactory {
         return port;
     }
 
+    public SocketFactory getSocketFactory() {
+        return socketFactory;
+    }
+
     @Override
     public Socket createSocket(String host, int port) {
         Socket socket = null;
@@ -162,7 +166,7 @@ public class SocketPool implements SocketFactory {
             return reader;
         }
 
-        public void releaseSocket() {
+        private void releaseSocket() {
             if (socket == null) {
                 return;
             }
