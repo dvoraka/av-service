@@ -1,6 +1,6 @@
 package dvoraka.avservice.avprogram;
 
-import dvoraka.avservice.common.SocketPool;
+import dvoraka.avservice.common.socket.SocketPool;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.service.CachingService;
@@ -59,7 +59,7 @@ public class ClamAvProgram implements AvProgram {
         this.maxArraySize = maxArraySize;
 
         final int socketCount = 1;
-        socketPool = new SocketPool(socketCount, socketHost, socketPort);
+        socketPool = new SocketPool(socketCount, socketHost, socketPort, null);
     }
 
     @Override

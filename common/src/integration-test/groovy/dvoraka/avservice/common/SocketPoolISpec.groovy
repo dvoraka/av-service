@@ -1,5 +1,6 @@
 package dvoraka.avservice.common
 
+import dvoraka.avservice.common.socket.SocketPool
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -17,7 +18,7 @@ class SocketPoolISpec extends Specification {
 
 
     def setup() {
-        socketPool = new SocketPool(socketCount, hostname, port)
+        socketPool = new SocketPool(socketCount, hostname, port, null)
     }
 
     def cleanup() {
