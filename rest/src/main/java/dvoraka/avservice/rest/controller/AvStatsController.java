@@ -8,16 +8,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static dvoraka.avservice.rest.controller.AvStatsController.MAPPING;
 import static java.util.Objects.requireNonNull;
 
 /**
  * REST controller for AV statistics.
  */
 @RestController
-@RequestMapping("/stats")
+@RequestMapping(MAPPING)
 public class AvStatsController {
 
     public static final Logger log = LogManager.getLogger(AvStatsController.class);
+
+    public static final String MAPPING = "/stats";
 
     private final StatsService statsService;
 
@@ -29,6 +32,7 @@ public class AvStatsController {
 
     @RequestMapping(value = "/about")
     public String about() {
+        log.info("About called.");
         return "AV statistics";
     }
 

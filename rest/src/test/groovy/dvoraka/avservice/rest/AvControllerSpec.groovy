@@ -7,6 +7,7 @@ import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.rest.controller.AvController
 import dvoraka.avservice.rest.service.RestService
 import org.springframework.http.MediaType
+import org.springframework.test.util.ReflectionTestUtils
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -110,6 +111,24 @@ class AvControllerSpec extends Specification {
         expect:
             response
                     .andExpect(status().isAccepted())
+    }
+
+    def "test messageCheck(AVMessage without ID)"() {
+        setup:
+            AvMessage message = Utils.genNormalMessage()
+            ReflectionTestUtils.setField(message, "id", null, null)
+
+            ObjectMapper mapper = new ObjectMapper()
+            String content = mapper.writeValueAsString(message)
+
+            ResultActions response = mockMvc.perform(
+                    post("/msg-check")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(content))
+
+        expect: "error response"
+            response
+                    .andExpect(status().is4xxClientError())
     }
 
     def "test getResponse(String)"() {
