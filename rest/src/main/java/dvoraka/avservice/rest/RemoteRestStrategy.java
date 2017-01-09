@@ -37,6 +37,8 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     private final TimedStorage<String> processingMsgs = new TimedStorage<>();
     private final TimedStorage<String> processedMsgs = new TimedStorage<>();
 
+    private volatile boolean started;
+
     // messages caching
     private CacheManager cacheManager;
     private Cache<String, AvMessage> messageCache;
@@ -103,21 +105,33 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     @PostConstruct
     @Override
     public void start() {
-        log.info("Started.");
-        initializeCache();
-        serverComponent.addAvMessageListener(this);
+        if (!isStarted()) {
+            log.info("Starting.");
+            setStarted(true);
+
+            initializeCache();
+            serverComponent.addAvMessageListener(this);
+        } else {
+            log.info("Service is already started.");
+        }
     }
 
     @PreDestroy
     @Override
     public void stop() {
-        log.info("Stopped.");
-        serverComponent.removeAvMessageListener(this);
+        if (isStarted()) {
+            log.info("Stopping.");
+            setStarted(false);
 
-        processingMsgs.stop();
-        processedMsgs.stop();
+            serverComponent.removeAvMessageListener(this);
 
-        cacheManager.close();
+            processingMsgs.stop();
+            processedMsgs.stop();
+
+            cacheManager.close();
+        } else {
+            log.info("Service is already stopped.");
+        }
     }
 
     @Override
@@ -133,5 +147,13 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
             processingMsgs.remove(response.getCorrelationId());
         }
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    private void setStarted(boolean started) {
+        this.started = started;
     }
 }
