@@ -1,5 +1,8 @@
 package dvoraka.avservice.rest
 
+import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.server.ServerComponent
 import spock.lang.Specification
 import spock.lang.Subject
@@ -33,6 +36,22 @@ class RemoteRestStrategySpec extends Specification {
             strategy.isStarted()
     }
 
+    def "start twice"() {
+        when:
+            strategy.start()
+
+        then:
+            1 * serverComponent.addAvMessageListener(_)
+            strategy.isStarted()
+
+        when: "start again"
+            strategy.start()
+
+        then:
+            0 * serverComponent.addAvMessageListener(_)
+            strategy.isStarted()
+    }
+
     def "start and stop"() {
         when:
             strategy.start()
@@ -47,5 +66,30 @@ class RemoteRestStrategySpec extends Specification {
         then:
             notThrown(Exception)
             !strategy.isStarted()
+    }
+
+    def "get message status without sent message"() {
+        expect:
+            strategy.messageStatus('AAA') == MessageStatus.UNKNOWN
+    }
+
+    def "message check"() {
+        given:
+            AvMessage message = Utils.genNormalMessage()
+
+        when:
+            strategy.messageCheck(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
+            strategy.messageStatus(message.getId()) == MessageStatus.PROCESSING
+    }
+
+    def "get message from cache without sending"() {
+        when:
+            strategy.start()
+
+        then:
+            strategy.getResponse('AAA') == null
     }
 }

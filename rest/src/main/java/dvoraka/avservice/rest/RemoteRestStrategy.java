@@ -39,7 +39,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
     private volatile boolean started;
 
-    // messages caching
+    // message caching
     private CacheManager cacheManager;
     private Cache<String, AvMessage> messageCache;
 
@@ -82,7 +82,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
             return MessageStatus.PROCESSING;
         }
 
-        return null;
+        return MessageStatus.UNKNOWN;
     }
 
     @Override
