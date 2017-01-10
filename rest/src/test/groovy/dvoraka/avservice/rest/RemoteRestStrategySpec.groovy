@@ -73,6 +73,11 @@ class RemoteRestStrategySpec extends Specification {
             strategy.messageStatus('AAA') == MessageStatus.UNKNOWN
     }
 
+    def "get message service ID"() {
+        expect:
+            strategy.messageServiceId('AAA') == null
+    }
+
     def "message check"() {
         given:
             AvMessage message = Utils.genNormalMessage()
@@ -91,5 +96,25 @@ class RemoteRestStrategySpec extends Specification {
 
         then:
             strategy.getResponse('AAA') == null
+    }
+
+    def "check message, send response and check status"() {
+        given:
+            AvMessage message = Utils.genNormalMessage()
+            strategy.start()
+
+        when:
+            strategy.messageCheck(message)
+
+        then:
+            strategy.messageStatus(message.getId()) == MessageStatus.PROCESSING
+
+        when:
+            AvMessage response = message.createResponse("")
+            strategy.onAvMessage(response)
+
+        then:
+            strategy.messageStatus(message.getId()) != MessageStatus.PROCESSING
+            strategy.messageStatus(message.getId()) == MessageStatus.PROCESSED
     }
 }
