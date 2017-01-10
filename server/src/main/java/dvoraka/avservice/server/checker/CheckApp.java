@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckApp implements ServiceManagement {
 
-    private static final Logger log = LogManager.getLogger(CheckApp.class.getName());
+    private static final Logger log = LogManager.getLogger(CheckApp.class);
 
     private final Checker checker;
 
