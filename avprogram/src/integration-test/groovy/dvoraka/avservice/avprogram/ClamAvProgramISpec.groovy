@@ -13,6 +13,8 @@ class ClamAvProgramISpec extends Specification {
 
     @Shared
     String eicarString = Utils.EICAR
+    @Shared
+    byte[] cleanData = "TESTDATA".getBytes()
 
     ClamAvProgram program
 
@@ -49,7 +51,7 @@ class ClamAvProgramISpec extends Specification {
 
     def "scan normal bytes"() {
         expect:
-            !program.scanBytes("TESTDATA".getBytes())
+            !program.scanBytes(cleanData)
     }
 
     def "scan infected bytes"() {
@@ -58,7 +60,7 @@ class ClamAvProgramISpec extends Specification {
     }
 
     @Ignore('WIP')
-    def "scan bytes new"() {
+    def "scan bytes new - performance"() {
         when:
             // warm up
             1000.times {
@@ -81,6 +83,16 @@ class ClamAvProgramISpec extends Specification {
 
         then:
             true
+    }
+
+    def "scan bytes new - normal message"() {
+        expect:
+            program.scanBytesNew(cleanData) == program.CLEAN_STREAM_RESPONSE
+    }
+
+    def "scan bytes new - infected message"() {
+        expect:
+            program.scanBytesNew(eicarString.getBytes()) != program.CLEAN_STREAM_RESPONSE
     }
 
     def "scan too big array"() {

@@ -1,9 +1,9 @@
 package dvoraka.avservice.avprogram;
 
-import dvoraka.avservice.common.socket.SocketPool;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.service.CachingService;
+import dvoraka.avservice.common.socket.SocketPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,8 +103,12 @@ public class ClamAvProgram implements AvProgram {
         outStream.write(intBytes(0, CHUNK_LENGTH_BYTE_SIZE));
         outStream.flush();
 
-        // read check result
+        // read and transform check result
+        final int offset = 3;
         String response = in.readLine();
+        if (response != null && response.length() >= offset) {
+            response = response.substring(offset);
+        }
 
         socketPool.returnSocket(socket);
 
