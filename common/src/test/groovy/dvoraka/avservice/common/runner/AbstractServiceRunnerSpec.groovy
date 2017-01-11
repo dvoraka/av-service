@@ -1,5 +1,6 @@
 package dvoraka.avservice.common.runner
 
+import dvoraka.avservice.common.service.ServiceManagement
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import spock.lang.Specification
 import spock.lang.Subject
@@ -7,7 +8,7 @@ import spock.lang.Subject
 /**
  * AbstractRunner spec.
  */
-class AbstractRunnerSpec extends Specification {
+class AbstractServiceRunnerSpec extends Specification {
 
     @Subject
     AbstractServiceRunner runner
@@ -15,27 +16,6 @@ class AbstractRunnerSpec extends Specification {
 
     def setup() {
         runner = Spy()
-    }
-
-    def "applicationContext"() {
-        given:
-            String[] profiles = ['test1', 'test2']
-            runner.profiles() >> profiles
-
-            Class<?>[] classes = [AbstractRunnerSpec.class]
-            runner.configClasses() >> classes
-
-        when:
-            AnnotationConfigApplicationContext context = runner.applicationContext()
-
-        then:
-            Arrays.equals(context.getEnvironment().getActiveProfiles(), profiles)
-    }
-
-    def "default profiles"() {
-        expect:
-            Arrays.equals(runner.profiles(), ['default'] as String[])
-
     }
 
     def "default stop message"() {
@@ -47,6 +27,24 @@ class AbstractRunnerSpec extends Specification {
         expect:
             !runner.isRunning()
             !runner.isStopped()
+    }
+
+    def "run"() {
+        given:
+            AnnotationConfigApplicationContext context = Mock()
+            context.getBean(_) >> Mock(ServiceManagement)
+
+            runner.applicationContext() >> context
+            runner.runClass() >> null
+            runner.setTestRun(true)
+
+        when:
+            runner.run()
+
+        then:
+            notThrown(Exception)
+            runner.isStopped()
+            !runner.isRunning()
     }
 
     def "testing wait for key method"() {

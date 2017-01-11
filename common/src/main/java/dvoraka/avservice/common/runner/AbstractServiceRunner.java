@@ -43,6 +43,7 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
             log.error("Runner problem!", e);
         } finally {
             service.stop();
+            stop();
             setRunning(false);
             context.close();
             log.info("Runner stopped.");
