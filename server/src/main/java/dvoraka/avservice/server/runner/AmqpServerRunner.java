@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.runner;
 
-import dvoraka.avservice.common.runner.AbstractRunner;
-import dvoraka.avservice.common.runner.Runner;
+import dvoraka.avservice.common.runner.AbstractServiceRunner;
+import dvoraka.avservice.common.runner.ServiceRunner;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
@@ -11,10 +11,10 @@ import java.io.IOException;
 /**
  * AMQP server runner.
  */
-public class AmqpServerRunner extends AbstractRunner {
+public class AmqpServerRunner extends AbstractServiceRunner {
 
     public static void main(String[] args) throws IOException {
-        Runner runner = new AmqpServerRunner();
+        ServiceRunner runner = new AmqpServerRunner();
         runner.run();
     }
 

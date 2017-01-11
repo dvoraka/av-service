@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.checker;
 
-import dvoraka.avservice.common.service.ServiceManagement;
+import dvoraka.avservice.common.service.ApplicationManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component;
  * App for checking.
  */
 @Component
-public class CheckApp implements ServiceManagement {
+public class CheckApp implements ApplicationManagement {
 
     private static final Logger log = LogManager.getLogger(CheckApp.class);
 
     private final Checker checker;
+
+    private boolean running;
 
 
     @Autowired
@@ -25,6 +27,7 @@ public class CheckApp implements ServiceManagement {
 
     @Override
     public void start() {
+        running = true;
         System.out.print("Checking... ");
 
         if (checker.check()) {
@@ -35,28 +38,7 @@ public class CheckApp implements ServiceManagement {
     }
 
     @Override
-    public void stop() {
-        // TODO: implement
-    }
-
-    @Override
-    public void restart() {
-        stop();
-        start();
-    }
-
-    @Override
     public boolean isRunning() {
-        return false;
-    }
-
-    @Override
-    public boolean isStarted() {
-        return false;
-    }
-
-    @Override
-    public boolean isStopped() {
-        return false;
+        return running;
     }
 }

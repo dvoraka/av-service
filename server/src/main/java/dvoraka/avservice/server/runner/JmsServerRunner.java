@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.runner;
 
-import dvoraka.avservice.common.runner.AbstractRunner;
+import dvoraka.avservice.common.runner.AbstractServiceRunner;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.configuration.jms.JmsConfig;
@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * JMS server runner.
  */
-public class JmsServerRunner extends AbstractRunner {
+public class JmsServerRunner extends AbstractServiceRunner {
 
     public static void main(String[] args) throws IOException {
         JmsServerRunner runner = new JmsServerRunner();

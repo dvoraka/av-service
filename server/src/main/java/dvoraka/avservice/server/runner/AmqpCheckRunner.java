@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.runner;
 
-import dvoraka.avservice.common.runner.AbstractRunner;
-import dvoraka.avservice.common.runner.Runner;
-import dvoraka.avservice.common.service.ServiceManagement;
+import dvoraka.avservice.common.runner.AbstractAppRunner;
+import dvoraka.avservice.common.runner.AppRunner;
+import dvoraka.avservice.common.service.ApplicationManagement;
 import dvoraka.avservice.server.checker.CheckApp;
 import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
 
@@ -11,10 +11,10 @@ import java.io.IOException;
 /**
  * AMQP check runner.
  */
-public class AmqpCheckRunner extends AbstractRunner {
+public class AmqpCheckRunner extends AbstractAppRunner {
 
     public static void main(String[] args) throws IOException {
-        Runner runner = new AmqpCheckRunner();
+        AppRunner runner = new AmqpCheckRunner();
         runner.run();
     }
 
@@ -29,12 +29,7 @@ public class AmqpCheckRunner extends AbstractRunner {
     }
 
     @Override
-    protected Class<? extends ServiceManagement> runClass() {
+    protected Class<? extends ApplicationManagement> runClass() {
         return CheckApp.class;
-    }
-
-    @Override
-    protected void waitForKey() throws IOException {
-        // no waiting
     }
 }

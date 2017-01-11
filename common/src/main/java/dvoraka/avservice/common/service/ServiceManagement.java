@@ -1,14 +1,9 @@
 package dvoraka.avservice.common.service;
 
 /**
- * Services management.
+ * Interface for service management.
  */
-public interface ServiceManagement {
-
-    /**
-     * Starts service.
-     */
-    void start();
+public interface ServiceManagement extends ApplicationManagement {
 
     /**
      * Stops service.
@@ -19,13 +14,6 @@ public interface ServiceManagement {
      * Restarts service.
      */
     void restart();
-
-    /**
-     * Check service status.
-     *
-     * @return the running status
-     */
-    boolean isRunning();
 
     /**
      * Checks service status.

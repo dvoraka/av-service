@@ -25,5 +25,6 @@ class CheckAppSpec extends Specification {
 
         then:
             1 * checker.check()
+            checkApp.isRunning()
     }
 }

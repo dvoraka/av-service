@@ -1,55 +1,18 @@
 package dvoraka.avservice.common.runner;
 
 import dvoraka.avservice.common.service.ServiceManagement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 
 /**
- * Base class for runners.
+ * Base class for service runners.
  */
-public abstract class AbstractRunner implements Runner {
+public abstract class AbstractServiceRunner extends AbstractAppRunner implements ServiceRunner {
 
     private static boolean testRun;
-    private boolean running;
     private volatile boolean stopped;
 
-    @SuppressWarnings("checkstyle:VisibilityModifier")
-    protected Logger log = LogManager.getLogger(this.getClass().getName());
-
-
-    /**
-     * Returns a configured Spring application context for the runner.
-     *
-     * @return the application context
-     */
-    protected AnnotationConfigApplicationContext applicationContext() {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles(profiles());
-        context.register(configClasses());
-        context.refresh();
-
-        return context;
-    }
-
-    /**
-     * Returns Spring profiles in an array.
-     *
-     * @return the profiles array
-     */
-    protected String[] profiles() {
-        return new String[]{"default"};
-    }
-
-    /**
-     * Returns all configuration classes for the context in an array.
-     *
-     * @return the configuration classes array
-     */
-    protected abstract Class<?>[] configClasses();
 
     /**
      * Returns a service running class.
@@ -87,27 +50,8 @@ public abstract class AbstractRunner implements Runner {
     }
 
     @Override
-    public void runAsync() {
-        new Thread(this::run).start();
-    }
-
-    @Override
-    public boolean isRunning() {
-        return running;
-    }
-
-    @Override
     public void stop() {
         setStopped(true);
-    }
-
-    /**
-     * Sets a running status.
-     *
-     * @param running the running flag
-     */
-    protected void setRunning(boolean running) {
-        this.running = running;
     }
 
     /**
@@ -167,6 +111,6 @@ public abstract class AbstractRunner implements Runner {
      * @param testRun the testing flag
      */
     public static void setTestRun(boolean testRun) {
-        AbstractRunner.testRun = testRun;
+        AbstractServiceRunner.testRun = testRun;
     }
 }

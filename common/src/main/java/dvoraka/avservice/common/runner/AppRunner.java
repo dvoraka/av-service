@@ -1,9 +1,9 @@
 package dvoraka.avservice.common.runner;
 
 /**
- * Runner interface.
+ * Application unner interface.
  */
-public interface Runner {
+public interface AppRunner {
 
     /**
      * Runs something.
@@ -21,9 +21,4 @@ public interface Runner {
      * @return the running flag
      */
     boolean isRunning();
-
-    /**
-     * Stops something.
-     */
-    void stop();
 }

@@ -10,7 +10,7 @@ import spock.lang.Subject
 class AbstractRunnerSpec extends Specification {
 
     @Subject
-    AbstractRunner runner
+    AbstractServiceRunner runner
 
 
     def setup() {
@@ -51,7 +51,7 @@ class AbstractRunnerSpec extends Specification {
 
     def "testing wait for key method"() {
         given:
-            AbstractRunner.setTestRun(true)
+            AbstractServiceRunner.setTestRun(true)
 
         when:
             runner.waitForKey()
@@ -84,9 +84,9 @@ class AbstractRunnerSpec extends Specification {
 
     def "set test run"() {
         when:
-            AbstractRunner.setTestRun(true)
+            AbstractServiceRunner.setTestRun(true)
 
         then:
-            AbstractRunner.isTestRun()
+            AbstractServiceRunner.isTestRun()
     }
 }

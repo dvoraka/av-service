@@ -3,7 +3,7 @@ package dvoraka.avservice.server.checker
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.exception.MessageNotFoundException
-import dvoraka.avservice.common.runner.Runner
+import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.server.configuration.amqp.AmqpConfig
 import dvoraka.avservice.server.runner.AmqpServerRunner
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ class SimpleCheckerISpec extends Specification {
     Checker checker
 
     @Shared
-    Runner runner
+    ServiceRunner runner
 
 
     def setupSpec() {
