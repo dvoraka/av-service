@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.runner;
 
-import dvoraka.avservice.common.runner.AbstractRunner;
+import dvoraka.avservice.common.runner.AbstractServiceRunner;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Custom server runner. You can choose custom configurations and profiles for your use cases.
  */
-public class CustomServerRunner extends AbstractRunner {
+public class CustomServerRunner extends AbstractServiceRunner {
 
     public static void main(String[] args) throws IOException {
         CustomServerRunner runner = new CustomServerRunner();
