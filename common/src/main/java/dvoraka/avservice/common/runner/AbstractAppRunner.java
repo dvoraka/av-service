@@ -10,11 +10,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public abstract class AbstractAppRunner implements AppRunner {
 
-    private static boolean testRun;
-    private boolean running;
-
     @SuppressWarnings("checkstyle:VisibilityModifier")
     protected Logger log = LogManager.getLogger(this.getClass().getName());
+
+    private boolean running;
 
 
     /**
@@ -89,23 +88,5 @@ public abstract class AbstractAppRunner implements AppRunner {
      */
     protected void setRunning(boolean running) {
         this.running = running;
-    }
-
-    /**
-     * Special testing flag for not waiting on keyboard after start.
-     *
-     * @return if the run is only for testing
-     */
-    public static boolean isTestRun() {
-        return testRun;
-    }
-
-    /**
-     * Setting a testing flag.
-     *
-     * @param testRun the testing flag
-     */
-    public static void setTestRun(boolean testRun) {
-        AbstractAppRunner.testRun = testRun;
     }
 }
