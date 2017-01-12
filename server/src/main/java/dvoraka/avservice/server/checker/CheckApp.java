@@ -17,7 +17,7 @@ public class CheckApp implements ApplicationManagement {
 
     private final Checker checker;
 
-    private boolean running;
+    private volatile boolean running;
 
 
     @Autowired
@@ -27,7 +27,9 @@ public class CheckApp implements ApplicationManagement {
 
     @Override
     public void start() {
-        running = true;
+        setRunning(true);
+        log.info("Starting check...");
+
         System.out.print("Checking... ");
 
         if (checker.check()) {
@@ -35,10 +37,17 @@ public class CheckApp implements ApplicationManagement {
         } else {
             System.out.println("failed!");
         }
+
+        log.info("Check completed.");
+        setRunning(false);
     }
 
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }

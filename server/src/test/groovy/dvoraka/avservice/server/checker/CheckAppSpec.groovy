@@ -19,12 +19,21 @@ class CheckAppSpec extends Specification {
         checkApp = new CheckApp(checker)
     }
 
-    def "start"() {
+    def "start with OK status"() {
         when:
             checkApp.start()
 
         then:
-            1 * checker.check()
-            checkApp.isRunning()
+            1 * checker.check() >> true
+            !checkApp.isRunning()
+    }
+
+    def "start with bad status"() {
+        when:
+            checkApp.start()
+
+        then:
+            1 * checker.check() >> false
+            !checkApp.isRunning()
     }
 }

@@ -121,6 +121,7 @@ class DefaultMessageProcessorSpec extends Specification {
             notThrown(ScanErrorException)
     }
 
+    //TODO
     @Ignore("Too fuzzy timing")
     def "processing message status"() {
         given:
