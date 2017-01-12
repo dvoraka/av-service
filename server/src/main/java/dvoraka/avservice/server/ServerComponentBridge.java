@@ -21,7 +21,9 @@ public class ServerComponentBridge implements ServiceManagement {
     private AvMessageListener inListener;
     private AvMessageListener outListener;
 
-    private boolean running;
+    private volatile boolean running;
+    private volatile boolean started;
+    private volatile boolean stopped;
 
 
     @Autowired
@@ -39,8 +41,12 @@ public class ServerComponentBridge implements ServiceManagement {
 
     @Override
     public void start() {
-        if (!running) {
-            running = true;
+        setStarted(true);
+        setStopped(false);
+
+        if (!isRunning()) {
+            setRunning(true);
+
             inComponent.addAvMessageListener(inListener);
             outComponent.addAvMessageListener(outListener);
         }
@@ -49,11 +55,13 @@ public class ServerComponentBridge implements ServiceManagement {
     @Override
     public void stop() {
         log.debug("Bridge stopped.");
+        setStopped(true);
+
         setRunning(false);
+        setStarted(false);
 
         inComponent.removeAvMessageListener(inListener);
         outComponent.removeAvMessageListener(outListener);
-
         log.debug("Bridge has stopped");
     }
 
@@ -70,15 +78,23 @@ public class ServerComponentBridge implements ServiceManagement {
 
     @Override
     public boolean isStarted() {
-        throw new UnsupportedOperationException("Not implemented");
+        return started;
     }
 
     @Override
     public boolean isStopped() {
-        throw new UnsupportedOperationException("Not implemented");
+        return stopped;
     }
 
     private void setRunning(boolean running) {
         this.running = running;
+    }
+
+    private void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    private void setStopped(boolean stopped) {
+        this.stopped = stopped;
     }
 }
