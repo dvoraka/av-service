@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PreDestroy;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Solr AV message info service implementation.
@@ -26,14 +29,14 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     private static final Logger log = LogManager.getLogger(SolrMessageInfoService.class);
 
-    private static final int DEFAULT_BATCH_SIZE = 199;
+    private static final int BATCH_SIZE = 199;
 
     private final SolrMessageInfoRepository messageInfoRepository;
 
     // batching
     private boolean batching;
     private Collection<MessageInfoDocument> documents = new ArrayList<>();
-    private int batchSize = DEFAULT_BATCH_SIZE;
+    private int batchSize = BATCH_SIZE;
     //    private long commitEveryMs = 10_000L;
 //    private long lastCommitTime;
     private int docsInCollection;
@@ -41,7 +44,12 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     @Autowired
     public SolrMessageInfoService(SolrMessageInfoRepository messageInfoRepository) {
-        this.messageInfoRepository = messageInfoRepository;
+        this.messageInfoRepository = requireNonNull(messageInfoRepository);
+    }
+
+    @PreDestroy
+    public void stop() {
+        // persist everything
     }
 
     @Override
@@ -110,5 +118,17 @@ public class SolrMessageInfoService implements MessageInfoService {
         messageInfoDocument.setCreated(new Date());
 
         return messageInfoDocument;
+    }
+
+    public boolean isBatching() {
+        return batching;
+    }
+
+    public void enableBatching() {
+        batching = true;
+    }
+
+    public void disableBatching() {
+        batching = false;
     }
 }
