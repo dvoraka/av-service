@@ -23,6 +23,7 @@ class SolrMessageInfoServiceSpec extends Specification {
     SolrMessageInfoRepository messageRepository
 
     String testUuid = 'AAA'
+    String testService = 'TEST'
 
 
     def setup() {
@@ -35,7 +36,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             AvMessage message = Utils.genNormalMessage()
 
         when:
-            messageService.save(message, AvMessageSource.TEST, "test")
+            messageService.save(message, AvMessageSource.TEST, testService)
 
         then:
             1 * messageRepository.save(_)
@@ -43,17 +44,38 @@ class SolrMessageInfoServiceSpec extends Specification {
 
     def "call save method with batching"() {
         given:
+            int batchSize = 2
             AvMessage message = Utils.genNormalMessage()
             messageService.enableBatching()
+            messageService.setBatchSize(batchSize)
 
         expect:
             messageService.isBatching()
+            messageService.getBatchSize() == batchSize
 
         when:
-            messageService.save(message, AvMessageSource.TEST, "test")
+            messageService.save(message, AvMessageSource.TEST, testService)
 
         then:
-            notThrown(Exception)
+            0 * messageRepository.save(_)
+    }
+
+    def "call save method with batching and reaching limit"() {
+        given:
+            int batchSize = 1
+            AvMessage message = Utils.genNormalMessage()
+            messageService.enableBatching()
+            messageService.setBatchSize(batchSize)
+
+        expect:
+            messageService.isBatching()
+            messageService.getBatchSize() == batchSize
+
+        when:
+            messageService.save(message, AvMessageSource.TEST, testService)
+
+        then:
+            1 * messageRepository.save(_ as Iterable)
     }
 
     def "load info"() {
@@ -97,6 +119,23 @@ class SolrMessageInfoServiceSpec extends Specification {
 
         then:
             !messageService.isBatching()
+    }
+
+    def "test stop with batching"() {
+        given:
+            messageService.enableBatching()
+
+        when:
+            messageService.save(Utils.genNormalMessage(), AvMessageSource.TEST, testService)
+
+        then:
+            0 * messageRepository.save(_ as MessageInfoDocument)
+
+        when:
+            messageService.stop()
+
+        then:
+            1 * messageRepository.save(_ as Iterable)
     }
 
     MessageInfoDocument createTestDoc(String uuid) {

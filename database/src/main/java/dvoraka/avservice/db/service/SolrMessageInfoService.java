@@ -34,12 +34,11 @@ public class SolrMessageInfoService implements MessageInfoService {
     private final SolrMessageInfoRepository messageInfoRepository;
 
     // batching
-    private boolean batching;
+    private volatile boolean batching;
     private Collection<MessageInfoDocument> documents = new ArrayList<>();
     private int batchSize = BATCH_SIZE;
     //    private long commitEveryMs = 10_000L;
 //    private long lastCommitTime;
-    private int docsInCollection;
 
 
     @Autowired
@@ -49,7 +48,16 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     @PreDestroy
     public void stop() {
-        // persist everything
+        if (isBatching()) {
+            flushCache();
+        }
+    }
+
+    private void flushCache() {
+        if (documents.size() > 0) {
+            messageInfoRepository.save(documents);
+            documents.clear();
+        }
     }
 
     @Override
@@ -59,7 +67,7 @@ public class SolrMessageInfoService implements MessageInfoService {
         MessageInfoDocument messageInfoDocument =
                 toMessageInfoDocument(message, source, serviceId);
 
-        if (batching) {
+        if (isBatching()) {
             save(messageInfoDocument);
         } else {
             messageInfoRepository.save(messageInfoDocument);
@@ -72,20 +80,11 @@ public class SolrMessageInfoService implements MessageInfoService {
      * @param document the document to save in the batch
      */
     private synchronized void save(MessageInfoDocument document) {
-        if (docsInCollection == batchSize) {
+        documents.add(document);
 
-            messageInfoRepository.save(documents);
-            documents.clear();
-            resetDocumentCounter();
-
-        } else {
-            documents.add(document);
-            docsInCollection++;
+        if (documents.size() >= batchSize) {
+            flushCache();
         }
-    }
-
-    private void resetDocumentCounter() {
-        docsInCollection = 0;
     }
 
     @Override
@@ -129,6 +128,15 @@ public class SolrMessageInfoService implements MessageInfoService {
     }
 
     public void disableBatching() {
+        flushCache();
         batching = false;
+    }
+
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
     }
 }
