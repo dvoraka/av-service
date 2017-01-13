@@ -5,8 +5,8 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.amqp.AvMessageMapper
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
-import dvoraka.avservice.db.repository.MessageInfoRepository
-import dvoraka.avservice.db.service.DefaultMessageInfoService
+import dvoraka.avservice.db.repository.DbMessageInfoRepository
+import dvoraka.avservice.db.service.DbMessageInfoService
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.support.converter.MessageConversionException
@@ -29,8 +29,8 @@ class AmqpComponentSpec extends Specification {
 
 
     def setup() {
-        MessageInfoRepository infoRepository = Mock()
-        DefaultMessageInfoService infoService = new DefaultMessageInfoService(infoRepository)
+        DbMessageInfoRepository infoRepository = Mock()
+        DbMessageInfoService infoService = new DbMessageInfoService(infoRepository)
 
         converter = Mock()
         converter.fromMessage(_) >> Mock(AvMessage)

@@ -1,5 +1,9 @@
 package dvoraka.avservice.db.model;
 
+import dvoraka.avservice.common.data.AvMessageInfo;
+import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.DefaultAvMessageInfo;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -64,5 +68,13 @@ public class MessageInfo {
 
     public void setCreated(Date created) {
         this.created = new Date(created.getTime());
+    }
+
+    public AvMessageInfo avMessageInfo() {
+        return new DefaultAvMessageInfo.Builder(getUuid())
+                .source(AvMessageSource.valueOf(getSource()))
+                .serviceId(getServiceId())
+                .created(getCreated().toInstant())
+                .build();
     }
 }
