@@ -46,7 +46,7 @@ class MessageInfoServiceISpec extends Specification {
         given:
             AvMessage message = Utils.genNormalMessage()
             int count = 5
-            Instant start = Instant.now()
+            Instant start = Instant.now().minusMillis(10) // start must be before save
 
         expect:
             count.times {
