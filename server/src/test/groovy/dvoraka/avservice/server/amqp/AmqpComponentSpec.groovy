@@ -4,14 +4,13 @@ import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.amqp.AvMessageMapper
 import dvoraka.avservice.common.data.AvMessage
-import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.db.repository.DbMessageInfoRepository
 import dvoraka.avservice.db.service.DbMessageInfoService
+import org.springframework.amqp.AmqpException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.support.converter.MessageConversionException
 import org.springframework.amqp.support.converter.MessageConverter
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -27,6 +26,8 @@ class AmqpComponentSpec extends Specification {
     AvMessageMapper messageMapper
     MessageConverter converter
 
+    String testExchange = 'TEST-EXCHANGE'
+
 
     def setup() {
         DbMessageInfoRepository infoRepository = Mock()
@@ -38,7 +39,7 @@ class AmqpComponentSpec extends Specification {
         rabbitTemplate = Mock()
         rabbitTemplate.getMessageConverter() >> converter
 
-        component = new AmqpComponent("NONE", "TEST1", rabbitTemplate, infoService)
+        component = new AmqpComponent(testExchange, "TEST1", rabbitTemplate, infoService)
 
         messageMapper = new AvMessageMapper()
     }
@@ -104,18 +105,34 @@ class AmqpComponentSpec extends Specification {
             1 * rabbitTemplate.convertAndSend(_, _, _)
     }
 
-    // TODO: improve
-    @Ignore
-    def "send broken message"() {
+    def "send message with conversion error"() {
         given:
-            AvMessage message = new DefaultAvMessage.Builder(null)
-                    .build()
+            AvMessage message = Utils.genNormalMessage()
 
         when:
             component.sendAvMessage(message)
 
-        then: "send error response"
-            1 * rabbitTemplate.convertAndSend(_, _, _)
+        then:
+            1 * rabbitTemplate.convertAndSend(testExchange, _ as String, message) >> {
+                throw new MessageConversionException("Conversion problem")
+            }
+
+            1 * rabbitTemplate.convertAndSend(testExchange, _ as String, _)
+    }
+
+    def "send message with AMQP exception"() {
+        given:
+            AvMessage message = Utils.genNormalMessage()
+
+            rabbitTemplate.convertAndSend(testExchange, _ as String, message) >> {
+                throw new AmqpException("Problem!")
+            }
+
+        when:
+            component.sendAvMessage(message)
+
+        then:
+            notThrown(Exception)
     }
 
     def "add listeners"() {

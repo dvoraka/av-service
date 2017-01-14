@@ -29,7 +29,7 @@ public class AmqpComponent implements ServerComponent {
     private final RabbitTemplate rabbitTemplate;
     private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(AmqpComponent.class.getName());
+    private static final Logger log = LogManager.getLogger(AmqpComponent.class);
     public static final String ROUTING_KEY = "ROUTINGKEY";
 
     private final String responseExchange;
@@ -47,8 +47,8 @@ public class AmqpComponent implements ServerComponent {
     ) {
         this.responseExchange = requireNonNull(responseExchange);
         this.serviceId = requireNonNull(serviceId);
-        this.rabbitTemplate = rabbitTemplate;
-        this.messageInfoService = messageInfoService;
+        this.rabbitTemplate = requireNonNull(rabbitTemplate);
+        this.messageInfoService = requireNonNull(messageInfoService);
         messageConverter = requireNonNull(rabbitTemplate.getMessageConverter());
     }
 

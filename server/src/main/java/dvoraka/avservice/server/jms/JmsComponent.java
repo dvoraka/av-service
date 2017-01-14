@@ -30,7 +30,7 @@ public class JmsComponent implements ServerComponent {
     private final JmsTemplate jmsTemplate;
     private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(JmsComponent.class.getName());
+    private static final Logger log = LogManager.getLogger(JmsComponent.class);
 
     private final String responseDestination;
     private final String serviceId;
@@ -46,8 +46,8 @@ public class JmsComponent implements ServerComponent {
     ) {
         this.responseDestination = requireNonNull(responseDestination);
         this.serviceId = requireNonNull(serviceId);
-        this.jmsTemplate = jmsTemplate;
-        this.messageInfoService = messageInfoService;
+        this.jmsTemplate = requireNonNull(jmsTemplate);
+        this.messageInfoService = requireNonNull(messageInfoService);
         messageConverter = requireNonNull(jmsTemplate.getMessageConverter());
     }
 
