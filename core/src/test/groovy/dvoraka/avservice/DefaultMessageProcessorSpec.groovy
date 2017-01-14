@@ -8,7 +8,6 @@ import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.exception.ScanErrorException
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.util.concurrent.PollingConditions
@@ -121,24 +120,18 @@ class DefaultMessageProcessorSpec extends Specification {
             notThrown(ScanErrorException)
     }
 
-    //TODO
-    @Ignore("Too fuzzy timing")
     def "processing message status"() {
         given:
-            String testId = "testId"
+            AvMessage message = Utils.genNormalMessage()
+            String testId = message.getId()
 
-            AvService service = Stub()
-            service.scanBytes(_) >> {
-                sleep(5000)
+            avService.scanBytes(_) >> {
+                sleep(50000)
                 return false
             }
 
-            setProcessorService(service)
-
         when:
-            processor.sendMessage(new DefaultAvMessage.Builder(testId)
-                    .data(new byte[0])
-                    .build())
+            processor.sendMessage(message)
 
         then:
             processor.messageStatus(testId) == MessageStatus.PROCESSING
