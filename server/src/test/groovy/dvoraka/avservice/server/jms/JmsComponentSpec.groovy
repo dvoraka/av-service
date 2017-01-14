@@ -5,10 +5,10 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.db.service.MessageInfoService
 import org.apache.activemq.command.ActiveMQMessage
+import org.springframework.jms.IllegalStateException
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.converter.MessageConversionException
 import org.springframework.jms.support.converter.MessageConverter
-import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -88,9 +88,6 @@ class JmsComponentSpec extends Specification {
 
     def "send normal message"() {
         given:
-            JmsTemplate jmsTemplate = Mock()
-            ReflectionTestUtils.setField(component, null, jmsTemplate, JmsTemplate.class)
-
             AvMessage message = Utils.genNormalMessage()
 
         when:
@@ -98,6 +95,36 @@ class JmsComponentSpec extends Specification {
 
         then:
             1 * jmsTemplate.convertAndSend(destination, message)
+    }
+
+    def "send message with conversion error"() {
+        given:
+            AvMessage message = Utils.genNormalMessage()
+
+        when:
+            component.sendAvMessage(message)
+
+        then:
+            1 * jmsTemplate.convertAndSend(destination, message) >> {
+                throw new MessageConversionException("Conversion problem")
+            }
+
+            1 * jmsTemplate.convertAndSend(destination, _)
+    }
+
+    def "send message with JMS exception"() {
+        given:
+            AvMessage message = Utils.genNormalMessage()
+
+            jmsTemplate.convertAndSend(destination, message) >> {
+                throw new IllegalStateException(null)
+            }
+
+        when:
+            component.sendAvMessage(message)
+
+        then:
+            notThrown(Exception)
     }
 
     def "add listeners"() {
