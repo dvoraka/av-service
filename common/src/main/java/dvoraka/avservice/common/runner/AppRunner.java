@@ -1,17 +1,17 @@
 package dvoraka.avservice.common.runner;
 
 /**
- * Application unner interface.
+ * Application runner interface.
  */
 public interface AppRunner {
 
     /**
-     * Runs something.
+     * Runs runner.
      */
     void run();
 
     /**
-     * Runs asynchronously.
+     * Runs runner asynchronously.
      */
     void runAsync();
 

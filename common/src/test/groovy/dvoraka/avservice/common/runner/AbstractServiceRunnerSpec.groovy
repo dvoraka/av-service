@@ -58,6 +58,35 @@ class AbstractServiceRunnerSpec extends Specification {
             notThrown(Exception)
     }
 
+    def "testing stopped wait for key method"() {
+        given:
+            AbstractServiceRunner.setTestRun(false)
+
+        when:
+            runner.stop()
+            runner.waitForKey()
+
+        then:
+            notThrown(Exception)
+    }
+
+    def "testing wait for key method with interruption"() {
+        given:
+            AbstractServiceRunner.setTestRun(false)
+
+            Thread t = new Thread({
+                runner.waitForKey()
+            })
+
+        when:
+            t.start()
+            sleep(100)
+            t.interrupt()
+
+        then:
+            notThrown(Exception)
+    }
+
     def "runner status after stop"() {
         when:
             runner.stop()

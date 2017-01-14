@@ -6,7 +6,7 @@ package dvoraka.avservice.common.runner;
 public interface ServiceRunner extends AppRunner {
 
     /**
-     * Stops something.
+     * Stops runner.
      */
     void stop();
 }

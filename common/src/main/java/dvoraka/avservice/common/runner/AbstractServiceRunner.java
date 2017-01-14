@@ -35,6 +35,7 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
         service.start();
 
         setRunning(true);
+        setStopped(false);
 
         log.info("Runner started.");
         try {
@@ -45,6 +46,7 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
             service.stop();
             stop();
             setRunning(false);
+
             context.close();
             log.info("Runner stopped.");
         }
@@ -61,7 +63,6 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
      *
      * @throws IOException if reading from keyboard problem occurs
      */
-    // TODO: improve
     protected void waitForKey() throws IOException {
         if (testRun) {
             return;
@@ -93,7 +94,7 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
         return stopped;
     }
 
-    public void setStopped(boolean stopped) {
+    private void setStopped(boolean stopped) {
         this.stopped = stopped;
     }
 
