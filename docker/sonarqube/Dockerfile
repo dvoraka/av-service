@@ -1,4 +1,4 @@
-FROM sonarqube:6.1
+FROM sonarqube:6.2
 
 EXPOSE 9000
 
