@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import(SpringWebConfig.class)
 @SuppressWarnings("checkstyle:HideUtilityClassConstructor")
-public class Application {
+public class Application { //NOSONAR
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

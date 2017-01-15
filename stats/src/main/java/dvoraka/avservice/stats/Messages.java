@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 /**
  * Interface for working with AV message statistics.
  */
+@FunctionalInterface
 public interface Messages {
 
     Stream<AvMessageInfo> when(Instant from, Instant to);

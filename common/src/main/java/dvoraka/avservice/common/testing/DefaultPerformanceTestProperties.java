@@ -13,7 +13,7 @@ import java.util.Optional;
 public class DefaultPerformanceTestProperties implements PerformanceTestProperties {
 
     private static final Logger log =
-            LogManager.getLogger(DefaultPerformanceTestProperties.class.getName());
+            LogManager.getLogger(DefaultPerformanceTestProperties.class);
 
     private static final String CONF_FILE_NAME = "/loadTest.xml";
 
@@ -118,13 +118,16 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
 
     @Override
     public void loadPropertiesFromXML(String filename) {
+        log.info("Loading properties from XML...");
         PerformanceTestConfigParser parser = new PerformanceTestConfigParser();
         parser.parseFileSax(Optional
                 .ofNullable(getClass().getResource(filename))
                 .map(URL::toString)
                 .orElse("/loadTest.xml"));
+
         Map<String, String> properties = parser.getProperties();
         loadProperties(properties);
+        log.info("Properties loaded.");
     }
 
     /**

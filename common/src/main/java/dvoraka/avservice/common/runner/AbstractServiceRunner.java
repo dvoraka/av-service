@@ -77,17 +77,21 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
             }
 
             if (System.in.available() == 0) {
-                final long sleepTime = 1_000;
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                    log.warn("Sleeping interrupted!", e);
-                    Thread.currentThread().interrupt();
-                    break;
-                }
+                sleep();
             } else {
-                break;
+                stop();
             }
+        }
+    }
+
+    private void sleep() {
+        final long sleepTime = 1_000;
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            log.warn("Sleeping interrupted!", e);
+            Thread.currentThread().interrupt();
+            stop();
         }
     }
 

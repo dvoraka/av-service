@@ -51,20 +51,28 @@ public class PerformanceTestConfigParser extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) {
-        if ("appId".equalsIgnoreCase(qName)) {
-            props.put("appId", buffer.toString());
-        } else if ("destinationQueue".equalsIgnoreCase(qName)) {
-            props.put("destinationQueue", buffer.toString());
-        } else if ("host".equalsIgnoreCase(qName)) {
-            props.put("host", buffer.toString());
-        } else if ("messageCount".equalsIgnoreCase(qName)) {
-            props.put("messageCount", buffer.toString());
-        } else if ("sendOnly".equalsIgnoreCase(qName)) {
-            props.put("sendOnly", buffer.toString());
-        } else if ("synchronous".equalsIgnoreCase(qName)) {
-            props.put("synchronous", buffer.toString());
-        } else if ("virtualHost".equalsIgnoreCase(qName)) {
-            props.put("virtualHost", buffer.toString());
+        String appIdKey = "appId";
+        String destQueueKey = "destinationQueue";
+        String hostKey = "host";
+        String msgCountKey = "messageCount";
+        String sendOnlyKey = "sendOnly";
+        String syncKey = "synchronous";
+        String virtHostKey = "virtualHost";
+
+        if (appIdKey.equalsIgnoreCase(qName)) {
+            props.put(appIdKey, buffer.toString());
+        } else if (destQueueKey.equalsIgnoreCase(qName)) {
+            props.put(destQueueKey, buffer.toString());
+        } else if (hostKey.equalsIgnoreCase(qName)) {
+            props.put(hostKey, buffer.toString());
+        } else if (msgCountKey.equalsIgnoreCase(qName)) {
+            props.put(msgCountKey, buffer.toString());
+        } else if (sendOnlyKey.equalsIgnoreCase(qName)) {
+            props.put(sendOnlyKey, buffer.toString());
+        } else if (syncKey.equalsIgnoreCase(qName)) {
+            props.put(syncKey, buffer.toString());
+        } else if (virtHostKey.equalsIgnoreCase(qName)) {
+            props.put(virtHostKey, buffer.toString());
         }
     }
 
