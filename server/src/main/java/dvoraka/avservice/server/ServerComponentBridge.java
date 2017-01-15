@@ -66,12 +66,6 @@ public class ServerComponentBridge implements ServiceManagement {
     }
 
     @Override
-    public void restart() {
-        stop();
-        start();
-    }
-
-    @Override
     public boolean isRunning() {
         return running;
     }

@@ -80,12 +80,6 @@ public class DefaultPerformanceTester implements ServiceManagement {
     }
 
     @Override
-    public void restart() {
-        stop();
-        start();
-    }
-
-    @Override
     public boolean isRunning() {
         return running;
     }

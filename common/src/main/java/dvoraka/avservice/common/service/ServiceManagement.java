@@ -13,7 +13,10 @@ public interface ServiceManagement extends ApplicationManagement {
     /**
      * Restarts service.
      */
-    void restart();
+    default void restart() {
+        stop();
+        start();
+    }
 
     /**
      * Checks service status.

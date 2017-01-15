@@ -73,12 +73,6 @@ public class BasicAvServer implements AvServer {
     }
 
     @Override
-    public void restart() {
-        stop();
-        start();
-    }
-
-    @Override
     public boolean isRunning() {
         return running;
     }
