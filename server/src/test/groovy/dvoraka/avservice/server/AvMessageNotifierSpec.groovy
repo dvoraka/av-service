@@ -3,12 +3,14 @@ package dvoraka.avservice.server
 import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.AvMessageNotifier
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * AV message notifier spec.
  */
 class AvMessageNotifierSpec extends Specification {
 
+    @Subject
     AvMessageNotifier notifier
 
 
