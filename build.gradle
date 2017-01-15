@@ -93,7 +93,7 @@ allprojects {
     idea {
         module {
             // add integration test source dirs to IDEA
-            testSourceDirs += file('src/integration-test')
+            testSourceDirs += file('src/integration-test/groovy')
             scopes.TEST.plus += [configurations.integrationTestCompile]
         }
     }
