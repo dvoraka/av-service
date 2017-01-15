@@ -179,7 +179,7 @@ public class SocketPool implements SocketFactory {
                 getOutputStream().close();
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.warn("Release socket problem!", e);
             }
         }
     }

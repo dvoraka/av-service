@@ -19,6 +19,7 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
      *
      * @return the run class
      */
+    @Override
     protected abstract Class<? extends ServiceManagement> runClass();
 
     protected String stopMessage() {

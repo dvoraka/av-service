@@ -22,6 +22,7 @@ public class DefaultStatsService implements StatsService {
         this.messages = messages;
     }
 
+    @Override
     public long todayCount() {
         LocalDate today = LocalDate.now();
         Instant start = today.atStartOfDay(ZoneId.systemDefault()).toInstant();
