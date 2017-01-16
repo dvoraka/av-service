@@ -62,6 +62,13 @@ msg/s | 471 | 470 | 480 | 480 | 481
 
 ### JMS
 
+#### Jan 16, 2016
+Version 0.5-rc1 with JMS async sending.
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 565 | 567 | 538 | 561 | 552
+
 #### Dec 14, 2016
 After message processor redesign.
 
