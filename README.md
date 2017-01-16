@@ -205,8 +205,30 @@ $ ./gradlew runAmqpServer
 $ ./gradlew runJmsServer
 ```
 #### REST
+It is now a Spring Boot application. You can run it with Gradle or use an executable jar.
+
+**Gradle**
 ```
-$ ./gradlew appStart
+$ ./gradlew rest:bootRun
+```
+**Spring Boot**
+
+You need to build the executable jar:
+```
+$ ./gradlew assemble
+```
+And then the the jar is in `rest/build/libs/` directory called **avservice-rest-XXX.jar**.
+You can run it with:
+```
+$ java -jar avservice-rest-0.5.jar 
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::            (v1.5.0.RC1)
 ```
 
 ### AMQP checker
