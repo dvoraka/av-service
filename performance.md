@@ -34,6 +34,13 @@ First run is for a warm-up and is not counted.
 
 ### AMQP
 
+#### Jan 16, 2016
+Version 0.5-rc1.
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 524 | 515 | 515 | 492 | 516
+
 #### Dec 23, 2016
 Spring 5 and small tuning.
 
