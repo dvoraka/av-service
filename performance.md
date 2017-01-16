@@ -34,7 +34,7 @@ First run is for a warm-up and is not counted.
 
 ### AMQP
 
-#### Jan 16, 2016
+#### Jan 16, 2017
 Version 0.5-rc1.
 
 run | 1. | 2. | 3. | 4. | 5.
@@ -62,7 +62,7 @@ msg/s | 471 | 470 | 480 | 480 | 481
 
 ### JMS
 
-#### Jan 16, 2016
+#### Jan 16, 2017
 Version 0.5-rc1 with JMS async sending.
 
 run | 1. | 2. | 3. | 4. | 5.
