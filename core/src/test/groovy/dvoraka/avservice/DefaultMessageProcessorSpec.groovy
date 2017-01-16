@@ -120,21 +120,24 @@ class DefaultMessageProcessorSpec extends Specification {
             notThrown(ScanErrorException)
     }
 
+    // still fuzzy timing
     def "processing message status"() {
         given:
             AvMessage message = Utils.genNormalMessage()
             String testId = message.getId()
 
-            avService.scanBytes(_) >> {
-                sleep(50000)
-                return false
+            avService.scanBytesWithInfo(_) >> {
+                sleep(1000)
+                return Utils.OK_VIRUS_INFO
             }
 
         when:
             processor.sendMessage(message)
 
         then:
-            processor.messageStatus(testId) == MessageStatus.PROCESSING
+            conditions.eventually {
+                processor.messageStatus(testId) == MessageStatus.PROCESSING
+            }
     }
 
     def "processed message status"() {
