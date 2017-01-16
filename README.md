@@ -4,8 +4,8 @@
 [![Latest release](https://img.shields.io/badge/release-0.4-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.4)
 
 Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus service supports
-JMS, AMQP and HTTP for communication. AV-checker project was integrated as the checker submodule
-and then completely rewritten and the old code was removed.
+JMS, AMQP and REST for communication. AV-checker project was integrated as the checker submodule,
+then completely rewritten and the old code was removed.
 
  * [Release notes](#release-notes)
  * [Features](#features)
@@ -22,30 +22,31 @@ and then completely rewritten and the old code was removed.
 --
 
 ### Release notes
-Release [notes](RELEASE_NOTES.md)
+Release [NOTES](RELEASE_NOTES.md)
 
 ### Features
  * AMQP 0.9.1 support
  * JMS support
  * REST support
  * Message tracking DB service (PostgreSQL or Solr)
+ * Statistics module
  * Highly scalable architecture
  * Robust design
  
 ### Planned features
  * Separate REST app for better scaling and load balancer
- * Statistics module
  * AMQP 1.0
 
 ### Used components
  * **ClamAV** - open source anti-virus engine
- * **RabbitMQ** - open source message broker for AMQP
- * **ActiveMQ** - open source message broker for JMS
+ * **RabbitMQ** - open source message broker used for AMQP
+ * **ActiveMQ** - open source message broker used for JMS
  * **PostgreSQL** - open source DB
  * **Solr** - open source enterprise search platform
 
 **Frameworks and libraries**
  * **Spring**
+ * **Spring Boot**
  * **Spring REST** - REST
  * **Spring Security** - REST security
  * **Spring AMQP** - AMQP
@@ -95,6 +96,8 @@ rest-amqp | REST to AMQP | 0.5
 rest-client | REST client
 rest-jms | REST to JMS | 0.5
 rest-local | REST with direct connection | 0.5
+stats | enable statistics | 0.5
+stats-solr | statistics in Solr | 0.5
 
 Here will be the best combinations for various usages soon.
 
@@ -237,6 +240,8 @@ or
 ```
 Checking... failed!
 ```
+
+--
 
 ### Old checker
 You can find old checker under **legacy-checker** release.
