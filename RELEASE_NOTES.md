@@ -1,3 +1,33 @@
+## v0.5-rc1 (Jan 16, 2017)
+ * New REST to AMQP infrastructure
+ * New REST to JMS infrastructure
+ * New REST design and remote strategy
+ * Main message processor redesign
+ * Interfaces redesign
+ * Improved error messages
+ * New timed storage for saving temporary data
+ * New SocketPool class for reusing open sockets
+ * Performance tester improvement
+ * Used Spring BOM for dependencies
+ * Spring 5 migration
+ * New Haskell example client for sending messages
+ * Improved ClamAV wrapper
+ * Improved tests and coverage
+ * Added package info for packages
+ * Fixed Javadoc generation
+ * Migrated to Spring Boot
+ * Added Spring Actuator to REST
+ * Basic implementation of statistics (stats) module
+ * New REST endpoint for stats module
+ * Build configuration redesign
+ 
+#### modules
+ * New stats module
+
+#### Docker
+ * Updated SonarQube to 6.2
+ * Disabled logging for ClamAV
+
 ## v0.4 (Dec 6, 2016)
 
 ## v0.4-rc1 (Dec 5, 2016)
