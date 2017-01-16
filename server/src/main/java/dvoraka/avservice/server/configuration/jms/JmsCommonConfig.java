@@ -34,7 +34,10 @@ public class JmsCommonConfig {
 
     @Bean
     public ActiveMQConnectionFactory activeMQConnFactory() {
-        return new ActiveMQConnectionFactory(brokerUrl);
+        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
+        factory.setUseAsyncSend(true);
+
+        return factory;
     }
 
     @Bean
