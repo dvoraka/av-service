@@ -3,6 +3,7 @@ package dvoraka.avservice.db.service;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.db.model.AvMessageInfoData;
 import dvoraka.avservice.db.model.MessageInfo;
 import dvoraka.avservice.db.repository.DbMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;
@@ -66,11 +67,12 @@ public class DbMessageInfoService implements MessageInfoService {
 
     @Override
     public Stream<AvMessageInfo> loadInfoStream(Instant from, Instant to) {
-        List<MessageInfo> messageInfos = messageInfoRepository.findByCreatedBetween(
-                Date.from(from),
-                Date.from(to));
+        List<? extends AvMessageInfoData> messageInfos =
+                messageInfoRepository.findByCreatedBetween(
+                        Date.from(from),
+                        Date.from(to));
 
         return messageInfos.stream()
-                .map(MessageInfo::avMessageInfo);
+                .map(AvMessageInfoData::avMessageInfo);
     }
 }
