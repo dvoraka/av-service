@@ -26,7 +26,7 @@
 
 #### Docker
  * Updated SonarQube to 6.2
- * Disabled logging for ClamAV
+ * Disabled file logging for ClamAV
 
 ## v0.4 (Dec 6, 2016)
 
