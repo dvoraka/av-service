@@ -23,8 +23,10 @@ Log level: INFO
 DB logging: no
 
 ### Other scenarios
- * 1 million messages with AMQP server. It didn't show any memory leaks.
+ * **1 million** messages with AMQP server. It didn't show any memory leaks.
  * Result: **557** msgs/s
+ * **1 million** messages with JMS server. It didn't show any memory leaks.
+ * Result: **643** msgs/s
  
 ---
 
