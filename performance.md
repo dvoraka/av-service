@@ -125,6 +125,8 @@ Messages: 56/s
 
 ## Solr
 
+As a storage for data was used USB 3 2.5" HDD.
+
 Documents are Message info documents.
 
 ### Inserting documents
