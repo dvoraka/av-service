@@ -1,3 +1,5 @@
+## v0.5 (Jan 20, 2017)
+
 ## v0.5-rc1 (Jan 16, 2017)
  * New REST to AMQP infrastructure
  * New REST to JMS infrastructure
