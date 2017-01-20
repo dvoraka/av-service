@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Message info document.
  */
-public class MessageInfoDocument {
+public class MessageInfoDocument implements AvMessageInfoData {
 
     @Id
     private String id;

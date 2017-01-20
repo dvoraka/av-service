@@ -16,7 +16,7 @@ import java.util.Date;
  * Message info entity.
  */
 @Entity
-public class MessageInfo {
+public class MessageInfo implements AvMessageInfoData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

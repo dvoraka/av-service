@@ -3,6 +3,7 @@ package dvoraka.avservice.db.service;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.db.model.AvMessageInfoData;
 import dvoraka.avservice.db.model.MessageInfoDocument;
 import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;
@@ -96,12 +97,13 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     @Override
     public Stream<AvMessageInfo> loadInfoStream(Instant from, Instant to) {
-        List<MessageInfoDocument> infoDocuments = messageInfoRepository.findByCreatedBetween(
-                Date.from(from),
-                Date.from(to));
+        List<? extends AvMessageInfoData> infoDocuments =
+                messageInfoRepository.findByCreatedBetween(
+                        Date.from(from),
+                        Date.from(to));
 
         return infoDocuments.stream()
-                .map(MessageInfoDocument::avMessageInfo);
+                .map(AvMessageInfoData::avMessageInfo);
     }
 
     private MessageInfoDocument toMessageInfoDocument(
