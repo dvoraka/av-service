@@ -49,6 +49,17 @@ public final class Utils {
                 .build();
     }
 
+    public static AvMessage genFileMessage() {
+        return new DefaultAvMessage.Builder(genUuidString())
+                .serviceId(SERVICE_ID)
+                .correlationId("1-2-3")
+                .data(EICAR.getBytes(StandardCharsets.UTF_8))
+                .type(AvMessageType.FILE_REQUEST)
+                .filename("testFilename")
+                .owner(UUID.randomUUID())
+                .build();
+    }
+
     public static AvMessageInfo genAvMessageInfo(AvMessageSource source) {
         return new DefaultAvMessageInfo.Builder(genUuidString())
                 .source(source)

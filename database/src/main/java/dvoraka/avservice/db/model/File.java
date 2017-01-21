@@ -1,5 +1,8 @@
 package dvoraka.avservice.db.model;
 
+import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.DefaultAvMessage;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -51,5 +54,13 @@ public class File {
 
     public void setOwner(UUID owner) {
         this.owner = owner;
+    }
+
+    public AvMessage avMessage() {
+        return new DefaultAvMessage.Builder(UUID.randomUUID().toString())
+                .data(getData())
+                .filename(getFilename())
+                .owner(getOwner())
+                .build();
     }
 }
