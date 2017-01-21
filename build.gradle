@@ -223,7 +223,7 @@ allprojects {
         reportLevel = 'medium'
         sourceSets = [sourceSets.main]
 
-        ignoreFailures = false
+        ignoreFailures = true
     }
 
     tasks.withType(FindBugs) {
