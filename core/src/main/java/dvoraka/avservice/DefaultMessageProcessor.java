@@ -4,6 +4,7 @@ import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.service.TimedStorage;
@@ -124,7 +125,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
         messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
 
-        fileService.saveFile(message);
+        if (message.getType() == AvMessageType.FILE_REQUEST) {
+            fileService.saveFile(message);
+        }
 
         executorService.execute(() -> processMessage(message));
         log.debug("Message accepted.");

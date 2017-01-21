@@ -22,7 +22,7 @@ class DbFileServiceISpec extends Specification {
 
     def "save file"() {
         expect:
-            service.saveFile((FileMessage) Utils.genNormalMessage())
+            service.saveFile(Utils.genFileMessage())
     }
 
     def "save and load file"() {
