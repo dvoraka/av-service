@@ -7,6 +7,7 @@ import dvoraka.avservice.common.Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
@@ -14,23 +15,29 @@ import static java.util.Objects.requireNonNull;
  * Default AV message implementation.
  */
 @JsonDeserialize(builder = DefaultAvMessage.Builder.class)
-public final class DefaultAvMessage implements AvMessage {
+public final class DefaultAvMessage implements AvMessage, FileMessage {
 
     private final String id;
     private final String correlationId;
     private final byte[] data;
+    private final AvMessageType type;
     private final String serviceId;
     private final String virusInfo;
-    private final AvMessageType type;
+
+    private final String filename;
+    private final UUID owner;
 
 
     private DefaultAvMessage(Builder builder) {
         this.id = builder.id;
         this.correlationId = builder.correlationId;
         this.data = builder.data;
+        this.type = builder.type;
         this.serviceId = builder.serviceId;
         this.virusInfo = builder.virusInfo;
-        this.type = builder.type;
+
+        this.filename = builder.filename;
+        this.owner = builder.owner;
     }
 
     @Override
@@ -64,6 +71,16 @@ public final class DefaultAvMessage implements AvMessage {
     @Override
     public String getVirusInfo() {
         return virusInfo;
+    }
+
+    @Override
+    public String getFilename() {
+        return filename;
+    }
+
+    @Override
+    public UUID getOwner() {
+        return owner;
     }
 
     @Override
@@ -112,14 +129,19 @@ public final class DefaultAvMessage implements AvMessage {
         if (!Arrays.equals(data, that.data)) {
             return false;
         }
+        if (type != that.type) {
+            return false;
+        }
         if (serviceId != null ? !serviceId.equals(that.serviceId) : that.serviceId != null) {
             return false;
         }
         if (virusInfo != null ? !virusInfo.equals(that.virusInfo) : that.virusInfo != null) {
             return false;
         }
-
-        return type == that.type;
+        if (filename != null ? !filename.equals(that.filename) : that.filename != null) {
+            return false;
+        }
+        return owner != null ? owner.equals(that.owner) : that.owner == null;
     }
 
     @Override
@@ -128,15 +150,18 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
+    @SuppressWarnings("checkstyle:OperatorWrap")
     public String toString() {
-        return "DefaultAvMessage {"
-                + "id='" + id + '\''
-                + ", correlationId='" + correlationId + '\''
-                + ", data=" + Arrays.toString(data)
-                + ", serviceId='" + serviceId + '\''
-                + ", virusInfo='" + virusInfo + '\''
-                + ", type=" + type
-                + '}';
+        return "DefaultAvMessage{" +
+                "id='" + id + '\'' +
+                ", correlationId='" + correlationId + '\'' +
+                ", data=" + Arrays.toString(data) +
+                ", type=" + type +
+                ", serviceId='" + serviceId + '\'' +
+                ", virusInfo='" + virusInfo + '\'' +
+                ", filename='" + filename + '\'' +
+                ", owner=" + owner +
+                '}';
     }
 
     @JsonPOJOBuilder(withPrefix = "")
@@ -148,6 +173,8 @@ public final class DefaultAvMessage implements AvMessage {
         private AvMessageType type;
         private String serviceId;
         private String virusInfo;
+        private String filename;
+        private UUID owner;
 
 
         public Builder(@JsonProperty("id") String id) {
@@ -178,6 +205,16 @@ public final class DefaultAvMessage implements AvMessage {
 
         public Builder virusInfo(String info) {
             this.virusInfo = info;
+            return this;
+        }
+
+        public Builder filename(String filename) {
+            this.filename = filename;
+            return this;
+        }
+
+        public Builder owner(UUID owner) {
+            this.owner = owner;
             return this;
         }
 
