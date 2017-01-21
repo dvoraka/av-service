@@ -5,6 +5,7 @@ import dvoraka.avservice.db.repository.DbMessageInfoRepository;
 import dvoraka.avservice.db.service.DbFileService;
 import dvoraka.avservice.db.service.DbMessageInfoService;
 import dvoraka.avservice.db.service.FileService;
+import dvoraka.avservice.db.service.LocalFileService;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -76,7 +77,7 @@ public class DatabaseConfig {
 
     @Bean
     public FileService fileService(DbFileRepository dbFileRepository) {
-        return new DbFileService(dbFileRepository);
+        return new LocalFileService(new DbFileService(dbFileRepository));
     }
 
     private Properties hibernateProperties() {
