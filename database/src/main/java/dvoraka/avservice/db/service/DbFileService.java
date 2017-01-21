@@ -28,6 +28,8 @@ public class DbFileService implements FileService {
     public void saveFile(FileMessage message) {
         File file = new File();
         file.setData(message.getData());
+        file.setFilename(message.getFilename());
+        file.setOwner(message.getOwner());
 
         repository.save(file);
     }

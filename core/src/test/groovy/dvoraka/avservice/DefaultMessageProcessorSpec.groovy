@@ -6,8 +6,10 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.exception.ScanErrorException
+import dvoraka.avservice.db.service.FileService
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
+import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.util.concurrent.PollingConditions
@@ -22,6 +24,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     AvService avService
     MessageInfoService infoService
+    FileService fileService
 
     PollingConditions conditions
     String serviceId = 'TEST'
@@ -30,8 +33,10 @@ class DefaultMessageProcessorSpec extends Specification {
     def setup() {
         avService = Mock()
         infoService = Mock()
+        fileService = Mock()
 
         processor = new DefaultMessageProcessor(2, serviceId, avService, infoService)
+        ReflectionTestUtils.setField(processor, null, fileService, FileService.class)
         processor.start()
 
         conditions = new PollingConditions(timeout: 2)

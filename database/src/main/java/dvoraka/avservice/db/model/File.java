@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 /**
  * File entity.
@@ -16,6 +17,8 @@ public class File {
     private long id;
 
     private byte[] data;
+    private String filename;
+    private UUID owner;
 
 
     public long getId() {
@@ -32,5 +35,21 @@ public class File {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public UUID getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UUID owner) {
+        this.owner = owner;
     }
 }

@@ -7,6 +7,7 @@ import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.service.TimedStorage;
+import dvoraka.avservice.db.service.FileService;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +37,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private final AvService avService;
     private final MessageInfoService messageInfoService;
+    @Autowired // temporary
+    private FileService fileService;
 
     private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class);
 
@@ -120,6 +123,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processingMessages.put(message.getId());
 
         messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
+
+        fileService.saveFile(message);
 
         executorService.execute(() -> processMessage(message));
         log.debug("Message accepted.");

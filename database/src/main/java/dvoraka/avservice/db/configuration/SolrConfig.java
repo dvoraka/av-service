@@ -1,6 +1,8 @@
 package dvoraka.avservice.db.configuration;
 
 import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository;
+import dvoraka.avservice.db.service.DummyFileService;
+import dvoraka.avservice.db.service.FileService;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.db.service.SolrMessageInfoService;
 import org.apache.solr.client.solrj.SolrClient;
@@ -32,5 +34,10 @@ public class SolrConfig {
     @Bean
     public MessageInfoService messageInfoService(SolrMessageInfoRepository messageInfoRepository) {
         return new SolrMessageInfoService(messageInfoRepository);
+    }
+
+    @Bean
+    public FileService fileService() {
+        return new DummyFileService();
     }
 }
