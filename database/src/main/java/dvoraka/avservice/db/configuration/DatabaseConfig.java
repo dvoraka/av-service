@@ -1,11 +1,7 @@
 package dvoraka.avservice.db.configuration;
 
-import dvoraka.avservice.db.repository.DbFileRepository;
 import dvoraka.avservice.db.repository.DbMessageInfoRepository;
-import dvoraka.avservice.db.service.DbFileService;
 import dvoraka.avservice.db.service.DbMessageInfoService;
-import dvoraka.avservice.db.service.FileService;
-import dvoraka.avservice.db.service.LocalFileService;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -73,11 +69,6 @@ public class DatabaseConfig {
     @Bean
     public MessageInfoService messageInfoService(DbMessageInfoRepository messageInfoRepository) {
         return new DbMessageInfoService(messageInfoRepository);
-    }
-
-    @Bean
-    public FileService fileService(DbFileRepository dbFileRepository) {
-        return new LocalFileService(new DbFileService(dbFileRepository));
     }
 
     private Properties hibernateProperties() {

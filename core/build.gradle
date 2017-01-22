@@ -4,4 +4,5 @@ dependencies {
     compile project(':avprogram')
     compile project(':common')
     compile project(':database')
+    compile project(':storage')
 }

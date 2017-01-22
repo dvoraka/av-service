@@ -6,9 +6,9 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.exception.ScanErrorException
-import dvoraka.avservice.db.service.FileService
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
+import dvoraka.avservice.storage.service.FileService
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Specification
 import spock.lang.Subject

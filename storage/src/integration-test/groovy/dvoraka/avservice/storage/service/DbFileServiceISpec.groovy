@@ -1,4 +1,4 @@
-package dvoraka.avservice.db.service
+package dvoraka.avservice.storage.service
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
@@ -7,6 +7,7 @@ import dvoraka.avservice.db.configuration.DatabaseConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -14,6 +15,7 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [DatabaseConfig.class])
 @ActiveProfiles(['db'])
+@Ignore('WIP')
 class DbFileServiceISpec extends Specification {
 
     @Autowired

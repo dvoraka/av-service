@@ -1,6 +1,4 @@
-package dvoraka.avservice.db.model;
-
-import dvoraka.avservice.common.data.AvMessageInfo;
+package dvoraka.avservice.common.data;
 
 /**
  * Interface for AvMessageInfo data.

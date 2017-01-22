@@ -8,15 +8,15 @@ import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.service.TimedStorage;
-import dvoraka.avservice.db.service.FileService;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
+import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Main AV message processor.
  */
-@Component
+@Service
 @ManagedResource
 public class DefaultMessageProcessor implements MessageProcessor {
 
@@ -43,7 +43,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class);
 
-    public static final int DEFAULT_CACHE_TIMEOUT = 10 * 60 * 1_000;
+    public static final int CACHE_TIMEOUT = 10 * 60 * 1_000;
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
 
@@ -84,8 +84,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
         ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
 
-        processingMessages = new TimedStorage<>(DEFAULT_CACHE_TIMEOUT);
-        processedMessages = new TimedStorage<>(DEFAULT_CACHE_TIMEOUT);
+        processingMessages = new TimedStorage<>(CACHE_TIMEOUT);
+        processedMessages = new TimedStorage<>(CACHE_TIMEOUT);
 
         avMessageListeners = new CopyOnWriteArrayList<>();
     }

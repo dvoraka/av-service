@@ -1,4 +1,4 @@
-package dvoraka.avservice.db.service;
+package dvoraka.avservice.storage.service;
 
 import dvoraka.avservice.common.data.FileMessage;
 

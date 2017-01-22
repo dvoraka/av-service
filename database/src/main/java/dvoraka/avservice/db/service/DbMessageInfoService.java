@@ -2,8 +2,8 @@ package dvoraka.avservice.db.service;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
+import dvoraka.avservice.common.data.AvMessageInfoData;
 import dvoraka.avservice.common.data.AvMessageSource;
-import dvoraka.avservice.db.model.AvMessageInfoData;
 import dvoraka.avservice.db.model.MessageInfo;
 import dvoraka.avservice.db.repository.DbMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;

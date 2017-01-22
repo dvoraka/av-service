@@ -1,6 +1,7 @@
 package dvoraka.avservice.db.model;
 
 import dvoraka.avservice.common.data.AvMessageInfo;
+import dvoraka.avservice.common.data.AvMessageInfoData;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.DefaultAvMessageInfo;
 import org.apache.solr.client.solrj.beans.Field;
