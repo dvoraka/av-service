@@ -8,58 +8,68 @@ import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
- * AMQP AV server implementation
+ * AV server implementation
  */
+@Service
 public class BasicAvServer implements AvServer {
 
-    @Autowired
-    private ServerComponent serverComponent;
-    @Autowired
-    private MessageProcessor messageProcessor;
-    @Autowired
-    private MessageInfoService messageInfoService;
+    private final ServerComponent serverComponent;
+    private final MessageProcessor messageProcessor;
+    private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(BasicAvServer.class.getName());
+    private static final Logger log = LogManager.getLogger(BasicAvServer.class);
+
     public static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.SERVER;
+
+    private final String serviceId;
+    private final ProcessedAvMessageListener processedAvMessageListener;
 
     private boolean started;
     private boolean stopped = true;
     private boolean running;
-    private String serviceId;
-
-    private ProcessedAvMessageListener processedAvMessageListener;
 
 
-    public BasicAvServer(String serviceId) {
+    @Autowired
+    public BasicAvServer(
+            String serviceId,
+            ServerComponent serverComponent,
+            MessageProcessor messageProcessor,
+            MessageInfoService messageInfoService
+    ) {
         this.serviceId = serviceId;
+        this.serverComponent = serverComponent;
+        this.messageProcessor = messageProcessor;
+        this.messageInfoService = messageInfoService;
+
+        processedAvMessageListener = new ProcessedAvMessageListener();
     }
 
     @Override
     public void start() {
-        log.debug("Server started.");
+        log.info("Server started.");
         setStopped(false);
         setStarted(true);
 
         serverComponent.addAvMessageListener(this);
-
-        processedAvMessageListener = new ProcessedAvMessageListener();
         messageProcessor.addProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(true);
-        log.debug("Server is running.");
+        log.info("Server is running.");
     }
 
     @Override
     public void stop() {
-        log.debug("Server stopped.");
+        log.info("Server stopped.");
         setStopped(true);
+
         serverComponent.removeAvMessageListener(this);
         messageProcessor.removeProcessedAVMessageListener(processedAvMessageListener);
-        setRunning(false);
 
-        log.debug("Server has stopped");
+        setRunning(false);
+        log.info("Server has stopped");
     }
 
     @Override
@@ -87,11 +97,11 @@ public class BasicAvServer implements AvServer {
         messageProcessor.sendMessage(message);
     }
 
-    public void setStarted(boolean started) {
+    private void setStarted(boolean started) {
         this.started = started;
     }
 
-    public void setStopped(boolean stopped) {
+    private void setStopped(boolean stopped) {
         this.stopped = stopped;
     }
 

@@ -1,19 +1,29 @@
 package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
-import org.springframework.test.util.ReflectionTestUtils
+import dvoraka.avservice.db.service.MessageInfoService
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * Basic AV server spec.
  */
 class BasicAvServerSpec extends Specification {
 
+    @Subject
     BasicAvServer server
+
+    ServerComponent component
+    MessageProcessor processor
+    MessageInfoService messageInfoService
 
 
     def setup() {
-        server = new BasicAvServer('TEST1')
+        component = Mock()
+        processor = Mock()
+        messageInfoService = Mock()
+
+        server = new BasicAvServer('TEST1', component, processor, messageInfoService)
     }
 
     def "default server status"() {
@@ -24,12 +34,6 @@ class BasicAvServerSpec extends Specification {
     }
 
     def "start server"() {
-        given:
-            ServerComponent component = Mock()
-            MessageProcessor processor = Mock()
-
-            setScMpMocks(component, processor)
-
         when:
             server.start()
 
@@ -38,12 +42,6 @@ class BasicAvServerSpec extends Specification {
     }
 
     def "after server started"() {
-        given:
-            ServerComponent component = Mock()
-            MessageProcessor processor = Mock()
-
-            setScMpMocks(component, processor)
-
         when:
             server.start()
 
@@ -53,12 +51,6 @@ class BasicAvServerSpec extends Specification {
     }
 
     def "stop server"() {
-        given:
-            ServerComponent component = Mock()
-            MessageProcessor processor = Mock()
-
-            setScMpMocks(component, processor)
-
         when:
             server.start()
 
@@ -73,12 +65,6 @@ class BasicAvServerSpec extends Specification {
     }
 
     def "restart server"() {
-        given:
-            ServerComponent component = Mock()
-            MessageProcessor processor = Mock()
-
-            setScMpMocks(component, processor)
-
         when:
             server.start()
 
@@ -90,10 +76,5 @@ class BasicAvServerSpec extends Specification {
 
         then:
             server.isStarted()
-    }
-
-    void setScMpMocks(ServerComponent component, MessageProcessor processor) {
-        ReflectionTestUtils.setField(server, null, component, ServerComponent.class)
-        ReflectionTestUtils.setField(server, null, processor, MessageProcessor.class)
     }
 }

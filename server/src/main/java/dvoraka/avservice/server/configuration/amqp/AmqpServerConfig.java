@@ -1,5 +1,6 @@
 package dvoraka.avservice.server.configuration.amqp;
 
+import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
@@ -41,8 +42,12 @@ public class AmqpServerConfig {
 
 
     @Bean
-    public AvServer avServer() {
-        return new BasicAvServer(serviceId);
+    public AvServer avServer(
+            ServerComponent serverComponent,
+            MessageProcessor messageProcessor,
+            MessageInfoService messageInfoService
+    ) {
+        return new BasicAvServer(serviceId, serverComponent, messageProcessor, messageInfoService);
     }
 
     @Bean
