@@ -15,7 +15,7 @@ import static java.util.Objects.requireNonNull;
  * Default AV message implementation.
  */
 @JsonDeserialize(builder = DefaultAvMessage.Builder.class)
-public final class DefaultAvMessage implements AvMessage, FileMessage {
+public final class DefaultAvMessage implements AvMessage {
 
     private final String id;
     private final String correlationId;
