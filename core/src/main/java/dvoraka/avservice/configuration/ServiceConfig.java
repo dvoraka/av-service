@@ -18,6 +18,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @PropertySource("classpath:avservice.properties")
 @Import({
         ServiceCoreConfig.class,
+        // AV program
         AvProgramConfig.class,
         // DB
         DatabaseConfig.class,

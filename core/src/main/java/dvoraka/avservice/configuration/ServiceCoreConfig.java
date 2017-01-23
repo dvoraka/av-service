@@ -1,11 +1,13 @@
 package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.DefaultMessageProcessor;
+import dvoraka.avservice.FileMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.service.DefaultAvService;
+import dvoraka.avservice.storage.service.FileService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,11 +47,18 @@ public class ServiceCoreConfig {
 
     @Bean
     public MessageProcessor messageProcessor(
-            AvService avService, MessageInfoService messageInfoService) {
+            AvService avService,
+            MessageInfoService messageInfoService
+    ) {
         return new DefaultMessageProcessor(
                 cpuCores,
                 serviceId,
                 avService,
                 messageInfoService);
+    }
+
+    @Bean
+    public MessageProcessor fileMessageProcessor(FileService fileService) {
+        return new FileMessageProcessor(fileService);
     }
 }
