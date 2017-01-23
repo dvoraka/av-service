@@ -28,8 +28,10 @@ public class AmqpFileServerConfig {
 
     @Value("${avservice.amqp.fileReceiveExchange}")
     private String fileReceiveExchange;
+    @Value("${avservice.amqp.resultExchange}")
+    private String resultExchange;
 
-    @Value("${avservice.serviceId:default1}")
+    @Value("${avservice.serviceId}")
     private String serviceId;
 
 
