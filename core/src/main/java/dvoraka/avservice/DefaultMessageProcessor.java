@@ -4,13 +4,11 @@ import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
-import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanErrorException;
 import dvoraka.avservice.common.service.TimedStorage;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
-import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
 
     private final AvService avService;
     private final MessageInfoService messageInfoService;
-    @Autowired // temporary
-    private FileService fileService;
 
     private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class);
 
@@ -124,10 +120,6 @@ public class DefaultMessageProcessor implements MessageProcessor {
         processingMessages.put(message.getId());
 
         messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
-
-        if (message.getType() == AvMessageType.FILE_REQUEST) {
-            fileService.saveFile(message);
-        }
 
         executorService.execute(() -> processMessage(message));
         log.debug("Message accepted.");
