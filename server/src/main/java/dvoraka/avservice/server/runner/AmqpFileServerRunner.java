@@ -10,13 +10,12 @@ import java.io.IOException;
 /**
  * File server runner.
  */
-public class FileServerRunner extends AbstractServiceRunner {
+public class AmqpFileServerRunner extends AbstractServiceRunner {
 
     public static void main(String[] args) throws IOException {
-        FileServerRunner runner = new FileServerRunner();
+        AmqpFileServerRunner runner = new AmqpFileServerRunner();
         runner.run();
     }
-
 
     @Override
     public String[] profiles() {
