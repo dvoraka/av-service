@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
 /**
- * Main AV REST service.
+ * Anti-virus REST service.
  */
 @Validated
 public interface AvRestService {

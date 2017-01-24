@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,7 @@ public class AvController {
      * @param info the info String
      * @return the info
      */
-    @RequestMapping(value = "/")
+    @GetMapping("/")
     public String info(@RequestParam(value = "info", defaultValue = "AV service") String info) {
         return info;
     }
@@ -56,7 +57,7 @@ public class AvController {
      * @param id the message ID
      * @return the status
      */
-    @RequestMapping(value = "/msg-status/{id}", method = RequestMethod.GET)
+    @GetMapping("/msg-status/{id}")
     public MessageStatus messageStatus(@PathVariable String id) {
         return avRestService.messageStatus(id);
     }

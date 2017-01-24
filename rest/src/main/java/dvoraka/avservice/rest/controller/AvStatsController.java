@@ -30,13 +30,13 @@ public class AvStatsController {
         this.statsService = requireNonNull(statsService);
     }
 
-    @RequestMapping(value = "/about")
+    @GetMapping("/about")
     public String about() {
         log.info("About called.");
         return "AV statistics";
     }
 
-    @GetMapping(value = "/today")
+    @GetMapping("/today")
     public long today() {
         return statsService.todayCount();
     }
