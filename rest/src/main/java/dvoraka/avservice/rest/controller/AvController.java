@@ -15,9 +15,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,32 +68,46 @@ public class AvController {
      * @param serviceId the service ID
      * @return the status
      */
-    @RequestMapping(value = "/msg-status/{id}/{serviceId}", method = RequestMethod.GET)
-    public MessageStatus messageStatus(@PathVariable String id, @PathVariable String serviceId) {
+    @GetMapping("/msg-status/{id}/{serviceId}")
+    public MessageStatus messageStatus(
+            @PathVariable String id,
+            @PathVariable String serviceId
+    ) {
         return avRestService.messageStatus(id, serviceId);
     }
 
     /**
-     * Returns the service ID for the message ID.
+     * Returns a service ID for the message ID.
      *
      * @param id the message ID
      * @return the service ID
      */
-    @RequestMapping(value = "/msg-service-id/{id}", method = RequestMethod.GET)
+    @GetMapping("/msg-service-id/{id}")
     public String messageServiceId(@PathVariable String id) {
         return avRestService.messageServiceId(id);
     }
 
-    @RequestMapping(value = "/msg-check", method = RequestMethod.POST)
-    public ResponseEntity<String> messageCheck(@RequestBody DefaultAvMessage message) {
+    /**
+     * Checks an AV message for viruses.
+     *
+     * @param message the message
+     * @return the status
+     */
+    @PostMapping("/msg-check")
+    public ResponseEntity<Void> messageCheck(@RequestBody DefaultAvMessage message) {
         log.debug("Check: {}", message);
-
         avRestService.messageCheck(message);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/get-response/{id}", method = RequestMethod.GET)
+    /**
+     * Returns an info about a message check.
+     *
+     * @param id the message ID
+     * @return the message with info
+     */
+    @GetMapping("/get-response/{id}")
     public AvMessage getResponse(@PathVariable String id) {
         return avRestService.getResponse(id);
     }
@@ -104,13 +117,13 @@ public class AvController {
      *
      * @return the generated message
      */
-    @RequestMapping(value = "/gen-msg")
+    @GetMapping("/gen-msg")
     public AvMessage generateMessage() {
         final int dataSize = 10;
         return new DefaultAvMessage.Builder(Utils.genUuidString())
-                .serviceId("testing-service")
-                .virusInfo("bad")
-                .correlationId("corrId")
+                .serviceId("REST")
+                .virusInfo("NO-INFO")
+                .correlationId("CORRELATION-ID")
                 .data(new byte[dataSize])
                 .type(AvMessageType.RESPONSE)
                 .build();

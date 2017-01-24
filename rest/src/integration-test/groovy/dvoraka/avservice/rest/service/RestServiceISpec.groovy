@@ -40,7 +40,7 @@ class RestServiceISpec extends Specification {
 
         expect:
             message != null
-            message.getServiceId() == 'testing-service'
+            message.getServiceId() == 'REST'
     }
 
     def "send normal message"() {
