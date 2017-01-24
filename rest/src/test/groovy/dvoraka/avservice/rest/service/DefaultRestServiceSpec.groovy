@@ -14,14 +14,14 @@ import spock.lang.Subject
 class DefaultRestServiceSpec extends Specification {
 
     @Subject
-    DefaultRestService service
+    DefaultAvRestService service
 
     RestStrategy strategy
 
 
     def setup() {
         strategy = Stub()
-        service = new DefaultRestService(strategy)
+        service = new DefaultAvRestService(strategy)
     }
 
     def "message status with processed status"() {

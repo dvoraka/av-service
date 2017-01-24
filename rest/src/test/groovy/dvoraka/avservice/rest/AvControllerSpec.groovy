@@ -5,7 +5,7 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.rest.controller.AvController
-import dvoraka.avservice.rest.service.RestService
+import dvoraka.avservice.rest.service.AvRestService
 import org.springframework.http.MediaType
 import org.springframework.test.util.ReflectionTestUtils
 import org.springframework.test.web.servlet.MockMvc
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AvControllerSpec extends Specification {
 
     MockMvc mockMvc
-    RestService service
+    AvRestService service
 
 
     def setup() {

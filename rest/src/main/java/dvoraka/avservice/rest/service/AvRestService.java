@@ -10,7 +10,7 @@ import javax.validation.Valid;
  * Main AV REST service.
  */
 @Validated
-public interface RestService {
+public interface AvRestService {
 
     MessageStatus messageStatus(String id);
 
@@ -19,6 +19,10 @@ public interface RestService {
     String messageServiceId(String id);
 
     void messageCheck(@Valid AvMessage message);
+
+    void messageSave(@Valid AvMessage message);
+
+    AvMessage messageLoad(String filename, String ownerId);
 
     AvMessage getResponse(String id);
 

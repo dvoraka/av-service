@@ -5,7 +5,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
-import dvoraka.avservice.rest.service.RestService;
+import dvoraka.avservice.rest.service.AvRestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +29,14 @@ import javax.validation.ConstraintViolationException;
 @RestController
 public class AvController {
 
-    private final RestService restService;
+    private final AvRestService avRestService;
 
     private static final Logger log = LogManager.getLogger(AvController.class);
 
 
     @Autowired
-    public AvController(RestService restService) {
-        this.restService = restService;
+    public AvController(AvRestService restService) {
+        this.avRestService = restService;
     }
 
     /**
@@ -58,7 +58,7 @@ public class AvController {
      */
     @RequestMapping(value = "/msg-status/{id}", method = RequestMethod.GET)
     public MessageStatus messageStatus(@PathVariable String id) {
-        return restService.messageStatus(id);
+        return avRestService.messageStatus(id);
     }
 
     /**
@@ -70,7 +70,7 @@ public class AvController {
      */
     @RequestMapping(value = "/msg-status/{id}/{serviceId}", method = RequestMethod.GET)
     public MessageStatus messageStatus(@PathVariable String id, @PathVariable String serviceId) {
-        return restService.messageStatus(id, serviceId);
+        return avRestService.messageStatus(id, serviceId);
     }
 
     /**
@@ -81,21 +81,21 @@ public class AvController {
      */
     @RequestMapping(value = "/msg-service-id/{id}", method = RequestMethod.GET)
     public String messageServiceId(@PathVariable String id) {
-        return restService.messageServiceId(id);
+        return avRestService.messageServiceId(id);
     }
 
     @RequestMapping(value = "/msg-check", method = RequestMethod.POST)
     public ResponseEntity<String> messageCheck(@RequestBody DefaultAvMessage message) {
         log.debug("Check: {}", message);
 
-        restService.messageCheck(message);
+        avRestService.messageCheck(message);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/get-response/{id}", method = RequestMethod.GET)
     public AvMessage getResponse(@PathVariable String id) {
-        return restService.getResponse(id);
+        return avRestService.getResponse(id);
     }
 
     /**

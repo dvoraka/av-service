@@ -18,11 +18,11 @@ import static java.util.Objects.requireNonNull;
 @RequestMapping(MAPPING)
 public class AvStatsController {
 
-    public static final Logger log = LogManager.getLogger(AvStatsController.class);
+    private final StatsService statsService;
+
+    private static final Logger log = LogManager.getLogger(AvStatsController.class);
 
     public static final String MAPPING = "/stats";
-
-    private final StatsService statsService;
 
 
     @Autowired

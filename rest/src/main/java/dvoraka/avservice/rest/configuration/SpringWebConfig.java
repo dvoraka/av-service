@@ -4,8 +4,8 @@ import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.rest.RestStrategy;
 import dvoraka.avservice.rest.controller.AvController;
 import dvoraka.avservice.rest.controller.AvStatsController;
-import dvoraka.avservice.rest.service.DefaultRestService;
-import dvoraka.avservice.rest.service.RestService;
+import dvoraka.avservice.rest.service.AvRestService;
+import dvoraka.avservice.rest.service.DefaultAvRestService;
 import dvoraka.avservice.stats.StatsService;
 import dvoraka.avservice.stats.configuration.StatsConfig;
 import org.springframework.context.annotation.Bean;
@@ -33,12 +33,12 @@ import javax.validation.Validator;
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
-    public RestService restService(RestStrategy restStrategy) {
-        return new DefaultRestService(restStrategy);
+    public AvRestService restService(RestStrategy restStrategy) {
+        return new DefaultAvRestService(restStrategy);
     }
 
     @Bean
-    public AvController avController(RestService restService) {
+    public AvController avController(AvRestService restService) {
         return new AvController(restService);
     }
 

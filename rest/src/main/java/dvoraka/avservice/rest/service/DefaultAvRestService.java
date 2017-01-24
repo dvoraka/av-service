@@ -13,7 +13,7 @@ import java.util.Set;
  * Default REST service implementation.
  */
 @Service
-public class DefaultRestService implements RestService {
+public class DefaultAvRestService implements AvRestService {
 
     private final RestStrategy restStrategy;
 
@@ -21,7 +21,7 @@ public class DefaultRestService implements RestService {
 
 
     @Autowired
-    public DefaultRestService(RestStrategy restStrategy) {
+    public DefaultAvRestService(RestStrategy restStrategy) {
         processingMessages = new HashSet<>();
         this.restStrategy = restStrategy;
     }
@@ -51,6 +51,16 @@ public class DefaultRestService implements RestService {
     public void messageCheck(AvMessage message) {
         processingMessages.add(message.getId());
         restStrategy.messageCheck(message);
+    }
+
+    @Override
+    public void messageSave(AvMessage message) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public AvMessage messageLoad(String filename, String ownerId) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
