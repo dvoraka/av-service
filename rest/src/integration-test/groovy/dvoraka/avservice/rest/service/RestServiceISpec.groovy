@@ -31,7 +31,8 @@ class RestServiceISpec extends Specification {
     @Autowired
     RestClient client
 
-    String checkPath = "/msg-check"
+    String checkPath = '/msg-check'
+    String savePath = '/file/save'
 
 
     def "get testing message"() {
@@ -49,6 +50,17 @@ class RestServiceISpec extends Specification {
 
         when:
             client.postMessage(message, checkPath)
+
+        then:
+            notThrown(Exception)
+    }
+
+    def "save message"() {
+        given:
+            AvMessage message = Utils.genNormalMessage()
+
+        when:
+            client.postMessage(message, savePath)
 
         then:
             notThrown(Exception)

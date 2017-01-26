@@ -4,6 +4,7 @@ import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.rest.RestStrategy;
 import dvoraka.avservice.rest.controller.AvController;
 import dvoraka.avservice.rest.controller.AvStatsController;
+import dvoraka.avservice.rest.controller.FileController;
 import dvoraka.avservice.rest.service.AvRestService;
 import dvoraka.avservice.rest.service.DefaultAvRestService;
 import dvoraka.avservice.stats.StatsService;
@@ -40,6 +41,11 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public AvController avController(AvRestService restService) {
         return new AvController(restService);
+    }
+
+    @Bean
+    public FileController fileController(AvRestService restService) {
+        return new FileController(restService);
     }
 
     @Bean
