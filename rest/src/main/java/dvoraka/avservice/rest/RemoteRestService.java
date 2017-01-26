@@ -4,6 +4,7 @@ import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.service.TimedStorage;
+import dvoraka.avservice.rest.service.AvRestService;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,11 +27,11 @@ import java.util.concurrent.TimeUnit;
  * Remote REST strategy. Receives requests through REST and sends it along over network.
  */
 @Service
-public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
+public class RemoteRestService implements AvRestService, AvMessageListener {
 
     private final ServerComponent serverComponent;
 
-    private static final Logger log = LogManager.getLogger(RemoteRestStrategy.class);
+    private static final Logger log = LogManager.getLogger(RemoteRestService.class);
 
     private static final String CACHE_NAME = "remoteRestCache";
 
@@ -45,7 +46,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
 
 
     @Autowired
-    public RemoteRestStrategy(ServerComponent serverComponent) {
+    public RemoteRestService(ServerComponent serverComponent) {
         this.serverComponent = serverComponent;
     }
 
@@ -102,6 +103,13 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
         log.debug("Saving: {}", message);
         serverComponent.sendAvMessage(message);
     }
+
+    @Override
+    public AvMessage loadMessage(String filename, String ownerId) {
+        //TODO
+        return null;
+    }
+
 
     @Override
     public AvMessage getResponse(String id) {

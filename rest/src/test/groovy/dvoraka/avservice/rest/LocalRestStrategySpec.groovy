@@ -15,7 +15,7 @@ import spock.util.concurrent.PollingConditions
 class LocalRestStrategySpec extends Specification {
 
     @Subject
-    LocalRestStrategy strategy
+    LocalRestService strategy
 
     MessageProcessor processor
     String testId = 'TEST-ID'
@@ -25,7 +25,7 @@ class LocalRestStrategySpec extends Specification {
 
     def setup() {
         processor = Mock()
-        strategy = new LocalRestStrategy(processor)
+        strategy = new LocalRestService(processor)
         conditions = new PollingConditions(timeout: 2)
     }
 

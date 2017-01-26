@@ -4,6 +4,7 @@ import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import dvoraka.avservice.rest.service.AvRestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;
@@ -25,18 +26,18 @@ import java.util.concurrent.TimeUnit;
  * Local REST strategy. Uses directly the message processor.
  */
 @Service
-public class LocalRestStrategy implements RestStrategy, AvMessageListener {
+public class LocalRestService implements AvRestService, AvMessageListener {
 
     private final MessageProcessor restMessageProcessor;
 
-    private static final Logger log = LogManager.getLogger(LocalRestStrategy.class.getName());
+    private static final Logger log = LogManager.getLogger(LocalRestService.class.getName());
 
     private CacheManager cacheManager;
     private Cache<String, AvMessage> messageCache;
 
 
     @Autowired
-    public LocalRestStrategy(MessageProcessor restMessageProcessor) {
+    public LocalRestService(MessageProcessor restMessageProcessor) {
         this.restMessageProcessor = restMessageProcessor;
         initializeCache();
     }
@@ -82,6 +83,12 @@ public class LocalRestStrategy implements RestStrategy, AvMessageListener {
     @Override
     public void saveMessage(AvMessage message) {
         // call composite MP
+    }
+
+    @Override
+    public AvMessage loadMessage(String filename, String ownerId) {
+        //TODO
+        return null;
     }
 
     @Override

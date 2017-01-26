@@ -13,14 +13,14 @@ import spock.lang.Subject
 class RemoteRestStrategySpec extends Specification {
 
     @Subject
-    RemoteRestStrategy strategy
+    RemoteRestService strategy
 
     ServerComponent serverComponent
 
 
     def setup() {
         serverComponent = Mock()
-        strategy = new RemoteRestStrategy(serverComponent)
+        strategy = new RemoteRestService(serverComponent)
     }
 
     def cleanup() {

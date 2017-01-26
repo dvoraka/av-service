@@ -94,7 +94,7 @@ public class AvController {
      * @return the status
      */
     @PostMapping("/msg-check")
-    public ResponseEntity<Void> messageCheck(@RequestBody DefaultAvMessage message) {
+    public ResponseEntity<Void> checkMessage(@RequestBody DefaultAvMessage message) {
         log.debug("Check: {}", message);
         avRestService.checkMessage(message);
 

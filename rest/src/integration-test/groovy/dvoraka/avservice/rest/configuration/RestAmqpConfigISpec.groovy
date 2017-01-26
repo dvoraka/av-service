@@ -1,6 +1,6 @@
 package dvoraka.avservice.rest.configuration
 
-import dvoraka.avservice.rest.RestStrategy
+import dvoraka.avservice.rest.service.AvRestService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -16,7 +16,7 @@ import spock.lang.Specification
 class RestAmqpConfigISpec extends Specification {
 
     @Autowired
-    RestStrategy restStrategy
+    AvRestService avRestService
 
 
     def "test"() {
