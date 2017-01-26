@@ -2,6 +2,7 @@ package dvoraka.avservice.rest.configuration;
 
 import dvoraka.avservice.rest.RestClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -22,7 +23,10 @@ public class RestClientConfig {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        //TODO
+        return new RestTemplateBuilder()
+                .basicAuthorization("guest", "guest")
+                .build();
     }
 
     @Bean

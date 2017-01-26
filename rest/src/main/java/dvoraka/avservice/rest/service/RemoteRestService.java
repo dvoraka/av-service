@@ -99,7 +99,7 @@ public class RemoteRestService implements AvRestService, AvMessageListener {
     }
 
     @Override
-    public void saveMessage(AvMessage message) {
+    public void saveMessage(AvMessage message, String ownerId) {
         log.debug("Saving: {}", message);
         serverComponent.sendAvMessage(message);
     }

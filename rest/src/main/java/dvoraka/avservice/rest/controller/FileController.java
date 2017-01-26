@@ -51,8 +51,10 @@ public class FileController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Void> saveFile(@RequestBody DefaultAvMessage file) {
-        restService.saveMessage(file);
+    public ResponseEntity<Void> saveFile(@RequestBody DefaultAvMessage file, Principal principal) {
+        String username = principal.getName();
+        log.info("Principal: " + principal);
+        restService.saveMessage(file, username);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
