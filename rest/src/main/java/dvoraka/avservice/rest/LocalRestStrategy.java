@@ -80,6 +80,11 @@ public class LocalRestStrategy implements RestStrategy, AvMessageListener {
     }
 
     @Override
+    public void saveMessage(AvMessage message) {
+        // call composite MP
+    }
+
+    @Override
     public AvMessage getResponse(String id) {
         return messageCache.get(id);
     }

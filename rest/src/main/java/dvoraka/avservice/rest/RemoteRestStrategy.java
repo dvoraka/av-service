@@ -98,6 +98,12 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     }
 
     @Override
+    public void saveMessage(AvMessage message) {
+        log.debug("Saving: {}", message);
+        serverComponent.sendAvMessage(message);
+    }
+
+    @Override
     public AvMessage getResponse(String id) {
         return messageCache.get(id);
     }

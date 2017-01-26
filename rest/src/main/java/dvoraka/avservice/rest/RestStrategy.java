@@ -8,10 +8,29 @@ import dvoraka.avservice.common.data.MessageStatus;
  */
 public interface RestStrategy {
 
+    /**
+     * Returns a message status.
+     *
+     * @param id the message ID
+     * @return the status
+     */
     MessageStatus messageStatus(String id);
 
+    /**
+     * Returns a message status.
+     *
+     * @param id        the message ID
+     * @param serviceId the service ID
+     * @return the status
+     */
     MessageStatus messageStatus(String id, String serviceId);
 
+    /**
+     * Returns a service ID for the given message.
+     *
+     * @param id the message ID
+     * @return the service ID
+     */
     String messageServiceId(String id);
 
     /**
@@ -20,6 +39,13 @@ public interface RestStrategy {
      * @param message the AV message
      */
     void checkMessage(AvMessage message);
+
+    /**
+     * Saves an AV message.
+     *
+     * @param message the message.
+     */
+    void saveMessage(AvMessage message);
 
     /**
      * Returns a response AV message.

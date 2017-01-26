@@ -52,7 +52,7 @@ public class FileController {
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveFile(@RequestBody DefaultAvMessage file) {
-//        restService.saveMessage(file);
+        restService.saveMessage(file);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

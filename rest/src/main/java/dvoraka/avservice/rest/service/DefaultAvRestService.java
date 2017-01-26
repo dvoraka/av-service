@@ -55,7 +55,7 @@ public class DefaultAvRestService implements AvRestService {
 
     @Override
     public void saveMessage(AvMessage message) {
-        throw new UnsupportedOperationException();
+        restStrategy.saveMessage(message);
     }
 
     @Override
