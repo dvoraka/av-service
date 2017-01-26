@@ -1,7 +1,7 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.rest.RemoteRestService;
 import dvoraka.avservice.rest.service.AvRestService;
+import dvoraka.avservice.rest.service.RemoteRestService;
 import dvoraka.avservice.server.ServerComponent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

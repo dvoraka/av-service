@@ -1,4 +1,4 @@
-package dvoraka.avservice.rest
+package dvoraka.avservice.rest.service
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
@@ -10,7 +10,7 @@ import spock.lang.Subject
 /**
  * Remote REST strategy spec.
  */
-class RemoteRestStrategySpec extends Specification {
+class RemoteRestServiceSpec extends Specification {
 
     @Subject
     RemoteRestService strategy

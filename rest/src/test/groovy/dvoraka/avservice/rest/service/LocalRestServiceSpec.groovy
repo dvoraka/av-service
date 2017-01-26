@@ -1,4 +1,4 @@
-package dvoraka.avservice.rest
+package dvoraka.avservice.rest.service
 
 import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
@@ -12,7 +12,7 @@ import spock.util.concurrent.PollingConditions
 /**
  * Local REST strategy spec.
  */
-class LocalRestStrategySpec extends Specification {
+class LocalRestServiceSpec extends Specification {
 
     @Subject
     LocalRestService strategy

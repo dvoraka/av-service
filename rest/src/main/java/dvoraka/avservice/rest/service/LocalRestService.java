@@ -1,10 +1,9 @@
-package dvoraka.avservice.rest;
+package dvoraka.avservice.rest.service;
 
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
-import dvoraka.avservice.rest.service.AvRestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;
@@ -23,7 +22,7 @@ import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Local REST strategy. Uses directly the message processor.
+ * Local REST service implementation. Uses directly the message processor.
  */
 @Service
 public class LocalRestService implements AvRestService, AvMessageListener {

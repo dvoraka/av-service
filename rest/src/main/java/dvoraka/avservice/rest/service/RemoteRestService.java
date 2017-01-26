@@ -1,10 +1,9 @@
-package dvoraka.avservice.rest;
+package dvoraka.avservice.rest.service;
 
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.service.TimedStorage;
-import dvoraka.avservice.rest.service.AvRestService;
 import dvoraka.avservice.server.ServerComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +23,8 @@ import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Remote REST strategy. Receives requests through REST and sends it along over network.
+ * Remote REST service implementation. Receives requests through REST
+ * and sends it along over the network.
  */
 @Service
 public class RemoteRestService implements AvRestService, AvMessageListener {
