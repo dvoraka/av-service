@@ -91,7 +91,7 @@ public class RemoteRestStrategy implements RestStrategy, AvMessageListener {
     }
 
     @Override
-    public void messageCheck(AvMessage message) {
+    public void checkMessage(AvMessage message) {
         log.debug("Checking: {}", message);
         processingMsgs.put(message.getId());
         serverComponent.sendAvMessage(message);

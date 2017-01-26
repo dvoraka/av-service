@@ -9,6 +9,7 @@ import dvoraka.avservice.rest.RestClient
 import dvoraka.avservice.rest.configuration.RestClientConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -33,6 +34,7 @@ class RestServiceISpec extends Specification {
 
     String checkPath = '/msg-check'
     String savePath = '/file/save'
+    String loadPath = '/file/load'
 
 
     def "get testing message"() {
@@ -57,13 +59,32 @@ class RestServiceISpec extends Specification {
 
     def "save message"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genFileMessage()
 
         when:
             client.postMessage(message, savePath)
 
         then:
             notThrown(Exception)
+    }
+
+    @Ignore('WIP')
+    def "save and load message"() {
+        given:
+            AvMessage message = Utils.genFileMessage()
+            String loadUrl = loadPath + '/' + message.getFilename()
+
+        when:
+            client.postMessage(message, savePath)
+
+        then:
+            notThrown(Exception)
+
+        when:
+            AvMessage loaded = client.getMessage(loadUrl)
+
+        then:
+            println loaded
     }
 
     def "check normal message"() {

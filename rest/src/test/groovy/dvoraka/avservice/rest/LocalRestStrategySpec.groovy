@@ -48,7 +48,7 @@ class LocalRestStrategySpec extends Specification {
             strategy.start()
 
         when:
-            strategy.messageCheck(Utils.genNormalMessage())
+            strategy.checkMessage(Utils.genNormalMessage())
 
         then:
             1 * processor.sendMessage(_)

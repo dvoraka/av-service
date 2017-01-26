@@ -75,7 +75,7 @@ public class LocalRestStrategy implements RestStrategy, AvMessageListener {
     }
 
     @Override
-    public void messageCheck(AvMessage message) {
+    public void checkMessage(AvMessage message) {
         restMessageProcessor.sendMessage(message);
     }
 

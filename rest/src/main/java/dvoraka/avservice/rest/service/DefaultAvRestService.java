@@ -48,18 +48,18 @@ public class DefaultAvRestService implements AvRestService {
     }
 
     @Override
-    public void messageCheck(AvMessage message) {
+    public void checkMessage(AvMessage message) {
         processingMessages.add(message.getId());
-        restStrategy.messageCheck(message);
+        restStrategy.checkMessage(message);
     }
 
     @Override
-    public void messageSave(AvMessage message) {
+    public void saveMessage(AvMessage message) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public AvMessage messageLoad(String filename, String ownerId) {
+    public AvMessage loadMessage(String filename, String ownerId) {
         throw new UnsupportedOperationException();
     }
 

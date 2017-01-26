@@ -83,7 +83,7 @@ class RemoteRestStrategySpec extends Specification {
             AvMessage message = Utils.genNormalMessage()
 
         when:
-            strategy.messageCheck(message)
+            strategy.checkMessage(message)
 
         then:
             1 * serverComponent.sendAvMessage(message)
@@ -104,7 +104,7 @@ class RemoteRestStrategySpec extends Specification {
             strategy.start()
 
         when:
-            strategy.messageCheck(message)
+            strategy.checkMessage(message)
 
         then:
             strategy.messageStatus(message.getId()) == MessageStatus.PROCESSING

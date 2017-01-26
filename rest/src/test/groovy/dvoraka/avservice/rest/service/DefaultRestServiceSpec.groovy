@@ -57,7 +57,7 @@ class DefaultRestServiceSpec extends Specification {
             strategy.messageStatus(message.getId(), _) >> expStatus
 
         when:
-            service.messageCheck(message)
+            service.checkMessage(message)
             MessageStatus status = service.messageStatus(message.getId())
 
         then:

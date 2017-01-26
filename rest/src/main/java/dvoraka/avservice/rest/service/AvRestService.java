@@ -18,11 +18,11 @@ public interface AvRestService {
 
     String messageServiceId(String id);
 
-    void messageCheck(@Valid AvMessage message);
+    void checkMessage(@Valid AvMessage message);
 
-    void messageSave(@Valid AvMessage message);
+    void saveMessage(@Valid AvMessage message);
 
-    AvMessage messageLoad(String filename, String ownerId);
+    AvMessage loadMessage(String filename, String ownerId);
 
     AvMessage getResponse(String id);
 

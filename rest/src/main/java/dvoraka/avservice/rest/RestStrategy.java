@@ -19,7 +19,7 @@ public interface RestStrategy {
      *
      * @param message the AV message
      */
-    void messageCheck(AvMessage message);
+    void checkMessage(AvMessage message);
 
     /**
      * Returns a response AV message.
