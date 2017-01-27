@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Main AV message processor.
+ * AV message processor. Checks messages for viruses.
  */
 @Service
 @ManagedResource
