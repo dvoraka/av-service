@@ -86,29 +86,44 @@ public class DefaultMessageProcessor implements MessageProcessor {
         avMessageListeners = new CopyOnWriteArrayList<>();
     }
 
-    /**
-     * Init and starts processor.
-     */
     @PostConstruct
-    public void init() {
-        start();
-    }
-
-    /**
-     * Closes and stops all opened resources.
-     */
-    @PreDestroy
-    public void cleanup() {
-        if (isRunning()) {
-            stop();
-        }
-    }
-
     @Override
     public void start() {
+        if (isRunning()) {
+            return;
+        }
+
+        setRunning(true);
+        log.info("Message processor started.");
+    }
+
+    @PreDestroy
+    @Override
+    public void stop() {
         if (!isRunning()) {
-            setRunning(true);
-            log.debug("Cache updating started.");
+            return;
+        }
+
+        log.debug("Stopping thread pool...");
+        setRunning(false);
+
+        processingMessages.stop();
+        processedMessages.stop();
+
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+                if (!executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
+                    log.warn("Thread pool termination problem!");
+                }
+            } else {
+                log.debug("Thread pool stopping done.");
+            }
+        } catch (InterruptedException e) {
+            log.warn("Stopping interrupted!", e);
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -168,41 +183,8 @@ public class DefaultMessageProcessor implements MessageProcessor {
         }
     }
 
-    private AvMessage prepareResponse(AvMessage message, String virusInfo) {
-        return message.createResponse(virusInfo);
-    }
-
-    private AvMessage prepareErrorResponse(AvMessage message, String errorMessage) {
-        return message.createErrorResponse(errorMessage);
-    }
-
     private void sendResponse(AvMessage message) {
         notifyListeners(avMessageListeners, message);
-    }
-
-    @Override
-    public void stop() {
-        log.debug("Stopping thread pool...");
-        setRunning(false);
-
-        processingMessages.stop();
-        processedMessages.stop();
-
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-                if (!executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
-                    log.warn("Thread pool termination problem!");
-                }
-            } else {
-                log.debug("Thread pool stopping done.");
-            }
-        } catch (InterruptedException e) {
-            log.warn("Stopping interrupted!", e);
-            executorService.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
     }
 
     @Override

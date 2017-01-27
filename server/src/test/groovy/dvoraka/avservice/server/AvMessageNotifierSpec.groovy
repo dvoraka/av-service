@@ -1,7 +1,7 @@
 package dvoraka.avservice.server
 
+import dvoraka.avservice.common.AvMessageHelper
 import dvoraka.avservice.common.AvMessageListener
-import dvoraka.avservice.common.AvMessageNotifier
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -11,7 +11,7 @@ import spock.lang.Subject
 class AvMessageNotifierSpec extends Specification {
 
     @Subject
-    AvMessageNotifier notifier
+    AvMessageHelper notifier
 
 
     def setup() {

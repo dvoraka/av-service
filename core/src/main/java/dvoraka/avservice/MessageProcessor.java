@@ -1,14 +1,14 @@
 package dvoraka.avservice;
 
+import dvoraka.avservice.common.AvMessageHelper;
 import dvoraka.avservice.common.AvMessageListener;
-import dvoraka.avservice.common.AvMessageNotifier;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 
 /**
  * Abstraction for message processing.
  */
-public interface MessageProcessor extends AvMessageNotifier {
+public interface MessageProcessor extends AvMessageHelper {
 
     /**
      * Sends a message to the processor.

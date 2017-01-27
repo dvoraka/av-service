@@ -39,7 +39,7 @@ class DefaultMessageProcessorSpec extends Specification {
 
     def cleanup() {
         if (processor != null) {
-            processor.cleanup()
+            processor.stop()
         }
     }
 
