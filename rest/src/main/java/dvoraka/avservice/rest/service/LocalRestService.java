@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class LocalRestService implements AvRestService, AvMessageListener {
 
     private final MessageProcessor restMessageProcessor;
+    private final MessageProcessor checkAndFileProcessor;
 
     private static final Logger log = LogManager.getLogger(LocalRestService.class.getName());
 
@@ -36,8 +37,13 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
 
     @Autowired
-    public LocalRestService(MessageProcessor restMessageProcessor) {
+    public LocalRestService(
+            MessageProcessor restMessageProcessor,
+            MessageProcessor checkAndFileProcessor
+    ) {
         this.restMessageProcessor = restMessageProcessor;
+        this.checkAndFileProcessor = checkAndFileProcessor;
+
         initializeCache();
     }
 

@@ -3,6 +3,9 @@ package dvoraka.avservice;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -13,12 +16,17 @@ import java.util.concurrent.TimeUnit;
 /**
  * Processor for composition of processors.
  */
+@Service
 public class CompositeMessageProcessor implements MessageProcessor, AvMessageListener {
+
+    private static final Logger log = LogManager.getLogger(CompositeMessageProcessor.class);
 
     private final List<ProcessorConfiguration> processors;
     private final List<AvMessageListener> listeners;
 
     private final BlockingQueue<AvMessage> queue;
+
+    private AvMessage actualMessage;
 
 
     public CompositeMessageProcessor() {
@@ -51,6 +59,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
             } else {
                 data = lastResult;
             }
+            setActualMessage(data);
             System.out.println("Sending: " + message);
             new Thread(() -> processor.getProcessor().sendMessage(data))
                     .start();
@@ -59,6 +68,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
             try {
                 final int waitTime = 5;
                 AvMessage result = queue.poll(waitTime, TimeUnit.SECONDS);
+                setActualMessage(null);
                 System.out.println("Result: " + result);
                 lastResult = result;
             } catch (InterruptedException e) {
@@ -78,9 +88,6 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
         processors.forEach(
                 configuration -> configuration.getProcessor()
                         .addProcessedAVMessageListener(this));
-        processors.forEach(
-                configuration -> configuration.getProcessor()
-                        .start());
     }
 
     @Override
@@ -107,9 +114,21 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
     @Override
     public void onAvMessage(AvMessage message) {
         try {
-            queue.put(message);
+            if (getActualMessage() != null
+                    && message.getCorrelationId().equals(getActualMessage().getId())) {
+
+                queue.put(message);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private AvMessage getActualMessage() {
+        return actualMessage;
+    }
+
+    private void setActualMessage(AvMessage actualMessage) {
+        this.actualMessage = actualMessage;
     }
 }
