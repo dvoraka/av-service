@@ -15,16 +15,17 @@ class CompositeMessageProcessorSpec extends Specification {
 
     def "test"() {
         given:
-
             DefaultMessageProcessor processor1 = new DefaultMessageProcessor(
                     1, "test", Mock(AvService), Mock(MessageInfoService)
             )
             FileMessageProcessor processor2 = new FileMessageProcessor(Mock(FileService))
 
-            CompositeMessageProcessor processor = new CompositeMessageProcessor()
-            processor.addProcessor(processor2)
-            processor.addProcessor(processor1)
+            ProcessorConfiguration configuration1 = new ProcessorConfiguration(processor1)
+            ProcessorConfiguration configuration2 = new ProcessorConfiguration(processor2)
 
+            CompositeMessageProcessor processor = new CompositeMessageProcessor()
+            processor.addProcessor(configuration1)
+            processor.addProcessor(configuration2)
 
         expect:
             processor.start()
