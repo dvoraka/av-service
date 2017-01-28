@@ -38,4 +38,8 @@ public class ProcessorConfiguration {
     public Optional<Predicate<? super AvMessage>> getInputCondition() {
         return Optional.ofNullable(inputCondition);
     }
+
+    public boolean isUseOriginalMessage() {
+        return useOriginalMessage;
+    }
 }

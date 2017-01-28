@@ -30,8 +30,7 @@ public class FileMessageProcessor implements MessageProcessor {
     @Override
     public void sendMessage(AvMessage message) {
         fileService.saveFile(message);
-
-        notifyListeners(listeners, message);
+        notifyListeners(listeners, message.createResponse("NNNNN"));
     }
 
     @Override

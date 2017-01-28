@@ -4,13 +4,11 @@ import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 /**
  * Processor for composition of processors.
@@ -18,12 +16,14 @@ import java.util.function.Predicate;
 public class CompositeMessageProcessor implements MessageProcessor, AvMessageListener {
 
     private final List<ProcessorConfiguration> processors;
+    private final List<AvMessageListener> listeners;
 
     private final BlockingQueue<AvMessage> queue;
 
 
     public CompositeMessageProcessor() {
-        this.processors = new ArrayList<>();
+        processors = new CopyOnWriteArrayList<>();
+        listeners = new CopyOnWriteArrayList<>();
         queue = new SynchronousQueue<>();
     }
 
@@ -32,22 +32,27 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
         AvMessage lastResult = message;
         for (ProcessorConfiguration processor : processors) {
-
             // check input condition
-            Optional<Predicate<? super AvMessage>> condition = processor.getInputCondition();
-
-            AvMessage temp = lastResult;
-            if (!condition.map(predicate -> predicate.test(temp))
+            final AvMessage temp = lastResult;
+            System.out.println("Condition check for: " + temp);
+            if (!processor.getInputCondition()
+                    .map(predicate -> predicate.test(temp))
                     .orElse(true)) {
 
                 System.out.println("Aborting...");
+                notifyListeners(listeners, temp.createErrorResponse("Input condition failed!"));
                 break;
             }
 
-            // process message
+            // process message in a new thread
+            final AvMessage data;
+            if (processor.isUseOriginalMessage()) {
+                data = message;
+            } else {
+                data = lastResult;
+            }
             System.out.println("Sending: " + message);
-            new Thread(() -> processor.getProcessor()
-                    .sendMessage(message))
+            new Thread(() -> processor.getProcessor().sendMessage(data))
                     .start();
 
             // wait for result
@@ -56,9 +61,9 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
                 AvMessage result = queue.poll(waitTime, TimeUnit.SECONDS);
                 System.out.println("Result: " + result);
                 lastResult = result;
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                break;
             }
         }
     }
@@ -87,11 +92,12 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
     @Override
     public void addProcessedAVMessageListener(AvMessageListener listener) {
+        listeners.add(listener);
     }
 
     @Override
     public void removeProcessedAVMessageListener(AvMessageListener listener) {
-
+        listeners.remove(listener);
     }
 
     public void addProcessor(ProcessorConfiguration configuration) {
