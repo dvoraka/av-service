@@ -56,8 +56,9 @@ public class File {
         this.owner = owner;
     }
 
-    public AvMessage avMessage() {
+    public AvMessage avMessage(String originalId) {
         return new DefaultAvMessage.Builder(UUID.randomUUID().toString())
+                .correlationId(originalId)
                 .data(getData())
                 .filename(getFilename())
                 .owner(getOwner())

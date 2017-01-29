@@ -105,7 +105,7 @@ public class RemoteRestService implements AvRestService, AvMessageListener {
     }
 
     @Override
-    public AvMessage loadMessage(String filename, String ownerId) {
+    public AvMessage loadMessage(AvMessage message) {
         //TODO
         return null;
     }

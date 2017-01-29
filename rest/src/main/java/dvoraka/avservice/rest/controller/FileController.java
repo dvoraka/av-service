@@ -1,6 +1,8 @@
 package dvoraka.avservice.rest.controller;
 
+import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.rest.service.AvRestService;
 import org.apache.logging.log4j.LogManager;
@@ -46,8 +48,14 @@ public class FileController {
 
     @GetMapping("/load/{filename}")
     public AvMessage loadFile(@PathVariable String filename, Principal principal) {
-        //TODO
-        return null;
+
+        AvMessage fileRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+                .filename(filename)
+                .owner(principal.getName())
+                .type(AvMessageType.FILE_LOAD)
+                .build();
+
+        return restService.loadMessage(fileRequest);
     }
 
     @PostMapping("/save")

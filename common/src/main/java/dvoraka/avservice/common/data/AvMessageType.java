@@ -13,6 +13,10 @@ public enum AvMessageType {
      */
     FILE_REQUEST,
     /**
+     * Request for loading a file.
+     */
+    FILE_LOAD,
+    /**
      * Normal response with check results.
      */
     RESPONSE,

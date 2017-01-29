@@ -82,7 +82,7 @@ class RestServiceISpec extends Specification {
     @Ignore('WIP')
     def "save and load message"() {
         given:
-            AvMessage message = Utils.genFileMessage()
+            AvMessage message = Utils.genFileMessage('test')
             String loadUrl = loadPath + '/' + message.getFilename()
 
         when:
@@ -95,7 +95,7 @@ class RestServiceISpec extends Specification {
             AvMessage loaded = client.getMessage(loadUrl)
 
         then:
-            println loaded
+            loaded.getFilename() == message.getFilename()
     }
 
     def "check normal message"() {

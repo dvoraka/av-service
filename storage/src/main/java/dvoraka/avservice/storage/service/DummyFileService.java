@@ -2,8 +2,6 @@ package dvoraka.avservice.storage.service;
 
 import dvoraka.avservice.common.data.FileMessage;
 
-import java.util.UUID;
-
 /**
  * Dummy file service implementation.
  */
@@ -14,7 +12,7 @@ public class DummyFileService implements FileService {
     }
 
     @Override
-    public FileMessage loadFile(String filename, UUID owner) {
+    public FileMessage loadFile(FileMessage message) {
         return null;
     }
 }

@@ -19,6 +19,7 @@ class LocalRestServiceSpec extends Specification {
 
     MessageProcessor processor
     MessageProcessor compositeProcessor
+    MessageProcessor fileProcessor
     String testId = 'TEST-ID'
 
     PollingConditions conditions
@@ -27,7 +28,8 @@ class LocalRestServiceSpec extends Specification {
     def setup() {
         processor = Mock()
         compositeProcessor = Mock()
-        strategy = new LocalRestService(processor, compositeProcessor)
+        fileProcessor = Mock()
+        strategy = new LocalRestService(processor, fileProcessor, compositeProcessor)
         conditions = new PollingConditions(timeout: 2)
     }
 

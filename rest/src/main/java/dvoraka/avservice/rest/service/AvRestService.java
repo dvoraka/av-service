@@ -54,11 +54,10 @@ public interface AvRestService {
     /**
      * Loads an AV message with a given description.
      *
-     * @param filename the filename
-     * @param ownerId  the owner
+     * @param message the message
      * @return the loaded message
      */
-    AvMessage loadMessage(String filename, String ownerId);
+    AvMessage loadMessage(AvMessage message);
 
     /**
      * Returns a response AV message.

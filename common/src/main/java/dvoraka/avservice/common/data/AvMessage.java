@@ -16,10 +16,6 @@ package dvoraka.avservice.common.data;
  */
 public interface AvMessage extends FileMessage {
 
-    String getId();
-
-    String getCorrelationId();
-
     AvMessageType getType();
 
     String getServiceId();

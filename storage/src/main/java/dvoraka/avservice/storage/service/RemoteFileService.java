@@ -2,8 +2,6 @@ package dvoraka.avservice.storage.service;
 
 import dvoraka.avservice.common.data.FileMessage;
 
-import java.util.UUID;
-
 /**
  * File service with remote connection.
  */
@@ -22,7 +20,7 @@ public class RemoteFileService implements FileService {
     }
 
     @Override
-    public FileMessage loadFile(String filename, UUID owner) {
+    public FileMessage loadFile(FileMessage message) {
         return null;
     }
 }

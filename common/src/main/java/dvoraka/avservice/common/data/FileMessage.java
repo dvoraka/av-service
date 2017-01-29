@@ -5,6 +5,10 @@ package dvoraka.avservice.common.data;
  */
 public interface FileMessage {
 
+    String getId();
+
+    String getCorrelationId();
+
     byte[] getData();
 
     String getFilename();

@@ -12,7 +12,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- * Utility class.
+ * Utility class mainly for testing.
  */
 public final class Utils {
 

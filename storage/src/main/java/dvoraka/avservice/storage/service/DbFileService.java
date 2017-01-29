@@ -8,8 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 /**
  *
  */
@@ -37,9 +35,12 @@ public class DbFileService implements FileService {
     }
 
     @Override
-    public FileMessage loadFile(String filename, UUID owner) {
-        File file = repository.findByFilenameAndOwner(filename, owner);
+    public FileMessage loadFile(FileMessage message) {
+        File file = repository.findByFilenameAndOwner(
+                message.getFilename(),
+                message.getOwner()
+        );
 
-        return file.avMessage();
+        return file.avMessage(message.getId());
     }
 }

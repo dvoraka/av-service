@@ -24,9 +24,13 @@ public class RestLocalConfig {
     @Bean
     public AvRestService avRestService(
             MessageProcessor restCheckMessageProcessor,
+            MessageProcessor restFileMessageProcessor,
             MessageProcessor checkAndFileProcessor
     ) {
-        return new LocalRestService(restCheckMessageProcessor, checkAndFileProcessor);
+        return new LocalRestService(
+                restCheckMessageProcessor,
+                restFileMessageProcessor,
+                checkAndFileProcessor);
     }
 
     @Bean
