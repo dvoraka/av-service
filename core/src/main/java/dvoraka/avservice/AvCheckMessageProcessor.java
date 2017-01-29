@@ -32,12 +32,12 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Service
 @ManagedResource
-public class DefaultMessageProcessor implements MessageProcessor {
+public class AvCheckMessageProcessor implements MessageProcessor {
 
     private final AvService avService;
     private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(DefaultMessageProcessor.class);
+    private static final Logger log = LogManager.getLogger(AvCheckMessageProcessor.class);
 
     public static final int CACHE_TIMEOUT = 10 * 60 * 1_000;
     private static final long POOL_TERM_TIME_S = 20;
@@ -66,7 +66,7 @@ public class DefaultMessageProcessor implements MessageProcessor {
      * @param serviceId   the service ID string
      */
     @Autowired
-    public DefaultMessageProcessor(
+    public AvCheckMessageProcessor(
             int threadCount,
             String serviceId,
             AvService avService,

@@ -18,7 +18,7 @@ import spock.util.concurrent.PollingConditions
 class DefaultMessageProcessorSpec extends Specification {
 
     @Subject
-    DefaultMessageProcessor processor
+    AvCheckMessageProcessor processor
 
     AvService avService
     MessageInfoService infoService
@@ -31,7 +31,7 @@ class DefaultMessageProcessorSpec extends Specification {
         avService = Mock()
         infoService = Mock()
 
-        processor = new DefaultMessageProcessor(2, serviceId, avService, infoService)
+        processor = new AvCheckMessageProcessor(2, serviceId, avService, infoService)
         processor.start()
 
         conditions = new PollingConditions(timeout: 2)
@@ -46,7 +46,7 @@ class DefaultMessageProcessorSpec extends Specification {
     def "constructor (thread count, service ID, AV service, Message info service)"() {
         setup:
             int threadCount = 5
-            processor = new DefaultMessageProcessor(
+            processor = new AvCheckMessageProcessor(
                     threadCount,
                     serviceId,
                     Mock(AvService),

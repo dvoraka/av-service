@@ -1,7 +1,7 @@
 package dvoraka.avservice.rest.configuration;
 
+import dvoraka.avservice.AvCheckMessageProcessor;
 import dvoraka.avservice.CompositeMessageProcessor;
-import dvoraka.avservice.DefaultMessageProcessor;
 import dvoraka.avservice.FileMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessorConfiguration;
@@ -23,19 +23,19 @@ public class RestLocalConfig {
 
     @Bean
     public AvRestService avRestService(
-            MessageProcessor restMessageProcessor,
+            MessageProcessor restCheckMessageProcessor,
             MessageProcessor checkAndFileProcessor
     ) {
-        return new LocalRestService(restMessageProcessor, checkAndFileProcessor);
+        return new LocalRestService(restCheckMessageProcessor, checkAndFileProcessor);
     }
 
     @Bean
-    public MessageProcessor restMessageProcessor(
+    public MessageProcessor restCheckMessageProcessor(
             AvService avService,
             MessageInfoService messageInfoService
     ) {
         final int threads = 4;
-        return new DefaultMessageProcessor(
+        return new AvCheckMessageProcessor(
                 threads,
                 "service1",
                 avService,
@@ -49,10 +49,10 @@ public class RestLocalConfig {
 
     @Bean
     public MessageProcessor checkAndFileProcessor(
-            MessageProcessor restMessageProcessor,
+            MessageProcessor restCheckMessageProcessor,
             MessageProcessor restFileMessageProcessor
     ) {
-        ProcessorConfiguration checkConfig = new ProcessorConfiguration(restMessageProcessor);
+        ProcessorConfiguration checkConfig = new ProcessorConfiguration(restCheckMessageProcessor);
         ProcessorConfiguration fileConfig = new ProcessorConfiguration(restFileMessageProcessor);
 
         CompositeMessageProcessor processor = new CompositeMessageProcessor();

@@ -1,6 +1,6 @@
 package dvoraka.avservice.configuration;
 
-import dvoraka.avservice.DefaultMessageProcessor;
+import dvoraka.avservice.AvCheckMessageProcessor;
 import dvoraka.avservice.FileMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.avprogram.AvProgram;
@@ -50,7 +50,7 @@ public class ServiceCoreConfig {
             AvService avService,
             MessageInfoService messageInfoService
     ) {
-        return new DefaultMessageProcessor(
+        return new AvCheckMessageProcessor(
                 cpuCores,
                 serviceId,
                 avService,

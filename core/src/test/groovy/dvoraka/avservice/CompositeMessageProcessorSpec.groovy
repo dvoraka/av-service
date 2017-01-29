@@ -15,7 +15,7 @@ class CompositeMessageProcessorSpec extends Specification {
 
     def "test"() {
         given:
-            DefaultMessageProcessor processor1 = new DefaultMessageProcessor(
+            AvCheckMessageProcessor processor1 = new AvCheckMessageProcessor(
                     1, "test", Mock(AvService), Mock(MessageInfoService)
             )
             FileMessageProcessor processor2 = new FileMessageProcessor(Mock(FileService))
