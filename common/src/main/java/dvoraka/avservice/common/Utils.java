@@ -59,7 +59,7 @@ public final class Utils {
                 .correlationId("1-2-3")
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
                 .type(AvMessageType.FILE_REQUEST)
-                .filename("testFilename")
+                .filename("testFilename" + genUuidString()) //TODO
                 .owner(username)
                 .build();
     }

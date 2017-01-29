@@ -3,6 +3,7 @@ package dvoraka.avservice;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageType;
+import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.storage.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class FileMessageProcessor implements MessageProcessor {
 
         } else if (message.getType() == AvMessageType.FILE_LOAD) {
 
-            fileService.loadFile(message);
-            notifyListeners(listeners, message.createResponse("NNNNN"));
+            FileMessage fileMessage = fileService.loadFile(message);
+            notifyListeners(listeners, message.createFileResponse(fileMessage.getData()));
         }
     }
 

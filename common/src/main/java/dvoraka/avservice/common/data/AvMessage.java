@@ -1,5 +1,6 @@
 package dvoraka.avservice.common.data;
 
+//TODO
 /**
  * Data structure for the whole AV service.
  * <br>
@@ -16,8 +17,6 @@ package dvoraka.avservice.common.data;
  */
 public interface AvMessage extends FileMessage {
 
-    AvMessageType getType();
-
     String getServiceId();
 
     String getVirusInfo();
@@ -25,4 +24,6 @@ public interface AvMessage extends FileMessage {
     AvMessage createResponse(String virusInfo);
 
     AvMessage createErrorResponse(String errorMessage);
+
+    AvMessage createFileResponse(byte[] data);
 }

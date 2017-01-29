@@ -3,11 +3,7 @@ package dvoraka.avservice.common.data;
 /**
  * Interface for file message.
  */
-public interface FileMessage {
-
-    String getId();
-
-    String getCorrelationId();
+public interface FileMessage extends Message {
 
     byte[] getData();
 

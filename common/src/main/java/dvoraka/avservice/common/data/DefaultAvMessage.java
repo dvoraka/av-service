@@ -100,6 +100,17 @@ public final class DefaultAvMessage implements AvMessage {
                 .build();
     }
 
+    @Override
+    public AvMessage createFileResponse(byte[] data) {
+        return new Builder(Utils.genUuidString())
+                .correlationId(this.getId())
+                .filename(this.getFilename())
+                .owner(this.getOwner())
+                .data(data)
+                .type(AvMessageType.FILE_RESPONSE)
+                .build();
+    }
+
     /**
      * Compares the whole messages - all fields.
      *

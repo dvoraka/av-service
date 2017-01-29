@@ -9,7 +9,6 @@ import dvoraka.avservice.rest.RestClient
 import dvoraka.avservice.rest.configuration.RestClientConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -79,7 +78,6 @@ class RestServiceISpec extends Specification {
             notThrown(Exception)
     }
 
-    @Ignore('WIP')
     def "save and load message"() {
         given:
             AvMessage message = Utils.genFileMessage('test')
