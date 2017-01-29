@@ -25,7 +25,7 @@ public class RestClientConfig {
     public RestTemplate restTemplate() {
         //TODO
         return new RestTemplateBuilder()
-                .basicAuthorization("guest", "guest")
+                .basicAuthorization("test", "test")
                 .build();
     }
 

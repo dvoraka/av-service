@@ -54,8 +54,12 @@ public class FileController {
     public ResponseEntity<Void> saveFile(@RequestBody DefaultAvMessage file, Principal principal) {
         String username = principal.getName();
         log.info("Principal: " + principal);
-        restService.saveMessage(file, username);
 
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        if (!username.equals(file.getOwner())) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            restService.saveMessage(file);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
     }
 }

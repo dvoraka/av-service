@@ -57,9 +57,20 @@ class RestServiceISpec extends Specification {
             notThrown(Exception)
     }
 
-    def "save message"() {
+    def "save message with random username"() {
         given:
             AvMessage message = Utils.genFileMessage()
+
+        when:
+            client.postMessage(message, savePath)
+
+        then:
+            thrown(Exception)
+    }
+
+    def "save message with test username"() {
+        given:
+            AvMessage message = Utils.genFileMessage('test')
 
         when:
             client.postMessage(message, savePath)

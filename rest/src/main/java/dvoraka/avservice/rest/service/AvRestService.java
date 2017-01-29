@@ -48,9 +48,8 @@ public interface AvRestService {
      * Saves an AV message.
      *
      * @param message the message.
-     * @param ownerId the owner
      */
-    void saveMessage(@Valid AvMessage message, String ownerId);
+    void saveMessage(@Valid AvMessage message);
 
     /**
      * Loads an AV message with a given description.

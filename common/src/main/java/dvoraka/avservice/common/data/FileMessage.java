@@ -1,7 +1,5 @@
 package dvoraka.avservice.common.data;
 
-import java.util.UUID;
-
 /**
  * Interface for file message.
  */
@@ -11,5 +9,5 @@ public interface FileMessage {
 
     String getFilename();
 
-    UUID getOwner();
+    String getOwner();
 }

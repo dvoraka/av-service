@@ -50,13 +50,17 @@ public final class Utils {
     }
 
     public static AvMessage genFileMessage() {
+        return genFileMessage(genUuidString());
+    }
+
+    public static AvMessage genFileMessage(String username) {
         return new DefaultAvMessage.Builder(genUuidString())
                 .serviceId(SERVICE_ID)
                 .correlationId("1-2-3")
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
                 .type(AvMessageType.FILE_REQUEST)
                 .filename("testFilename")
-                .owner(UUID.randomUUID())
+                .owner(username)
                 .build();
     }
 

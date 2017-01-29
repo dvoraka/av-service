@@ -7,7 +7,6 @@ import dvoraka.avservice.common.Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
@@ -25,7 +24,7 @@ public final class DefaultAvMessage implements AvMessage {
     private final String virusInfo;
 
     private final String filename;
-    private final UUID owner;
+    private final String owner;
 
 
     private DefaultAvMessage(Builder builder) {
@@ -79,7 +78,7 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
-    public UUID getOwner() {
+    public String getOwner() {
         return owner;
     }
 
@@ -174,7 +173,7 @@ public final class DefaultAvMessage implements AvMessage {
         private String serviceId;
         private String virusInfo;
         private String filename;
-        private UUID owner;
+        private String owner;
 
 
         public Builder(@JsonProperty("id") String id) {
@@ -213,7 +212,7 @@ public final class DefaultAvMessage implements AvMessage {
             return this;
         }
 
-        public Builder owner(UUID owner) {
+        public Builder owner(String owner) {
             this.owner = owner;
             return this;
         }

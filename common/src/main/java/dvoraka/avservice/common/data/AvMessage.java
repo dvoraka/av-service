@@ -20,8 +20,6 @@ public interface AvMessage extends FileMessage {
 
     String getCorrelationId();
 
-    byte[] getData();
-
     AvMessageType getType();
 
     String getServiceId();

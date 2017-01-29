@@ -21,7 +21,7 @@ public class File {
 
     private byte[] data;
     private String filename;
-    private UUID owner;
+    private String owner;
 
 
     public long getId() {
@@ -48,11 +48,11 @@ public class File {
         this.filename = filename;
     }
 
-    public UUID getOwner() {
+    public String getOwner() {
         return owner;
     }
 
-    public void setOwner(UUID owner) {
+    public void setOwner(String owner) {
         this.owner = owner;
     }
 
