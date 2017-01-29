@@ -87,7 +87,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
     @Override
     public void saveMessage(AvMessage message, String ownerId) {
-        // call composite MP
+        checkAndFileProcessor.sendMessage(message);
     }
 
     @Override
