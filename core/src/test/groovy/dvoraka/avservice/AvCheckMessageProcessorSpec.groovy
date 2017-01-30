@@ -15,7 +15,7 @@ import spock.util.concurrent.PollingConditions
 /**
  * Default processor spec.
  */
-class DefaultMessageProcessorSpec extends Specification {
+class AvCheckMessageProcessorSpec extends Specification {
 
     @Subject
     AvCheckMessageProcessor processor
