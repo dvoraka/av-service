@@ -10,4 +10,8 @@ public interface FileService {
     void saveFile(FileMessage message);
 
     FileMessage loadFile(FileMessage message);
+
+    void updateFile(FileMessage message);
+
+    void deleteFile(FileMessage message);
 }

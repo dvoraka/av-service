@@ -58,6 +58,7 @@ public class ServiceCoreConfig {
     }
 
     @Bean
+    @Profile("storage")
     public MessageProcessor fileMessageProcessor(FileService fileService) {
         return new FileMessageProcessor(fileService);
     }

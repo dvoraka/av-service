@@ -43,4 +43,14 @@ public class DbFileService implements FileService {
 
         return file.avMessage(message.getId());
     }
+
+    @Override
+    public void updateFile(FileMessage message) {
+        //TODO
+    }
+
+    @Override
+    public void deleteFile(FileMessage message) {
+        //TODO
+    }
 }

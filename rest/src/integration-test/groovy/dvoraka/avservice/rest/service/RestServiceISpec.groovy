@@ -20,7 +20,7 @@ import spock.lang.Specification
                 RestClientConfig.class
         ],
         properties = [
-                'spring.profiles.active=rest-client,core,rest,rest-local,db',
+                'spring.profiles.active=rest-client,core,rest,rest-local,storage,db',
                 'server.contextPath=/av-service',
                 'port=8080'
         ],

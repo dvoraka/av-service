@@ -15,4 +15,12 @@ public class DummyFileService implements FileService {
     public FileMessage loadFile(FileMessage message) {
         return null;
     }
+
+    @Override
+    public void updateFile(FileMessage message) {
+    }
+
+    @Override
+    public void deleteFile(FileMessage message) {
+    }
 }
