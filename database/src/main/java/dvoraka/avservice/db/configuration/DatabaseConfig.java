@@ -30,9 +30,13 @@ import java.util.Properties;
 @Profile("db")
 public class DatabaseConfig {
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
+
+    @Autowired
+    public DatabaseConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public DataSource dataSource() {
