@@ -3,7 +3,7 @@ package dvoraka.avservice.storage.service
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.FileMessage
-import dvoraka.avservice.db.configuration.DatabaseConfig
+import dvoraka.avservice.db.configuration.DbConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -13,7 +13,7 @@ import spock.lang.Specification
 /**
  * DB file service spec.
  */
-@ContextConfiguration(classes = [DatabaseConfig.class])
+@ContextConfiguration(classes = [DbConfig.class])
 @ActiveProfiles(['db'])
 @Ignore('WIP')
 class DbFileServiceISpec extends Specification {

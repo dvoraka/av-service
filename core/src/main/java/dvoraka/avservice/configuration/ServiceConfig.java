@@ -2,8 +2,6 @@ package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.avprogram.configuration.AvProgramConfig;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
-import dvoraka.avservice.db.configuration.NoDatabaseConfig;
-import dvoraka.avservice.db.configuration.SolrConfig;
 import dvoraka.avservice.storage.configuration.StorageConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +20,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
         AvProgramConfig.class,
         // DB
         DatabaseConfig.class,
-        NoDatabaseConfig.class,
-        SolrConfig.class,
         // Storage
         StorageConfig.class
 })

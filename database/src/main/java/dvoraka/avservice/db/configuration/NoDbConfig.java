@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * No database Spring configuration.
+ * No database Spring configuration for disabling DB.
  */
 @Configuration
 @Profile("no-db")
-public class NoDatabaseConfig {
+public class NoDbConfig {
 
     @Bean
     public MessageInfoService messageInfoService() {
