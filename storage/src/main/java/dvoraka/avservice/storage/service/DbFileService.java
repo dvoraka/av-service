@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
+ * DB file service implementation.
  */
 @Service
 @Transactional
@@ -26,6 +26,8 @@ public class DbFileService implements FileService {
 
     @Override
     public void saveFile(FileMessage message) {
+        log.debug("Saving: " + message);
+
         File file = new File();
         file.setData(message.getData());
         file.setFilename(message.getFilename());
@@ -36,10 +38,13 @@ public class DbFileService implements FileService {
 
     @Override
     public FileMessage loadFile(FileMessage message) {
+        log.debug("Loading: " + message);
+
         File file = repository.findByFilenameAndOwner(
                 message.getFilename(),
                 message.getOwner()
         );
+        log.debug("Loaded: " + file);
 
         return file.avMessage(message.getId());
     }
