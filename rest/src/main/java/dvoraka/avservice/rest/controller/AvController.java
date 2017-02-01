@@ -2,9 +2,9 @@ package dvoraka.avservice.rest.controller;
 
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.rest.service.AvRestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -125,7 +125,7 @@ public class AvController {
                 .virusInfo("NO-INFO")
                 .correlationId("CORRELATION-ID")
                 .data(new byte[dataSize])
-                .type(AvMessageType.RESPONSE)
+                .type(MessageType.RESPONSE)
                 .build();
     }
 

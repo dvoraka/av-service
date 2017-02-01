@@ -1,8 +1,8 @@
 package dvoraka.avservice.common.amqp
 
 import dvoraka.avservice.common.data.AvMessage
-import dvoraka.avservice.common.data.AvMessageType
 import dvoraka.avservice.common.data.DefaultAvMessage
+import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.exception.MapperException
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
@@ -56,7 +56,7 @@ class AvMessageMapperSpec extends Specification {
             // appId
             props.setAppId(testAppId)
             // type
-            props.setType(AvMessageType.REQUEST.toString())
+            props.setType(MessageType.REQUEST.toString())
 
             // HEADERS
             // virusInfo
@@ -75,7 +75,7 @@ class AvMessageMapperSpec extends Specification {
 
         expect:
             avMessage.getId() == testId
-            avMessage.getType() == AvMessageType.REQUEST
+            avMessage.getType() == MessageType.REQUEST
 
             avMessage.getVirusInfo() == testVirusInfo
             avMessage.getServiceId() == testServiceId
@@ -123,7 +123,7 @@ class AvMessageMapperSpec extends Specification {
             MessageProperties props = new MessageProperties()
 
             // PROPERTIES
-            props.setType(AvMessageType.REQUEST.toString())
+            props.setType(MessageType.REQUEST.toString())
             // HEADERS
             // BODY
 
@@ -142,7 +142,7 @@ class AvMessageMapperSpec extends Specification {
 
             // PROPERTIES
             props.setMessageId(testId)
-            props.setType(AvMessageType.REQUEST.toString())
+            props.setType(MessageType.REQUEST.toString())
             // HEADERS
             // BODY
 
@@ -161,7 +161,7 @@ class AvMessageMapperSpec extends Specification {
 
             // PROPERTIES
             props.setMessageId(testId)
-            props.setType(AvMessageType.REQUEST.toString())
+            props.setType(MessageType.REQUEST.toString())
             props.setCorrelationId(testCorrId)
             // HEADERS
             // BODY
@@ -199,7 +199,7 @@ class AvMessageMapperSpec extends Specification {
             AvMessage avMessage = new DefaultAvMessage.Builder(testId)
                     .correlationId(testCorrId)
                     .data(new byte[dataSize])
-                    .type(AvMessageType.REQUEST)
+                    .type(MessageType.REQUEST)
                     .serviceId(testServiceId)
                     .virusInfo(testVirusInfo)
                     .build()
@@ -218,7 +218,7 @@ class AvMessageMapperSpec extends Specification {
             // correlation ID
             props.getCorrelationId() == testCorrId
             // type
-            props.getType() == AvMessageType.REQUEST.toString()
+            props.getType() == MessageType.REQUEST.toString()
 
             // HEADERS
             // serviceId

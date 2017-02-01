@@ -3,9 +3,9 @@ package dvoraka.avservice.common;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
-import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessageInfo;
+import dvoraka.avservice.common.data.MessageType;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -36,7 +36,7 @@ public final class Utils {
                 .serviceId(SERVICE_ID)
                 .correlationId("1-2-3")
                 .data(new byte[dataSize])
-                .type(AvMessageType.REQUEST)
+                .type(MessageType.REQUEST)
                 .build();
     }
 
@@ -45,7 +45,7 @@ public final class Utils {
                 .serviceId(SERVICE_ID)
                 .correlationId("1-2-3")
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
-                .type(AvMessageType.REQUEST)
+                .type(MessageType.REQUEST)
                 .build();
     }
 
@@ -58,7 +58,7 @@ public final class Utils {
                 .serviceId(SERVICE_ID)
                 .correlationId("1-2-3")
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
-                .type(AvMessageType.FILE_REQUEST)
+                .type(MessageType.FILE_SAVE)
                 .filename("testFilename" + genUuidString()) //TODO
                 .owner(username)
                 .build();

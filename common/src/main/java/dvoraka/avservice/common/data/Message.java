@@ -9,5 +9,5 @@ public interface Message {
 
     String getCorrelationId();
 
-    AvMessageType getType();
+    MessageType getType();
 }

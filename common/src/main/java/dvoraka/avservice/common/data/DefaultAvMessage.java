@@ -19,7 +19,7 @@ public final class DefaultAvMessage implements AvMessage {
     private final String id;
     private final String correlationId;
     private final byte[] data;
-    private final AvMessageType type;
+    private final MessageType type;
     private final String serviceId;
     private final String virusInfo;
 
@@ -58,7 +58,7 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
-    public AvMessageType getType() {
+    public MessageType getType() {
         return type;
     }
 
@@ -87,7 +87,7 @@ public final class DefaultAvMessage implements AvMessage {
         return new Builder(Utils.genUuidString())
                 .correlationId(this.getId())
                 .virusInfo(virusInfo)
-                .type(AvMessageType.RESPONSE)
+                .type(MessageType.RESPONSE)
                 .build();
     }
 
@@ -95,7 +95,7 @@ public final class DefaultAvMessage implements AvMessage {
     public AvMessage createErrorResponse(String errorMessage) {
         return new Builder(Utils.genUuidString())
                 .correlationId(this.getId())
-                .type(AvMessageType.RESPONSE_ERROR)
+                .type(MessageType.RESPONSE_ERROR)
                 .data(errorMessage.getBytes(StandardCharsets.UTF_8))
                 .build();
     }
@@ -107,7 +107,7 @@ public final class DefaultAvMessage implements AvMessage {
                 .filename(this.getFilename())
                 .owner(this.getOwner())
                 .data(data)
-                .type(AvMessageType.FILE_RESPONSE)
+                .type(MessageType.FILE_RESPONSE)
                 .build();
     }
 
@@ -180,7 +180,7 @@ public final class DefaultAvMessage implements AvMessage {
         private String id;
         private String correlationId;
         private byte[] data;
-        private AvMessageType type;
+        private MessageType type;
         private String serviceId;
         private String virusInfo;
         private String filename;
@@ -203,7 +203,7 @@ public final class DefaultAvMessage implements AvMessage {
             return this;
         }
 
-        public Builder type(AvMessageType type) {
+        public Builder type(MessageType type) {
             this.type = type;
             return this;
         }

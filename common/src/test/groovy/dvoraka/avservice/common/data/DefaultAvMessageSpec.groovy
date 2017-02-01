@@ -21,7 +21,7 @@ class DefaultAvMessageSpec extends Specification {
             DefaultAvMessage message = new DefaultAvMessage.Builder(testString)
                     .correlationId(testString)
                     .data(testString.getBytes(StandardCharsets.UTF_8))
-                    .type(AvMessageType.REQUEST)
+                    .type(MessageType.REQUEST)
                     .serviceId(testString)
                     .virusInfo(testString)
                     .build()
@@ -30,7 +30,7 @@ class DefaultAvMessageSpec extends Specification {
             message.getId() == testString
             message.getCorrelationId() == testString
             Arrays.equals(message.getData(), testString.getBytes(StandardCharsets.UTF_8))
-            message.getType() == AvMessageType.REQUEST
+            message.getType() == MessageType.REQUEST
             message.getServiceId() == testString
             message.getVirusInfo() == testString
     }
@@ -45,7 +45,7 @@ class DefaultAvMessageSpec extends Specification {
 
         expect:
             response.getCorrelationId() == expCorrId
-            response.getType() == AvMessageType.RESPONSE
+            response.getType() == MessageType.RESPONSE
             response.getVirusInfo() == virusInfo
     }
 
@@ -60,7 +60,7 @@ class DefaultAvMessageSpec extends Specification {
 
         then:
             response.getCorrelationId() == expCorrId
-            response.getType() == AvMessageType.RESPONSE_ERROR
+            response.getType() == MessageType.RESPONSE_ERROR
     }
 
     def "null data test"() {

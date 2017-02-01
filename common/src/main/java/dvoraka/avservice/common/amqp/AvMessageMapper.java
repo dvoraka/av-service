@@ -1,8 +1,8 @@
 package dvoraka.avservice.common.amqp;
 
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageType;
 import dvoraka.avservice.common.data.DefaultAvMessage;
+import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.exception.MapperException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,7 +49,7 @@ public class AvMessageMapper {
         // service ID
         String serviceId = getServiceId(headers);
         // message type
-        AvMessageType messageType = getMessageType(props);
+        MessageType messageType = getMessageType(props);
         // correlation ID
         String corrId = getCorrelationId(props);
 
@@ -94,11 +94,11 @@ public class AvMessageMapper {
         return serviceId;
     }
 
-    private AvMessageType getMessageType(MessageProperties msgProps) throws MapperException {
+    private MessageType getMessageType(MessageProperties msgProps) throws MapperException {
         String messageTypeStr = msgProps.getType().toUpperCase();
-        AvMessageType messageType;
+        MessageType messageType;
         try {
-            messageType = AvMessageType.valueOf(messageTypeStr);
+            messageType = MessageType.valueOf(messageTypeStr);
         } catch (IllegalArgumentException e) {
             log.warn("Message type error!", e);
             throw new MapperException("Unknown message type");
