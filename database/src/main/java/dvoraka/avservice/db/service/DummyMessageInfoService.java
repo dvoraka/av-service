@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.stream.Stream;
 
 /**
- * Dummy service implementation.
+ * Dummy message info service implementation.
  */
 @Service
 public class DummyMessageInfoService implements MessageInfoService {

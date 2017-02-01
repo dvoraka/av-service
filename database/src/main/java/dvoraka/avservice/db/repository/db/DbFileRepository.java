@@ -1,4 +1,4 @@
-package dvoraka.avservice.db.repository;
+package dvoraka.avservice.db.repository.db;
 
 import dvoraka.avservice.db.model.File;
 import org.springframework.data.jpa.repository.JpaRepository;

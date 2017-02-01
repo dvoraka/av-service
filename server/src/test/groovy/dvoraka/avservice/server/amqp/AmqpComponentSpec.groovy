@@ -4,7 +4,7 @@ import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.amqp.AvMessageMapper
 import dvoraka.avservice.common.data.AvMessage
-import dvoraka.avservice.db.repository.DbMessageInfoRepository
+import dvoraka.avservice.db.repository.db.DbMessageInfoRepository
 import dvoraka.avservice.db.service.DbMessageInfoService
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.core.Message

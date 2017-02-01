@@ -20,10 +20,8 @@ public class SolrMessageInfoRepositoryImpl implements SolrMessageInfoRepositoryC
     }
 
     @Override
-    public MessageInfoDocument saveSoft(MessageInfoDocument document) {
+    public void saveSoft(MessageInfoDocument document) {
         solrTemplate.saveBean(document);
         solrTemplate.softCommit();
-
-        return document;
     }
 }

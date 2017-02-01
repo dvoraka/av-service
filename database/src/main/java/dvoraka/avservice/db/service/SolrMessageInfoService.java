@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Solr AV message info service implementation.
+ * Solr message info service implementation.
  */
 @Service
 public class SolrMessageInfoService implements MessageInfoService {
@@ -38,6 +38,7 @@ public class SolrMessageInfoService implements MessageInfoService {
     private volatile boolean batching;
     private Collection<MessageInfoDocument> documents = new ArrayList<>();
     private int batchSize = BATCH_SIZE;
+    //TODO
     //    private long commitEveryMs = 10_000L;
 //    private long lastCommitTime;
 
@@ -76,7 +77,7 @@ public class SolrMessageInfoService implements MessageInfoService {
     }
 
     /**
-     * Save a document in a batch and then save it later at once.
+     * Saves a document in a batch and then saves it later at once.
      *
      * @param document the document to save in the batch
      */

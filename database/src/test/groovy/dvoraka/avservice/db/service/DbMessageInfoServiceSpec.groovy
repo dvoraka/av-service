@@ -4,7 +4,7 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessageInfo
 import dvoraka.avservice.common.data.AvMessageSource
 import dvoraka.avservice.db.model.MessageInfo
-import dvoraka.avservice.db.repository.DbMessageInfoRepository
+import dvoraka.avservice.db.repository.db.DbMessageInfoRepository
 import spock.lang.Specification
 import spock.lang.Subject
 

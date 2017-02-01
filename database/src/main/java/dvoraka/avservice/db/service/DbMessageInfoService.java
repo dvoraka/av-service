@@ -5,7 +5,7 @@ import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageInfoData;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.db.model.MessageInfo;
-import dvoraka.avservice.db.repository.DbMessageInfoRepository;
+import dvoraka.avservice.db.repository.db.DbMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Default message info service implementation.
+ * DB message info service implementation.
  */
 @Service
 @Transactional

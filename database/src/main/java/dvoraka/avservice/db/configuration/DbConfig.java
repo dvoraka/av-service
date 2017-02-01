@@ -1,6 +1,6 @@
 package dvoraka.avservice.db.configuration;
 
-import dvoraka.avservice.db.repository.DbMessageInfoRepository;
+import dvoraka.avservice.db.repository.db.DbMessageInfoRepository;
 import dvoraka.avservice.db.service.DbMessageInfoService;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
