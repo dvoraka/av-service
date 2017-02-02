@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * AV server implementation
  */
@@ -39,10 +41,10 @@ public class BasicAvServer implements AvServer {
             MessageProcessor messageProcessor,
             MessageInfoService messageInfoService
     ) {
-        this.serviceId = serviceId;
-        this.serverComponent = serverComponent;
-        this.messageProcessor = messageProcessor;
-        this.messageInfoService = messageInfoService;
+        this.serviceId = requireNonNull(serviceId);
+        this.serverComponent = requireNonNull(serverComponent);
+        this.messageProcessor = requireNonNull(messageProcessor);
+        this.messageInfoService = requireNonNull(messageInfoService);
 
         processedAvMessageListener = new ProcessedAvMessageListener();
     }
