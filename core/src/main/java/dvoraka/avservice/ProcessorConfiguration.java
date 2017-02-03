@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Message processor configuration for composite processor.
+ * Message processor configuration for a composite processor.
  */
 public class ProcessorConfiguration {
 

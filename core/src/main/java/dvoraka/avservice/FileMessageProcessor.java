@@ -40,8 +40,10 @@ public class FileMessageProcessor implements MessageProcessor {
 
     private Map<MessageType, Consumer<AvMessage>> getCallConfiguration() {
         Map<MessageType, Consumer<AvMessage>> configuration = new HashMap<>();
-        configuration.put(MessageType.FILE_SAVE, this::safe);
+        configuration.put(MessageType.FILE_SAVE, this::save);
         configuration.put(MessageType.FILE_LOAD, this::load);
+        configuration.put(MessageType.FILE_UPDATE, this::update);
+        configuration.put(MessageType.FILE_DELETE, this::delete);
 
         return configuration;
     }
@@ -52,14 +54,36 @@ public class FileMessageProcessor implements MessageProcessor {
                 .accept(message);
     }
 
-    private void safe(AvMessage message) {
+    private void save(AvMessage message) {
         fileService.saveFile(message);
-        notifyListeners(listeners, message.createFileResponse(new byte[0]));
+
+        notifyListeners(createOkResponse(message));
     }
 
     private void load(AvMessage message) {
         FileMessage fileMessage = fileService.loadFile(message);
-        notifyListeners(listeners, message.createFileResponse(fileMessage.getData()));
+
+        notifyListeners(message.createFileResponse(fileMessage.getData()));
+    }
+
+    private void update(AvMessage message) {
+        fileService.updateFile(message);
+
+        notifyListeners(createOkResponse(message));
+    }
+
+    private void delete(AvMessage message) {
+        fileService.deleteFile(message);
+
+        notifyListeners(createOkResponse(message));
+    }
+
+    private void notifyListeners(AvMessage message) {
+        notifyListeners(listeners, message);
+    }
+
+    private AvMessage createOkResponse(AvMessage message) {
+        return message.createFileResponse(new byte[0]);
     }
 
     @Override
