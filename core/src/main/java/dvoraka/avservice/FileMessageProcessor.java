@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Message processor for processing files.
  */
@@ -33,7 +35,7 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Autowired
     public FileMessageProcessor(FileService fileService) {
-        this.fileService = fileService;
+        this.fileService = requireNonNull(fileService);
         listeners = new CopyOnWriteArrayList<>();
         processMap = getCallConfiguration();
     }
@@ -50,6 +52,7 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public void sendMessage(AvMessage message) {
+        log.debug("Receive message: " + message);
         processMap.get(message.getType())
                 .accept(message);
     }
@@ -97,7 +100,6 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public void stop() {
-
     }
 
     @Override
@@ -107,6 +109,6 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public void removeProcessedAVMessageListener(AvMessageListener listener) {
-
+        listeners.remove(listener);
     }
 }
