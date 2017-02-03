@@ -33,6 +33,10 @@ public enum MessageType {
      */
     FILE_DELETE,
     /**
+     * File not found.
+     */
+    FILE_NOT_FOUND,
+    /**
      * Response with a file status.
      */
     FILE_RESPONSE
