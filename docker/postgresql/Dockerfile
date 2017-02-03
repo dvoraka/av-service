@@ -1,6 +1,6 @@
-FROM debian:jessie
+FROM debian:stretch
 
-ENV VERSION=9.4
+ENV VERSION=9.6
 ENV PGDATA=/var/lib/postgresql/$VERSION/main
 
 RUN apt-get update \
