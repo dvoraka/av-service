@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
@@ -57,12 +58,15 @@ public class DbFileService implements FileService {
         );
         log.debug("Loaded: " + file);
 
-        //TODO
-        return file
-                .map((f) -> f.avMessage(message.getId()))
-                .orElse(new DefaultAvMessage.Builder("temp")
-                        .type(MessageType.FILE_NOT_FOUND)
-                        .build());
+        return file.map(f -> f.fileMessage(message.getId()))
+                .orElse(buildFileNotFoundMessage(message.getId()));
+    }
+
+    private FileMessage buildFileNotFoundMessage(String originalId) {
+        return new DefaultAvMessage.Builder(UUID.randomUUID().toString())
+                .correlationId(originalId)
+                .type(MessageType.FILE_NOT_FOUND)
+                .build();
     }
 
     @Override

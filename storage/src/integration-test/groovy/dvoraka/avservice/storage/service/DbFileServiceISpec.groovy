@@ -21,6 +21,8 @@ class DbFileServiceISpec extends Specification {
     @Autowired
     FileService service
 
+    String testingOwner = 'testing user'
+
 
     def "save file"() {
         expect:
@@ -29,9 +31,8 @@ class DbFileServiceISpec extends Specification {
 
     def "save and load file"() {
         given:
-            String owner = 'testing user'
-            AvMessage message = Utils.genFileMessage(owner)
-            AvMessage request = new DefaultAvMessage.Builder(owner)
+            AvMessage message = Utils.genFileMessage(testingOwner)
+            AvMessage request = new DefaultAvMessage.Builder(Utils.genUuidString())
                     .filename(message.getFilename())
                     .owner(message.getOwner())
                     .type(MessageType.FILE_LOAD)
@@ -48,8 +49,7 @@ class DbFileServiceISpec extends Specification {
 
     def "save and delete file"() {
         given:
-            String owner = 'testing user'
-            AvMessage message = Utils.genFileMessage(owner)
+            AvMessage message = Utils.genFileMessage(testingOwner)
 
             AvMessage loadRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
                     .filename(message.getFilename())
