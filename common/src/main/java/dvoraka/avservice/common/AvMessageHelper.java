@@ -53,7 +53,6 @@ public interface AvMessageHelper {
             Stream<Predicate<? super AvMessage>> conditions,
             AvMessage data
     ) {
-        return conditions.anyMatch(condition -> condition
-                .negate().test(data));
+        return conditions.allMatch(condition -> condition.test(data));
     }
 }

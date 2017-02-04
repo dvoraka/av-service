@@ -47,8 +47,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
             System.out.println("Conditions check for: " + dataToCheck);
 
             final List<Predicate<? super AvMessage>> conditions = processor.getInputConditions();
-            if (!(conditions.isEmpty() || checkConditions(conditions.stream(), dataToCheck))) {
-
+            if (!(checkConditions(conditions.stream(), dataToCheck))) {
                 System.out.println("Aborting...");
                 notifyListeners(listeners, dataToCheck
                         .createErrorResponse("Input condition failed!"));
@@ -63,7 +62,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
                 data = lastResult;
             }
             setActualMessage(data);
-            System.out.println("Sending: " + message);
+            System.out.println("Sending: " + data);
             new Thread(() -> processor.getProcessor().sendMessage(data))
                     .start();
 
