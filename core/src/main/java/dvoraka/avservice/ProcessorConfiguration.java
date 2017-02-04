@@ -2,6 +2,7 @@ package dvoraka.avservice;
 
 import dvoraka.avservice.common.data.AvMessage;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -13,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 public class ProcessorConfiguration {
 
     private final MessageProcessor processor;
-    private final Predicate<? super AvMessage> inputCondition;
+    private final List<Predicate<? super AvMessage>> inputConditions;
     private final boolean useOriginalMessage;
 
 
@@ -23,11 +24,11 @@ public class ProcessorConfiguration {
 
     public ProcessorConfiguration(
             MessageProcessor processor,
-            Predicate<? super AvMessage> inputCondition,
+            List<Predicate<? super AvMessage>> inputConditions,
             boolean useOriginalMessage
     ) {
         this.processor = requireNonNull(processor);
-        this.inputCondition = inputCondition;
+        this.inputConditions = inputConditions;
         this.useOriginalMessage = useOriginalMessage;
     }
 
@@ -35,8 +36,8 @@ public class ProcessorConfiguration {
         return processor;
     }
 
-    public Optional<Predicate<? super AvMessage>> getInputCondition() {
-        return Optional.ofNullable(inputCondition);
+    public Optional<List<Predicate<? super AvMessage>>> getInputConditions() {
+        return Optional.ofNullable(inputConditions);
     }
 
     public boolean isUseOriginalMessage() {
