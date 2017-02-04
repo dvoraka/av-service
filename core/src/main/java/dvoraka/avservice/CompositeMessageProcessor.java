@@ -42,15 +42,16 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
         for (ProcessorConfiguration processor : processors) {
 
             // check input conditions
-            final AvMessage temp = lastResult;
-            System.out.println("Conditions check for: " + temp);
+            final AvMessage dataToCheck = lastResult;
+            System.out.println("Conditions check for: " + dataToCheck);
 
             if (processor.getInputConditions().stream()
                     .anyMatch(condition -> condition
-                            .negate().test(temp))) {
+                            .negate().test(dataToCheck))) {
 
                 System.out.println("Aborting...");
-                notifyListeners(listeners, temp.createErrorResponse("Input condition failed!"));
+                notifyListeners(listeners, dataToCheck
+                        .createErrorResponse("Input condition failed!"));
                 break;
             }
 
@@ -74,7 +75,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
                 System.out.println("Result: " + result);
                 lastResult = result;
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.warn("Polling interrupted!", e);
                 break;
             }
         }
