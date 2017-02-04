@@ -12,6 +12,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 /**
  * Processor for composition of processors.
@@ -45,9 +46,8 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
             final AvMessage dataToCheck = lastResult;
             System.out.println("Conditions check for: " + dataToCheck);
 
-            if (!checkConditions(
-                    processor.getInputConditions().stream(),
-                    dataToCheck)) {
+            final List<Predicate<? super AvMessage>> conditions = processor.getInputConditions();
+            if (!(conditions.isEmpty() || checkConditions(conditions.stream(), dataToCheck))) {
 
                 System.out.println("Aborting...");
                 notifyListeners(listeners, dataToCheck

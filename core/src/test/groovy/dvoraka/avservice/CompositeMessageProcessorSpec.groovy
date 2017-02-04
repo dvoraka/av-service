@@ -1,11 +1,14 @@
 package dvoraka.avservice
 
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
 import dvoraka.avservice.storage.service.FileService
 import spock.lang.Ignore
 import spock.lang.Specification
+
+import java.util.function.Predicate
 
 /**
  * CompositeMessageProcessor spec.
@@ -23,9 +26,18 @@ class CompositeMessageProcessorSpec extends Specification {
 
             ProcessorConfiguration configuration1 = new ProcessorConfiguration(processor1)
             ProcessorConfiguration configuration2 = new ProcessorConfiguration(processor2)
+
+            List<Predicate<? super AvMessage>> conditions = new ArrayList<>()
+            conditions.add(new Predicate<AvMessage>() {
+                @Override
+                boolean test(AvMessage message) {
+                    return message.getOwner() != null
+                }
+            })
+
             ProcessorConfiguration configuration3 = new ProcessorConfiguration(
                     processor3,
-                    { message -> message.getOwner() != null },
+                    conditions,
                     false)
 
             CompositeMessageProcessor processor = new CompositeMessageProcessor()
