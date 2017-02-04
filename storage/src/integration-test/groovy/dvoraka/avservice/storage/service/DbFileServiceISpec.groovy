@@ -77,4 +77,30 @@ class DbFileServiceISpec extends Specification {
         then:
             service.loadFile(loadRequest).getType() == MessageType.FILE_NOT_FOUND
     }
+
+    def "load non-existent file"() {
+        given:
+            AvMessage message = Utils.genFileMessage(testingOwner)
+            AvMessage loadRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .filename(message.getFilename())
+                    .owner(message.getOwner())
+                    .type(MessageType.FILE_LOAD)
+                    .build()
+
+        expect:
+            service.loadFile(loadRequest).getType() == MessageType.FILE_NOT_FOUND
+    }
+
+    def "delete non-existent file"() {
+        given:
+            AvMessage message = Utils.genFileMessage(testingOwner)
+            AvMessage deleteRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .filename(message.getFilename())
+                    .owner(message.getOwner())
+                    .type(MessageType.FILE_DELETE)
+                    .build()
+
+        expect:
+            service.deleteFile(deleteRequest)
+    }
 }
