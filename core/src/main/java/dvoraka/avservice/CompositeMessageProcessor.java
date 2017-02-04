@@ -45,9 +45,9 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
             final AvMessage dataToCheck = lastResult;
             System.out.println("Conditions check for: " + dataToCheck);
 
-            if (processor.getInputConditions().stream()
-                    .anyMatch(condition -> condition
-                            .negate().test(dataToCheck))) {
+            if (!checkConditions(
+                    processor.getInputConditions().stream(),
+                    dataToCheck)) {
 
                 System.out.println("Aborting...");
                 notifyListeners(listeners, dataToCheck

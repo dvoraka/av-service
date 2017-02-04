@@ -2,6 +2,9 @@ package dvoraka.avservice.common;
 
 import dvoraka.avservice.common.data.AvMessage;
 
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 /**
  * Helper interface for AV messages.
  */
@@ -14,9 +17,7 @@ public interface AvMessageHelper {
      * @param message   the message
      */
     default void notifyListeners(Iterable<AvMessageListener> listeners, AvMessage message) {
-        for (AvMessageListener listener : listeners) {
-            listener.onAvMessage(message);
-        }
+        listeners.forEach(listener -> listener.onAvMessage(message));
     }
 
     /**
@@ -39,5 +40,20 @@ public interface AvMessageHelper {
      */
     default AvMessage prepareErrorResponse(AvMessage message, String errorMessage) {
         return message.createErrorResponse(errorMessage);
+    }
+
+    /**
+     * Checks if all conditions in a stream are true.
+     *
+     * @param conditions the stream of conditions
+     * @param data       the data for an evaluation
+     * @return the result
+     */
+    default boolean checkConditions(
+            Stream<Predicate<? super AvMessage>> conditions,
+            AvMessage data
+    ) {
+        return conditions.anyMatch(condition -> condition
+                .negate().test(data));
     }
 }
