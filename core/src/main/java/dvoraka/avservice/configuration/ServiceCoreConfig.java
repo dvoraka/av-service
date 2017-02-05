@@ -46,7 +46,7 @@ public class ServiceCoreConfig {
     }
 
     @Bean
-    public MessageProcessor messageProcessor(
+    public MessageProcessor checkMessageProcessor(
             AvService avService,
             MessageInfoService messageInfoService
     ) {

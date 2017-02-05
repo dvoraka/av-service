@@ -1,14 +1,11 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.AvCheckMessageProcessor;
 import dvoraka.avservice.CompositeMessageProcessor;
 import dvoraka.avservice.FileMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessorConfiguration;
-import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.rest.service.AvRestService;
 import dvoraka.avservice.rest.service.LocalRestService;
-import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.storage.service.FileService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,27 +20,14 @@ public class RestLocalConfig {
 
     @Bean
     public AvRestService avRestService(
-            MessageProcessor restCheckMessageProcessor,
+            MessageProcessor checkMessageProcessor,
             MessageProcessor restFileMessageProcessor,
             MessageProcessor checkAndFileProcessor
     ) {
         return new LocalRestService(
-                restCheckMessageProcessor,
+                checkMessageProcessor,
                 restFileMessageProcessor,
                 checkAndFileProcessor);
-    }
-
-    @Bean
-    public MessageProcessor restCheckMessageProcessor(
-            AvService avService,
-            MessageInfoService messageInfoService
-    ) {
-        final int threads = 4;
-        return new AvCheckMessageProcessor(
-                threads,
-                "service1",
-                avService,
-                messageInfoService);
     }
 
     @Bean
@@ -53,10 +37,10 @@ public class RestLocalConfig {
 
     @Bean
     public MessageProcessor checkAndFileProcessor(
-            MessageProcessor restCheckMessageProcessor,
+            MessageProcessor checkMessageProcessor,
             MessageProcessor restFileMessageProcessor
     ) {
-        ProcessorConfiguration checkConfig = new ProcessorConfiguration(restCheckMessageProcessor);
+        ProcessorConfiguration checkConfig = new ProcessorConfiguration(checkMessageProcessor);
         ProcessorConfiguration fileConfig = new ProcessorConfiguration(restFileMessageProcessor);
 
         CompositeMessageProcessor processor = new CompositeMessageProcessor();

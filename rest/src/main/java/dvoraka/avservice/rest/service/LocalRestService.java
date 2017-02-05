@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LocalRestService implements AvRestService, AvMessageListener {
 
-    private final MessageProcessor restCheckMessageProcessor;
+    private final MessageProcessor checkMessageProcessor;
     private final MessageProcessor restFileMessageProcessor;
     private final MessageProcessor checkAndFileProcessor;
 
@@ -39,11 +39,11 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
     @Autowired
     public LocalRestService(
-            MessageProcessor restCheckMessageProcessor,
+            MessageProcessor checkMessageProcessor,
             MessageProcessor restFileMessageProcessor,
             MessageProcessor checkAndFileProcessor
     ) {
-        this.restCheckMessageProcessor = restCheckMessageProcessor;
+        this.checkMessageProcessor = checkMessageProcessor;
         this.restFileMessageProcessor = restFileMessageProcessor;
         this.checkAndFileProcessor = checkAndFileProcessor;
 
@@ -69,7 +69,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        return restCheckMessageProcessor.messageStatus(id);
+        return checkMessageProcessor.messageStatus(id);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
     @Override
     public void checkMessage(AvMessage message) {
-        restCheckMessageProcessor.sendMessage(message);
+        checkMessageProcessor.sendMessage(message);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
     @Override
     public void start() {
         log.debug("Starting cache updating...");
-        restCheckMessageProcessor.addProcessedAVMessageListener(this);
+        checkMessageProcessor.addProcessedAVMessageListener(this);
         checkAndFileProcessor.addProcessedAVMessageListener(this);
         restFileMessageProcessor.addProcessedAVMessageListener(this);
     }
@@ -131,7 +131,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
     @Override
     @PreDestroy
     public void stop() {
-        restCheckMessageProcessor.stop();
+        checkMessageProcessor.stop();
         cacheManager.close();
     }
 
