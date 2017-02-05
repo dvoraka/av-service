@@ -12,7 +12,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 /**
  * Processor for composition of processors.
@@ -45,12 +45,12 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
             // check input conditions
             final AvMessage dataToCheck = lastResult;
             System.out.println("Conditions check for: " + dataToCheck);
-
-            final List<Predicate<? super AvMessage>> conditions = processor.getInputConditions();
-            if (!(checkConditions(conditions.stream(), dataToCheck))) {
+            final List<BiPredicate<? super AvMessage, ? super AvMessage>> conditions =
+                    processor.getInputConditions();
+            if (!(checkConditions(conditions.stream(), message, dataToCheck))) {
                 System.out.println("Aborting...");
-                notifyListeners(listeners, dataToCheck
-                        .createErrorResponse("Input condition failed!"));
+//                notifyListeners(listeners, dataToCheck
+//                        .createErrorResponse("Input condition failed!"));
                 break;
             }
 
@@ -72,6 +72,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
                 AvMessage result = queue.poll(waitTime, TimeUnit.SECONDS);
                 setActualMessage(null);
                 System.out.println("Result: " + result);
+                notifyListeners(listeners, result);
                 lastResult = result;
             } catch (InterruptedException e) {
                 log.warn("Polling interrupted!", e);

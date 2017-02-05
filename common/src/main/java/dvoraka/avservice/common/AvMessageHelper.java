@@ -2,7 +2,7 @@ package dvoraka.avservice.common;
 
 import dvoraka.avservice.common.data.AvMessage;
 
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 /**
@@ -45,14 +45,16 @@ public interface AvMessageHelper {
     /**
      * Checks if all conditions in a stream are true.
      *
-     * @param conditions the stream of conditions
-     * @param data       the data for an evaluation
+     * @param conditions   the stream of conditions
+     * @param originalData the original data
+     * @param actualData   the actual data
      * @return the result
      */
     default boolean checkConditions(
-            Stream<Predicate<? super AvMessage>> conditions,
-            AvMessage data
+            Stream<BiPredicate<? super AvMessage, ? super AvMessage>> conditions,
+            AvMessage originalData,
+            AvMessage actualData
     ) {
-        return conditions.allMatch(condition -> condition.test(data));
+        return conditions.allMatch(condition -> condition.test(originalData, actualData));
     }
 }

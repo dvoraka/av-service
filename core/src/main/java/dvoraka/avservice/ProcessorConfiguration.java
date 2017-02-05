@@ -4,7 +4,7 @@ import dvoraka.avservice.common.data.AvMessage;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 import static java.util.Objects.requireNonNull;
 
@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 public class ProcessorConfiguration {
 
     private final MessageProcessor processor;
-    private final List<Predicate<? super AvMessage>> inputConditions;
+    private final List<BiPredicate<? super AvMessage, ? super AvMessage>> inputConditions;
     private final boolean useOriginalMessage;
 
 
@@ -24,7 +24,7 @@ public class ProcessorConfiguration {
 
     public ProcessorConfiguration(
             MessageProcessor processor,
-            List<Predicate<? super AvMessage>> inputConditions,
+            List<BiPredicate<? super AvMessage, ? super AvMessage>> inputConditions,
             boolean useOriginalMessage
     ) {
         this.processor = requireNonNull(processor);
@@ -42,7 +42,7 @@ public class ProcessorConfiguration {
         return processor;
     }
 
-    public List<Predicate<? super AvMessage>> getInputConditions() {
+    public List<BiPredicate<? super AvMessage, ? super AvMessage>> getInputConditions() {
         return inputConditions;
     }
 

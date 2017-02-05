@@ -6,6 +6,9 @@ import dvoraka.avservice.FileMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessorConfiguration;
 import dvoraka.avservice.avprogram.AvProgram;
+import dvoraka.avservice.common.Utils;
+import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
 import dvoraka.avservice.service.DefaultAvService;
@@ -18,6 +21,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiPredicate;
 
 /**
  * Core configuration
@@ -71,8 +78,22 @@ public class ServiceCoreConfig {
             MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor
     ) {
+        BiPredicate<? super AvMessage, ? super AvMessage> typeAndCheck = (original, last) -> {
+            MessageType origType = original.getType();
+
+            return (origType == MessageType.FILE_SAVE || origType == MessageType.FILE_UPDATE)
+                    && last.getVirusInfo().equals(Utils.OK_VIRUS_INFO);
+        };
+
+        List<BiPredicate<? super AvMessage, ? super AvMessage>> fileConditions = new ArrayList<>();
+        fileConditions.add(typeAndCheck);
+
         ProcessorConfiguration checkConfig = new ProcessorConfiguration(checkMessageProcessor);
-        ProcessorConfiguration fileConfig = new ProcessorConfiguration(fileMessageProcessor);
+        ProcessorConfiguration fileConfig = new ProcessorConfiguration(
+                fileMessageProcessor,
+                fileConditions,
+                true
+        );
 
         CompositeMessageProcessor processor = new CompositeMessageProcessor();
         processor.addProcessor(checkConfig);
