@@ -12,7 +12,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiPredicate;
 
 /**
  * Processor for composition of processors.
@@ -27,7 +26,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
     private final BlockingQueue<AvMessage> queue;
 
-    private AvMessage actualMessage;
+    private volatile AvMessage actualMessage;
 
 
     public CompositeMessageProcessor() {
@@ -38,31 +37,16 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
     @Override
     public void sendMessage(AvMessage message) {
-
         AvMessage lastResult = message;
         for (ProcessorConfiguration processor : processors) {
 
-            // check input conditions
-            final AvMessage dataToCheck = lastResult;
-            System.out.println("Conditions check for: " + dataToCheck);
-            final List<BiPredicate<? super AvMessage, ? super AvMessage>> conditions =
-                    processor.getInputConditions();
-            if (!(checkConditions(conditions.stream(), message, dataToCheck))) {
-                System.out.println("Aborting...");
-//                notifyListeners(listeners, dataToCheck
-//                        .createErrorResponse("Input condition failed!"));
+            if (!(checkConditions(processor.getInputConditions().stream(), message, lastResult))) {
                 break;
             }
 
             // process message in a new thread
-            final AvMessage data;
-            if (processor.isUseOriginalMessage()) {
-                data = message;
-            } else {
-                data = lastResult;
-            }
+            final AvMessage data = processor.isUseOriginalMessage() ? message : lastResult;
             setActualMessage(data);
-            System.out.println("Sending: " + data);
             new Thread(() -> processor.getProcessor().sendMessage(data))
                     .start();
 
@@ -71,7 +55,6 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
                 final int waitTime = 5;
                 AvMessage result = queue.poll(waitTime, TimeUnit.SECONDS);
                 setActualMessage(null);
-                System.out.println("Result: " + result);
                 notifyListeners(listeners, result);
                 lastResult = result;
             } catch (InterruptedException e) {
@@ -119,11 +102,11 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
         try {
             if (getActualMessage() != null
                     && message.getCorrelationId().equals(getActualMessage().getId())) {
-
                 queue.put(message);
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.warn("Putting interrupted!", e);
+            Thread.currentThread().interrupt();
         }
     }
 

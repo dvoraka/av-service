@@ -7,7 +7,6 @@ import dvoraka.avservice.configuration.ServiceConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
@@ -16,7 +15,6 @@ import spock.util.concurrent.PollingConditions
  */
 @ContextConfiguration(classes = [ServiceConfig.class])
 @ActiveProfiles(['core', 'storage', 'db'])
-@Ignore('WIP')
 class CompositeMessageProcessorISpec extends Specification {
 
     @Autowired
@@ -75,7 +73,8 @@ class CompositeMessageProcessorISpec extends Specification {
         then:
             conditions.eventually {
                 response != null
-                println response
+                response.getVirusInfo() != Utils.OK_VIRUS_INFO
+                response.getCorrelationId() == message.getId()
             }
     }
 }
