@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class LocalRestService implements AvRestService, AvMessageListener {
 
     private final MessageProcessor checkMessageProcessor;
-    private final MessageProcessor restFileMessageProcessor;
+    private final MessageProcessor fileMessageProcessor;
     private final MessageProcessor checkAndFileProcessor;
 
     private static final Logger log = LogManager.getLogger(LocalRestService.class.getName());
@@ -40,11 +40,11 @@ public class LocalRestService implements AvRestService, AvMessageListener {
     @Autowired
     public LocalRestService(
             MessageProcessor checkMessageProcessor,
-            MessageProcessor restFileMessageProcessor,
+            MessageProcessor fileMessageProcessor,
             MessageProcessor checkAndFileProcessor
     ) {
         this.checkMessageProcessor = checkMessageProcessor;
-        this.restFileMessageProcessor = restFileMessageProcessor;
+        this.fileMessageProcessor = fileMessageProcessor;
         this.checkAndFileProcessor = checkAndFileProcessor;
 
         initializeCache();
@@ -95,7 +95,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
     @Override
     public AvMessage loadMessage(AvMessage message) {
-        restFileMessageProcessor.sendMessage(message);
+        fileMessageProcessor.sendMessage(message);
 
         //TODO
         while (true) {
@@ -125,7 +125,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
         log.debug("Starting cache updating...");
         checkMessageProcessor.addProcessedAVMessageListener(this);
         checkAndFileProcessor.addProcessedAVMessageListener(this);
-        restFileMessageProcessor.addProcessedAVMessageListener(this);
+        fileMessageProcessor.addProcessedAVMessageListener(this);
     }
 
     @Override
