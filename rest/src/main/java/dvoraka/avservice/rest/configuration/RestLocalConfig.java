@@ -1,8 +1,6 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.CompositeMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.ProcessorConfiguration;
 import dvoraka.avservice.rest.service.AvRestService;
 import dvoraka.avservice.rest.service.LocalRestService;
 import org.springframework.context.annotation.Bean;
@@ -26,22 +24,5 @@ public class RestLocalConfig {
                 checkMessageProcessor,
                 fileMessageProcessor,
                 checkAndFileProcessor);
-    }
-
-    @Bean
-    public MessageProcessor checkAndFileProcessor(
-            MessageProcessor checkMessageProcessor,
-            MessageProcessor fileMessageProcessor
-    ) {
-        ProcessorConfiguration checkConfig = new ProcessorConfiguration(checkMessageProcessor);
-        ProcessorConfiguration fileConfig = new ProcessorConfiguration(fileMessageProcessor);
-
-        CompositeMessageProcessor processor = new CompositeMessageProcessor();
-        processor.addProcessor(checkConfig);
-        processor.addProcessor(fileConfig);
-
-        processor.start();
-
-        return processor;
     }
 }

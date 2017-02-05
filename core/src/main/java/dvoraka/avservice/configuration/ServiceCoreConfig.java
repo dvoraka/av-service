@@ -1,8 +1,10 @@
 package dvoraka.avservice.configuration;
 
 import dvoraka.avservice.AvCheckMessageProcessor;
+import dvoraka.avservice.CompositeMessageProcessor;
 import dvoraka.avservice.FileMessageProcessor;
 import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.ProcessorConfiguration;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
@@ -61,5 +63,23 @@ public class ServiceCoreConfig {
     @Profile("storage")
     public MessageProcessor fileMessageProcessor(FileService fileService) {
         return new FileMessageProcessor(fileService);
+    }
+
+    @Bean
+    @Profile("storage")
+    public MessageProcessor checkAndFileProcessor(
+            MessageProcessor checkMessageProcessor,
+            MessageProcessor fileMessageProcessor
+    ) {
+        ProcessorConfiguration checkConfig = new ProcessorConfiguration(checkMessageProcessor);
+        ProcessorConfiguration fileConfig = new ProcessorConfiguration(fileMessageProcessor);
+
+        CompositeMessageProcessor processor = new CompositeMessageProcessor();
+        processor.addProcessor(checkConfig);
+        processor.addProcessor(fileConfig);
+
+        processor.start();
+
+        return processor;
     }
 }
