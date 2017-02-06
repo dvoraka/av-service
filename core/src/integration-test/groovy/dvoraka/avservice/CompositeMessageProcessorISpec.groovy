@@ -13,6 +13,7 @@ import spock.util.concurrent.PollingConditions
 
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
+import java.util.concurrent.TimeUnit
 
 /**
  * CompositeMessageProcessor spec.
@@ -28,6 +29,7 @@ class CompositeMessageProcessorISpec extends Specification {
     AvMessageListener listener
 
     PollingConditions conditions
+    long pollingTimeout = 4
 
 
     def setup() {
@@ -53,10 +55,26 @@ class CompositeMessageProcessorISpec extends Specification {
 
         then:
             conditions.eventually {
-                AvMessage response = queue.take()
+                AvMessage response = queue.poll(pollingTimeout, TimeUnit.SECONDS)
                 response != null
                 response.getType() == MessageType.RESPONSE
                 response.getVirusInfo() != Utils.OK_VIRUS_INFO
+                response.getCorrelationId() == message.getId()
+            }
+    }
+
+    def "test file saving"() {
+        given:
+            AvMessage message = Utils.genFileMessage()
+
+        when:
+            checkAndFileProcessor.sendMessage(message)
+
+        then:
+            conditions.eventually {
+                AvMessage response = queue.poll(pollingTimeout, TimeUnit.SECONDS)
+                response != null
+                response.getType() == MessageType.FILE_RESPONSE
                 response.getCorrelationId() == message.getId()
             }
     }
@@ -70,7 +88,7 @@ class CompositeMessageProcessorISpec extends Specification {
 
         then:
             conditions.eventually {
-                AvMessage response = queue.take()
+                AvMessage response = queue.poll(pollingTimeout, TimeUnit.SECONDS)
                 response != null
                 response.getType() == MessageType.RESPONSE
                 response.getVirusInfo() != Utils.OK_VIRUS_INFO
