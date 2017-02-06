@@ -30,7 +30,7 @@ public final class Utils {
         return UUID.randomUUID().toString();
     }
 
-    public static AvMessage genNormalMessage() {
+    public static AvMessage genMessage() {
         final int dataSize = 20;
         return new DefaultAvMessage.Builder(genUuidString())
                 .serviceId(SERVICE_ID)
@@ -54,6 +54,22 @@ public final class Utils {
     }
 
     public static AvMessage genFileMessage(String username) {
+        final int dataSize = 40;
+        return new DefaultAvMessage.Builder(genUuidString())
+                .serviceId(SERVICE_ID)
+                .correlationId("1-2-3")
+                .data(new byte[dataSize])
+                .type(MessageType.FILE_SAVE)
+                .filename("testFilename" + genUuidString()) //TODO
+                .owner(username)
+                .build();
+    }
+
+    public static AvMessage genInfectedFileMessage() {
+        return genFileMessage(genUuidString());
+    }
+
+    public static AvMessage genInfectedFileMessage(String username) {
         return new DefaultAvMessage.Builder(genUuidString())
                 .serviceId(SERVICE_ID)
                 .correlationId("1-2-3")

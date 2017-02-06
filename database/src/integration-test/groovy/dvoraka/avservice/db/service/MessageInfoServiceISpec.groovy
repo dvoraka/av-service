@@ -23,12 +23,12 @@ class MessageInfoServiceISpec extends Specification {
 
     def "save message"() {
         expect:
-            service.save(Utils.genNormalMessage(), AvMessageSource.TEST, 'TEST-SERVICE')
+            service.save(Utils.genMessage(), AvMessageSource.TEST, 'TEST-SERVICE')
     }
 
     def "save message and then load info"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         expect:
             service.save(message, AvMessageSource.TEST, Utils.SERVICE_TEST_ID)
@@ -44,7 +44,7 @@ class MessageInfoServiceISpec extends Specification {
 
     def "save messages and then load info stream"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             int count = 5
             Instant start = Instant.now().minusMillis(10) // start must be before save
 

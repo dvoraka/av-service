@@ -80,7 +80,7 @@ class RemoteRestServiceSpec extends Specification {
 
     def "message check"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             strategy.checkMessage(message)
@@ -100,7 +100,7 @@ class RemoteRestServiceSpec extends Specification {
 
     def "check message, send response and check status"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             strategy.start()
 
         when:

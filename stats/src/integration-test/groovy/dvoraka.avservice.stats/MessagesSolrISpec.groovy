@@ -37,7 +37,7 @@ class MessagesSolrISpec extends Specification {
 
     def "save and load message"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             Instant start = Instant.now()
 
         expect:

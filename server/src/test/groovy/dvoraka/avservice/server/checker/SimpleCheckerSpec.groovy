@@ -24,7 +24,7 @@ class SimpleCheckerSpec extends Specification {
 
             List<AvMessage> messages = []
             2.times {
-                messages << Utils.genNormalMessage()
+                messages << Utils.genMessage()
             }
 
             String corrId = 'X-CID-TEST'

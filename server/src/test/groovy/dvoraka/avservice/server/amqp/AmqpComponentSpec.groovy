@@ -47,7 +47,7 @@ class AmqpComponentSpec extends Specification {
     def "on message"() {
         given:
             AvMessageListener listener = Mock()
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             Message amqpMsg = messageMapper.transform(message)
 
             component.addAvMessageListener(listener)
@@ -62,7 +62,7 @@ class AmqpComponentSpec extends Specification {
     def "on message with conversion exception"() {
         given:
             AvMessageListener listener = Mock()
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             Message amqpMsg = messageMapper.transform(message)
             amqpMsg.getMessageProperties().setType(null)
 
@@ -96,7 +96,7 @@ class AmqpComponentSpec extends Specification {
 
     def "send normal message"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             component.sendAvMessage(message)
@@ -107,7 +107,7 @@ class AmqpComponentSpec extends Specification {
 
     def "send message with conversion error"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             component.sendAvMessage(message)
@@ -122,7 +122,7 @@ class AmqpComponentSpec extends Specification {
 
     def "send message with AMQP exception"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
             rabbitTemplate.convertAndSend(testExchange, _ as String, message) >> {
                 throw new AmqpException("Problem!")

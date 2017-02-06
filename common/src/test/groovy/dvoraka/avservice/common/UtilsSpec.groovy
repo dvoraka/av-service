@@ -15,7 +15,7 @@ class UtilsSpec extends Specification {
 
     def "generate normal message"() {
         setup:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         expect:
             checkMessageFields(message)

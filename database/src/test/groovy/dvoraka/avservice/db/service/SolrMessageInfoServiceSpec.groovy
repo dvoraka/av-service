@@ -33,7 +33,7 @@ class SolrMessageInfoServiceSpec extends Specification {
 
     def "call save method without batching"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             messageService.save(message, AvMessageSource.TEST, testService)
@@ -45,7 +45,7 @@ class SolrMessageInfoServiceSpec extends Specification {
     def "call save method with batching"() {
         given:
             int batchSize = 2
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             messageService.enableBatching()
             messageService.setBatchSize(batchSize)
 
@@ -63,7 +63,7 @@ class SolrMessageInfoServiceSpec extends Specification {
     def "call save method with batching and reaching limit"() {
         given:
             int batchSize = 1
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             messageService.enableBatching()
             messageService.setBatchSize(batchSize)
 
@@ -126,7 +126,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.enableBatching()
 
         when:
-            messageService.save(Utils.genNormalMessage(), AvMessageSource.TEST, testService)
+            messageService.save(Utils.genMessage(), AvMessageSource.TEST, testService)
 
         then:
             0 * messageRepository.save(_ as MessageInfoDocument)
@@ -140,7 +140,7 @@ class SolrMessageInfoServiceSpec extends Specification {
 
     def "test stop without batching"() {
         when:
-            messageService.save(Utils.genNormalMessage(), AvMessageSource.TEST, testService)
+            messageService.save(Utils.genMessage(), AvMessageSource.TEST, testService)
 
         then:
             1 * messageRepository.save(_ as MessageInfoDocument)

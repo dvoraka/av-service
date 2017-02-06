@@ -44,7 +44,7 @@ class SimpleCheckerISpec extends Specification {
 
     def "send and receive normal message"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             checker.sendAvMessage(message)
@@ -76,7 +76,7 @@ class SimpleCheckerISpec extends Specification {
         when:
             checker.sendAvMessage(message)
             count.times {
-                checker.sendAvMessage(Utils.genNormalMessage())
+                checker.sendAvMessage(Utils.genMessage())
             }
             AvMessage resultMessage = checker.receiveMessage(message.getId())
 

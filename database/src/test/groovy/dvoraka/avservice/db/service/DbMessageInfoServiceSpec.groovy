@@ -32,7 +32,7 @@ class DbMessageInfoServiceSpec extends Specification {
 
     def "save"() {
         when:
-            messageService.save(Utils.genNormalMessage(), AvMessageSource.TEST, testService)
+            messageService.save(Utils.genMessage(), AvMessageSource.TEST, testService)
 
         then:
             1 * messageRepository.save(_ as MessageInfo)

@@ -98,7 +98,7 @@ class AvControllerSpec extends Specification {
 
     def "test messageCheck(AVMessage)"() {
         setup:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
             ObjectMapper mapper = new ObjectMapper()
             String content = mapper.writeValueAsString(message)
@@ -115,7 +115,7 @@ class AvControllerSpec extends Specification {
 
     def "test messageCheck(AVMessage without ID)"() {
         setup:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             ReflectionTestUtils.setField(message, "id", null, null)
 
             ObjectMapper mapper = new ObjectMapper()
@@ -134,7 +134,7 @@ class AvControllerSpec extends Specification {
     def "test getResponse(String)"() {
         setup:
             String messageId = "TID"
-            AvMessage responseMsg = Utils.genNormalMessage()
+            AvMessage responseMsg = Utils.genMessage()
             service.getResponse(messageId) >> responseMsg
 
             ResultActions response = mockMvc.perform(

@@ -42,7 +42,7 @@ class JmsComponentSpec extends Specification {
     def "on message"() {
         given:
             AvMessageListener listener = Mock()
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             converter.fromMessage(_) >> message
 
             component.addAvMessageListener(listener)
@@ -88,7 +88,7 @@ class JmsComponentSpec extends Specification {
 
     def "send normal message"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             component.sendAvMessage(message)
@@ -99,7 +99,7 @@ class JmsComponentSpec extends Specification {
 
     def "send message with conversion error"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             component.sendAvMessage(message)
@@ -114,7 +114,7 @@ class JmsComponentSpec extends Specification {
 
     def "send message with JMS exception"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
             jmsTemplate.convertAndSend(destination, message) >> {
                 throw new IllegalStateException(null)

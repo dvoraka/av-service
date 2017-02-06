@@ -89,7 +89,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public boolean check() {
-        AvMessage normalMessage = Utils.genNormalMessage();
+        AvMessage normalMessage = Utils.genMessage();
         AvMessage infectedMessage = Utils.genInfectedMessage();
 
         sendAvMessage(normalMessage);

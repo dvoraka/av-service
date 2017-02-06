@@ -13,7 +13,7 @@ class AvMessageMapperPTest extends Specification {
     @Unroll
     def "Transform AvM to M: #cycles times"() {
         given:
-            AvMessage avMessage = Utils.genNormalMessage()
+            AvMessage avMessage = Utils.genMessage()
 
         when:
             cycles.times {

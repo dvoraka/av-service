@@ -47,7 +47,7 @@ class RestServiceISpec extends Specification {
 
     def "send normal message"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             client.postMessage(message, checkPath)
@@ -98,7 +98,7 @@ class RestServiceISpec extends Specification {
 
     def "check normal message"() {
         setup:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             String id = message.getId()
 
             client.postMessage(message, checkPath)
@@ -145,7 +145,7 @@ class RestServiceISpec extends Specification {
 
     def "normal message validation"() {
         when:
-            client.postMessage(Utils.genNormalMessage(), checkPath)
+            client.postMessage(Utils.genMessage(), checkPath)
 
         then:
             notThrown(Exception)

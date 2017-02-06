@@ -72,7 +72,7 @@ class AvCheckMessageProcessorSpec extends Specification {
             processor.addProcessedAVMessageListener(messageListener)
             processor.start()
 
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             processor.sendMessage(message)
@@ -111,7 +111,7 @@ class AvCheckMessageProcessorSpec extends Specification {
                 throw new ScanErrorException("Service is dead")
             }
 
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
 
         when:
             processor.sendMessage(message)
@@ -123,7 +123,7 @@ class AvCheckMessageProcessorSpec extends Specification {
     // still fuzzy timing
     def "processing message status"() {
         given:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             String testId = message.getId()
 
             avService.scanBytesWithInfo(_) >> {
@@ -166,7 +166,7 @@ class AvCheckMessageProcessorSpec extends Specification {
             avService.scanBytesWithInfo(_) >> Utils.OK_VIRUS_INFO
 
         when:
-            AvMessage message = Utils.genNormalMessage()
+            AvMessage message = Utils.genMessage()
             messageCount.times {
                 processor.sendMessage(message)
             }

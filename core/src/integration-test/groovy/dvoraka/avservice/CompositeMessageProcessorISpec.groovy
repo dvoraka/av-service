@@ -55,7 +55,7 @@ class CompositeMessageProcessorISpec extends Specification {
 
     def "test file saving with virus"() {
         given:
-            AvMessage message = Utils.genFileMessage()
+            AvMessage message = Utils.genInfectedFileMessage()
 
             AvMessage response = null
             AvMessageListener messageListener = new AvMessageListener() {

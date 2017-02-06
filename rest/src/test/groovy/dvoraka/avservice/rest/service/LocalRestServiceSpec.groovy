@@ -52,7 +52,7 @@ class LocalRestServiceSpec extends Specification {
             strategy.start()
 
         when:
-            strategy.checkMessage(Utils.genNormalMessage())
+            strategy.checkMessage(Utils.genMessage())
 
         then:
             1 * processor.sendMessage(_)
