@@ -11,6 +11,8 @@ then completely rewritten and the old code was removed.
 ### Contribution
 Current possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage), Linux admin for better deployment and distribution
 
+--
+
  * [Release notes](#release-notes)
  * [Features](#features)
  * [Planned features](#planned-features)
