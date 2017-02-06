@@ -53,9 +53,7 @@ public class DbFileService implements FileService {
         log.debug("Loading: " + message);
 
         Optional<File> file = repository.findByFilenameAndOwner(
-                message.getFilename(),
-                message.getOwner()
-        );
+                message.getFilename(), message.getOwner());
         log.debug("Loaded: " + file);
 
         return file.map(f -> f.fileMessage(message.getId()))
@@ -71,7 +69,10 @@ public class DbFileService implements FileService {
 
     @Override
     public void updateFile(FileMessage message) {
-        //TODO
+        Optional<File> oldFile = repository.findByFilenameAndOwner(
+                message.getFilename(), message.getOwner());
+        oldFile.ifPresent(f -> f.setData(message.getData()));
+        oldFile.ifPresent(repository::save);
     }
 
     @Override
