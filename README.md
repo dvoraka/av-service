@@ -8,6 +8,9 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
 JMS, AMQP and REST for communication. AV-checker project was integrated as the checker submodule,
 then completely rewritten and the old code was removed.
 
+### Contribution
+Current possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage), Linux admin for better deployment and distribution
+
  * [Release notes](#release-notes)
  * [Features](#features)
  * [Planned features](#planned-features)
