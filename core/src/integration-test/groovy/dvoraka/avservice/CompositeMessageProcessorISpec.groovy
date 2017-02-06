@@ -65,22 +65,14 @@ class CompositeMessageProcessorISpec extends Specification {
         given:
             AvMessage message = Utils.genInfectedFileMessage()
 
-            AvMessage response = null
-            AvMessageListener messageListener = new AvMessageListener() {
-                @Override
-                void onAvMessage(AvMessage m) {
-                    response = m
-                }
-            }
-
-            checkAndFileProcessor.addProcessedAVMessageListener(messageListener)
-
         when:
             checkAndFileProcessor.sendMessage(message)
 
         then:
             conditions.eventually {
+                AvMessage response = queue.take()
                 response != null
+                response.getType() == MessageType.RESPONSE
                 response.getVirusInfo() != Utils.OK_VIRUS_INFO
                 response.getCorrelationId() == message.getId()
             }

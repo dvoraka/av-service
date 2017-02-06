@@ -66,7 +66,7 @@ public final class Utils {
     }
 
     public static AvMessage genInfectedFileMessage() {
-        return genFileMessage(genUuidString());
+        return genInfectedFileMessage(genUuidString());
     }
 
     public static AvMessage genInfectedFileMessage(String username) {
