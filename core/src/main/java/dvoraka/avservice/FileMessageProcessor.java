@@ -59,7 +59,6 @@ public class FileMessageProcessor implements MessageProcessor {
 
     private void save(AvMessage message) {
         fileService.saveFile(message);
-
         notifyListeners(createOkResponse(message));
     }
 
@@ -71,13 +70,11 @@ public class FileMessageProcessor implements MessageProcessor {
 
     private void update(AvMessage message) {
         fileService.updateFile(message);
-
         notifyListeners(createOkResponse(message));
     }
 
     private void delete(AvMessage message) {
         fileService.deleteFile(message);
-
         notifyListeners(createOkResponse(message));
     }
 
