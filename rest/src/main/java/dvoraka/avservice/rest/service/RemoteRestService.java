@@ -110,6 +110,16 @@ public class RemoteRestService implements AvRestService, AvMessageListener {
         return null;
     }
 
+    @Override
+    public void updateMessage(AvMessage message) {
+        //TODO
+    }
+
+    @Override
+    public void deleteMessage(AvMessage message) {
+        //TODO
+    }
+
 
     @Override
     public AvMessage getResponse(String id) {

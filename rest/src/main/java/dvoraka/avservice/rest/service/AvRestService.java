@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
 /**
- * Anti-virus REST service.
+ * File and anti-virus REST service.
  */
 @Validated
 public interface AvRestService {
@@ -38,14 +38,14 @@ public interface AvRestService {
     String messageServiceId(String id);
 
     /**
-     * Checks an AV message.
+     * Checks a file inside the message.
      *
      * @param message the AV message
      */
     void checkMessage(@Valid AvMessage message);
 
     /**
-     * Saves an AV message.
+     * Saves a file inside the message.
      *
      * @param message the message.
      */
@@ -58,6 +58,20 @@ public interface AvRestService {
      * @return the loaded message
      */
     AvMessage loadMessage(AvMessage message);
+
+    /**
+     * Updates a file.
+     *
+     * @param message the update message
+     */
+    void updateMessage(AvMessage message);
+
+    /**
+     * Deletes a file.
+     *
+     * @param message the delete message
+     */
+    void deleteMessage(AvMessage message);
 
     /**
      * Returns a response AV message.
