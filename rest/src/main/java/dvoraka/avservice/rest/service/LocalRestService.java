@@ -22,7 +22,7 @@ import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Local REST service implementation. Uses directly the message processor.
+ * Local REST service implementation. Uses directly the message processors.
  */
 @Service
 public class LocalRestService implements AvRestService, AvMessageListener {
@@ -30,10 +30,10 @@ public class LocalRestService implements AvRestService, AvMessageListener {
     private final MessageProcessor fileMessageProcessor;
     private final MessageProcessor checkAndFileProcessor;
 
-    private static final Logger log = LogManager.getLogger(LocalRestService.class.getName());
+    private static final Logger log = LogManager.getLogger(LocalRestService.class);
 
-    private CacheManager cacheManager;
-    private Cache<String, AvMessage> messageCache;
+    private final CacheManager cacheManager;
+    private final Cache<String, AvMessage> messageCache;
 
 
     @Autowired
@@ -44,24 +44,27 @@ public class LocalRestService implements AvRestService, AvMessageListener {
         this.fileMessageProcessor = fileMessageProcessor;
         this.checkAndFileProcessor = checkAndFileProcessor;
 
-        initializeCache();
+        cacheManager = buildManager(cacheConfiguration());
+        messageCache = cacheManager.getCache("restCache", String.class, AvMessage.class);
     }
 
-    private void initializeCache() {
+    private CacheConfiguration<String, AvMessage> cacheConfiguration() {
         final long expirationTime = 10_000;
         final long heapEntries = 10;
-        CacheConfiguration<String, AvMessage> configuration = CacheConfigurationBuilder
+
+        return CacheConfigurationBuilder
                 .newCacheConfigurationBuilder(
                         String.class, AvMessage.class, ResourcePoolsBuilder.heap(heapEntries))
                 .withExpiry(Expirations.timeToLiveExpiration(
                         new Duration(expirationTime, TimeUnit.MILLISECONDS)))
                 .build();
+    }
 
-        cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+
+    private CacheManager buildManager(CacheConfiguration<String, AvMessage> configuration) {
+        return CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("restCache", configuration)
                 .build(true);
-
-        messageCache = cacheManager.getCache("restCache", String.class, AvMessage.class);
     }
 
     @Override
