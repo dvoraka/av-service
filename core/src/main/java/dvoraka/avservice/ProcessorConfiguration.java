@@ -49,4 +49,14 @@ public class ProcessorConfiguration {
     public boolean isUseOriginalMessage() {
         return useOriginalMessage;
     }
+
+    @Override
+    @SuppressWarnings("checkstyle:OperatorWrap")
+    public String toString() {
+        return "ProcessorConfiguration {" +
+                "processor=" + processor +
+                ", inputConditions=" + inputConditions +
+                ", useOriginalMessage=" + useOriginalMessage +
+                '}';
+    }
 }

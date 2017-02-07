@@ -53,7 +53,7 @@ public class FileMessageProcessor implements MessageProcessor {
     @Override
     public void sendMessage(AvMessage message) {
         log.debug("Receive message: " + message);
-        processMap.get(message.getType())
+        processMap.getOrDefault(message.getType(), this::unknown)
                 .accept(message);
     }
 
@@ -78,6 +78,10 @@ public class FileMessageProcessor implements MessageProcessor {
         notifyListeners(createOkResponse(message));
     }
 
+    private void unknown(AvMessage message) {
+        log.info("Unknown mapping for: " + message);
+    }
+
     private void notifyListeners(AvMessage message) {
         notifyListeners(listeners, message);
     }
@@ -88,7 +92,7 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        return null;
+        return MessageStatus.UNKNOWN;
     }
 
     @Override

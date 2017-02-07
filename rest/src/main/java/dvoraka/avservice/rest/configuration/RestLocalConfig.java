@@ -16,12 +16,10 @@ public class RestLocalConfig {
 
     @Bean
     public AvRestService avRestService(
-            MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor,
             MessageProcessor checkAndFileProcessor
     ) {
         return new LocalRestService(
-                checkMessageProcessor,
                 fileMessageProcessor,
                 checkAndFileProcessor);
     }

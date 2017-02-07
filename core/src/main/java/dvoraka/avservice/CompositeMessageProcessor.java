@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -67,7 +69,14 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
     @Override
     public MessageStatus messageStatus(String id) {
-        return null;
+        List<ProcessorConfiguration> configurations = new ArrayList<>(processors);
+        Collections.reverse(configurations);
+
+        return configurations.stream()
+                .filter(conf -> conf.getProcessor().messageStatus(id) != MessageStatus.UNKNOWN)
+                .findFirst()
+                .map(conf -> conf.getProcessor().messageStatus(id))
+                .orElse(MessageStatus.UNKNOWN);
     }
 
     @Override

@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LocalRestService implements AvRestService, AvMessageListener {
 
-    private final MessageProcessor checkMessageProcessor;
     private final MessageProcessor fileMessageProcessor;
     private final MessageProcessor checkAndFileProcessor;
 
@@ -39,11 +38,9 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
     @Autowired
     public LocalRestService(
-            MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor,
             MessageProcessor checkAndFileProcessor
     ) {
-        this.checkMessageProcessor = checkMessageProcessor;
         this.fileMessageProcessor = fileMessageProcessor;
         this.checkAndFileProcessor = checkAndFileProcessor;
 
@@ -69,7 +66,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        return checkMessageProcessor.messageStatus(id);
+        return checkAndFileProcessor.messageStatus(id);
     }
 
     @Override
@@ -85,7 +82,7 @@ public class LocalRestService implements AvRestService, AvMessageListener {
 
     @Override
     public void checkMessage(AvMessage message) {
-        checkMessageProcessor.sendMessage(message);
+        checkAndFileProcessor.sendMessage(message);
     }
 
     @Override
@@ -123,7 +120,6 @@ public class LocalRestService implements AvRestService, AvMessageListener {
     @Override
     public void start() {
         log.debug("Starting cache updating...");
-        checkMessageProcessor.addProcessedAVMessageListener(this);
         checkAndFileProcessor.addProcessedAVMessageListener(this);
         fileMessageProcessor.addProcessedAVMessageListener(this);
     }
@@ -131,8 +127,8 @@ public class LocalRestService implements AvRestService, AvMessageListener {
     @Override
     @PreDestroy
     public void stop() {
-        checkMessageProcessor.stop();
         cacheManager.close();
+        checkAndFileProcessor.stop();
     }
 
     @Override

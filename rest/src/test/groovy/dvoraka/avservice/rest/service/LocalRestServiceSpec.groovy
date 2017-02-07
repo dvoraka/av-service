@@ -17,7 +17,6 @@ class LocalRestServiceSpec extends Specification {
     @Subject
     LocalRestService strategy
 
-    MessageProcessor processor
     MessageProcessor compositeProcessor
     MessageProcessor fileProcessor
     String testId = 'TEST-ID'
@@ -26,10 +25,9 @@ class LocalRestServiceSpec extends Specification {
 
 
     def setup() {
-        processor = Mock()
         compositeProcessor = Mock()
         fileProcessor = Mock()
-        strategy = new LocalRestService(processor, fileProcessor, compositeProcessor)
+        strategy = new LocalRestService(fileProcessor, compositeProcessor)
         conditions = new PollingConditions(timeout: 2)
     }
 
@@ -39,7 +37,7 @@ class LocalRestServiceSpec extends Specification {
 
     def "unknown message status"() {
         setup:
-            processor.messageStatus(_) >> MessageStatus.UNKNOWN
+            compositeProcessor.messageStatus(_) >> MessageStatus.UNKNOWN
             strategy.start()
 
         expect:
@@ -55,7 +53,7 @@ class LocalRestServiceSpec extends Specification {
             strategy.checkMessage(Utils.genMessage())
 
         then:
-            1 * processor.sendMessage(_)
+            1 * compositeProcessor.sendMessage(_)
     }
 
     def "get message service ID returns null"() {
