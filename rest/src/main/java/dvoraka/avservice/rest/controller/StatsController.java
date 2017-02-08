@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static dvoraka.avservice.rest.controller.AvStatsController.MAPPING;
+import static dvoraka.avservice.rest.controller.StatsController.MAPPING;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -16,17 +16,17 @@ import static java.util.Objects.requireNonNull;
  */
 @RestController
 @RequestMapping(MAPPING)
-public class AvStatsController {
+public class StatsController {
 
     private final StatsService statsService;
 
-    private static final Logger log = LogManager.getLogger(AvStatsController.class);
+    private static final Logger log = LogManager.getLogger(StatsController.class);
 
     public static final String MAPPING = "/stats";
 
 
     @Autowired
-    public AvStatsController(StatsService statsService) {
+    public StatsController(StatsService statsService) {
         this.statsService = requireNonNull(statsService);
     }
 

@@ -10,13 +10,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,18 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.ConstraintViolationException;
 
 /**
- * AV REST controller.
+ * AV REST main controller.
  */
 @RestController
-public class AvController {
+public class MainController {
 
     private final AvRestService avRestService;
 
-    private static final Logger log = LogManager.getLogger(AvController.class);
+    private static final Logger log = LogManager.getLogger(MainController.class);
 
 
     @Autowired
-    public AvController(AvRestService restService) {
+    public MainController(AvRestService restService) {
         this.avRestService = restService;
     }
 
@@ -85,20 +82,6 @@ public class AvController {
     @GetMapping("/msg-service-id/{id}")
     public String messageServiceId(@PathVariable String id) {
         return avRestService.messageServiceId(id);
-    }
-
-    /**
-     * Checks an AV message for viruses.
-     *
-     * @param message the message
-     * @return the status
-     */
-    @PostMapping("/msg-check")
-    public ResponseEntity<Void> checkMessage(@RequestBody DefaultAvMessage message) {
-        log.debug("Check: {}", message);
-        avRestService.checkMessage(message);
-
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     /**

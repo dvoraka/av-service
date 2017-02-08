@@ -10,25 +10,25 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-/**
- * AV controller spec.
- */
-class AvStatsControllerSpec extends Specification {
+
+class StatsControllerSpec extends Specification {
 
     MockMvc mockMvc
     StatsService service
 
+    String base = StatsController.MAPPING
+
 
     def setup() {
         service = Mock()
-        mockMvc = MockMvcBuilders.standaloneSetup(new AvStatsController(service))
+        mockMvc = MockMvcBuilders.standaloneSetup(new StatsController(service))
                 .build()
     }
 
     def "test about"() {
         when:
             ResultActions resultActions = mockMvc.perform(
-                    get(AvStatsController.MAPPING + "/about"))
+                    get(base + "/about"))
 
         then:
             resultActions
@@ -43,7 +43,7 @@ class AvStatsControllerSpec extends Specification {
 
         when:
             ResultActions resultActions = mockMvc.perform(
-                    get(AvStatsController.MAPPING + "/today"))
+                    get(base + "/today"))
 
         then:
             resultActions

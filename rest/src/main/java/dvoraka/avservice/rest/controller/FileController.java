@@ -22,7 +22,7 @@ import java.security.Principal;
 import static dvoraka.avservice.rest.controller.FileController.MAPPING;
 
 /**
- * File controller.
+ * File REST controller.
  */
 @RestController
 @RequestMapping(MAPPING)

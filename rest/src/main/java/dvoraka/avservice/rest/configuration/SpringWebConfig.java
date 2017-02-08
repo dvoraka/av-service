@@ -1,8 +1,9 @@
 package dvoraka.avservice.rest.configuration;
 
 import dvoraka.avservice.configuration.ServiceConfig;
-import dvoraka.avservice.rest.controller.AvController;
-import dvoraka.avservice.rest.controller.AvStatsController;
+import dvoraka.avservice.rest.controller.CheckController;
+import dvoraka.avservice.rest.controller.MainController;
+import dvoraka.avservice.rest.controller.StatsController;
 import dvoraka.avservice.rest.controller.FileController;
 import dvoraka.avservice.rest.service.AvRestService;
 import dvoraka.avservice.stats.StatsService;
@@ -32,8 +33,13 @@ import javax.validation.Validator;
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
-    public AvController avController(AvRestService avRestService) {
-        return new AvController(avRestService);
+    public MainController mainController(AvRestService avRestService) {
+        return new MainController(avRestService);
+    }
+
+    @Bean
+    public CheckController checkController(AvRestService avRestService) {
+        return new CheckController(avRestService);
     }
 
     @Bean
@@ -43,8 +49,8 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     @Profile("stats")
-    public AvStatsController avStatsController(StatsService statsService) {
-        return new AvStatsController(statsService);
+    public StatsController statsController(StatsService statsService) {
+        return new StatsController(statsService);
     }
 
     @Bean

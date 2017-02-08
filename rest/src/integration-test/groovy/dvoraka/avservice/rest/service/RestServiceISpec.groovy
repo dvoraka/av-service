@@ -7,6 +7,8 @@ import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.rest.Application
 import dvoraka.avservice.rest.RestClient
 import dvoraka.avservice.rest.configuration.RestClientConfig
+import dvoraka.avservice.rest.controller.CheckController
+import dvoraka.avservice.rest.controller.FileController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -31,9 +33,9 @@ class RestServiceISpec extends Specification {
     @Autowired
     RestClient client
 
-    String checkPath = '/msg-check'
-    String savePath = '/file/save'
-    String loadPath = '/file/load'
+    String checkPath = CheckController.MAPPING + '/'
+    String savePath = FileController.MAPPING + '/save'
+    String loadPath = FileController.MAPPING + '/load'
 
 
     def "get testing message"() {
