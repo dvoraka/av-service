@@ -2,6 +2,7 @@ package dvoraka.avservice.rest.service
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.rest.Application
@@ -11,6 +12,8 @@ import dvoraka.avservice.rest.controller.CheckController
 import dvoraka.avservice.rest.controller.FileController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
 /**
@@ -33,6 +36,9 @@ class RestServiceISpec extends Specification {
     @Autowired
     RestClient client
 
+    @Autowired
+    TestRestTemplate restTemplate
+
     String checkPath = CheckController.MAPPING + '/'
     String savePath = FileController.MAPPING + '/save'
     String loadPath = FileController.MAPPING + '/load'
@@ -40,9 +46,12 @@ class RestServiceISpec extends Specification {
 
     def "get testing message"() {
         setup:
-            AvMessage message = client.getMessage("/gen-msg")
+            ResponseEntity<AvMessage> response = restTemplate
+                    .getForEntity('/gen-msg', DefaultAvMessage.class)
+            AvMessage message = response.getBody()
 
         expect:
+            response.statusCodeValue == 200
             message != null
             message.getServiceId() == 'REST'
     }
