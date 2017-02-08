@@ -47,17 +47,6 @@ class RestServiceISpec extends Specification {
             message.getServiceId() == 'REST'
     }
 
-    def "send normal message"() {
-        given:
-            AvMessage message = Utils.genMessage()
-
-        when:
-            client.postMessage(message, checkPath)
-
-        then:
-            notThrown(Exception)
-    }
-
     def "save message with random username"() {
         given:
             AvMessage message = Utils.genFileMessage()
@@ -96,6 +85,7 @@ class RestServiceISpec extends Specification {
 
         then:
             loaded.getFilename() == message.getFilename()
+            Arrays.equals(message.getData(), loaded.getData())
     }
 
     def "check normal message"() {
@@ -113,17 +103,6 @@ class RestServiceISpec extends Specification {
             status == MessageStatus.PROCESSED
             response.type == MessageType.RESPONSE
             response.getVirusInfo() == Utils.OK_VIRUS_INFO
-    }
-
-    def "send infected message"() {
-        given:
-            AvMessage message = Utils.genInfectedMessage()
-
-        when:
-            client.postMessage(message, checkPath)
-
-        then:
-            notThrown(Exception)
     }
 
     def "check infected message"() {
