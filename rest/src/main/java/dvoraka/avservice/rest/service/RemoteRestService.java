@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * and sends it along over the network.
  */
 @Service
-public class RemoteRestService implements AvRestService, AvMessageListener {
+public class RemoteRestService implements RestService, AvMessageListener {
 
     private final ServerComponent serverComponent;
 

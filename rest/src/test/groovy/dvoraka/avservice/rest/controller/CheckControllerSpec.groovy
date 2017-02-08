@@ -3,7 +3,7 @@ package dvoraka.avservice.rest.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
-import dvoraka.avservice.rest.service.AvRestService
+import dvoraka.avservice.rest.service.RestService
 import org.springframework.http.MediaType
 import org.springframework.test.util.ReflectionTestUtils
 import org.springframework.test.web.servlet.MockMvc
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CheckControllerSpec extends Specification {
 
     MockMvc mockMvc
-    AvRestService service
+    RestService service
 
     String base = CheckController.MAPPING
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
-import dvoraka.avservice.rest.service.AvRestService
+import dvoraka.avservice.rest.service.RestService
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MainControllerSpec extends Specification {
 
     MockMvc mockMvc
-    AvRestService service
+    RestService service
 
 
     def setup() {

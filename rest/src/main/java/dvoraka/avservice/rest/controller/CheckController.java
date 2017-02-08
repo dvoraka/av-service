@@ -1,7 +1,7 @@
 package dvoraka.avservice.rest.controller;
 
 import dvoraka.avservice.common.data.DefaultAvMessage;
-import dvoraka.avservice.rest.service.AvRestService;
+import dvoraka.avservice.rest.service.RestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 @RequestMapping(MAPPING)
 public class CheckController {
 
-    private final AvRestService avRestService;
+    private final RestService avRestService;
 
     private static final Logger log = LogManager.getLogger(CheckController.class);
 
@@ -31,7 +31,7 @@ public class CheckController {
 
 
     @Autowired
-    public CheckController(AvRestService restService) {
+    public CheckController(RestService restService) {
         this.avRestService = requireNonNull(restService);
     }
 

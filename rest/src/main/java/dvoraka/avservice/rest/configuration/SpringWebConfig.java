@@ -2,10 +2,10 @@ package dvoraka.avservice.rest.configuration;
 
 import dvoraka.avservice.configuration.ServiceConfig;
 import dvoraka.avservice.rest.controller.CheckController;
+import dvoraka.avservice.rest.controller.FileController;
 import dvoraka.avservice.rest.controller.MainController;
 import dvoraka.avservice.rest.controller.StatsController;
-import dvoraka.avservice.rest.controller.FileController;
-import dvoraka.avservice.rest.service.AvRestService;
+import dvoraka.avservice.rest.service.RestService;
 import dvoraka.avservice.stats.StatsService;
 import dvoraka.avservice.stats.configuration.StatsConfig;
 import org.springframework.context.annotation.Bean;
@@ -33,17 +33,17 @@ import javax.validation.Validator;
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
-    public MainController mainController(AvRestService avRestService) {
+    public MainController mainController(RestService avRestService) {
         return new MainController(avRestService);
     }
 
     @Bean
-    public CheckController checkController(AvRestService avRestService) {
+    public CheckController checkController(RestService avRestService) {
         return new CheckController(avRestService);
     }
 
     @Bean
-    public FileController fileController(AvRestService avRestService) {
+    public FileController fileController(RestService avRestService) {
         return new FileController(avRestService);
     }
 

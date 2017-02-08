@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  * Local REST service implementation. Uses directly the message processors.
  */
 @Service
-public class LocalRestService implements AvRestService, AvMessageListener {
+public class LocalRestService implements RestService, AvMessageListener {
 
     private final MessageProcessor fileMessageProcessor;
     private final MessageProcessor checkAndFileProcessor;

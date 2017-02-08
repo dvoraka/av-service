@@ -4,7 +4,7 @@ import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageType;
-import dvoraka.avservice.rest.service.AvRestService;
+import dvoraka.avservice.rest.service.RestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 @RequestMapping(MAPPING)
 public class FileController {
 
-    private final AvRestService restService;
+    private final RestService restService;
 
     private static final Logger log = LogManager.getLogger(FileController.class);
 
@@ -37,7 +37,7 @@ public class FileController {
 
 
     @Autowired
-    public FileController(AvRestService restService) {
+    public FileController(RestService restService) {
         this.restService = requireNonNull(restService);
     }
 
