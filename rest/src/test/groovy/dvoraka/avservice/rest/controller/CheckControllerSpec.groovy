@@ -41,7 +41,6 @@ class CheckControllerSpec extends Specification {
                     .andExpect(content().string("AV checking"))
     }
 
-
     def "check AV message"() {
         setup:
             AvMessage message = Utils.genMessage()

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.ConstraintViolationException;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * AV REST main controller.
  */
@@ -33,7 +35,7 @@ public class MainController {
 
     @Autowired
     public MainController(AvRestService restService) {
-        this.avRestService = restService;
+        this.avRestService = requireNonNull(restService);
     }
 
     /**

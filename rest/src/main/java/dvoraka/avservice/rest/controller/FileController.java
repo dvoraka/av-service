@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 import static dvoraka.avservice.rest.controller.FileController.MAPPING;
+import static java.util.Objects.requireNonNull;
 
 /**
  * File REST controller.
@@ -37,7 +38,7 @@ public class FileController {
 
     @Autowired
     public FileController(AvRestService restService) {
-        this.restService = restService;
+        this.restService = requireNonNull(restService);
     }
 
     @GetMapping("/about")

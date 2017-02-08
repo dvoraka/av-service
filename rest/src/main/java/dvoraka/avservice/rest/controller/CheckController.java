@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static dvoraka.avservice.rest.controller.CheckController.MAPPING;
+import static java.util.Objects.requireNonNull;
 
 /**
  * AV REST check controller.
@@ -31,7 +32,7 @@ public class CheckController {
 
     @Autowired
     public CheckController(AvRestService restService) {
-        this.avRestService = restService;
+        this.avRestService = requireNonNull(restService);
     }
 
     @GetMapping("/about")

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Rest client.
  */
@@ -21,7 +23,7 @@ public class RestClient {
     @Autowired
     public RestClient(String baseUrl, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
-        this.restTemplate = restTemplate;
+        this.restTemplate = requireNonNull(restTemplate);
     }
 
     public AvMessage postMessage(AvMessage message, String service) {
