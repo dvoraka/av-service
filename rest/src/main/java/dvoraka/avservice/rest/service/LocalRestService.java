@@ -21,6 +21,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Local REST service implementation. Uses directly the message processors.
  */
@@ -41,8 +43,8 @@ public class LocalRestService implements RestService, AvMessageListener {
             MessageProcessor fileMessageProcessor,
             MessageProcessor checkAndFileProcessor
     ) {
-        this.fileMessageProcessor = fileMessageProcessor;
-        this.checkAndFileProcessor = checkAndFileProcessor;
+        this.fileMessageProcessor = requireNonNull(fileMessageProcessor);
+        this.checkAndFileProcessor = requireNonNull(checkAndFileProcessor);
 
         cacheManager = buildManager(cacheConfiguration());
         messageCache = cacheManager.getCache("restCache", String.class, AvMessage.class);

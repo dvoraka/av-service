@@ -22,6 +22,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Remote REST service implementation. Receives requests through REST
  * and sends it along over the network.
@@ -47,7 +49,7 @@ public class RemoteRestService implements RestService, AvMessageListener {
 
     @Autowired
     public RemoteRestService(ServerComponent serverComponent) {
-        this.serverComponent = serverComponent;
+        this.serverComponent = requireNonNull(serverComponent);
     }
 
     private void initializeCache() {

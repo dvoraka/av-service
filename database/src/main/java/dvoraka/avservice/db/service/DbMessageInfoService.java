@@ -26,9 +26,9 @@ import static java.util.Objects.requireNonNull;
 @Transactional
 public class DbMessageInfoService implements MessageInfoService {
 
-    private static final Logger log = LogManager.getLogger(DbMessageInfoService.class);
-
     private final DbMessageInfoRepository messageInfoRepository;
+
+    private static final Logger log = LogManager.getLogger(DbMessageInfoService.class);
 
 
     @Autowired

@@ -20,13 +20,14 @@ import java.util.Objects;
 @Service
 public class DefaultAvService implements AvService {
 
-    private static final Logger log = LogManager.getLogger(DefaultAvService.class.getName());
+    private final AvProgram avProgram;
+
+    private static final Logger log = LogManager.getLogger(DefaultAvService.class);
     /**
      * Default max file size in bytes.
      */
     private static final long DEFAULT_MAX_FILE_SIZE = 10_000_000;
 
-    private final AvProgram avProgram;
     private long maxFileSize;
     private long maxArraySize;
 

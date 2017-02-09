@@ -19,13 +19,14 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * AV message processor. Checks messages for viruses.
@@ -74,8 +75,8 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     ) {
         this.threadCount = threadCount;
         this.serviceId = serviceId;
-        this.avService = avService;
-        this.messageInfoService = messageInfoService;
+        this.avService = requireNonNull(avService);
+        this.messageInfoService = requireNonNull(messageInfoService);
 
         ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
@@ -166,7 +167,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
                 throw new ScanErrorException("No data in the message.");
             }
         } catch (ScanErrorException e) {
-            error = Objects.requireNonNull(e.getMessage());
+            error = requireNonNull(e.getMessage());
             log.warn("Scanning error!", e);
         }
         log.debug("Scanning done in: " + Thread.currentThread().getName());
