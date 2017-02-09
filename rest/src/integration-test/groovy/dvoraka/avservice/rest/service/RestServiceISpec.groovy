@@ -38,12 +38,30 @@ class RestServiceISpec extends Specification {
     RestClient client
 
     @Autowired
+    TestRestTemplate simpleTemplate
+
     TestRestTemplate restTemplate
 
     String checkPath = CheckController.MAPPING + '/'
     String savePath = FileController.MAPPING + '/save'
     String loadPath = FileController.MAPPING + '/load'
 
+
+    def setup() {
+        restTemplate = simpleTemplate.withBasicAuth('test', 'test')
+    }
+
+    def "get info"() {
+        when:
+            ResponseEntity<String> response = restTemplate
+                    .getForEntity('/', String.class)
+            String message = response.getBody()
+
+        then:
+            response.getStatusCode() == HttpStatus.OK
+            message != null
+            message == 'AV service'
+    }
 
     def "get testing message"() {
         when:
@@ -55,48 +73,6 @@ class RestServiceISpec extends Specification {
             response.getStatusCode() == HttpStatus.OK
             message != null
             message.getServiceId() == 'REST'
-    }
-
-    def "save message with random username"() {
-        given:
-            AvMessage message = Utils.genFileMessage()
-
-        when:
-            ResponseEntity<Void> response = restTemplate
-                    .postForEntity(savePath, message, Void.class)
-
-        then:
-            response.getStatusCode() == HttpStatus.UNAUTHORIZED
-    }
-
-    def "save message with test username"() {
-        given:
-            AvMessage message = Utils.genFileMessage('test')
-
-        when:
-            client.postMessage(message, savePath)
-
-        then:
-            notThrown(Exception)
-    }
-
-    def "save and load message"() {
-        given:
-            AvMessage message = Utils.genFileMessage('test')
-            String loadUrl = loadPath + '/' + message.getFilename()
-
-        when:
-            client.postMessage(message, savePath)
-
-        then:
-            notThrown(Exception)
-
-        when:
-            AvMessage loaded = client.getMessage(loadUrl)
-
-        then:
-            loaded.getFilename() == message.getFilename()
-            Arrays.equals(message.getData(), loaded.getData())
     }
 
     def "check normal message"() {
@@ -131,6 +107,63 @@ class RestServiceISpec extends Specification {
             status == MessageStatus.PROCESSED
             response.type == MessageType.RESPONSE
             response.getVirusInfo() != Utils.OK_VIRUS_INFO
+    }
+
+    //
+    // File operations
+    //
+    def "save message with unauthorized random username"() {
+        given:
+            AvMessage message = Utils.genFileMessage()
+
+        when:
+            ResponseEntity<Void> response = simpleTemplate
+                    .postForEntity(savePath, message, Void.class)
+
+        then:
+            response.getStatusCode() == HttpStatus.UNAUTHORIZED
+    }
+
+    def "save message with authorized random username"() {
+        given:
+            AvMessage message = Utils.genFileMessage()
+
+        when:
+            ResponseEntity<Void> response = restTemplate
+                    .postForEntity(savePath, message, Void.class)
+
+        then:
+            response.getStatusCode() == HttpStatus.FORBIDDEN
+    }
+
+    def "save message with test username"() {
+        given:
+            AvMessage message = Utils.genFileMessage('test')
+
+        when:
+            client.postMessage(message, savePath)
+
+        then:
+            notThrown(Exception)
+    }
+
+    def "save and load message"() {
+        given:
+            AvMessage message = Utils.genFileMessage('test')
+            String loadUrl = loadPath + '/' + message.getFilename()
+
+        when:
+            client.postMessage(message, savePath)
+
+        then:
+            notThrown(Exception)
+
+        when:
+            AvMessage loaded = client.getMessage(loadUrl)
+
+        then:
+            loaded.getFilename() == message.getFilename()
+            Arrays.equals(message.getData(), loaded.getData())
     }
 
     // validations
