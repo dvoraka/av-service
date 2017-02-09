@@ -13,6 +13,7 @@ import dvoraka.avservice.rest.controller.FileController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
@@ -45,13 +46,13 @@ class RestServiceISpec extends Specification {
 
 
     def "get testing message"() {
-        setup:
+        when:
             ResponseEntity<AvMessage> response = restTemplate
                     .getForEntity('/gen-msg', DefaultAvMessage.class)
             AvMessage message = response.getBody()
 
-        expect:
-            response.statusCodeValue == 200
+        then:
+            response.getStatusCode() == HttpStatus.OK
             message != null
             message.getServiceId() == 'REST'
     }
@@ -61,10 +62,11 @@ class RestServiceISpec extends Specification {
             AvMessage message = Utils.genFileMessage()
 
         when:
-            client.postMessage(message, savePath)
+            ResponseEntity<Void> response = restTemplate
+                    .postForEntity(savePath, message, Void.class)
 
         then:
-            thrown(Exception)
+            response.getStatusCode() == HttpStatus.UNAUTHORIZED
     }
 
     def "save message with test username"() {
