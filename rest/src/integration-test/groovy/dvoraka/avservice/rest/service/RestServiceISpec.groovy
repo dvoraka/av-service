@@ -38,7 +38,7 @@ class RestServiceISpec extends Specification {
     RestClient client
 
     @Autowired
-    TestRestTemplate simpleTemplate
+    TestRestTemplate basicRestTemplate
 
     TestRestTemplate restTemplate
 
@@ -48,7 +48,7 @@ class RestServiceISpec extends Specification {
 
 
     def setup() {
-        restTemplate = simpleTemplate.withBasicAuth('test', 'test')
+        restTemplate = basicRestTemplate.withBasicAuth('test', 'test')
     }
 
     def "get info"() {
@@ -76,17 +76,23 @@ class RestServiceISpec extends Specification {
     }
 
     def "check normal message"() {
-        setup:
+        given:
             AvMessage message = Utils.genMessage()
             String id = message.getId()
 
-            client.postMessage(message, checkPath)
+        when:
+            restTemplate.postForEntity(checkPath, message, DefaultAvMessage.class)
             sleep(2000)
 
-            MessageStatus status = client.getMessageStatus("/msg-status/" + id)
-            AvMessage response = client.getMessage("/get-response/" + id)
+            ResponseEntity<MessageStatus> statusResponseEntity = restTemplate
+                    .getForEntity('/msg-status/' + id, MessageStatus.class)
+            MessageStatus status = statusResponseEntity.getBody()
 
-        expect:
+            ResponseEntity<AvMessage> messageResponseEntity = restTemplate
+                    .getForEntity('/get-response/' + id, DefaultAvMessage.class)
+            AvMessage response = messageResponseEntity.getBody()
+
+        then:
             status == MessageStatus.PROCESSED
             response.type == MessageType.RESPONSE
             response.getVirusInfo() == Utils.OK_VIRUS_INFO
@@ -117,7 +123,7 @@ class RestServiceISpec extends Specification {
             AvMessage message = Utils.genFileMessage()
 
         when:
-            ResponseEntity<Void> response = simpleTemplate
+            ResponseEntity<Void> response = basicRestTemplate
                     .postForEntity(savePath, message, Void.class)
 
         then:
