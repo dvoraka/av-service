@@ -42,13 +42,16 @@ class RestServiceISpec extends Specification {
 
     TestRestTemplate restTemplate
 
+    String testUsername = 'test'
+    String testPassword = 'test'
+
     String checkPath = CheckController.MAPPING + '/'
     String savePath = FileController.MAPPING + '/save'
     String loadPath = FileController.MAPPING + '/load'
 
 
     def setup() {
-        restTemplate = basicRestTemplate.withBasicAuth('test', 'test')
+        restTemplate = basicRestTemplate.withBasicAuth(testUsername, testPassword)
     }
 
     def "get info"() {
@@ -77,11 +80,11 @@ class RestServiceISpec extends Specification {
 
     def "check normal message"() {
         given:
-            AvMessage message = Utils.genMessage()
-            String id = message.getId()
+            AvMessage normalMessage = Utils.genMessage()
+            String id = normalMessage.getId()
 
         when:
-            restTemplate.postForEntity(checkPath, message, DefaultAvMessage.class)
+            restTemplate.postForEntity(checkPath, normalMessage, DefaultAvMessage.class)
             sleep(2000)
 
             ResponseEntity<MessageStatus> statusResponseEntity = restTemplate
@@ -90,12 +93,15 @@ class RestServiceISpec extends Specification {
 
             ResponseEntity<AvMessage> messageResponseEntity = restTemplate
                     .getForEntity('/get-response/' + id, DefaultAvMessage.class)
-            AvMessage response = messageResponseEntity.getBody()
+            AvMessage message = messageResponseEntity.getBody()
 
         then:
+            statusResponseEntity.getStatusCode() == HttpStatus.OK
             status == MessageStatus.PROCESSED
-            response.type == MessageType.RESPONSE
-            response.getVirusInfo() == Utils.OK_VIRUS_INFO
+
+            messageResponseEntity.getStatusCode() == HttpStatus.OK
+            message.type == MessageType.RESPONSE
+            message.getVirusInfo() == Utils.OK_VIRUS_INFO
     }
 
     def "check infected message"() {
@@ -123,11 +129,11 @@ class RestServiceISpec extends Specification {
             AvMessage message = Utils.genFileMessage()
 
         when:
-            ResponseEntity<Void> response = basicRestTemplate
+            ResponseEntity<Void> responseEntity = basicRestTemplate
                     .postForEntity(savePath, message, Void.class)
 
         then:
-            response.getStatusCode() == HttpStatus.UNAUTHORIZED
+            responseEntity.getStatusCode() == HttpStatus.UNAUTHORIZED
     }
 
     def "save message with authorized random username"() {
@@ -135,22 +141,23 @@ class RestServiceISpec extends Specification {
             AvMessage message = Utils.genFileMessage()
 
         when:
-            ResponseEntity<Void> response = restTemplate
+            ResponseEntity<Void> responseEntity = restTemplate
                     .postForEntity(savePath, message, Void.class)
 
         then:
-            response.getStatusCode() == HttpStatus.FORBIDDEN
+            responseEntity.getStatusCode() == HttpStatus.FORBIDDEN
     }
 
     def "save message with test username"() {
         given:
-            AvMessage message = Utils.genFileMessage('test')
+            AvMessage message = Utils.genFileMessage(testUsername)
 
         when:
-            client.postMessage(message, savePath)
+            ResponseEntity<Void> responseEntity = restTemplate
+                    .postForEntity(savePath, message, Void.class)
 
         then:
-            notThrown(Exception)
+            responseEntity.getStatusCode() == HttpStatus.ACCEPTED
     }
 
     def "save and load message"() {
