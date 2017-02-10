@@ -162,25 +162,33 @@ class RestServiceISpec extends Specification {
 
     def "save and load message"() {
         given:
-            AvMessage message = Utils.genFileMessage('test')
+            AvMessage message = Utils.genFileMessage(testUsername)
             String loadUrl = loadPath + '/' + message.getFilename()
 
         when:
-            client.postMessage(message, savePath)
+            ResponseEntity<Void> responseEntity = restTemplate
+                    .postForEntity(savePath, message, Void.class)
 
         then:
-            notThrown(Exception)
+            responseEntity.getStatusCode() == HttpStatus.ACCEPTED
+            sleep(1000)
 
         when:
-            AvMessage loaded = client.getMessage(loadUrl)
+            ResponseEntity<AvMessage> messageResponseEntity = restTemplate
+                    .getForEntity(loadUrl, DefaultAvMessage.class)
+            AvMessage loaded = messageResponseEntity.getBody()
 
         then:
+            messageResponseEntity.getStatusCode() == HttpStatus.OK
+            loaded != null
             loaded.getFilename() == message.getFilename()
+            loaded.getOwner() == message.getOwner()
             Arrays.equals(message.getData(), loaded.getData())
     }
 
-    // validations
-
+    //
+    // Validations
+    //
     def "normal message validation"() {
         when:
             client.postMessage(Utils.genMessage(), checkPath)
