@@ -1,5 +1,6 @@
 package dvoraka.avservice.rest.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
@@ -12,8 +13,13 @@ import dvoraka.avservice.rest.controller.FileController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.test.util.ReflectionTestUtils
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -35,6 +41,9 @@ class RestServiceISpec extends Specification {
 
     @Autowired
     TestRestTemplate basicRestTemplate
+
+    @Autowired
+    ObjectMapper objectMapper
 
     TestRestTemplate restTemplate
 
@@ -194,7 +203,24 @@ class RestServiceISpec extends Specification {
     //
     // Validations
     //
+    @Ignore('WIP')
     def "send broken message"() {
-        // we need to build it somehow
+        given:
+            AvMessage message = Utils.genMessage()
+            ReflectionTestUtils.setField(message, "id", null)
+
+            String json = objectMapper.writeValueAsString(message)
+
+            HttpHeaders headers = new HttpHeaders()
+            headers.setContentType(MediaType.APPLICATION_JSON)
+
+            HttpEntity<String> entity = new HttpEntity<>(json, headers)
+
+        when:
+            ResponseEntity<String> messageResponseEntity = restTemplate
+                    .postForEntity(checkPath, entity, String.class)
+
+        then:
+            println messageResponseEntity
     }
 }
