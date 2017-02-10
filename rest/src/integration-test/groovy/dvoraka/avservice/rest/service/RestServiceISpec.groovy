@@ -6,7 +6,6 @@ import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.rest.Application
-import dvoraka.avservice.rest.RestClient
 import dvoraka.avservice.rest.configuration.RestClientConfig
 import dvoraka.avservice.rest.controller.CheckController
 import dvoraka.avservice.rest.controller.FileController
@@ -33,9 +32,6 @@ import spock.lang.Specification
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
 )
 class RestServiceISpec extends Specification {
-
-    @Autowired
-    RestClient client
 
     @Autowired
     TestRestTemplate basicRestTemplate
@@ -198,19 +194,7 @@ class RestServiceISpec extends Specification {
     //
     // Validations
     //
-    def "normal message validation"() {
-        when:
-            client.postMessage(Utils.genMessage(), checkPath)
-
-        then:
-            notThrown(Exception)
-    }
-
-    def "infected message validation"() {
-        when:
-            client.postMessage(Utils.genInfectedMessage(), checkPath)
-
-        then:
-            notThrown(Exception)
+    def "send broken message"() {
+        // we need to build it somehow
     }
 }
