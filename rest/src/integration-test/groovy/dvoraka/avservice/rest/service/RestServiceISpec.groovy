@@ -105,20 +105,29 @@ class RestServiceISpec extends Specification {
     }
 
     def "check infected message"() {
-        setup:
-            AvMessage message = Utils.genInfectedMessage()
-            String id = message.getId()
+        given:
+            AvMessage infectedMessage = Utils.genInfectedMessage()
+            String id = infectedMessage.getId()
 
-            client.postMessage(message, checkPath)
+        when:
+            restTemplate.postForEntity(checkPath, infectedMessage, DefaultAvMessage.class)
             sleep(2000)
 
-            MessageStatus status = client.getMessageStatus("/msg-status/" + id)
-            AvMessage response = client.getMessage("/get-response/" + id)
+            ResponseEntity<MessageStatus> statusResponseEntity = restTemplate
+                    .getForEntity('/msg-status/' + id, MessageStatus.class)
+            MessageStatus status = statusResponseEntity.getBody()
 
-        expect:
+            ResponseEntity<AvMessage> messageResponseEntity = restTemplate
+                    .getForEntity('/get-response/' + id, DefaultAvMessage.class)
+            AvMessage message = messageResponseEntity.getBody()
+
+        then:
+            statusResponseEntity.getStatusCode() == HttpStatus.OK
             status == MessageStatus.PROCESSED
-            response.type == MessageType.RESPONSE
-            response.getVirusInfo() != Utils.OK_VIRUS_INFO
+
+            messageResponseEntity.getStatusCode() == HttpStatus.OK
+            message.type == MessageType.RESPONSE
+            message.getVirusInfo() != Utils.OK_VIRUS_INFO
     }
 
     //
