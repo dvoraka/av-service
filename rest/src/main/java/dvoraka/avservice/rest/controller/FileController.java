@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,7 +65,7 @@ public class FileController {
     }
 
     @GetMapping("/load/{filename}")
-    public AvMessage loadFile(@PathVariable String filename, Principal principal) {
+    public ResponseEntity<AvMessage> loadFile(@PathVariable String filename, Principal principal) {
 
         AvMessage fileRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
                 .filename(filename)
@@ -72,7 +73,10 @@ public class FileController {
                 .type(MessageType.FILE_LOAD)
                 .build();
 
-        return restService.loadMessage(fileRequest);
+        //TODO
+        AvMessage fileMessage = restService.loadMessage(fileRequest);
+
+        return new ResponseEntity<>(fileMessage, HttpStatus.OK);
     }
 
     @PutMapping("/update/{filename}")
@@ -88,5 +92,15 @@ public class FileController {
             restService.updateMessage(fileMessage);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
+    }
+
+    @DeleteMapping("/delete/{filename}")
+    public ResponseEntity<Void> deleteFile(@PathVariable String filename, Principal principal) {
+
+        //TODO
+//        String username = principal.getName();
+        log.debug("Delete principal: " + principal);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
