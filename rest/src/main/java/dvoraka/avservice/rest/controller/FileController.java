@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,21 @@ public class FileController {
         return "AV file operations";
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<Void> saveFile(
+            @RequestBody DefaultAvMessage fileMessage, Principal principal) {
+
+        String username = principal.getName();
+        log.debug("Save principal: " + principal);
+
+        if (!username.equals(fileMessage.getOwner())) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            restService.saveMessage(fileMessage);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+    }
+
     @GetMapping("/load/{filename}")
     public AvMessage loadFile(@PathVariable String filename, Principal principal) {
 
@@ -59,15 +75,17 @@ public class FileController {
         return restService.loadMessage(fileRequest);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Void> saveFile(@RequestBody DefaultAvMessage file, Principal principal) {
-        String username = principal.getName();
-        log.info("Principal: " + principal);
+    @PutMapping("/update/{filename}")
+    public ResponseEntity<Void> updateFile(
+            @RequestBody DefaultAvMessage fileMessage, Principal principal) {
 
-        if (!username.equals(file.getOwner())) {
+        String username = principal.getName();
+        log.debug("Update principal: " + principal);
+
+        if (!username.equals(fileMessage.getOwner())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
-            restService.saveMessage(file);
+            restService.updateMessage(fileMessage);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
     }
