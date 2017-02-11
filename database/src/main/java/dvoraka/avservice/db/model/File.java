@@ -2,6 +2,7 @@ package dvoraka.avservice.db.model;
 
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.FileMessage;
+import dvoraka.avservice.common.data.MessageType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -60,6 +61,7 @@ public class File {
         return new DefaultAvMessage.Builder(UUID.randomUUID().toString())
                 .correlationId(originalId)
                 .data(getData())
+                .type(MessageType.FILE_RESPONSE)
                 .filename(getFilename())
                 .owner(getOwner())
                 .build();

@@ -1,6 +1,7 @@
 package dvoraka.avservice.common.data;
 
 //TODO
+
 /**
  * Data structure for the whole AV service.
  * <br>
@@ -25,5 +26,5 @@ public interface AvMessage extends FileMessage {
 
     AvMessage createErrorResponse(String errorMessage);
 
-    AvMessage createFileResponse(byte[] data);
+    AvMessage createFileResponse(byte[] data, MessageType type);
 }

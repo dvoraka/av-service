@@ -53,6 +53,7 @@ class RestServiceISpec extends Specification {
     String checkPath = CheckController.MAPPING + '/'
     String savePath = FileController.MAPPING + '/save'
     String loadPath = FileController.MAPPING + '/load'
+    String deletePath = FileController.MAPPING + '/delete'
 
 
     def setup() {
@@ -198,6 +199,48 @@ class RestServiceISpec extends Specification {
             loaded.getFilename() == message.getFilename()
             loaded.getOwner() == message.getOwner()
             Arrays.equals(message.getData(), loaded.getData())
+    }
+
+    def "save and delete message"() {
+        given:
+            AvMessage message = Utils.genFileMessage(testUsername)
+            String loadUrl = loadPath + '/' + message.getFilename()
+
+        when:
+            ResponseEntity<Void> responseEntity = restTemplate
+                    .postForEntity(savePath, message, Void.class)
+
+        then:
+            responseEntity.getStatusCode() == HttpStatus.ACCEPTED
+            sleep(1000)
+
+        when:
+            ResponseEntity<AvMessage> messageResponseEntity = restTemplate
+                    .getForEntity(loadUrl, DefaultAvMessage.class)
+            AvMessage loaded = messageResponseEntity.getBody()
+
+        then:
+            messageResponseEntity.getStatusCode() == HttpStatus.OK
+            loaded != null
+            loaded.getFilename() == message.getFilename()
+            loaded.getOwner() == message.getOwner()
+            loaded.getType() == MessageType.FILE_RESPONSE
+            Arrays.equals(message.getData(), loaded.getData())
+
+        when:
+            restTemplate.delete(deletePath + '/' + message.getFilename())
+            sleep(1000)
+
+            messageResponseEntity = restTemplate
+                    .getForEntity(loadUrl, DefaultAvMessage.class)
+            loaded = messageResponseEntity.getBody()
+
+        then:
+            messageResponseEntity.getStatusCode() == HttpStatus.OK
+            loaded != null
+            loaded.getFilename() == message.getFilename()
+            loaded.getOwner() == message.getOwner()
+            loaded.getType() == MessageType.FILE_NOT_FOUND
     }
 
     //

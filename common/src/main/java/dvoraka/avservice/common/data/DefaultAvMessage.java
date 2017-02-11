@@ -101,13 +101,13 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
-    public AvMessage createFileResponse(byte[] data) {
+    public AvMessage createFileResponse(byte[] data, MessageType type) {
         return new Builder(Utils.genUuidString())
                 .correlationId(this.getId())
                 .filename(this.getFilename())
                 .owner(this.getOwner())
                 .data(data)
-                .type(MessageType.FILE_RESPONSE)
+                .type(type)
                 .build();
     }
 
