@@ -66,6 +66,7 @@ public class FileController {
 
     @GetMapping("/load/{filename}")
     public ResponseEntity<AvMessage> loadFile(@PathVariable String filename, Principal principal) {
+        log.debug("Load file: {}, principal: {}", filename, principal);
 
         AvMessage fileRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
                 .filename(filename)
@@ -96,10 +97,15 @@ public class FileController {
 
     @DeleteMapping("/delete/{filename}")
     public ResponseEntity<Void> deleteFile(@PathVariable String filename, Principal principal) {
+        log.debug("Delete file: {}, principal: {}", filename, principal);
 
-        //TODO
-//        String username = principal.getName();
-        log.debug("Delete principal: " + principal);
+        AvMessage fileRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+                .filename(filename)
+                .owner(principal.getName())
+                .type(MessageType.FILE_DELETE)
+                .build();
+
+        restService.deleteMessage(fileRequest);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
