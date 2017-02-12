@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner;
+package dvoraka.avservice.server.runner.jms;
 
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
