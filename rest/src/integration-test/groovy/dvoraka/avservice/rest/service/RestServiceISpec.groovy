@@ -51,9 +51,7 @@ class RestServiceISpec extends Specification {
     String testPassword = 'test'
 
     String checkPath = CheckController.MAPPING + '/'
-    String savePath = FileController.MAPPING + '/save'
-    String loadPath = FileController.MAPPING + '/load'
-    String deletePath = FileController.MAPPING + '/delete'
+    String filePath = FileController.MAPPING + '/'
 
 
     def setup() {
@@ -145,7 +143,7 @@ class RestServiceISpec extends Specification {
 
         when:
             ResponseEntity<Void> responseEntity = basicRestTemplate
-                    .postForEntity(savePath, message, Void.class)
+                    .postForEntity(filePath, message, Void.class)
 
         then:
             responseEntity.getStatusCode() == HttpStatus.UNAUTHORIZED
@@ -157,7 +155,7 @@ class RestServiceISpec extends Specification {
 
         when:
             ResponseEntity<Void> responseEntity = restTemplate
-                    .postForEntity(savePath, message, Void.class)
+                    .postForEntity(filePath, message, Void.class)
 
         then:
             responseEntity.getStatusCode() == HttpStatus.FORBIDDEN
@@ -169,7 +167,7 @@ class RestServiceISpec extends Specification {
 
         when:
             ResponseEntity<Void> responseEntity = restTemplate
-                    .postForEntity(savePath, message, Void.class)
+                    .postForEntity(filePath, message, Void.class)
 
         then:
             responseEntity.getStatusCode() == HttpStatus.ACCEPTED
@@ -178,11 +176,11 @@ class RestServiceISpec extends Specification {
     def "save and load message"() {
         given:
             AvMessage message = Utils.genFileMessage(testUsername)
-            String loadUrl = loadPath + '/' + message.getFilename()
+            String loadUrl = filePath + message.getFilename()
 
         when:
             ResponseEntity<Void> responseEntity = restTemplate
-                    .postForEntity(savePath, message, Void.class)
+                    .postForEntity(filePath, message, Void.class)
 
         then:
             responseEntity.getStatusCode() == HttpStatus.ACCEPTED
@@ -204,11 +202,11 @@ class RestServiceISpec extends Specification {
     def "save and delete message"() {
         given:
             AvMessage message = Utils.genFileMessage(testUsername)
-            String loadUrl = loadPath + '/' + message.getFilename()
+            String loadUrl = filePath + message.getFilename()
 
         when:
             ResponseEntity<Void> responseEntity = restTemplate
-                    .postForEntity(savePath, message, Void.class)
+                    .postForEntity(filePath, message, Void.class)
 
         then:
             responseEntity.getStatusCode() == HttpStatus.ACCEPTED
@@ -228,7 +226,7 @@ class RestServiceISpec extends Specification {
             Arrays.equals(message.getData(), loaded.getData())
 
         when:
-            restTemplate.delete(deletePath + '/' + message.getFilename())
+            restTemplate.delete(filePath + message.getFilename())
             sleep(1000)
 
             messageResponseEntity = restTemplate

@@ -46,10 +46,10 @@ public class FileController {
     @GetMapping("/about")
     public String about() {
         log.info("About called.");
-        return "AV file operations";
+        return "File operations";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/")
     public ResponseEntity<Void> saveFile(
             @RequestBody DefaultAvMessage fileMessage, Principal principal) {
 
@@ -64,7 +64,7 @@ public class FileController {
         }
     }
 
-    @GetMapping("/load/{filename}")
+    @GetMapping("/{filename}")
     public ResponseEntity<AvMessage> loadFile(@PathVariable String filename, Principal principal) {
         log.debug("Load file: {}, principal: {}", filename, principal);
 
@@ -80,7 +80,7 @@ public class FileController {
         return new ResponseEntity<>(fileMessage, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{filename}")
+    @PutMapping("/{filename}")
     public ResponseEntity<Void> updateFile(
             @RequestBody DefaultAvMessage fileMessage, Principal principal) {
 
@@ -95,7 +95,7 @@ public class FileController {
         }
     }
 
-    @DeleteMapping("/delete/{filename}")
+    @DeleteMapping("/{filename}")
     public ResponseEntity<Void> deleteFile(@PathVariable String filename, Principal principal) {
         log.debug("Delete file: {}, principal: {}", filename, principal);
 
