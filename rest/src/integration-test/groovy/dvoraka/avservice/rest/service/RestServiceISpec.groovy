@@ -41,7 +41,6 @@ class RestServiceISpec extends Specification {
 
     @Autowired
     TestRestTemplate basicRestTemplate
-
     @Autowired
     ObjectMapper objectMapper
 

@@ -53,15 +53,14 @@ public class FileController {
     public ResponseEntity<Void> saveFile(
             @RequestBody DefaultAvMessage fileMessage, Principal principal) {
 
-        String username = principal.getName();
         log.debug("Save principal: " + principal);
-
-        if (!username.equals(fileMessage.getOwner())) {
+        if (!principal.getName().equals(fileMessage.getOwner())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } else {
-            restService.saveMessage(fileMessage);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
+
+        restService.saveMessage(fileMessage);
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{filename}")
@@ -84,15 +83,14 @@ public class FileController {
     public ResponseEntity<Void> updateFile(
             @RequestBody DefaultAvMessage fileMessage, Principal principal) {
 
-        String username = principal.getName();
-        log.debug("Update principal: " + principal);
-
-        if (!username.equals(fileMessage.getOwner())) {
+        log.debug("Update file: {}, principal: {}", fileMessage, principal);
+        if (!principal.getName().equals(fileMessage.getOwner())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } else {
-            restService.updateMessage(fileMessage);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
+
+        restService.updateMessage(fileMessage);
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{filename}")
