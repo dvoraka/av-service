@@ -36,10 +36,15 @@ public class JmsServerConfig {
     @Bean
     public AvServer avServer(
             ServerComponent serverComponent,
-            MessageProcessor messageProcessor,
+            MessageProcessor checkMessageProcessor,
             MessageInfoService messageInfoService
     ) {
-        return new BasicAvServer(serviceId, serverComponent, messageProcessor, messageInfoService);
+        return new BasicAvServer(
+                serviceId,
+                serverComponent,
+                checkMessageProcessor,
+                messageInfoService
+        );
     }
 
     @Bean
