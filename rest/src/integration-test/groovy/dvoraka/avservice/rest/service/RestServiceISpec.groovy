@@ -198,12 +198,19 @@ class RestServiceISpec extends Specification {
             Arrays.equals(message.getData(), loaded.getData())
     }
 
-    def "save and delete message"() {
+    def "save and update message"() {
         given:
             AvMessage message = Utils.genFileMessage(testUsername)
+            AvMessage updateMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .filename(message.getFilename())
+                    .owner(message.getOwner())
+                    .data(new byte[2])
+                    .type(MessageType.FILE_UPDATE)
+                    .build()
+
             String loadUrl = filePath + message.getFilename()
 
-        when:
+        when: "save"
             ResponseEntity<Void> responseEntity = restTemplate
                     .postForEntity(filePath, message, Void.class)
 
@@ -211,7 +218,7 @@ class RestServiceISpec extends Specification {
             responseEntity.getStatusCode() == HttpStatus.ACCEPTED
             sleep(1000)
 
-        when:
+        when: "load"
             ResponseEntity<AvMessage> messageResponseEntity = restTemplate
                     .getForEntity(loadUrl, DefaultAvMessage.class)
             AvMessage loaded = messageResponseEntity.getBody()
@@ -224,7 +231,50 @@ class RestServiceISpec extends Specification {
             loaded.getType() == MessageType.FILE_RESPONSE
             Arrays.equals(message.getData(), loaded.getData())
 
-        when:
+        when: "update and load"
+            restTemplate.put(filePath + message.getFilename(), updateMessage)
+            sleep(1000)
+
+            messageResponseEntity = restTemplate
+                    .getForEntity(loadUrl, DefaultAvMessage.class)
+            loaded = messageResponseEntity.getBody()
+
+        then:
+            messageResponseEntity.getStatusCode() == HttpStatus.OK
+            loaded != null
+            loaded.getFilename() == message.getFilename()
+            loaded.getOwner() == message.getOwner()
+            loaded.getType() == MessageType.FILE_RESPONSE
+            Arrays.equals(updateMessage.getData(), loaded.getData())
+    }
+
+    def "save and delete message"() {
+        given:
+            AvMessage message = Utils.genFileMessage(testUsername)
+            String loadUrl = filePath + message.getFilename()
+
+        when: "save"
+            ResponseEntity<Void> responseEntity = restTemplate
+                    .postForEntity(filePath, message, Void.class)
+
+        then:
+            responseEntity.getStatusCode() == HttpStatus.ACCEPTED
+            sleep(1000)
+
+        when: "load"
+            ResponseEntity<AvMessage> messageResponseEntity = restTemplate
+                    .getForEntity(loadUrl, DefaultAvMessage.class)
+            AvMessage loaded = messageResponseEntity.getBody()
+
+        then:
+            messageResponseEntity.getStatusCode() == HttpStatus.OK
+            loaded != null
+            loaded.getFilename() == message.getFilename()
+            loaded.getOwner() == message.getOwner()
+            loaded.getType() == MessageType.FILE_RESPONSE
+            Arrays.equals(message.getData(), loaded.getData())
+
+        when: "delete and load"
             restTemplate.delete(filePath + message.getFilename())
             sleep(1000)
 
