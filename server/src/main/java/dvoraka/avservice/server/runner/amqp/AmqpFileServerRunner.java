@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner;
+package dvoraka.avservice.server.runner.amqp;
 
 import dvoraka.avservice.common.runner.AbstractServiceRunner;
 import dvoraka.avservice.common.service.ServiceManagement;
