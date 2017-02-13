@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -50,7 +50,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     private final AtomicLong receivedMsgCount = new AtomicLong();
     private final AtomicLong processedMsgCount = new AtomicLong();
 
-    private final List<AvMessageListener> avMessageListeners;
+    private final Set<AvMessageListener> avMessageListeners;
 
     private final ExecutorService executorService;
 
@@ -78,13 +78,13 @@ public class AvCheckMessageProcessor implements MessageProcessor {
         this.avService = requireNonNull(avService);
         this.messageInfoService = requireNonNull(messageInfoService);
 
-        ThreadFactory threadFactory = new CustomThreadFactory("message-processor-");
+        ThreadFactory threadFactory = new CustomThreadFactory("check-message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
 
         processingMessages = new TimedStorage<>(CACHE_TIMEOUT);
         processedMessages = new TimedStorage<>(CACHE_TIMEOUT);
 
-        avMessageListeners = new CopyOnWriteArrayList<>();
+        avMessageListeners = new CopyOnWriteArraySet<>();
     }
 
     @PostConstruct
