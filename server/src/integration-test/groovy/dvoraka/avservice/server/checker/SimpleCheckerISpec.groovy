@@ -4,20 +4,15 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.exception.MessageNotFoundException
 import dvoraka.avservice.common.runner.ServiceRunner
-import dvoraka.avservice.server.configuration.amqp.AmqpConfig
-import dvoraka.avservice.server.runner.amqp.AmqpServerRunner
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
 /**
- * Simple checker spec.
+ * Simple checker spec base.
  */
-//TODO: add other protocols
-@ContextConfiguration(classes = [AmqpConfig.class])
-@ActiveProfiles(['amqp', 'amqp-checker', 'no-db'])
+@Ignore
 class SimpleCheckerISpec extends Specification {
 
     @Autowired
@@ -28,9 +23,7 @@ class SimpleCheckerISpec extends Specification {
 
 
     def setupSpec() {
-        AmqpServerRunner.setTestRun(false)
-        runner = new AmqpServerRunner()
-        runner.runAsync()
+        // initialize and start runner
     }
 
     def cleanupSpec() {
