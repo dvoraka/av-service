@@ -27,7 +27,7 @@ class LocalRestServiceSpec extends Specification {
     def setup() {
         compositeProcessor = Mock()
         fileProcessor = Mock()
-        strategy = new LocalRestService(fileProcessor, compositeProcessor)
+        strategy = new LocalRestService(compositeProcessor)
         conditions = new PollingConditions(timeout: 2)
     }
 

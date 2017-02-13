@@ -29,7 +29,6 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class LocalRestService implements RestService, AvMessageListener {
 
-    private final MessageProcessor fileMessageProcessor;
     private final MessageProcessor checkAndFileProcessor;
 
     private static final Logger log = LogManager.getLogger(LocalRestService.class);
@@ -39,11 +38,7 @@ public class LocalRestService implements RestService, AvMessageListener {
 
 
     @Autowired
-    public LocalRestService(
-            MessageProcessor fileMessageProcessor,
-            MessageProcessor checkAndFileProcessor
-    ) {
-        this.fileMessageProcessor = requireNonNull(fileMessageProcessor);
+    public LocalRestService(MessageProcessor checkAndFileProcessor) {
         this.checkAndFileProcessor = requireNonNull(checkAndFileProcessor);
 
         cacheManager = buildManager(cacheConfiguration());
@@ -97,7 +92,7 @@ public class LocalRestService implements RestService, AvMessageListener {
 
     @Override
     public AvMessage loadMessage(AvMessage message) {
-        fileMessageProcessor.sendMessage(message);
+        checkAndFileProcessor.sendMessage(message);
 
         //TODO
         while (true) {
@@ -123,7 +118,7 @@ public class LocalRestService implements RestService, AvMessageListener {
 
     @Override
     public void deleteMessage(AvMessage message) {
-        fileMessageProcessor.sendMessage(message);
+        checkAndFileProcessor.sendMessage(message);
     }
 
     @Override
@@ -136,7 +131,6 @@ public class LocalRestService implements RestService, AvMessageListener {
     public void start() {
         log.debug("Starting cache updating...");
         checkAndFileProcessor.addProcessedAVMessageListener(this);
-        fileMessageProcessor.addProcessedAVMessageListener(this);
     }
 
     @Override

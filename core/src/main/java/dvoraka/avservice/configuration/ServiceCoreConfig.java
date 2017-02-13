@@ -78,26 +78,61 @@ public class ServiceCoreConfig {
             MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor
     ) {
+        BiPredicate<? super AvMessage, ? super AvMessage> forCheck = (original, last) -> {
+            MessageType origType = original.getType();
+
+            return origType == MessageType.REQUEST
+                    || origType == MessageType.FILE_SAVE
+                    || origType == MessageType.FILE_UPDATE;
+        };
+
         BiPredicate<? super AvMessage, ? super AvMessage> typeAndCheck = (original, last) -> {
             MessageType origType = original.getType();
+
+            if (last.getVirusInfo() == null) {
+                return false;
+            }
 
             return (origType == MessageType.FILE_SAVE || origType == MessageType.FILE_UPDATE)
                     && last.getVirusInfo().equals(Utils.OK_VIRUS_INFO);
         };
 
+        BiPredicate<? super AvMessage, ? super AvMessage> loadAndDelete = (original, last) -> {
+            MessageType origType = original.getType();
+
+            return origType == MessageType.FILE_LOAD || origType == MessageType.FILE_DELETE;
+        };
+
+        List<BiPredicate<? super AvMessage, ? super AvMessage>> checkConditions = new ArrayList<>();
+        checkConditions.add(forCheck);
+
         List<BiPredicate<? super AvMessage, ? super AvMessage>> fileConditions = new ArrayList<>();
         fileConditions.add(typeAndCheck);
 
-        ProcessorConfiguration checkConfig = new ProcessorConfiguration(checkMessageProcessor);
+        List<BiPredicate<? super AvMessage, ? super AvMessage>> fileLoadConditions =
+                new ArrayList<>();
+        fileLoadConditions.add(loadAndDelete);
+
+        ProcessorConfiguration checkConfig = new ProcessorConfiguration(
+                checkMessageProcessor,
+                checkConditions,
+                true
+        );
         ProcessorConfiguration fileConfig = new ProcessorConfiguration(
                 fileMessageProcessor,
                 fileConditions,
+                true
+        );
+        ProcessorConfiguration fileLoadConfig = new ProcessorConfiguration(
+                fileMessageProcessor,
+                fileLoadConditions,
                 true
         );
 
         CompositeMessageProcessor processor = new CompositeMessageProcessor();
         processor.addProcessor(checkConfig);
         processor.addProcessor(fileConfig);
+        processor.addProcessor(fileLoadConfig);
 
         processor.start();
 

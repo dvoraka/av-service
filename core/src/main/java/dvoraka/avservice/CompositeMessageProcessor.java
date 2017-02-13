@@ -43,8 +43,8 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
         for (ProcessorConfiguration processor : processors) {
 
             if (!(checkConditions(processor.getInputConditions().stream(), message, lastResult))) {
-                log.debug("Input conditions failed.");
-                break;
+                log.debug("Input conditions failed for processor: " + processor);
+                continue;
             }
 
             // process message in a new thread

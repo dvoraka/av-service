@@ -11,10 +11,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
@@ -29,14 +30,14 @@ public class FileMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(FileMessageProcessor.class);
 
-    private final List<AvMessageListener> listeners;
+    private final Set<AvMessageListener> listeners;
     private final Map<MessageType, Consumer<AvMessage>> processMap;
 
 
     @Autowired
     public FileMessageProcessor(FileService fileService) {
         this.fileService = requireNonNull(fileService);
-        listeners = new CopyOnWriteArrayList<>();
+        listeners = new CopyOnWriteArraySet<>();
         processMap = getCallConfiguration();
     }
 
@@ -47,7 +48,7 @@ public class FileMessageProcessor implements MessageProcessor {
         configuration.put(MessageType.FILE_UPDATE, this::update);
         configuration.put(MessageType.FILE_DELETE, this::delete);
 
-        return configuration;
+        return Collections.unmodifiableMap(configuration);
     }
 
     @Override

@@ -7,7 +7,6 @@ import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.rest.Application
-import dvoraka.avservice.rest.configuration.RestClientConfig
 import dvoraka.avservice.rest.controller.CheckController
 import dvoraka.avservice.rest.controller.FileController
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,11 +26,10 @@ import spock.lang.Specification
  */
 @SpringBootTest(
         classes = [
-                Application.class,
-                RestClientConfig.class
+                Application.class
         ],
         properties = [
-                'spring.profiles.active=rest-client,core,rest,rest-local,storage,db',
+                'spring.profiles.active=core,rest,rest-local,storage,db',
                 'server.contextPath=/av-service',
                 'port=8080'
         ],
@@ -177,7 +175,7 @@ class RestServiceISpec extends Specification {
             AvMessage message = Utils.genFileMessage(testUsername)
             String loadUrl = filePath + message.getFilename()
 
-        when:
+        when: "save"
             ResponseEntity<Void> responseEntity = restTemplate
                     .postForEntity(filePath, message, Void.class)
 
@@ -185,7 +183,7 @@ class RestServiceISpec extends Specification {
             responseEntity.getStatusCode() == HttpStatus.ACCEPTED
             sleep(1000)
 
-        when:
+        when: "load"
             ResponseEntity<AvMessage> messageResponseEntity = restTemplate
                     .getForEntity(loadUrl, DefaultAvMessage.class)
             AvMessage loaded = messageResponseEntity.getBody()
