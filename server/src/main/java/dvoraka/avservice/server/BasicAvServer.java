@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
 public class BasicAvServer implements AvServer {
 
     private final ServerComponent serverComponent;
-    private final MessageProcessor checkMessageProcessor;
+    private final MessageProcessor messageProcessor;
     private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(BasicAvServer.class);
@@ -38,12 +38,12 @@ public class BasicAvServer implements AvServer {
     public BasicAvServer(
             String serviceId,
             ServerComponent serverComponent,
-            MessageProcessor checkMessageProcessor,
+            MessageProcessor messageProcessor,
             MessageInfoService messageInfoService
     ) {
         this.serviceId = requireNonNull(serviceId);
         this.serverComponent = requireNonNull(serverComponent);
-        this.checkMessageProcessor = requireNonNull(checkMessageProcessor);
+        this.messageProcessor = requireNonNull(messageProcessor);
         this.messageInfoService = requireNonNull(messageInfoService);
 
         processedAvMessageListener = new ProcessedAvMessageListener();
@@ -56,7 +56,7 @@ public class BasicAvServer implements AvServer {
         setStarted(true);
 
         serverComponent.addAvMessageListener(this);
-        checkMessageProcessor.addProcessedAVMessageListener(processedAvMessageListener);
+        messageProcessor.addProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(true);
         log.info("Server is running.");
@@ -68,7 +68,7 @@ public class BasicAvServer implements AvServer {
         setStopped(true);
 
         serverComponent.removeAvMessageListener(this);
-        checkMessageProcessor.removeProcessedAVMessageListener(processedAvMessageListener);
+        messageProcessor.removeProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(false);
         log.info("Server has stopped");
@@ -96,7 +96,7 @@ public class BasicAvServer implements AvServer {
     @Override
     public void onAvMessage(AvMessage message) {
         messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
-        checkMessageProcessor.sendMessage(message);
+        messageProcessor.sendMessage(message);
     }
 
     private void setStarted(boolean started) {
