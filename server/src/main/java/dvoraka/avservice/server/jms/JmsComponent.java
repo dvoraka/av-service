@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.util.Objects.requireNonNull;
 
@@ -34,7 +34,7 @@ public class JmsComponent implements ServerComponent {
 
     private final String responseDestination;
     private final String serviceId;
-    private final List<AvMessageListener> listeners = new ArrayList<>();
+    private final List<AvMessageListener> listeners;
     private final MessageConverter messageConverter;
 
 
@@ -49,6 +49,8 @@ public class JmsComponent implements ServerComponent {
         this.jmsTemplate = requireNonNull(jmsTemplate);
         this.messageInfoService = requireNonNull(messageInfoService);
         messageConverter = requireNonNull(jmsTemplate.getMessageConverter());
+
+        listeners = new CopyOnWriteArrayList<>();
     }
 
     @Override
@@ -65,9 +67,7 @@ public class JmsComponent implements ServerComponent {
             return;
         }
 
-        synchronized (listeners) {
-            notifyListeners(listeners, avMessage);
-        }
+        notifyListeners(listeners, avMessage);
     }
 
     @Override
@@ -90,16 +90,12 @@ public class JmsComponent implements ServerComponent {
 
     @Override
     public void addAvMessageListener(AvMessageListener listener) {
-        synchronized (listeners) {
-            listeners.add(listener);
-        }
+        listeners.add(listener);
     }
 
     @Override
     public void removeAvMessageListener(AvMessageListener listener) {
-        synchronized (listeners) {
-            listeners.remove(listener);
-        }
+        listeners.remove(listener);
     }
 
     public int listenersCount() {
