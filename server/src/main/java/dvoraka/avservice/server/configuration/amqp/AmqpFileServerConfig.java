@@ -23,10 +23,10 @@ import org.springframework.context.annotation.Profile;
 @Profile("amqp-file-server")
 public class AmqpFileServerConfig {
 
-    @Value("${avservice.amqp.checkQueue:av-check}")
+    @Value("${avservice.amqp.checkQueue}")
     private String checkQueue;
-    @Value("${avservice.amqp.fileSendQueue}")
-    private String fileSendQueue;
+    @Value("${avservice.amqp.fileQueue}")
+    private String fileQueue;
 
     @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
@@ -63,7 +63,7 @@ public class AmqpFileServerConfig {
             ConnectionFactory connectionFactory, MessageListener messageListener) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(checkQueue, fileSendQueue);
+        container.setQueueNames(checkQueue, fileQueue);
         container.setMessageListener(messageListener);
 
         return container;

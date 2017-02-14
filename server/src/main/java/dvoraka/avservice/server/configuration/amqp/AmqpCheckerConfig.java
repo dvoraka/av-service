@@ -26,10 +26,10 @@ import org.springframework.context.annotation.Profile;
 @Profile("amqp-checker")
 public class AmqpCheckerConfig {
 
-    @Value("${avservice.amqp.resultQueue:av-result}")
+    @Value("${avservice.amqp.resultQueue}")
     private String resultQueue;
 
-    @Value("${avservice.amqp.checkExchange:check}")
+    @Value("${avservice.amqp.checkExchange}")
     private String checkExchange;
 
     @Value("${avservice.serviceId:default1}")

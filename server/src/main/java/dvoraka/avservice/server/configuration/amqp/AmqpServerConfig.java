@@ -27,14 +27,14 @@ import org.springframework.context.annotation.Profile;
 @Profile("amqp-server")
 public class AmqpServerConfig {
 
-    @Value("${avservice.amqp.checkQueue:av-check}")
+    @Value("${avservice.amqp.checkQueue}")
     private String checkQueue;
-    @Value("${avservice.amqp.resultQueue:av-result}")
+    @Value("${avservice.amqp.resultQueue}")
     private String resultQueue;
 
-    @Value("${avservice.amqp.checkExchange:check}")
+    @Value("${avservice.amqp.checkExchange}")
     private String checkExchange;
-    @Value("${avservice.amqp.resultExchange:result}")
+    @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
 
     @Value("${avservice.serviceId:default1}")
