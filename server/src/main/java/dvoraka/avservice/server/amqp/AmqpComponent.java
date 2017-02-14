@@ -15,8 +15,8 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.util.Objects.requireNonNull;
 
@@ -34,7 +34,7 @@ public class AmqpComponent implements ServerComponent {
 
     private final String responseExchange;
     private final String serviceId;
-    private final List<AvMessageListener> listeners = new ArrayList<>();
+    private final List<AvMessageListener> listeners;
     private final MessageConverter messageConverter;
 
 
@@ -50,6 +50,8 @@ public class AmqpComponent implements ServerComponent {
         this.rabbitTemplate = requireNonNull(rabbitTemplate);
         this.messageInfoService = requireNonNull(messageInfoService);
         messageConverter = requireNonNull(rabbitTemplate.getMessageConverter());
+
+        listeners = new CopyOnWriteArrayList<>();
     }
 
     @Override
@@ -66,9 +68,7 @@ public class AmqpComponent implements ServerComponent {
             return;
         }
 
-        synchronized (listeners) {
-            notifyListeners(listeners, avMessage);
-        }
+        notifyListeners(listeners, avMessage);
     }
 
     @Override
@@ -91,16 +91,12 @@ public class AmqpComponent implements ServerComponent {
 
     @Override
     public void addAvMessageListener(AvMessageListener listener) {
-        synchronized (listeners) {
-            listeners.add(listener);
-        }
+        listeners.add(listener);
     }
 
     @Override
     public void removeAvMessageListener(AvMessageListener listener) {
-        synchronized (listeners) {
-            listeners.remove(listener);
-        }
+        listeners.remove(listener);
     }
 
     public int listenersCount() {
