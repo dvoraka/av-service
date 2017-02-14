@@ -2,6 +2,7 @@ package dvoraka.avservice.server.configuration.jms
 
 import dvoraka.avservice.server.AvServer
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -11,6 +12,7 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [JmsConfig.class])
 @ActiveProfiles(['core', 'jms', 'jms-server', 'no-db'])
+@DirtiesContext
 class JmsServerConfigISpec extends Specification {
 
     @Autowired
