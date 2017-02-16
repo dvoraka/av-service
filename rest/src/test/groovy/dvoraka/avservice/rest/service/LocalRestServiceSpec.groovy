@@ -10,7 +10,7 @@ import spock.lang.Subject
 import spock.util.concurrent.PollingConditions
 
 /**
- * Local REST strategy spec.
+ * Local REST service spec.
  */
 class LocalRestServiceSpec extends Specification {
 
@@ -54,14 +54,6 @@ class LocalRestServiceSpec extends Specification {
 
         then:
             1 * compositeProcessor.sendMessage(_)
-    }
-
-    def "get message service ID returns null"() {
-        when:
-            strategy.start()
-
-        then:
-            strategy.messageServiceId('TEST') == null
     }
 
     def "get null response"() {

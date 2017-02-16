@@ -73,11 +73,6 @@ class RemoteRestServiceSpec extends Specification {
             strategy.messageStatus('AAA') == MessageStatus.UNKNOWN
     }
 
-    def "get message service ID"() {
-        expect:
-            strategy.messageServiceId('AAA') == null
-    }
-
     def "message check"() {
         given:
             AvMessage message = Utils.genMessage()

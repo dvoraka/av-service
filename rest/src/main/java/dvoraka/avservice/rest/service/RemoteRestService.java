@@ -74,7 +74,13 @@ public class RemoteRestService implements RestService, AvMessageListener {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        return messageStatus(id, null);
+        if (processedMsgs.contains(id)) {
+            return MessageStatus.PROCESSED;
+        } else if (processingMsgs.contains(id)) {
+            return MessageStatus.PROCESSING;
+        }
+
+        return MessageStatus.UNKNOWN;
     }
 
     @Override
@@ -86,11 +92,6 @@ public class RemoteRestService implements RestService, AvMessageListener {
         }
 
         return MessageStatus.UNKNOWN;
-    }
-
-    @Override
-    public String messageServiceId(String id) {
-        return null;
     }
 
     @Override

@@ -74,21 +74,6 @@ class MainControllerSpec extends Specification {
                     .andExpect(content().string(expectedContent))
     }
 
-    def "test messageServiceId(String)"() {
-        setup:
-            String messageId = 'TID'
-            String serviceId = "SID"
-            service.messageServiceId(messageId) >> serviceId
-
-            ResultActions response = mockMvc.perform(
-                    get("/msg-service-id/${messageId}"))
-
-        expect:
-            response
-                    .andExpect(status().isOk())
-                    .andExpect(content().string(serviceId))
-    }
-
     def "test getResponse(String)"() {
         setup:
             String messageId = "TID"

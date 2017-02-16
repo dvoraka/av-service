@@ -76,17 +76,6 @@ public class MainController {
     }
 
     /**
-     * Returns a service ID for the message ID.
-     *
-     * @param id the message ID
-     * @return the service ID
-     */
-    @GetMapping("/msg-service-id/{id}")
-    public String messageServiceId(@PathVariable String id) {
-        return avRestService.messageServiceId(id);
-    }
-
-    /**
      * Returns an info about a message check.
      *
      * @param id the message ID

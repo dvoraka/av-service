@@ -30,14 +30,6 @@ public interface RestService extends RestFileService {
     MessageStatus messageStatus(String id, String serviceId);
 
     /**
-     * Returns a service ID for the given message.
-     *
-     * @param id the message ID
-     * @return the service ID
-     */
-    String messageServiceId(String id);
-
-    /**
      * Checks a file from the message.
      *
      * @param message the AV message
