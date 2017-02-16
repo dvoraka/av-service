@@ -20,7 +20,6 @@ public final class DefaultAvMessage implements AvMessage {
     private final String correlationId;
     private final byte[] data;
     private final MessageType type;
-    private final String serviceId;
     private final String virusInfo;
 
     private final String filename;
@@ -32,7 +31,6 @@ public final class DefaultAvMessage implements AvMessage {
         this.correlationId = builder.correlationId;
         this.data = builder.data;
         this.type = builder.type;
-        this.serviceId = builder.serviceId;
         this.virusInfo = builder.virusInfo;
 
         this.filename = builder.filename;
@@ -60,11 +58,6 @@ public final class DefaultAvMessage implements AvMessage {
     @Override
     public MessageType getType() {
         return type;
-    }
-
-    @Override
-    public String getServiceId() {
-        return serviceId;
     }
 
     @Override
@@ -142,9 +135,6 @@ public final class DefaultAvMessage implements AvMessage {
         if (type != that.type) {
             return false;
         }
-        if (serviceId != null ? !serviceId.equals(that.serviceId) : that.serviceId != null) {
-            return false;
-        }
         if (virusInfo != null ? !virusInfo.equals(that.virusInfo) : that.virusInfo != null) {
             return false;
         }
@@ -167,7 +157,6 @@ public final class DefaultAvMessage implements AvMessage {
                 ", correlationId='" + correlationId + '\'' +
                 ", data=" + Arrays.toString(data) +
                 ", type=" + type +
-                ", serviceId='" + serviceId + '\'' +
                 ", virusInfo='" + virusInfo + '\'' +
                 ", filename='" + filename + '\'' +
                 ", owner=" + owner +
@@ -181,7 +170,6 @@ public final class DefaultAvMessage implements AvMessage {
         private String correlationId;
         private byte[] data;
         private MessageType type;
-        private String serviceId;
         private String virusInfo;
         private String filename;
         private String owner;
@@ -205,11 +193,6 @@ public final class DefaultAvMessage implements AvMessage {
 
         public Builder type(MessageType type) {
             this.type = type;
-            return this;
-        }
-
-        public Builder serviceId(String id) {
-            this.serviceId = id;
             return this;
         }
 

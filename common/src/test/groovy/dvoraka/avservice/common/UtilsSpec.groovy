@@ -51,6 +51,5 @@ class UtilsSpec extends Specification {
         assert message.getCorrelationId()
         assert message.getData()
         assert message.getType()
-        assert message.getServiceId()
     }
 }

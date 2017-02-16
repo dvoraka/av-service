@@ -80,7 +80,6 @@ public class MainController {
     public AvMessage generateMessage() {
         final int dataSize = 10;
         return new DefaultAvMessage.Builder(Utils.genUuidString())
-                .serviceId("REST")
                 .virusInfo("NO-INFO")
                 .correlationId("CORRELATION-ID")
                 .data(new byte[dataSize])

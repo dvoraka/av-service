@@ -22,7 +22,6 @@ class DefaultAvMessageSpec extends Specification {
                     .correlationId(testString)
                     .data(testString.getBytes(StandardCharsets.UTF_8))
                     .type(MessageType.REQUEST)
-                    .serviceId(testString)
                     .virusInfo(testString)
                     .build()
 
@@ -31,7 +30,6 @@ class DefaultAvMessageSpec extends Specification {
             message.getCorrelationId() == testString
             Arrays.equals(message.getData(), testString.getBytes(StandardCharsets.UTF_8))
             message.getType() == MessageType.REQUEST
-            message.getServiceId() == testString
             message.getVirusInfo() == testString
     }
 

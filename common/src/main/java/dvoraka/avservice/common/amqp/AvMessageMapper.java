@@ -46,8 +46,6 @@ public class AvMessageMapper {
 
         // virus info
         String virusInfo = getVirusInfo(headers);
-        // service ID
-        String serviceId = getServiceId(headers);
         // message type
         MessageType messageType = getMessageType(props);
         // correlation ID
@@ -58,7 +56,6 @@ public class AvMessageMapper {
                 .data(msg.getBody())
                 .type(messageType)
                 .virusInfo(virusInfo)
-                .serviceId(serviceId)
                 .build();
     }
 
@@ -142,8 +139,6 @@ public class AvMessageMapper {
             props.setCorrelationId(msg.getCorrelationId());
         }
 
-        // service ID
-        props.setHeader(SERVICE_ID_KEY, msg.getServiceId());
         // virus info
         props.setHeader(VIRUS_INFO_KEY, msg.getVirusInfo());
 

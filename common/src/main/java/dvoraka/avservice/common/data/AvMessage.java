@@ -10,15 +10,14 @@ package dvoraka.avservice.common.data;
  * <ul>
  * <li>ID - message UUID</li>
  * <li>correlationId - correlation UUID</li>
- * <li>data - message data</li>
  * <li>type - message type</li>
- * <li>serviceId - service ID</li>
+ * <li>data - message data</li>
+ * <li>filename - file name</li>
+ * <ln>owner - owner of file</ln>
  * <li>virusInfo - info about infection</li>
  * </ul>
  */
 public interface AvMessage extends FileMessage {
-
-    String getServiceId();
 
     String getVirusInfo();
 

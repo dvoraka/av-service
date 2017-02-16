@@ -76,7 +76,6 @@ class RestServiceISpec extends Specification {
         then:
             response.getStatusCode() == HttpStatus.OK
             message != null
-            message.getServiceId() == 'REST'
     }
 
     def "check normal message"() {

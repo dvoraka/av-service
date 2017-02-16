@@ -22,7 +22,6 @@ class AvMessageMapperSpec extends Specification {
     String testCorrId = 'TEST-CORR-ID'
     String testAppId = 'TEST-APP-ID'
     String testVirusInfo = 'TEST-INFO'
-    String testServiceId = 'TEST-SERVICE-1'
     int dataSize = 10
 
 
@@ -61,8 +60,6 @@ class AvMessageMapperSpec extends Specification {
             // HEADERS
             // virusInfo
             props.setHeader(AvMessageMapper.VIRUS_INFO_KEY, testVirusInfo)
-            // serviceId
-            props.setHeader(AvMessageMapper.SERVICE_ID_KEY, testServiceId)
 
             // BODY
             // data
@@ -78,7 +75,6 @@ class AvMessageMapperSpec extends Specification {
             avMessage.getType() == MessageType.REQUEST
 
             avMessage.getVirusInfo() == testVirusInfo
-            avMessage.getServiceId() == testServiceId
 
             avMessage.getData().length == dataSize
     }
@@ -200,7 +196,6 @@ class AvMessageMapperSpec extends Specification {
                     .correlationId(testCorrId)
                     .data(new byte[dataSize])
                     .type(MessageType.REQUEST)
-                    .serviceId(testServiceId)
                     .virusInfo(testVirusInfo)
                     .build()
 
@@ -221,8 +216,6 @@ class AvMessageMapperSpec extends Specification {
             props.getType() == MessageType.REQUEST.toString()
 
             // HEADERS
-            // serviceId
-            headers.get(AvMessageMapper.SERVICE_ID_KEY) == testServiceId
             // virusInfo
             headers.get(AvMessageMapper.VIRUS_INFO_KEY) == testVirusInfo
 
