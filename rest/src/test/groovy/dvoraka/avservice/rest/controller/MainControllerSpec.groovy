@@ -55,25 +55,6 @@ class MainControllerSpec extends Specification {
                     .andExpect(content().string(expectedContent))
     }
 
-    def "test messageStatus(String, String)"() {
-        setup:
-            MessageStatus messageStatus = MessageStatus.PROCESSING
-            String messageId = 'TID'
-            String serviceId = "SID"
-            service.messageStatus(messageId, serviceId) >> messageStatus
-
-            ResultActions response = mockMvc.perform(
-                    get("/msg-status/${messageId}/${serviceId}"))
-
-            ObjectMapper mapper = new ObjectMapper()
-            String expectedContent = mapper.writeValueAsString(messageStatus)
-
-        expect:
-            response
-                    .andExpect(status().isOk())
-                    .andExpect(content().string(expectedContent))
-    }
-
     def "test getResponse(String)"() {
         setup:
             String messageId = "TID"

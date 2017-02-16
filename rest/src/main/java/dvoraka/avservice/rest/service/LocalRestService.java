@@ -70,11 +70,6 @@ public class LocalRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public MessageStatus messageStatus(String id, String serviceId) {
-        return messageStatus(id);
-    }
-
-    @Override
     public void checkMessage(AvMessage message) {
         checkAndFileProcessor.sendMessage(message);
     }

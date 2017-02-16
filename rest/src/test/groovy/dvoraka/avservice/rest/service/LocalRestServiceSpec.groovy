@@ -42,7 +42,6 @@ class LocalRestServiceSpec extends Specification {
 
         expect:
             strategy.messageStatus('NEWID') == MessageStatus.UNKNOWN
-            strategy.messageStatus('NEWID', 'SERVICEID') == MessageStatus.UNKNOWN
     }
 
     def "message check"() {

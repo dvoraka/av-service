@@ -84,17 +84,6 @@ public class RemoteRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public MessageStatus messageStatus(String id, String serviceId) {
-        if (processedMsgs.contains(id)) {
-            return MessageStatus.PROCESSED;
-        } else if (processingMsgs.contains(id)) {
-            return MessageStatus.PROCESSING;
-        }
-
-        return MessageStatus.UNKNOWN;
-    }
-
-    @Override
     public void checkMessage(AvMessage message) {
         log.debug("Checking: {}", message);
         processingMsgs.put(message.getId());

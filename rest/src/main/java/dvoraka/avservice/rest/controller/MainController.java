@@ -61,21 +61,6 @@ public class MainController {
     }
 
     /**
-     * Returns the message status.
-     *
-     * @param id        the message ID
-     * @param serviceId the service ID
-     * @return the status
-     */
-    @GetMapping("/msg-status/{id}/{serviceId}")
-    public MessageStatus messageStatus(
-            @PathVariable String id,
-            @PathVariable String serviceId
-    ) {
-        return avRestService.messageStatus(id, serviceId);
-    }
-
-    /**
      * Returns an info about a message check.
      *
      * @param id the message ID
