@@ -36,6 +36,20 @@ First run is for a warm-up and is not counted.
 
 ### AMQP
 
+#### Feb 17, 2017
+With experimental ClamAV socket pooling.
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 563 | 559 | 560 | 556 | 553
+
+#### Feb 17, 2017
+Without socket pooling.
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 528 | 532 | 532 | 517 | 527
+
 #### Jan 16, 2017
 Version 0.5-rc1.
 
