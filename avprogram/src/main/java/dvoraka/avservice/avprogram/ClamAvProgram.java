@@ -21,7 +21,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * ClamAV wrapper. Uses network socket.
@@ -47,19 +48,22 @@ public class ClamAvProgram implements AvProgram {
     private final long maxArraySize;
 
     private final SocketPool socketPool;
+    private final boolean socketPooling;
 
 
     public ClamAvProgram() {
-        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_ARRAY_SIZE);
+        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_ARRAY_SIZE, false);
     }
 
-    public ClamAvProgram(String socketHost, int socketPort, long maxArraySize) {
+    public ClamAvProgram(
+            String socketHost, int socketPort, long maxArraySize, boolean socketPooling) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
         this.maxArraySize = maxArraySize;
 
-        final int socketCount = 1;
+        final int socketCount = 5;
         socketPool = new SocketPool(socketCount, socketHost, socketPort, null);
+        this.socketPooling = socketPooling;
     }
 
     @Override
@@ -88,7 +92,7 @@ public class ClamAvProgram implements AvProgram {
      * @throws IOException
      */
     public String scanBytesNew(byte[] bytes) throws IOException {
-        Objects.requireNonNull(bytes);
+        requireNonNull(bytes);
 
         SocketPool.SocketWrapper socket = socketPool.getSocket();
         OutputStream outStream = socket.getOutputStream();
@@ -140,7 +144,15 @@ public class ClamAvProgram implements AvProgram {
      */
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
-        Objects.requireNonNull(bytes);
+        if (socketPooling) {
+            try {
+                return scanBytesNew(bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        requireNonNull(bytes);
         checkArraySize(bytes);
 
         String arrayDigest = null;

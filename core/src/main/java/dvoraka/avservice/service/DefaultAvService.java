@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Default AV service implementation.
@@ -26,7 +27,7 @@ public class DefaultAvService implements AvService {
     /**
      * Default max file size in bytes.
      */
-    private static final long DEFAULT_MAX_FILE_SIZE = 10_000_000;
+    private static final long MAX_FILE_SIZE = 10_000_000;
 
     private long maxFileSize;
     private long maxArraySize;
@@ -34,8 +35,8 @@ public class DefaultAvService implements AvService {
 
     @Autowired
     public DefaultAvService(AvProgram avProgram) {
-        this.avProgram = avProgram;
-        maxFileSize = DEFAULT_MAX_FILE_SIZE;
+        this.avProgram = requireNonNull(avProgram);
+        maxFileSize = MAX_FILE_SIZE;
         maxArraySize = avProgram.getMaxArraySize();
     }
 
@@ -52,7 +53,7 @@ public class DefaultAvService implements AvService {
 
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
-        Objects.requireNonNull(bytes, "Bytes must not be null");
+        requireNonNull(bytes, "Bytes must not be null");
 
         if (bytes.length == 0) {
             return "";
