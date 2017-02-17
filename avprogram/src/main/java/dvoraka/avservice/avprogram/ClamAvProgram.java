@@ -98,14 +98,7 @@ public class ClamAvProgram implements AvProgram {
         OutputStream outStream = socket.getOutputStream();
         BufferedReader in = socket.getBufferedReader();
 
-        // send bytes
-        outStream.write("nINSTREAM\n".getBytes("UTF-8"));
-        outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
-        outStream.write(bytes);
-
-        // terminate stream with a zero length chunk
-        outStream.write(intBytes(0, CHUNK_LENGTH_BYTE_SIZE));
-        outStream.flush();
+        sendBytes(bytes, outStream);
 
         // read and transform check result
         final int offset = 3;
@@ -174,14 +167,7 @@ public class ClamAvProgram implements AvProgram {
                         new InputStreamReader(socket.getInputStream(), DEFAULT_CHARSET);
                 BufferedReader in = new BufferedReader(inReader)
         ) {
-            // send bytes
-            outStream.write("nINSTREAM\n".getBytes("UTF-8"));
-            outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
-            outStream.write(bytes);
-
-            // terminate stream with a zero length chunk
-            outStream.write(intBytes(0, CHUNK_LENGTH_BYTE_SIZE));
-            outStream.flush();
+            sendBytes(bytes, outStream);
 
             // read check result
             String response = in.readLine();
@@ -199,6 +185,17 @@ public class ClamAvProgram implements AvProgram {
             log.warn("Scanning problem!", e);
             throw new ScanErrorException("Scanning problem.", e);
         }
+    }
+
+    private void sendBytes(byte[] bytes, OutputStream outStream) throws IOException {
+        // write bytes
+        outStream.write("nINSTREAM\n".getBytes("UTF-8"));
+        outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
+        outStream.write(bytes);
+
+        // terminate byte stream with a zero length chunk
+        outStream.write(intBytes(0, CHUNK_LENGTH_BYTE_SIZE));
+        outStream.flush();
     }
 
     private void addToCache(String arrayDigest, String response) {
