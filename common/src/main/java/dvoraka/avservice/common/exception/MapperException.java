@@ -1,9 +1,9 @@
 package dvoraka.avservice.common.exception;
 
 /**
- * Mapper exception.
+ * Exception for mapper problems.
  */
-public class MapperException extends AvException {
+public class MapperException extends ServiceException {
 
     private static final long serialVersionUID = 2660736573269096591L;
 
