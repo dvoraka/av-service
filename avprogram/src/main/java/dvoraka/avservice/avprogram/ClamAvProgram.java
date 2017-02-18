@@ -87,27 +87,34 @@ public class ClamAvProgram implements AvProgram {
     /**
      * New checking prototype.
      *
-     * @param bytes
-     * @return
-     * @throws IOException
+     * @param bytes bytes for scan
+     * @return the virus info
+     * @throws ScanException if scan fails
+     * @see ClamAvProgram#scanBytesWithInfo(byte[])
      */
-    public String scanBytesNew(byte[] bytes) throws IOException {
+    public String scanBytesNew(byte[] bytes) throws ScanException {
         requireNonNull(bytes);
 
         SocketPool.SocketWrapper socket = socketPool.getSocket();
         OutputStream outStream = socket.getOutputStream();
         BufferedReader in = socket.getBufferedReader();
 
-        sendBytes(bytes, outStream);
+        String response;
+        try {
+            sendBytes(bytes, outStream);
 
-        // read and transform check result
-        final int offset = 3;
-        String response = in.readLine();
-        if (response != null && response.length() >= offset) {
-            response = response.substring(offset);
+            // read and transform check result
+            final int offset = 3;
+            response = in.readLine();
+            if (response != null && response.length() >= offset) {
+                response = response.substring(offset);
+            }
+        } catch (IOException e) {
+            log.warn("Scanning problem.", e);
+            throw new ScanException("Scanning problem.", e);
+        } finally {
+            socketPool.returnSocket(socket);
         }
-
-        socketPool.returnSocket(socket);
 
         return response;
     }
@@ -138,11 +145,7 @@ public class ClamAvProgram implements AvProgram {
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanException {
         if (socketPooling) {
-            try {
-                return scanBytesNew(bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            return scanBytesNew(bytes);
         }
 
         requireNonNull(bytes);
