@@ -92,7 +92,7 @@ public class ClamAvProgram implements AvProgram {
      * @throws ScanException if scan fails
      * @see ClamAvProgram#scanBytesWithInfo(byte[])
      */
-    public String scanBytesNew(byte[] bytes) throws ScanException {
+    private String scanBytesPooling(byte[] bytes) throws ScanException {
         requireNonNull(bytes);
 
         SocketPool.SocketWrapper socket = socketPool.getSocket();
@@ -145,9 +145,13 @@ public class ClamAvProgram implements AvProgram {
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanException {
         if (socketPooling) {
-            return scanBytesNew(bytes);
+            return scanBytesPooling(bytes);
+        } else {
+            return scanBytesNormal(bytes);
         }
+    }
 
+    private String scanBytesNormal(byte[] bytes) throws ScanException {
         requireNonNull(bytes);
         checkArraySize(bytes);
 

@@ -64,14 +64,14 @@ class ClamAvProgramISpec extends Specification {
         when:
             // warm up
             1000.times {
-                program.scanBytesNew(eicarString.getBytes())
+                program.scanBytesPooling(eicarString.getBytes())
                 program.scanBytesWithInfo(eicarString.getBytes())
             }
 
             int count = 100_000
             long start = System.currentTimeMillis()
             count.times {
-                program.scanBytesNew(eicarString.getBytes())
+                program.scanBytesPooling(eicarString.getBytes())
             }
             println(System.currentTimeMillis() - start)
 
@@ -87,12 +87,12 @@ class ClamAvProgramISpec extends Specification {
 
     def "scan bytes new - normal message"() {
         expect:
-            program.scanBytesNew(cleanData) == program.CLEAN_STREAM_RESPONSE
+            program.scanBytesPooling(cleanData) == program.CLEAN_STREAM_RESPONSE
     }
 
     def "scan bytes new - infected message"() {
         expect:
-            program.scanBytesNew(eicarString.getBytes()) != program.CLEAN_STREAM_RESPONSE
+            program.scanBytesPooling(eicarString.getBytes()) != program.CLEAN_STREAM_RESPONSE
     }
 
     def "scan too big array"() {
