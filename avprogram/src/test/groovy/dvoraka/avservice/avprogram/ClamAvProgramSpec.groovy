@@ -1,7 +1,7 @@
 package dvoraka.avservice.avprogram
 
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.exception.ScanErrorException
+import dvoraka.avservice.common.exception.ScanException
 import dvoraka.avservice.common.service.CachingService
 import spock.lang.Specification
 import spock.lang.Subject
@@ -47,14 +47,14 @@ class ClamAvProgramSpec extends Specification {
         given:
             ClamAvProgram program = Spy()
             program.scanBytesWithInfo(_) >> {
-                throw new ScanErrorException("TEST")
+                throw new ScanException("TEST")
             }
 
         when:
             program.scanBytes(new byte[0])
 
         then:
-            thrown(ScanErrorException)
+            thrown(ScanException)
     }
 
     def "scan stream with with info with IO exception"() {
@@ -68,7 +68,7 @@ class ClamAvProgramSpec extends Specification {
             program.scanBytesWithInfo(new byte[0])
 
         then:
-            thrown(ScanErrorException)
+            thrown(ScanException)
     }
 
     def "is running"() {

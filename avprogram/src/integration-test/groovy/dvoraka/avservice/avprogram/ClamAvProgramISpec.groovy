@@ -1,7 +1,7 @@
 package dvoraka.avservice.avprogram
 
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.exception.ScanErrorException
+import dvoraka.avservice.common.exception.ScanException
 import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
@@ -103,7 +103,7 @@ class ClamAvProgramISpec extends Specification {
             program.scanBytes(new byte[size + 1])
 
         then:
-            thrown(ScanErrorException)
+            thrown(ScanException)
     }
 
     def "connection test"() {

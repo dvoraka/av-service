@@ -3,7 +3,7 @@ package dvoraka.avservice.service
 import dvoraka.avservice.avprogram.AvProgram
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.FileSizeException
-import dvoraka.avservice.common.exception.ScanErrorException
+import dvoraka.avservice.common.exception.ScanException
 import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
@@ -96,7 +96,7 @@ class DefaultAvServiceSpec extends Specification {
             service.scanBytes(new byte[bigSize])
 
         then:
-            thrown(ScanErrorException)
+            thrown(ScanException)
     }
 
     def "scan bytes with info with too big array"() {
@@ -107,7 +107,7 @@ class DefaultAvServiceSpec extends Specification {
             service.scanBytesWithInfo(new byte[bigSize])
 
         then:
-            thrown(ScanErrorException)
+            thrown(ScanException)
     }
 
     def "scan empty bytes with info"() {
@@ -123,7 +123,7 @@ class DefaultAvServiceSpec extends Specification {
             service.scanFile(new File("123-TEST-FILE"))
 
         then:
-            thrown(ScanErrorException)
+            thrown(ScanException)
     }
 
     def "scan file with a big file"() {
@@ -145,7 +145,7 @@ class DefaultAvServiceSpec extends Specification {
 
         then:
             actualSize > maxFileSize
-            def throwable = thrown(ScanErrorException)
+            def throwable = thrown(ScanException)
             throwable.getCause().getClass() == FileSizeException.class
             throwable.getCause().getMessage()
     }

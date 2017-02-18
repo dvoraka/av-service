@@ -3,7 +3,7 @@ package dvoraka.avservice.service;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.exception.FileSizeException;
-import dvoraka.avservice.common.exception.ScanErrorException;
+import dvoraka.avservice.common.exception.ScanException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class DefaultAvService implements AvService {
     }
 
     @Override
-    public boolean scanBytes(byte[] bytes) throws ScanErrorException {
+    public boolean scanBytes(byte[] bytes) throws ScanException {
         if (bytes.length == 0) {
             return false;
         }
@@ -52,7 +52,7 @@ public class DefaultAvService implements AvService {
     }
 
     @Override
-    public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
+    public String scanBytesWithInfo(byte[] bytes) throws ScanException {
         requireNonNull(bytes, "Bytes must not be null");
 
         if (bytes.length == 0) {
@@ -69,21 +69,21 @@ public class DefaultAvService implements AvService {
         }
     }
 
-    private void checkSize(long arraySize) throws ScanErrorException {
+    private void checkSize(long arraySize) throws ScanException {
         if (arraySize > getMaxArraySize()) {
-            throw new ScanErrorException(
+            throw new ScanException(
                     "Array is too big: " + arraySize + ", max is: " + getMaxArraySize());
         }
     }
 
     @Override
-    public boolean scanFile(File file) throws ScanErrorException {
+    public boolean scanFile(File file) throws ScanException {
         byte[] bytes;
         try {
             long size = Files.size(file.toPath());
             if (size > getMaxFileSize()) {
                 log.warn("Too big file: " + size + " bytes.");
-                throw new ScanErrorException("Too big file.", new FileSizeException(
+                throw new ScanException("Too big file.", new FileSizeException(
                         "File is too big: " + size + " bytes, max is: " + getMaxFileSize()));
             }
             bytes = Files.readAllBytes(file.toPath());
@@ -91,7 +91,7 @@ public class DefaultAvService implements AvService {
             return scanBytes(bytes);
         } catch (IOException e) {
             log.warn("File error!", e);
-            throw new ScanErrorException("File error.", e);
+            throw new ScanException("File error.", e);
         }
     }
 

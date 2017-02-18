@@ -1,7 +1,7 @@
 package dvoraka.avservice.avprogram;
 
 import dvoraka.avservice.common.Utils;
-import dvoraka.avservice.common.exception.ScanErrorException;
+import dvoraka.avservice.common.exception.ScanException;
 import dvoraka.avservice.common.service.CachingService;
 import dvoraka.avservice.common.socket.SocketPool;
 import org.apache.logging.log4j.LogManager;
@@ -67,13 +67,13 @@ public class ClamAvProgram implements AvProgram {
     }
 
     @Override
-    public boolean scanBytes(byte[] bytes) throws ScanErrorException {
+    public boolean scanBytes(byte[] bytes) throws ScanException {
         String response;
         try {
             response = scanBytesWithInfo(bytes);
-        } catch (ScanErrorException e) {
+        } catch (ScanException e) {
             log.warn("Scanning failed!", e);
-            throw new ScanErrorException("Scanning failed!", e);
+            throw new ScanException("Scanning failed!", e);
         }
 
         if (response.equals(CLEAN_STREAM_RESPONSE)) {
@@ -136,7 +136,7 @@ public class ClamAvProgram implements AvProgram {
      * </p>
      */
     @Override
-    public String scanBytesWithInfo(byte[] bytes) throws ScanErrorException {
+    public String scanBytesWithInfo(byte[] bytes) throws ScanException {
         if (socketPooling) {
             try {
                 return scanBytesNew(bytes);
@@ -179,11 +179,11 @@ public class ClamAvProgram implements AvProgram {
                 return response;
             } else {
                 log.warn("Response reading problem!");
-                throw new ScanErrorException("Scanning problem.");
+                throw new ScanException("Scanning problem.");
             }
         } catch (IOException e) {
             log.warn("Scanning problem!", e);
-            throw new ScanErrorException("Scanning problem.", e);
+            throw new ScanException("Scanning problem.", e);
         }
     }
 
@@ -205,9 +205,9 @@ public class ClamAvProgram implements AvProgram {
         }
     }
 
-    private void checkArraySize(byte[] bytes) throws ScanErrorException {
+    private void checkArraySize(byte[] bytes) throws ScanException {
         if (bytes.length > getMaxArraySize()) {
-            throw new ScanErrorException(
+            throw new ScanException(
                     "Array is too big: " + bytes.length + ", max is " + getMaxArraySize());
         }
     }

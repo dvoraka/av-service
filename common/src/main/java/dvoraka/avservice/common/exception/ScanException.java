@@ -3,16 +3,16 @@ package dvoraka.avservice.common.exception;
 /**
  * Exception for errors while scanning.
  */
-public class ScanErrorException extends AvException {
+public class ScanException extends AvException {
 
     private static final long serialVersionUID = 4069343654352794190L;
 
 
-    public ScanErrorException(String message) {
+    public ScanException(String message) {
         super(message);
     }
 
-    public ScanErrorException(String message, Throwable cause) {
+    public ScanException(String message, Throwable cause) {
         super(message, cause);
     }
 }

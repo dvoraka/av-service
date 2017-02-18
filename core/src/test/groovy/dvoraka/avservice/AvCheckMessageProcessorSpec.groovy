@@ -5,7 +5,7 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
-import dvoraka.avservice.common.exception.ScanErrorException
+import dvoraka.avservice.common.exception.ScanException
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
 import spock.lang.Specification
@@ -108,7 +108,7 @@ class AvCheckMessageProcessorSpec extends Specification {
     def "send message with a service error"() {
         given:
             avService.scanBytesWithInfo(_) >> {
-                throw new ScanErrorException("Service is dead")
+                throw new ScanException("Service is dead")
             }
 
             AvMessage message = Utils.genMessage()
@@ -117,7 +117,7 @@ class AvCheckMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            notThrown(ScanErrorException)
+            notThrown(ScanException)
     }
 
     // still fuzzy timing

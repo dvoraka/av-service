@@ -1,6 +1,6 @@
 package dvoraka.avservice.avprogram;
 
-import dvoraka.avservice.common.exception.ScanErrorException;
+import dvoraka.avservice.common.exception.ScanException;
 
 /**
  * Anti-virus program interface.
@@ -12,18 +12,18 @@ public interface AvProgram {
      *
      * @param bytes bytes for scanning
      * @return the infected flag
-     * @throws ScanErrorException when scanning failed
+     * @throws ScanException when scanning failed
      */
-    boolean scanBytes(byte[] bytes) throws ScanErrorException;
+    boolean scanBytes(byte[] bytes) throws ScanException;
 
     /**
      * Scans the bytes and returns an info about found viruses.
      *
      * @param bytes bytes for scanning
      * @return the virus description
-     * @throws ScanErrorException when scanning failed
+     * @throws ScanException when scanning failed
      */
-    String scanBytesWithInfo(byte[] bytes) throws ScanErrorException;
+    String scanBytesWithInfo(byte[] bytes) throws ScanException;
 
     /**
      * Returns the concrete string which means no virus in a message.

@@ -1,6 +1,6 @@
 package dvoraka.avservice.service;
 
-import dvoraka.avservice.common.exception.ScanErrorException;
+import dvoraka.avservice.common.exception.ScanException;
 
 import java.io.File;
 
@@ -14,9 +14,9 @@ public interface AvService {
      *
      * @param bytes the bytes
      * @return the scan result
-     * @throws ScanErrorException if scan fails
+     * @throws ScanException if scan fails
      */
-    boolean scanBytes(byte[] bytes) throws ScanErrorException;
+    boolean scanBytes(byte[] bytes) throws ScanException;
 
     /**
      * Scans bytes and returns result as a string.
@@ -26,18 +26,18 @@ public interface AvService {
      *
      * @param bytes the bytes to scan
      * @return the result string
-     * @throws ScanErrorException if scan fails
+     * @throws ScanException if scan fails
      */
-    String scanBytesWithInfo(byte[] bytes) throws ScanErrorException;
+    String scanBytesWithInfo(byte[] bytes) throws ScanException;
 
     /**
      * Scans file and returns result as a boolean value.
      *
      * @param file the file for the scan
      * @return the result of scan
-     * @throws ScanErrorException if scan fails
+     * @throws ScanException if scan fails
      */
-    boolean scanFile(File file) throws ScanErrorException;
+    boolean scanFile(File file) throws ScanException;
 
     /**
      * Returns the maximum size of a file.

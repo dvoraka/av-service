@@ -5,7 +5,7 @@ import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
-import dvoraka.avservice.common.exception.ScanErrorException;
+import dvoraka.avservice.common.exception.ScanException;
 import dvoraka.avservice.common.service.TimedStorage;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
@@ -164,9 +164,9 @@ public class AvCheckMessageProcessor implements MessageProcessor {
             if (data != null && data.length != 0) {
                 virusInfo = avService.scanBytesWithInfo(data);
             } else {
-                throw new ScanErrorException("No data in the message.");
+                throw new ScanException("No data in the message.");
             }
-        } catch (ScanErrorException e) {
+        } catch (ScanException e) {
             error = requireNonNull(e.getMessage());
             log.warn("Scanning error!", e);
         }

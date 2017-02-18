@@ -10,13 +10,13 @@ class ScanErrorExceptionSpec extends Specification {
     def "with message"() {
         given:
             String message = "TEST"
-            ScanErrorException exception = new ScanErrorException(message)
+            ScanException exception = new ScanException(message)
 
         when:
             throw exception
 
         then:
-            def e = thrown(ScanErrorException)
+            def e = thrown(ScanException)
             e.getMessage() == message
     }
 
@@ -24,13 +24,13 @@ class ScanErrorExceptionSpec extends Specification {
         given:
             String message = "TEST"
             IOException nestedException = new IOException()
-            ScanErrorException exception = new ScanErrorException(message, nestedException)
+            ScanException exception = new ScanException(message, nestedException)
 
         when:
             throw exception
 
         then:
-            def e = thrown(ScanErrorException)
+            def e = thrown(ScanException)
             e.getMessage() == message
             e.getCause() == nestedException
     }
