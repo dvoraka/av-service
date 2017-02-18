@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
 import static java.util.Objects.requireNonNull;
 
 /**
- * ClamAV wrapper. Uses network socket.
+ * ClamAV wrapper. Uses network sockets.
  */
 @Component
 public class ClamAvProgram implements AvProgram {
@@ -56,7 +56,11 @@ public class ClamAvProgram implements AvProgram {
     }
 
     public ClamAvProgram(
-            String socketHost, int socketPort, long maxArraySize, boolean socketPooling) {
+            String socketHost,
+            int socketPort,
+            long maxArraySize,
+            boolean socketPooling
+    ) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
         this.maxArraySize = maxArraySize;
