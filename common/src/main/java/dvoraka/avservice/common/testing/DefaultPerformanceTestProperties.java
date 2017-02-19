@@ -3,26 +3,18 @@ package dvoraka.avservice.common.testing;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.URL;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Default performance test properties implementation.
  */
-public class DefaultPerformanceTestProperties implements PerformanceTestProperties {
+public final class DefaultPerformanceTestProperties implements PerformanceTestProperties {
 
     private static final Logger log = LogManager.getLogger(DefaultPerformanceTestProperties.class);
 
     private long msgCount;
     private boolean sendOnly;
 
-
-    public DefaultPerformanceTestProperties(String confName) {
-        this(new Builder());
-
-        loadPropertiesFromXml(confName);
-    }
 
     private DefaultPerformanceTestProperties(Builder builder) {
         this.msgCount = builder.msgCount;
@@ -45,20 +37,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
 
     private void setSendOnly(boolean sendOnly) {
         this.sendOnly = sendOnly;
-    }
-
-    @Override
-    public void loadPropertiesFromXml(String filename) {
-        log.info("Loading properties from XML...");
-        PerformanceTestConfigParser parser = new PerformanceTestConfigParser();
-        parser.parseFileSax(Optional
-                .ofNullable(getClass().getResource(filename))
-                .map(URL::toString)
-                .orElse("/loadTest.xml"));
-
-        Map<String, String> properties = parser.getProperties();
-        loadProperties(properties);
-        log.info("Properties loaded.");
     }
 
     /**
