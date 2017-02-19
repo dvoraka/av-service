@@ -46,7 +46,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         this.sendOnly = builder.sendOnly;
     }
 
-    @Override
     public String getHost() {
         return host;
     }
@@ -55,7 +54,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         this.host = host;
     }
 
-    @Override
     public String getVirtualHost() {
         return virtualHost;
     }
@@ -64,7 +62,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         this.virtualHost = vhost;
     }
 
-    @Override
     public String getAppId() {
         return appId;
     }
@@ -73,7 +70,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         this.appId = appId;
     }
 
-    @Override
     public String getDestinationQueue() {
         return destinationQueue;
     }
@@ -91,7 +87,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         msgCount = count;
     }
 
-    @Override
     public boolean isSynchronous() {
         return synchronous;
     }

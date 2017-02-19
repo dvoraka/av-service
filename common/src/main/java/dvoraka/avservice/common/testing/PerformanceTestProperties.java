@@ -5,17 +5,7 @@ package dvoraka.avservice.common.testing;
  */
 public interface PerformanceTestProperties extends TestProperties {
 
-    String getHost();
-
-    String getVirtualHost();
-
-    String getAppId();
-
-    String getDestinationQueue();
-
     int getMsgCount();
-
-    boolean isSynchronous();
 
     boolean isSendOnly();
 }
