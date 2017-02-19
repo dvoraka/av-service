@@ -22,24 +22,18 @@ class DefaultPerformanceTestPropertiesSpec extends Specification {
 
     def "builder test"() {
         given:
-            String destQueue = 'destinationTestQueue'
             int msgCount = 999
-            boolean synchronous = true
             boolean sendOnly = true
 
         when:
             properties = new DefaultPerformanceTestProperties.Builder()
-                    .destinationQueue(destQueue)
                     .msgCount(msgCount)
-                    .synchronous(synchronous)
                     .sendOnly(sendOnly)
                     .build()
 
         then:
             with(properties) {
-                getDestinationQueue() == destQueue
                 getMsgCount() == msgCount
-                isSynchronous() == synchronous
                 isSendOnly() == sendOnly
             }
     }

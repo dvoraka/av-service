@@ -12,20 +12,11 @@ import java.util.Optional;
  */
 public class DefaultPerformanceTestProperties implements PerformanceTestProperties {
 
-    private static final Logger log =
-            LogManager.getLogger(DefaultPerformanceTestProperties.class);
+    private static final Logger log = LogManager.getLogger(DefaultPerformanceTestProperties.class);
 
-    private static final String CONF_FILE_NAME = "/loadTest.xml";
-
-    private String destinationQueue;
     private long msgCount;
-    private boolean synchronous;
     private boolean sendOnly;
 
-
-    public DefaultPerformanceTestProperties() {
-        this(CONF_FILE_NAME);
-    }
 
     public DefaultPerformanceTestProperties(String confName) {
         this(new Builder());
@@ -34,18 +25,8 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     }
 
     private DefaultPerformanceTestProperties(Builder builder) {
-        this.destinationQueue = builder.destinationQueue;
         this.msgCount = builder.msgCount;
-        this.synchronous = builder.synchronous;
         this.sendOnly = builder.sendOnly;
-    }
-
-    public String getDestinationQueue() {
-        return destinationQueue;
-    }
-
-    private void setDestinationQueue(String queue) {
-        destinationQueue = queue;
     }
 
     @Override
@@ -55,14 +36,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
 
     private void setMsgCount(long count) {
         msgCount = count;
-    }
-
-    public boolean isSynchronous() {
-        return synchronous;
-    }
-
-    private void setSynchronous(boolean synchronous) {
-        this.synchronous = synchronous;
     }
 
     @Override
@@ -94,14 +67,8 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
      * @param props the properties
      */
     private void loadProperties(Map<String, String> props) {
-        if (props.containsKey("destinationQueue")) {
-            setDestinationQueue(props.get("destinationQueue"));
-        }
         if (props.containsKey("messageCount")) {
             setMsgCount(Integer.parseInt(props.get("messageCount")));
-        }
-        if (props.containsKey("synchronous")) {
-            setSynchronous(Boolean.parseBoolean(props.get("synchronous")));
         }
         if (props.containsKey("sendOnly")) {
             setSendOnly(Boolean.parseBoolean(props.get("sendOnly")));
@@ -111,9 +78,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     @Override
     public String toString() {
         return "BasicLoadTestProperties{"
-                + ", destinationQueue='" + destinationQueue + '\''
                 + ", msgCount=" + msgCount
-                + ", synchronous=" + synchronous
                 + ", sendOnly=" + sendOnly
                 + '}';
     }
@@ -123,30 +88,16 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
      */
     public static class Builder {
 
-        private String destinationQueue;
         private long msgCount;
-        private boolean synchronous;
         private boolean sendOnly;
 
         public Builder() {
-            this.destinationQueue = "";
             this.msgCount = 1;
-            this.synchronous = false;
             this.sendOnly = false;
-        }
-
-        public Builder destinationQueue(String destinationQueue) {
-            this.destinationQueue = destinationQueue;
-            return this;
         }
 
         public Builder msgCount(long msgCount) {
             this.msgCount = msgCount;
-            return this;
-        }
-
-        public Builder synchronous(boolean synchronous) {
-            this.synchronous = synchronous;
             return this;
         }
 
