@@ -20,19 +20,8 @@ class DefaultPerformanceTestPropertiesSpec extends Specification {
             notThrown(Exception)
     }
 
-    def "configuration with a default configuration file"() {
-        when:
-            properties = new DefaultPerformanceTestProperties()
-
-        then:
-            properties.getHost() == 'testhost'
-    }
-
     def "builder test"() {
         given:
-            String host = 'testHost'
-            String vHost = 'virtualTestHost'
-            String appId = 'testAppID'
             String destQueue = 'destinationTestQueue'
             int msgCount = 999
             boolean synchronous = true
@@ -40,9 +29,6 @@ class DefaultPerformanceTestPropertiesSpec extends Specification {
 
         when:
             properties = new DefaultPerformanceTestProperties.Builder()
-                    .host(host)
-                    .virtualHost(vHost)
-                    .appId(appId)
                     .destinationQueue(destQueue)
                     .msgCount(msgCount)
                     .synchronous(synchronous)
@@ -51,9 +37,6 @@ class DefaultPerformanceTestPropertiesSpec extends Specification {
 
         then:
             with(properties) {
-                getHost() == host
-                getVirtualHost() == vHost
-                getAppId() == appId
                 getDestinationQueue() == destQueue
                 getMsgCount() == msgCount
                 isSynchronous() == synchronous

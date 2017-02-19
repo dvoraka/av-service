@@ -17,9 +17,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
 
     private static final String CONF_FILE_NAME = "/loadTest.xml";
 
-    private String host;
-    private String virtualHost;
-    private String appId;
     private String destinationQueue;
     private long msgCount;
     private boolean synchronous;
@@ -37,37 +34,10 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     }
 
     private DefaultPerformanceTestProperties(Builder builder) {
-        this.host = builder.host;
-        this.virtualHost = builder.virtualHost;
-        this.appId = builder.appId;
         this.destinationQueue = builder.destinationQueue;
         this.msgCount = builder.msgCount;
         this.synchronous = builder.synchronous;
         this.sendOnly = builder.sendOnly;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getVirtualHost() {
-        return virtualHost;
-    }
-
-    public void setVirtualHost(String vhost) {
-        this.virtualHost = vhost;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
     }
 
     public String getDestinationQueue() {
@@ -124,15 +94,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
      * @param props the properties
      */
     private void loadProperties(Map<String, String> props) {
-        if (props.containsKey("host")) {
-            setHost(props.get("host"));
-        }
-        if (props.containsKey("virtualHost")) {
-            setVirtualHost(props.get("virtualHost"));
-        }
-        if (props.containsKey("appId")) {
-            setAppId(props.get("appId"));
-        }
         if (props.containsKey("destinationQueue")) {
             setDestinationQueue(props.get("destinationQueue"));
         }
@@ -150,9 +111,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     @Override
     public String toString() {
         return "BasicLoadTestProperties{"
-                + "host='" + host + '\''
-                + ", virtualHost='" + virtualHost + '\''
-                + ", appId='" + appId + '\''
                 + ", destinationQueue='" + destinationQueue + '\''
                 + ", msgCount=" + msgCount
                 + ", synchronous=" + synchronous
@@ -165,37 +123,16 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
      */
     public static class Builder {
 
-        private String host;
-        private String virtualHost;
-        private String appId;
         private String destinationQueue;
         private long msgCount;
         private boolean synchronous;
         private boolean sendOnly;
 
         public Builder() {
-            this.host = "localhost";
-            this.virtualHost = "/";
-            this.appId = "";
             this.destinationQueue = "";
             this.msgCount = 1;
             this.synchronous = false;
             this.sendOnly = false;
-        }
-
-        public Builder host(String host) {
-            this.host = host;
-            return this;
-        }
-
-        public Builder virtualHost(String virtualHost) {
-            this.virtualHost = virtualHost;
-            return this;
-        }
-
-        public Builder appId(String appId) {
-            this.appId = appId;
-            return this;
         }
 
         public Builder destinationQueue(String destinationQueue) {
