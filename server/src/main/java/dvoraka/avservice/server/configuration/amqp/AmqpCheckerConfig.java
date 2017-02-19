@@ -1,6 +1,5 @@
 package dvoraka.avservice.server.configuration.amqp;
 
-import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
@@ -28,10 +27,8 @@ public class AmqpCheckerConfig {
 
     @Value("${avservice.amqp.resultQueue}")
     private String resultQueue;
-
     @Value("${avservice.amqp.checkExchange}")
     private String checkExchange;
-
     @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
@@ -63,11 +60,6 @@ public class AmqpCheckerConfig {
     @Bean
     public Checker checker(ServerComponent serverComponent) {
         return new SimpleChecker(serverComponent);
-    }
-
-    @Bean
-    public PerformanceTestProperties testProperties() {
-        return new DefaultPerformanceTestProperties();
     }
 
     @Bean

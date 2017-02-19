@@ -40,7 +40,7 @@ public class PerformanceTester implements ApplicationManagement {
         running = true;
 
         boolean perfect = true;
-        int loops = testProperties.getMsgCount();
+        long loops = testProperties.getMsgCount();
         System.out.println("Load test start for " + loops + " messages...");
 
         long start = System.currentTimeMillis();

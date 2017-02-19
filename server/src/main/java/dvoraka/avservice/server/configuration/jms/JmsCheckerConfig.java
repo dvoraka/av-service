@@ -1,6 +1,5 @@
 package dvoraka.avservice.server.configuration.jms;
 
-import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.ServerComponent;
@@ -28,10 +27,8 @@ public class JmsCheckerConfig {
 
     @Value("${avservice.jms.checkDestination:check}")
     private String checkDestination;
-
     @Value("${avservice.jms.resultDestination:result}")
     private String resultDestination;
-
     @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
@@ -64,11 +61,6 @@ public class JmsCheckerConfig {
     @Bean
     public Checker checker(ServerComponent serverComponent) {
         return new SimpleChecker(serverComponent);
-    }
-
-    @Bean
-    public PerformanceTestProperties testProperties() {
-        return new DefaultPerformanceTestProperties();
     }
 
     @Bean

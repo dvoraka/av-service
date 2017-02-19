@@ -5,7 +5,7 @@ package dvoraka.avservice.common.testing;
  */
 public interface PerformanceTestProperties extends TestProperties {
 
-    int getMsgCount();
+    long getMsgCount();
 
     boolean isSendOnly();
 }

@@ -21,7 +21,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     private String virtualHost;
     private String appId;
     private String destinationQueue;
-    private int msgCount;
+    private long msgCount;
     private boolean synchronous;
     private boolean sendOnly;
 
@@ -79,11 +79,11 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     }
 
     @Override
-    public int getMsgCount() {
+    public long getMsgCount() {
         return msgCount;
     }
 
-    private void setMsgCount(int count) {
+    private void setMsgCount(long count) {
         msgCount = count;
     }
 
@@ -169,7 +169,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         private String virtualHost;
         private String appId;
         private String destinationQueue;
-        private int msgCount;
+        private long msgCount;
         private boolean synchronous;
         private boolean sendOnly;
 
@@ -203,7 +203,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
             return this;
         }
 
-        public Builder msgCount(int msgCount) {
+        public Builder msgCount(long msgCount) {
             this.msgCount = msgCount;
             return this;
         }
