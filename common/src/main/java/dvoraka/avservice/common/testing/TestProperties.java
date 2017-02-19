@@ -1,10 +1,10 @@
 package dvoraka.avservice.common.testing;
 
 /**
- * Basic interface for testing properties.
+ * Interface for testing properties.
  */
 @FunctionalInterface
 public interface TestProperties {
 
-    void loadPropertiesFromXML(String filename);
+    void loadPropertiesFromXml(String filename);
 }

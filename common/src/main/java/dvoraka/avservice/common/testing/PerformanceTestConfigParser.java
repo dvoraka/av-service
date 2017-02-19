@@ -18,8 +18,7 @@ import java.util.Map;
  */
 public class PerformanceTestConfigParser extends DefaultHandler {
 
-    private static final Logger log = LogManager.getLogger(
-            PerformanceTestConfigParser.class.getName());
+    private static final Logger log = LogManager.getLogger(PerformanceTestConfigParser.class);
 
     private Map<String, String> props = new HashMap<>();
     private StringBuilder buffer = new StringBuilder();

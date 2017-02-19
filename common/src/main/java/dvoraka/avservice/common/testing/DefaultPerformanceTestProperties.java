@@ -33,7 +33,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
     public DefaultPerformanceTestProperties(String confName) {
         this(new Builder());
 
-        loadPropertiesFromXML(confName);
+        loadPropertiesFromXml(confName);
     }
 
     private DefaultPerformanceTestProperties(Builder builder) {
@@ -51,7 +51,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         return host;
     }
 
-    @Override
     public void setHost(String host) {
         this.host = host;
     }
@@ -61,7 +60,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         return virtualHost;
     }
 
-    @Override
     public void setVirtualHost(String vhost) {
         this.virtualHost = vhost;
     }
@@ -71,7 +69,6 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         return appId;
     }
 
-    @Override
     public void setAppId(String appId) {
         this.appId = appId;
     }
@@ -81,8 +78,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         return destinationQueue;
     }
 
-    @Override
-    public void setDestinationQueue(String queue) {
+    private void setDestinationQueue(String queue) {
         destinationQueue = queue;
     }
 
@@ -91,8 +87,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         return msgCount;
     }
 
-    @Override
-    public void setMsgCount(int count) {
+    private void setMsgCount(int count) {
         msgCount = count;
     }
 
@@ -101,8 +96,7 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         return synchronous;
     }
 
-    @Override
-    public void setSynchronous(boolean synchronous) {
+    private void setSynchronous(boolean synchronous) {
         this.synchronous = synchronous;
     }
 
@@ -111,13 +105,12 @@ public class DefaultPerformanceTestProperties implements PerformanceTestProperti
         return sendOnly;
     }
 
-    @Override
-    public void setSendOnly(boolean sendOnly) {
+    private void setSendOnly(boolean sendOnly) {
         this.sendOnly = sendOnly;
     }
 
     @Override
-    public void loadPropertiesFromXML(String filename) {
+    public void loadPropertiesFromXml(String filename) {
         log.info("Loading properties from XML...");
         PerformanceTestConfigParser parser = new PerformanceTestConfigParser();
         parser.parseFileSax(Optional
