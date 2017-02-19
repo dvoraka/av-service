@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * App for checking.
+ * App for infrastructure checking.
  */
 @Component
 public class CheckApp implements ApplicationManagement {

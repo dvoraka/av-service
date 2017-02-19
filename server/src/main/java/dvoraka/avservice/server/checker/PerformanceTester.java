@@ -14,15 +14,15 @@ import static java.util.Objects.requireNonNull;
 
 
 /**
- * Common class performance testing.
+ * Class for performance testing.
  */
 @Component
-public class DefaultPerformanceTester implements ApplicationManagement {
+public class PerformanceTester implements ApplicationManagement {
 
     private final Checker checker;
     private final PerformanceTestProperties testProperties;
 
-    private static final Logger log = LogManager.getLogger(DefaultPerformanceTester.class);
+    private static final Logger log = LogManager.getLogger(PerformanceTester.class);
 
     private static final float MS_PER_SECOND = 1000f;
 
@@ -30,7 +30,7 @@ public class DefaultPerformanceTester implements ApplicationManagement {
 
 
     @Autowired
-    public DefaultPerformanceTester(Checker checker, PerformanceTestProperties testProperties) {
+    public PerformanceTester(Checker checker, PerformanceTestProperties testProperties) {
         this.checker = requireNonNull(checker);
         this.testProperties = requireNonNull(testProperties);
     }

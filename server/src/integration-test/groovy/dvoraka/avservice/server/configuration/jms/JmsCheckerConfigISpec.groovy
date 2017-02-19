@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.jms
 
-import dvoraka.avservice.server.checker.DefaultPerformanceTester
+import dvoraka.avservice.server.checker.PerformanceTester
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
@@ -16,7 +16,7 @@ import spock.lang.Specification
 class JmsCheckerConfigISpec extends Specification {
 
     @Autowired
-    DefaultPerformanceTester loadTester
+    PerformanceTester loadTester
 
 
     def "test"() {

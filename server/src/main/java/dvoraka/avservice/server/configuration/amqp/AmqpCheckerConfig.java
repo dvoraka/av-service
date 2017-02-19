@@ -7,7 +7,7 @@ import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
 import dvoraka.avservice.server.checker.CheckApp;
 import dvoraka.avservice.server.checker.Checker;
-import dvoraka.avservice.server.checker.DefaultPerformanceTester;
+import dvoraka.avservice.server.checker.PerformanceTester;
 import dvoraka.avservice.server.checker.SimpleChecker;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -71,11 +71,11 @@ public class AmqpCheckerConfig {
     }
 
     @Bean
-    public DefaultPerformanceTester defaultLoadTester(
+    public PerformanceTester defaultLoadTester(
             Checker checker,
             PerformanceTestProperties testProperties
     ) {
-        return new DefaultPerformanceTester(checker, testProperties);
+        return new PerformanceTester(checker, testProperties);
     }
 
     @Bean

@@ -12,7 +12,7 @@ import spock.lang.Subject
 class DefaultPerformanceTesterSpec extends Specification {
 
     @Subject
-    DefaultPerformanceTester tester
+    PerformanceTester tester
 
     PerformanceTestProperties props
 
@@ -23,7 +23,7 @@ class DefaultPerformanceTesterSpec extends Specification {
                 .msgCount(1)
                 .build()
 
-        tester = new DefaultPerformanceTester(checker, props)
+        tester = new PerformanceTester(checker, props)
     }
 
     def "shouldn't be running before start"() {
@@ -46,7 +46,7 @@ class DefaultPerformanceTesterSpec extends Specification {
                 throw new MessageNotFoundException()
             }
 
-            tester = new DefaultPerformanceTester(checker, props)
+            tester = new PerformanceTester(checker, props)
 
         when:
             tester.start()
