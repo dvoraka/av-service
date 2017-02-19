@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckApp implements ApplicationManagement {
 
-    private static final Logger log = LogManager.getLogger(CheckApp.class);
-
     private final Checker checker;
+
+    private static final Logger log = LogManager.getLogger(CheckApp.class);
 
     private volatile boolean running;
 

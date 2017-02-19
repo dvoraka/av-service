@@ -3,46 +3,40 @@ package dvoraka.avservice.server.checker;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
-import dvoraka.avservice.common.service.ServiceManagement;
+import dvoraka.avservice.common.service.ApplicationManagement;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
 
 
 /**
  * Common class performance testing.
  */
 @Component
-public class DefaultPerformanceTester implements ServiceManagement {
-
-    private static final Logger log =
-            LogManager.getLogger(DefaultPerformanceTester.class.getName());
-    private static final float MS_PER_SECOND = 1000f;
+public class DefaultPerformanceTester implements ApplicationManagement {
 
     private final Checker checker;
     private final PerformanceTestProperties testProperties;
 
-    private boolean running;
-    private boolean started;
-    private boolean stopped;
+    private static final Logger log = LogManager.getLogger(DefaultPerformanceTester.class);
+
+    private static final float MS_PER_SECOND = 1000f;
+
+    private volatile boolean running;
 
 
     @Autowired
     public DefaultPerformanceTester(Checker checker, PerformanceTestProperties testProperties) {
-        Objects.requireNonNull(testProperties, "Test properties must not be null!");
-
-        this.checker = checker;
-        this.testProperties = testProperties;
+        this.checker = requireNonNull(checker);
+        this.testProperties = requireNonNull(testProperties);
     }
 
     @Override
     public void start() {
-        stopped = false;
-        started = true;
         running = true;
 
         boolean perfect = true;
@@ -75,22 +69,7 @@ public class DefaultPerformanceTester implements ServiceManagement {
     }
 
     @Override
-    public void stop() {
-        stopped = true;
-    }
-
-    @Override
     public boolean isRunning() {
         return running;
-    }
-
-    @Override
-    public boolean isStarted() {
-        return started;
-    }
-
-    @Override
-    public boolean isStopped() {
-        return stopped;
     }
 }

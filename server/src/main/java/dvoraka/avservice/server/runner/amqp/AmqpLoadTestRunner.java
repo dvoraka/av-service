@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.runner.amqp;
 
-import dvoraka.avservice.common.runner.AbstractServiceRunner;
-import dvoraka.avservice.common.runner.ServiceRunner;
-import dvoraka.avservice.common.service.ServiceManagement;
+import dvoraka.avservice.common.runner.AbstractAppRunner;
+import dvoraka.avservice.common.runner.AppRunner;
+import dvoraka.avservice.common.service.ApplicationManagement;
 import dvoraka.avservice.server.checker.DefaultPerformanceTester;
 import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
 
@@ -11,10 +11,10 @@ import java.io.IOException;
 /**
  * AMQP load test runner.
  */
-public class AmqpLoadTestRunner extends AbstractServiceRunner {
+public class AmqpLoadTestRunner extends AbstractAppRunner {
 
     public static void main(String[] args) throws IOException {
-        ServiceRunner runner = new AmqpLoadTestRunner();
+        AppRunner runner = new AmqpLoadTestRunner();
         runner.run();
     }
 
@@ -29,12 +29,7 @@ public class AmqpLoadTestRunner extends AbstractServiceRunner {
     }
 
     @Override
-    protected Class<? extends ServiceManagement> runClass() {
+    protected Class<? extends ApplicationManagement> runClass() {
         return DefaultPerformanceTester.class;
-    }
-
-    @Override
-    protected void waitForKey() throws IOException {
-        // no waiting
     }
 }

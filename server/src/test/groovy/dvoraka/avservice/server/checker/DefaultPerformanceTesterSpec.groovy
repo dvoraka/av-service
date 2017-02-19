@@ -31,41 +31,12 @@ class DefaultPerformanceTesterSpec extends Specification {
             !tester.isRunning()
     }
 
-    def "shouldn't be started before start"() {
-        expect:
-            !tester.isStarted()
-    }
-
-    def "shouldn't be stopped before start"() {
-        expect:
-            !tester.isStopped()
-    }
-
     def "after start it should be started and running"() {
         when:
             tester.start()
 
         then:
-            tester.isStarted()
             tester.isRunning()
-    }
-
-    def "after restart it should be started and running"() {
-        when:
-            tester.restart()
-
-        then:
-            !tester.isStopped()
-            tester.isStarted()
-            tester.isRunning()
-    }
-
-    def "after stop it should be stopped"() {
-        when:
-            tester.stop()
-
-        then:
-            tester.isStopped()
     }
 
     def "test with message receiving problem"() {

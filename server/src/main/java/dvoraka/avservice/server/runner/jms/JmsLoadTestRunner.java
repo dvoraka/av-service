@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.runner.jms;
 
-import dvoraka.avservice.common.runner.AbstractServiceRunner;
-import dvoraka.avservice.common.runner.ServiceRunner;
-import dvoraka.avservice.common.service.ServiceManagement;
+import dvoraka.avservice.common.runner.AbstractAppRunner;
+import dvoraka.avservice.common.runner.AppRunner;
+import dvoraka.avservice.common.service.ApplicationManagement;
 import dvoraka.avservice.server.checker.DefaultPerformanceTester;
 import dvoraka.avservice.server.configuration.jms.JmsConfig;
 
@@ -11,10 +11,10 @@ import java.io.IOException;
 /**
  * JMS load test runner.
  */
-public class JmsLoadTestRunner extends AbstractServiceRunner {
+public class JmsLoadTestRunner extends AbstractAppRunner {
 
     public static void main(String[] args) throws IOException {
-        ServiceRunner runner = new JmsLoadTestRunner();
+        AppRunner runner = new JmsLoadTestRunner();
         runner.run();
     }
 
@@ -29,12 +29,7 @@ public class JmsLoadTestRunner extends AbstractServiceRunner {
     }
 
     @Override
-    protected Class<? extends ServiceManagement> runClass() {
+    protected Class<? extends ApplicationManagement> runClass() {
         return DefaultPerformanceTester.class;
-    }
-
-    @Override
-    protected void waitForKey() throws IOException {
-        // no waiting
     }
 }
