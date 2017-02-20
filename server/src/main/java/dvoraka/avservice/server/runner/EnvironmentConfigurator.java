@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.runner;
 
 import dvoraka.avservice.common.exception.MapperException;
-import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
+import dvoraka.avservice.server.configuration.EnvironmentConfiguratorConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -15,8 +15,7 @@ public final class EnvironmentConfigurator {
     public static void main(String[] args) throws MapperException {
         // create AMQP queues, exchanges and bindings
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles("core", "amqp", "amqp-server", "no-db");
-        context.register(AmqpConfig.class);
+        context.register(EnvironmentConfiguratorConfig.class);
         context.refresh();
         context.close();
     }

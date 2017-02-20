@@ -6,11 +6,7 @@ import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.amqp.AmqpComponent;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.MessageListener;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
@@ -29,11 +25,7 @@ public class AmqpServerConfig {
 
     @Value("${avservice.amqp.checkQueue}")
     private String checkQueue;
-    @Value("${avservice.amqp.resultQueue}")
-    private String resultQueue;
 
-    @Value("${avservice.amqp.checkExchange}")
-    private String checkExchange;
     @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
 
@@ -77,35 +69,5 @@ public class AmqpServerConfig {
     @Bean
     public MessageListener messageListener(ServerComponent serverComponent) {
         return serverComponent;
-    }
-
-    @Bean
-    public Queue checkQueue() {
-        return new Queue(checkQueue);
-    }
-
-    @Bean
-    public Queue resultQueue() {
-        return new Queue(resultQueue);
-    }
-
-    @Bean
-    public FanoutExchange checkExchange() {
-        return new FanoutExchange(checkExchange);
-    }
-
-    @Bean
-    public FanoutExchange resultExchange() {
-        return new FanoutExchange(resultExchange);
-    }
-
-    @Bean
-    public Binding bindingCheck(Queue checkQueue, FanoutExchange checkExchange) {
-        return BindingBuilder.bind(checkQueue).to(checkExchange);
-    }
-
-    @Bean
-    public Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
-        return BindingBuilder.bind(resultQueue).to(resultExchange);
     }
 }
