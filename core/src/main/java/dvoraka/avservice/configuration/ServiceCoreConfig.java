@@ -104,12 +104,12 @@ public class ServiceCoreConfig {
                 checkConditions,
                 true
         );
-        ProcessorConfiguration fileConfig = new ProcessorConfiguration(
+        ProcessorConfiguration fileSaveUpdateConfig = new ProcessorConfiguration(
                 fileMessageProcessor,
                 fileSaveUpdateConditions,
                 true
         );
-        ProcessorConfiguration fileLoadConfig = new ProcessorConfiguration(
+        ProcessorConfiguration fileLoadDeleteConfig = new ProcessorConfiguration(
                 fileMessageProcessor,
                 fileLoadDeleteConditions,
                 true
@@ -117,8 +117,8 @@ public class ServiceCoreConfig {
 
         CompositeMessageProcessor processor = new CompositeMessageProcessor();
         processor.addProcessor(checkConfig);
-        processor.addProcessor(fileConfig);
-        processor.addProcessor(fileLoadConfig);
+        processor.addProcessor(fileSaveUpdateConfig);
+        processor.addProcessor(fileLoadDeleteConfig);
 
         processor.start();
 
