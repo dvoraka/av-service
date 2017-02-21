@@ -23,7 +23,6 @@ import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
@@ -79,36 +78,26 @@ public class ServiceCoreConfig {
             MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor
     ) {
-        BiPredicate<? super AvMessage, ? super AvMessage> forCheck =
+        List<BiPredicate<? super AvMessage, ? super AvMessage>> checkConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.REQUEST)
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
-                        .build();
+                        .build().toList();
 
-        BiPredicate<? super AvMessage, ? super AvMessage> typeAndCheck =
+        List<BiPredicate<? super AvMessage, ? super AvMessage>> fileSaveUpdateConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
                         .condition((orig, last) -> last.getVirusInfo() != null
                                 && last.getVirusInfo().equals(Utils.OK_VIRUS_INFO))
-                        .build();
+                        .build().toList();
 
-        BiPredicate<? super AvMessage, ? super AvMessage> loadAndDelete =
+        List<BiPredicate<? super AvMessage, ? super AvMessage>> fileLoadDeleteConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.FILE_LOAD)
                         .originalType(MessageType.FILE_DELETE)
-                        .build();
-
-        List<BiPredicate<? super AvMessage, ? super AvMessage>> checkConditions = new ArrayList<>();
-        checkConditions.add(forCheck);
-
-        List<BiPredicate<? super AvMessage, ? super AvMessage>> fileConditions = new ArrayList<>();
-        fileConditions.add(typeAndCheck);
-
-        List<BiPredicate<? super AvMessage, ? super AvMessage>> fileLoadConditions =
-                new ArrayList<>();
-        fileLoadConditions.add(loadAndDelete);
+                        .build().toList();
 
         ProcessorConfiguration checkConfig = new ProcessorConfiguration(
                 checkMessageProcessor,
@@ -117,12 +106,12 @@ public class ServiceCoreConfig {
         );
         ProcessorConfiguration fileConfig = new ProcessorConfiguration(
                 fileMessageProcessor,
-                fileConditions,
+                fileSaveUpdateConditions,
                 true
         );
         ProcessorConfiguration fileLoadConfig = new ProcessorConfiguration(
                 fileMessageProcessor,
-                fileLoadConditions,
+                fileLoadDeleteConditions,
                 true
         );
 

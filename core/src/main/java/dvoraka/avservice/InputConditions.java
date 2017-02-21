@@ -38,6 +38,13 @@ public final class InputConditions implements BiPredicate<AvMessage, AvMessage> 
         return originalTypes && lastTypes && conditionsPassed;
     }
 
+    public List<BiPredicate<? super AvMessage, ? super AvMessage>> toList() {
+        List<BiPredicate<? super AvMessage, ? super AvMessage>> list = new ArrayList<>();
+        list.add(this);
+
+        return list;
+    }
+
     public static class Builder {
 
         private List<MessageType> allowedOriginalTypes;
