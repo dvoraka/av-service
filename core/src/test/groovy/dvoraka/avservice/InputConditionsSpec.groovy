@@ -6,6 +6,8 @@ import dvoraka.avservice.common.data.MessageType
 import spock.lang.Specification
 import spock.lang.Subject
 
+import java.util.function.BiPredicate
+
 /**
  * Input condition spec.
  */
@@ -71,5 +73,26 @@ class InputConditionsSpec extends Specification {
 
         expect:
             !conditions.test(normalMessage, normalMessage)
+    }
+
+    def "test condition"() {
+        given:
+
+            BiPredicate<AvMessage, AvMessage> cond = new BiPredicate<AvMessage, AvMessage>() {
+                @Override
+                boolean test(AvMessage orig, AvMessage last) {
+                    return last.getVirusInfo() != null
+                }
+            }
+
+            conditions = new InputConditions.Builder()
+                    .lastType(MessageType.RESPONSE)
+                    .condition(cond)
+                    .build()
+
+            AvMessage responseMessage = Utils.genMessage().createResponse("TEST")
+
+        expect:
+            conditions.test(responseMessage, responseMessage)
     }
 }
