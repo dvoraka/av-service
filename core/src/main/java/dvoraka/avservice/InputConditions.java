@@ -38,8 +38,8 @@ public final class InputConditions implements BiPredicate<AvMessage, AvMessage> 
         return originalTypes && lastTypes && conditionsPassed;
     }
 
-    public List<BiPredicate<? super AvMessage, ? super AvMessage>> toList() {
-        List<BiPredicate<? super AvMessage, ? super AvMessage>> list = new ArrayList<>();
+    public List<BiPredicate<AvMessage, AvMessage>> toList() {
+        List<BiPredicate<AvMessage, AvMessage>> list = new ArrayList<>();
         list.add(this);
 
         return list;

@@ -78,14 +78,14 @@ public class ServiceCoreConfig {
             MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor
     ) {
-        List<BiPredicate<? super AvMessage, ? super AvMessage>> checkConditions =
+        List<BiPredicate<AvMessage, AvMessage>> checkConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.REQUEST)
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
                         .build().toList();
 
-        List<BiPredicate<? super AvMessage, ? super AvMessage>> fileSaveUpdateConditions =
+        List<BiPredicate<AvMessage, AvMessage>> fileSaveUpdateConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
@@ -93,7 +93,7 @@ public class ServiceCoreConfig {
                                 && last.getVirusInfo().equals(Utils.OK_VIRUS_INFO))
                         .build().toList();
 
-        List<BiPredicate<? super AvMessage, ? super AvMessage>> fileLoadDeleteConditions =
+        List<BiPredicate<AvMessage, AvMessage>> fileLoadDeleteConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.FILE_LOAD)
                         .originalType(MessageType.FILE_DELETE)

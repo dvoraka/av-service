@@ -51,7 +51,7 @@ public interface AvMessageHelper {
      * @return the result
      */
     default boolean checkConditions(
-            Stream<BiPredicate<? super AvMessage, ? super AvMessage>> conditions,
+            Stream<BiPredicate<AvMessage, AvMessage>> conditions,
             AvMessage originalData,
             AvMessage actualData
     ) {
