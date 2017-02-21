@@ -3,6 +3,7 @@ package dvoraka.avservice.configuration;
 import dvoraka.avservice.AvCheckMessageProcessor;
 import dvoraka.avservice.CompositeMessageProcessor;
 import dvoraka.avservice.FileMessageProcessor;
+import dvoraka.avservice.InputConditions;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessorConfiguration;
 import dvoraka.avservice.avprogram.AvProgram;
@@ -78,30 +79,26 @@ public class ServiceCoreConfig {
             MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor
     ) {
-        BiPredicate<? super AvMessage, ? super AvMessage> forCheck = (original, last) -> {
-            MessageType origType = original.getType();
+        BiPredicate<? super AvMessage, ? super AvMessage> forCheck =
+                new InputConditions.Builder()
+                        .originalType(MessageType.REQUEST)
+                        .originalType(MessageType.FILE_SAVE)
+                        .originalType(MessageType.FILE_UPDATE)
+                        .build();
 
-            return origType == MessageType.REQUEST
-                    || origType == MessageType.FILE_SAVE
-                    || origType == MessageType.FILE_UPDATE;
-        };
+        BiPredicate<? super AvMessage, ? super AvMessage> typeAndCheck =
+                new InputConditions.Builder()
+                        .originalType(MessageType.FILE_SAVE)
+                        .originalType(MessageType.FILE_UPDATE)
+                        .condition((orig, last) -> last.getVirusInfo() != null
+                                && last.getVirusInfo().equals(Utils.OK_VIRUS_INFO))
+                        .build();
 
-        BiPredicate<? super AvMessage, ? super AvMessage> typeAndCheck = (original, last) -> {
-            MessageType origType = original.getType();
-
-            if (last.getVirusInfo() == null) {
-                return false;
-            }
-
-            return (origType == MessageType.FILE_SAVE || origType == MessageType.FILE_UPDATE)
-                    && last.getVirusInfo().equals(Utils.OK_VIRUS_INFO);
-        };
-
-        BiPredicate<? super AvMessage, ? super AvMessage> loadAndDelete = (original, last) -> {
-            MessageType origType = original.getType();
-
-            return origType == MessageType.FILE_LOAD || origType == MessageType.FILE_DELETE;
-        };
+        BiPredicate<? super AvMessage, ? super AvMessage> loadAndDelete =
+                new InputConditions.Builder()
+                        .originalType(MessageType.FILE_LOAD)
+                        .originalType(MessageType.FILE_DELETE)
+                        .build();
 
         List<BiPredicate<? super AvMessage, ? super AvMessage>> checkConditions = new ArrayList<>();
         checkConditions.add(forCheck);
