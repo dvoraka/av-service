@@ -8,7 +8,6 @@ import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessorConfiguration;
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.common.Utils;
-import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
@@ -24,7 +23,6 @@ import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
 
 import java.util.List;
-import java.util.function.BiPredicate;
 
 /**
  * Core configuration
@@ -78,14 +76,14 @@ public class ServiceCoreConfig {
             MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor
     ) {
-        List<BiPredicate<AvMessage, AvMessage>> checkConditions =
+        List<InputConditions> checkConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.REQUEST)
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
                         .build().toList();
 
-        List<BiPredicate<AvMessage, AvMessage>> fileSaveUpdateConditions =
+        List<InputConditions> fileSaveUpdateConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
@@ -93,7 +91,7 @@ public class ServiceCoreConfig {
                                 && last.getVirusInfo().equals(Utils.OK_VIRUS_INFO))
                         .build().toList();
 
-        List<BiPredicate<AvMessage, AvMessage>> fileLoadDeleteConditions =
+        List<InputConditions> fileLoadDeleteConditions =
                 new InputConditions.Builder()
                         .originalType(MessageType.FILE_LOAD)
                         .originalType(MessageType.FILE_DELETE)

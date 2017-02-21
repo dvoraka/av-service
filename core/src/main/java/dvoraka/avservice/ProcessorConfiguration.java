@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 public class ProcessorConfiguration {
 
     private final MessageProcessor processor;
-    private final List<BiPredicate<AvMessage, AvMessage>> inputConditions;
+    private final List<? extends BiPredicate<AvMessage, AvMessage>> inputConditions;
     private final boolean useOriginalMessage;
 
 
@@ -24,7 +24,7 @@ public class ProcessorConfiguration {
 
     public ProcessorConfiguration(
             MessageProcessor processor,
-            List<BiPredicate<AvMessage, AvMessage>> inputConditions,
+            List<? extends BiPredicate<AvMessage, AvMessage>> inputConditions,
             boolean useOriginalMessage
     ) {
         this.processor = requireNonNull(processor);
@@ -42,7 +42,7 @@ public class ProcessorConfiguration {
         return processor;
     }
 
-    public List<BiPredicate<AvMessage, AvMessage>> getInputConditions() {
+    public List<? extends BiPredicate<AvMessage, AvMessage>> getInputConditions() {
         return inputConditions;
     }
 
