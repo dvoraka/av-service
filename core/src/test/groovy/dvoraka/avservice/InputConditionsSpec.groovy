@@ -44,4 +44,32 @@ class InputConditionsSpec extends Specification {
         expect:
             !conditions.test(normalMessage, normalMessage)
     }
+
+    def "allowed last types passed"() {
+        given:
+            conditions = new InputConditions.Builder()
+                    .lastType(MessageType.FILE_RESPONSE)
+                    .lastType(MessageType.FILE_NOT_FOUND)
+                    .lastType(MessageType.FILE_SAVE)
+                    .build()
+
+            AvMessage fileMessage = Utils.genFileMessage()
+
+        expect:
+            conditions.test(fileMessage, fileMessage)
+    }
+
+    def "allowed last types failed"() {
+        given:
+            conditions = new InputConditions.Builder()
+                    .lastType(MessageType.FILE_RESPONSE)
+                    .lastType(MessageType.FILE_NOT_FOUND)
+                    .lastType(MessageType.FILE_SAVE)
+                    .build()
+
+            AvMessage normalMessage = Utils.genMessage()
+
+        expect:
+            !conditions.test(normalMessage, normalMessage)
+    }
 }
