@@ -12,9 +12,9 @@ import java.util.function.BiPredicate;
  */
 public final class InputConditions implements BiPredicate<AvMessage, AvMessage> {
 
-    private List<MessageType> allowedOriginalTypes;
-    private List<MessageType> allowedLastTypes;
-    private List<BiPredicate<AvMessage, AvMessage>> conditions;
+    private final List<MessageType> allowedOriginalTypes;
+    private final List<MessageType> allowedLastTypes;
+    private final List<BiPredicate<AvMessage, AvMessage>> conditions;
 
 
     private InputConditions(Builder builder) {
