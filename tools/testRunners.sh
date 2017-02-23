@@ -24,7 +24,7 @@ do
     echo | ./gradlew -q ${runner} > /dev/null 2>&1
     if [ $? != 0 ]
     then
-        echo "Test failed for:" ${runner}
+        echo "Test failed for: "${runner}
         exit 1
     fi
     echo "OK"
