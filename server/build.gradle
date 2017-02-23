@@ -54,7 +54,7 @@ task runJmsToAmqpBridge(type: JavaExec) {
     description = 'Run JMS to AMQP bridge'
     group = "${taskGroupName}"
 
-    main = 'dvoraka.avservice.server.runner.amqp.JmsToAmqpBridgeRunner'
+    main = 'dvoraka.avservice.server.runner.jms.JmsToAmqpBridgeRunner'
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }
