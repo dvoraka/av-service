@@ -5,10 +5,8 @@
 
 SRC_ROOT=".."
 
-cd ${SRC_ROOT}
-
 # find all Java files
-find . -name "*.java" -exec cat {} \; | \
+find ${SRC_ROOT} -name "*.java" -exec cat {} \; | \
     # find all @Profile annotations
     grep -E '.*@Profile(.+).*' | \
     # clean the output
