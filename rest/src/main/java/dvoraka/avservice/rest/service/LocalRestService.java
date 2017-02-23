@@ -93,7 +93,8 @@ public class LocalRestService implements RestService, AvMessageListener {
             try {
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.warn("Sleeping interrupted!", e);
+                Thread.currentThread().interrupt();
             }
         }
 

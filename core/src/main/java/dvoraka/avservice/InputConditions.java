@@ -26,13 +26,13 @@ public final class InputConditions implements BiPredicate<AvMessage, AvMessage> 
     @Override
     public boolean test(AvMessage original, AvMessage lastResult) {
 
-        boolean originalTypes = allowedOriginalTypes.size() <= 0 || allowedOriginalTypes.stream()
+        boolean originalTypes = allowedOriginalTypes.isEmpty() || allowedOriginalTypes.stream()
                 .anyMatch(type -> type.equals(original.getType()));
 
-        boolean lastTypes = allowedLastTypes.size() <= 0 || allowedLastTypes.stream()
+        boolean lastTypes = allowedLastTypes.isEmpty() || allowedLastTypes.stream()
                 .anyMatch(type -> type.equals(lastResult.getType()));
 
-        boolean conditionsPassed = conditions.size() <= 0 || conditions.stream()
+        boolean conditionsPassed = conditions.isEmpty() || conditions.stream()
                 .allMatch(predicate -> predicate.test(original, lastResult));
 
         return originalTypes && lastTypes && conditionsPassed;

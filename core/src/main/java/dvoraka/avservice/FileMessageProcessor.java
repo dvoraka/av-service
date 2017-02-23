@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -42,7 +42,7 @@ public class FileMessageProcessor implements MessageProcessor {
     }
 
     private Map<MessageType, Consumer<AvMessage>> getCallConfiguration() {
-        Map<MessageType, Consumer<AvMessage>> configuration = new HashMap<>();
+        Map<MessageType, Consumer<AvMessage>> configuration = new EnumMap<>(MessageType.class);
         configuration.put(MessageType.FILE_SAVE, this::save);
         configuration.put(MessageType.FILE_LOAD, this::load);
         configuration.put(MessageType.FILE_UPDATE, this::update);

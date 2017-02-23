@@ -62,6 +62,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
                 lastResult = result;
             } catch (InterruptedException e) {
                 log.warn("Polling interrupted!", e);
+                Thread.currentThread().interrupt();
                 break;
             }
         }
