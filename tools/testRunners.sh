@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
+#
+# Tests project's Gradle tasks.
+#
 
 RUNNERS="
+    configureEnvironment
     runAmqpCheck
     runAmqpServer
     runAmqpToJmsBridge
