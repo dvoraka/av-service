@@ -3,7 +3,7 @@
 # Tests project's Gradle tasks.
 #
 
-RUNNERS="
+TASKS="
     configureEnvironment
     runAmqpCheck
     runAmqpServer
@@ -18,13 +18,13 @@ SRC_ROOT=".."
 
 cd ${SRC_ROOT}
 
-for runner in ${RUNNERS}
+for task in ${TASKS}
 do
-    echo -n "Checking "${runner}"... "
-    echo | ./gradlew -q ${runner} > /dev/null 2>&1
+    echo -n "Checking "${task}"... "
+    echo | ./gradlew -q ${task} > /dev/null 2>&1
     if [ $? != 0 ]
     then
-        echo "Test failed for: "${runner}
+        echo "Test failed for: "${task}
         exit 1
     fi
     echo "OK"
