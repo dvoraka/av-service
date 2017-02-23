@@ -13,6 +13,7 @@ find . -name "*.java" -exec cat {} \; | \
     grep -E '.*@Profile(.+).*' | \
     # clean the output
     sed -e 's/.*\(@.*)\)/\1/g' | \
+    sed -e 's/@Profile("\(.\+\)")/\1/g' | \
     # sort the output
     sort | \
     # remove duplicities from the output
