@@ -4,16 +4,20 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * Dummy file service spec.
+ * Remote file service spec.
  */
-class DummyFileServiceSpec extends Specification {
+//TODO
+class RemoteFileServiceSpec extends Specification {
 
     @Subject
-    DummyFileService service
+    RemoteFileService service
+
+    FileService fileService
 
 
     def setup() {
-        service = new DummyFileService()
+        fileService = Mock()
+        service = new RemoteFileService(fileService)
     }
 
     def "save file"() {
