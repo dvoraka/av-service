@@ -67,6 +67,7 @@ public class MessageInfoDocument implements AvMessageInfoData {
         this.created = new Date(created.getTime());
     }
 
+    @Override
     public AvMessageInfo avMessageInfo() {
         return new DefaultAvMessageInfo.Builder(getUuid())
                 .source(AvMessageSource.valueOf(getSource()))

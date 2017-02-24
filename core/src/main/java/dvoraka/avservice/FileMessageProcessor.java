@@ -98,10 +98,12 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public void start() {
+        //TODO
     }
 
     @Override
     public void stop() {
+        //TODO
     }
 
     @Override

@@ -79,18 +79,6 @@ public class AvMessageMapper {
         return virusInfo;
     }
 
-    private String getServiceId(Map<String, Object> headers) {
-        Object serviceIdObj = headers.get(SERVICE_ID_KEY);
-        String serviceId;
-        if (serviceIdObj != null) {
-            serviceId = serviceIdObj.toString();
-        } else {
-            serviceId = DEFAULT_SERVICE_ID;
-        }
-
-        return serviceId;
-    }
-
     private MessageType getMessageType(MessageProperties msgProps) throws MapperException {
         String messageTypeStr = msgProps.getType().toUpperCase();
         MessageType messageType;
