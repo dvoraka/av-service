@@ -65,7 +65,7 @@ class DbMessageInfoServiceSpec extends Specification {
         MessageInfo testInfo = new MessageInfo()
         testInfo.setUuid(uuid)
         testInfo.setSource(AvMessageSource.TEST.toString())
-        testInfo.setCreated(new Date())
+        testInfo.setCreated(Instant.now())
 
         return testInfo
     }

@@ -3,6 +3,8 @@ package dvoraka.avservice.db.model
 import spock.lang.Specification
 import spock.lang.Subject
 
+import java.time.Instant
+
 /**
  * Message info spec.
  */
@@ -20,7 +22,7 @@ class MessageInfoSpec extends Specification {
         given:
             Long dbId = 9
             String testVal = "TEST"
-            Date testDate = new Date()
+            Instant testDate = Instant.now()
 
         when:
             messageInfo.with {

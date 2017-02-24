@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -53,7 +52,7 @@ public class DbMessageInfoService implements MessageInfoService {
         messageInfo.setUuid(message.getId());
         messageInfo.setSource(source.toString());
         messageInfo.setServiceId(serviceId);
-        messageInfo.setCreated(new Date());
+        messageInfo.setCreated(Instant.now());
 
         return messageInfo;
     }
@@ -68,9 +67,7 @@ public class DbMessageInfoService implements MessageInfoService {
     @Override
     public Stream<AvMessageInfo> loadInfoStream(Instant from, Instant to) {
         List<? extends AvMessageInfoData> messageInfos =
-                messageInfoRepository.findByCreatedBetween(
-                        Date.from(from),
-                        Date.from(to));
+                messageInfoRepository.findByCreatedBetween(from, to);
 
         return messageInfos.stream()
                 .map(AvMessageInfoData::avMessageInfo);

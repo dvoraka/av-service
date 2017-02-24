@@ -9,9 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
+import java.time.Instant;
 
 /**
  * Message info entity.
@@ -27,8 +25,7 @@ public class MessageInfo implements AvMessageInfoData {
     private String source;
     private String serviceId;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
+    private Instant created;
 
 
     public long getId() {
@@ -63,12 +60,12 @@ public class MessageInfo implements AvMessageInfoData {
         this.serviceId = serviceId;
     }
 
-    public Date getCreated() {
-        return new Date(created.getTime());
+    public Instant getCreated() {
+        return created;
     }
 
-    public void setCreated(Date created) {
-        this.created = new Date(created.getTime());
+    public void setCreated(Instant created) {
+        this.created = created;
     }
 
     @Override
@@ -76,7 +73,7 @@ public class MessageInfo implements AvMessageInfoData {
         return new DefaultAvMessageInfo.Builder(getUuid())
                 .source(AvMessageSource.valueOf(getSource()))
                 .serviceId(getServiceId())
-                .created(getCreated().toInstant())
+                .created(getCreated())
                 .build();
     }
 }
