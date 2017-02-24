@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Profile;
  * Storage DB configuration for import.
  */
 @Configuration
+@Profile("db")
 public class StorageDbConfig {
 
     @Bean
-    @Profile("db")
     FileService dbFileService(DbFileRepository dbFileRepository) {
         return new DbFileService(dbFileRepository);
     }

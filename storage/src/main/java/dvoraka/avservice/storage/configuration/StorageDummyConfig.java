@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Profile;
  * Storage dummy configuration for import.
  */
 @Configuration
+@Profile("no-db")
 public class StorageDummyConfig {
 
     @Bean
-    @Profile("no-db")
     public FileService fileService() {
         return new DummyFileService();
     }
