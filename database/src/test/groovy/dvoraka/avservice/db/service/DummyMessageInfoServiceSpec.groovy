@@ -1,12 +1,14 @@
 package dvoraka.avservice.db.service
 
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * Service test.
  */
 class DummyMessageInfoServiceSpec extends Specification {
 
+    @Subject
     DummyMessageInfoService infoService
 
 
