@@ -9,6 +9,7 @@ public class DummyFileService implements FileService {
 
     @Override
     public void saveFile(FileMessage message) {
+        // do nothing
     }
 
     @Override
@@ -18,9 +19,11 @@ public class DummyFileService implements FileService {
 
     @Override
     public void updateFile(FileMessage message) {
+        // do nothing
     }
 
     @Override
     public void deleteFile(FileMessage message) {
+        // do nothing
     }
 }

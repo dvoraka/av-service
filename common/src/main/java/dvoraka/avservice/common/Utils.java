@@ -20,6 +20,7 @@ public final class Utils {
             "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
     public static final String SERVICE_TEST_ID = "TEST-SERVICE";
     public static final String OK_VIRUS_INFO = "stream: OK";
+    public static final String TEST_CORR_ID = "1-2-3";
 
 
     private Utils() {
@@ -32,7 +33,7 @@ public final class Utils {
     public static AvMessage genMessage() {
         final int dataSize = 20;
         return new DefaultAvMessage.Builder(genUuidString())
-                .correlationId("1-2-3")
+                .correlationId(TEST_CORR_ID)
                 .data(new byte[dataSize])
                 .type(MessageType.REQUEST)
                 .build();
@@ -40,7 +41,7 @@ public final class Utils {
 
     public static AvMessage genInfectedMessage() {
         return new DefaultAvMessage.Builder(genUuidString())
-                .correlationId("1-2-3")
+                .correlationId(TEST_CORR_ID)
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
                 .type(MessageType.REQUEST)
                 .build();
@@ -53,7 +54,7 @@ public final class Utils {
     public static AvMessage genFileMessage(String username) {
         final int dataSize = 40;
         return new DefaultAvMessage.Builder(genUuidString())
-                .correlationId("1-2-3")
+                .correlationId(TEST_CORR_ID)
                 .data(new byte[dataSize])
                 .type(MessageType.FILE_SAVE)
                 .filename("testFilename" + genUuidString()) //TODO
@@ -67,7 +68,7 @@ public final class Utils {
 
     public static AvMessage genInfectedFileMessage(String username) {
         return new DefaultAvMessage.Builder(genUuidString())
-                .correlationId("1-2-3")
+                .correlationId(TEST_CORR_ID)
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
                 .type(MessageType.FILE_SAVE)
                 .filename("testFilename" + genUuidString()) //TODO

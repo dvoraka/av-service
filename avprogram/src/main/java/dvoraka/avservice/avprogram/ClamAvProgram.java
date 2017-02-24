@@ -36,6 +36,8 @@ public class ClamAvProgram implements AvProgram {
     public static final int DEFAULT_PORT = 3310;
     public static final int DEFAULT_MAX_ARRAY_SIZE = 10_000;
 
+    private static final String ERROR_MSG = "Scanning problem!";
+
     public static final String CLEAN_STREAM_RESPONSE = Utils.OK_VIRUS_INFO;
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
@@ -76,8 +78,8 @@ public class ClamAvProgram implements AvProgram {
         try {
             response = scanBytesWithInfo(bytes);
         } catch (ScanException e) {
-            log.warn("Scanning failed!", e);
-            throw new ScanException("Scanning failed!", e);
+            log.warn(ERROR_MSG, e);
+            throw new ScanException(ERROR_MSG, e);
         }
 
         if (response.equals(CLEAN_STREAM_RESPONSE)) {
@@ -114,8 +116,8 @@ public class ClamAvProgram implements AvProgram {
                 response = response.substring(offset);
             }
         } catch (IOException e) {
-            log.warn("Scanning problem.", e);
-            throw new ScanException("Scanning problem.", e);
+            log.warn(ERROR_MSG, e);
+            throw new ScanException(ERROR_MSG, e);
         } finally {
             socketPool.returnSocket(socket);
         }
@@ -193,8 +195,8 @@ public class ClamAvProgram implements AvProgram {
                 throw new ScanException("Scanning problem.");
             }
         } catch (IOException e) {
-            log.warn("Scanning problem!", e);
-            throw new ScanException("Scanning problem.", e);
+            log.warn(ERROR_MSG, e);
+            throw new ScanException(ERROR_MSG, e);
         }
     }
 
