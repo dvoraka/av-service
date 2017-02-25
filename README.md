@@ -12,7 +12,7 @@ From version 0.6 it is mostly a file service with an AV check. Currently it is s
 
 ### Contribution
 Current possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage),
-Linux admin for better deployment and distribution, Server (HW) for testing
+Linux admin for better deployment and distribution, Server for testing
 
 --
 
