@@ -1,3 +1,23 @@
+## v0.6
+ * File service concept
+ * Redesign REST
+ * Redesign message processing
+ * Redesign DB module
+ * Remove service ID field from AvMessage
+ * New socket pooling utility prototype
+ * Remove old XML performance test configuration
+ * New file server runner
+ * Redesign performance testing
+ * New script for finding all Spring profiles
+ * New script for testing Gradle tasks
+ * New script for load testing
+ 
+#### modules
+ * New storage module
+ 
+#### Docker
+ * Update Jessie based images to Stretch
+
 ## v0.5 (Jan 20, 2017)
 
 ## v0.5-rc1 (Jan 16, 2017)
@@ -50,7 +70,7 @@
  * New checker for AMQP
  * New checker for JMS
  * New performance test for AMQP
- * New perfromance test for JMS
+ * New performance test for JMS
  * Removed JMS client (new checker is replacement)
  * Removed AMQP client (new checker is replacement)
  * Exceptions cleaning
