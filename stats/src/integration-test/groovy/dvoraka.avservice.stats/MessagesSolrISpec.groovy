@@ -32,7 +32,7 @@ class MessagesSolrISpec extends Specification {
 
     def setup() {
         source = AvMessageSource.TEST
-        serviceId = Utils.SERVICE_TEST_ID
+        serviceId = Utils.TEST_SERVICE_ID
     }
 
     def "save and load message"() {

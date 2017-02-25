@@ -18,9 +18,9 @@ public final class Utils {
 
     public static final String EICAR =
             "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
-    public static final String SERVICE_TEST_ID = "TEST-SERVICE";
-    public static final String OK_VIRUS_INFO = "stream: OK";
+    public static final String TEST_SERVICE_ID = "TEST-SERVICE";
     public static final String TEST_CORR_ID = "1-2-3";
+    public static final String OK_VIRUS_INFO = "stream: OK";
 
 
     private Utils() {
@@ -79,7 +79,7 @@ public final class Utils {
     public static AvMessageInfo genAvMessageInfo(AvMessageSource source) {
         return new DefaultAvMessageInfo.Builder(genUuidString())
                 .source(source)
-                .serviceId(SERVICE_TEST_ID)
+                .serviceId(TEST_SERVICE_ID)
                 .created(Instant.now())
                 .build();
     }

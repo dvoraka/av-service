@@ -17,14 +17,14 @@ class DefaultAvMessageInfoSpec extends Specification {
             DefaultAvMessageInfo messageInfo =
                     new DefaultAvMessageInfo.Builder(uuid)
                             .source(AvMessageSource.TEST)
-                            .serviceId(Utils.SERVICE_TEST_ID)
+                            .serviceId(Utils.TEST_SERVICE_ID)
                             .created(now)
                             .build()
 
         expect:
             messageInfo.getId() == uuid
             messageInfo.getSource() == AvMessageSource.TEST
-            messageInfo.getServiceId() == Utils.SERVICE_TEST_ID
+            messageInfo.getServiceId() == Utils.TEST_SERVICE_ID
             messageInfo.getCreated() == now
     }
 }

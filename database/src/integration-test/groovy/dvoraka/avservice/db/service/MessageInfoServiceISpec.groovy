@@ -31,7 +31,7 @@ class MessageInfoServiceISpec extends Specification {
             AvMessage message = Utils.genMessage()
 
         expect:
-            service.save(message, AvMessageSource.TEST, Utils.SERVICE_TEST_ID)
+            service.save(message, AvMessageSource.TEST, Utils.TEST_SERVICE_ID)
 
         when:
             AvMessageInfo messageInfo = service.loadInfo(message.getId())
@@ -39,7 +39,7 @@ class MessageInfoServiceISpec extends Specification {
         then:
             messageInfo
             messageInfo.getSource() == AvMessageSource.TEST
-            messageInfo.getServiceId() == Utils.SERVICE_TEST_ID
+            messageInfo.getServiceId() == Utils.TEST_SERVICE_ID
     }
 
     def "save messages and then load info stream"() {
@@ -50,7 +50,7 @@ class MessageInfoServiceISpec extends Specification {
 
         expect:
             count.times {
-                service.save(message, AvMessageSource.TEST, Utils.SERVICE_TEST_ID)
+                service.save(message, AvMessageSource.TEST, Utils.TEST_SERVICE_ID)
             }
 
         when:
