@@ -8,8 +8,11 @@ Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus 
 JMS, AMQP and REST for communication. AV-checker project was integrated as the checker submodule,
 then completely rewritten and the old code was removed.
 
+From version 0.6 it is mostly a file service with an AV check. Currently it is still a bit experimental.
+
 ### Contribution
-Current possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage), Linux admin for better deployment and distribution
+Current possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage),
+Linux admin for better deployment and distribution, Server (HW) for testing
 
 --
 
@@ -36,6 +39,7 @@ Release [NOTES](RELEASE_NOTES.md)
  * REST support
  * Message tracking DB service (PostgreSQL or Solr)
  * Statistics module
+ * File service
  * Highly scalable architecture
  * Robust design
  
@@ -86,6 +90,7 @@ profile | description | from version
 amqp | enable AMQP infrastructure
 amqp2jms | bridging AMQP to JMS
 amqp-checker | AMQP checker
+amqp-file-server | AMQP file server | 0.6
 amqp-rest | AMQP infrastructure for REST | 0.5
 amqp-server | AMQP server
 core | core functionality
@@ -104,6 +109,7 @@ rest-jms | REST to JMS | 0.5
 rest-local | REST with direct connection | 0.5
 stats | enable statistics | 0.5
 stats-solr | statistics in Solr | 0.5
+storage | enable file service | 0.6
 
 Here will be the best combinations for various usages soon.
 
