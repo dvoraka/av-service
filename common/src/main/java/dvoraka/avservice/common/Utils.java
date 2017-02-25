@@ -9,6 +9,7 @@ import dvoraka.avservice.common.data.MessageType;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -20,7 +21,10 @@ public final class Utils {
             "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
     public static final String TEST_SERVICE_ID = "TEST-SERVICE";
     public static final String TEST_CORR_ID = "1-2-3";
+    public static final String TEST_FILENAME = "testFilename";
     public static final String OK_VIRUS_INFO = "stream: OK";
+
+    private static final Random RAND = new Random();
 
 
     private Utils() {
@@ -28,6 +32,10 @@ public final class Utils {
 
     public static String genUuidString() {
         return UUID.randomUUID().toString();
+    }
+
+    public static String genFilename() {
+        return TEST_FILENAME + RAND.nextInt();
     }
 
     public static AvMessage genMessage() {
@@ -57,7 +65,7 @@ public final class Utils {
                 .correlationId(TEST_CORR_ID)
                 .data(new byte[dataSize])
                 .type(MessageType.FILE_SAVE)
-                .filename("testFilename" + genUuidString()) //TODO
+                .filename(genFilename())
                 .owner(username)
                 .build();
     }
@@ -71,7 +79,7 @@ public final class Utils {
                 .correlationId(TEST_CORR_ID)
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
                 .type(MessageType.FILE_SAVE)
-                .filename("testFilename" + genUuidString()) //TODO
+                .filename(genFilename())
                 .owner(username)
                 .build();
     }
