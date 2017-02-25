@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets
  */
 class UtilsSpec extends Specification {
 
+    String testOwner = 'testOwner'
+
 
     def "generate normal message"() {
         setup:
@@ -42,12 +44,34 @@ class UtilsSpec extends Specification {
 
     def "generate file message with username"() {
         setup:
-            String testOwner = 'testOwner'
             AvMessage fileMessage = Utils.genFileMessage(testOwner)
 
         expect:
             checkMessageFields(fileMessage)
             checkFileMessageFields(fileMessage)
+            fileMessage.getOwner() == testOwner
+    }
+
+    def "generate infected file message"() {
+        setup:
+            AvMessage fileMessage = Utils.genInfectedFileMessage()
+            byte[] expectedData = fileMessage.getData()
+
+        expect:
+            checkMessageFields(fileMessage)
+            checkFileMessageFields(fileMessage)
+            Arrays.equals(expectedData, Utils.EICAR.getBytes(StandardCharsets.UTF_8))
+    }
+
+    def "generate infected file message with username"() {
+        setup:
+            AvMessage fileMessage = Utils.genInfectedFileMessage(testOwner)
+            byte[] expectedData = fileMessage.getData()
+
+        expect:
+            checkMessageFields(fileMessage)
+            checkFileMessageFields(fileMessage)
+            Arrays.equals(expectedData, Utils.EICAR.getBytes(StandardCharsets.UTF_8))
             fileMessage.getOwner() == testOwner
     }
 
