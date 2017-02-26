@@ -8,10 +8,6 @@ public class AvException extends ServiceException {
     private static final long serialVersionUID = 1494553045042755302L;
 
 
-    public AvException() {
-        super();
-    }
-
     public AvException(String message) {
         super(message);
     }

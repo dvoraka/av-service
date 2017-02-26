@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets
 class DefaultAvMessageSpec extends Specification {
 
     String testId = 'TEST-ID'
+    String testFilename = 'testFilename'
+    String testOwner = 'testOwner'
 
 
     def "message creating test"() {
@@ -59,6 +61,27 @@ class DefaultAvMessageSpec extends Specification {
         then:
             response.getCorrelationId() == expCorrId
             response.getType() == MessageType.RESPONSE_ERROR
+    }
+
+    def "create file message test"() {
+        given:
+            DefaultAvMessage message = new DefaultAvMessage.Builder(testId)
+                    .filename(testFilename)
+                    .owner(testOwner)
+                    .build()
+
+            String expCorrId = message.getId()
+            byte[] data = new byte[5]
+
+        when:
+            AvMessage response = message.createFileMessage(data, MessageType.FILE_UPDATE)
+
+        then:
+            response.getCorrelationId() == expCorrId
+            response.getFilename() == testFilename
+            response.getOwner() == testOwner
+            response.getType() == MessageType.FILE_UPDATE
+            Arrays.equals(response.getData(), data)
     }
 
     def "null data test"() {

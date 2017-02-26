@@ -25,5 +25,5 @@ public interface AvMessage extends FileMessage {
 
     AvMessage createErrorResponse(String errorMessage);
 
-    AvMessage createFileResponse(byte[] data, MessageType type);
+    AvMessage createFileMessage(byte[] data, MessageType type);
 }

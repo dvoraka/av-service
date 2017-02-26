@@ -66,7 +66,7 @@ public class FileMessageProcessor implements MessageProcessor {
     private void load(AvMessage message) {
         FileMessage fileMessage = fileService.loadFile(message);
 
-        notifyListeners(message.createFileResponse(fileMessage.getData(), fileMessage.getType()));
+        notifyListeners(message.createFileMessage(fileMessage.getData(), fileMessage.getType()));
     }
 
     private void update(AvMessage message) {
@@ -88,7 +88,7 @@ public class FileMessageProcessor implements MessageProcessor {
     }
 
     private AvMessage createOkResponse(AvMessage message) {
-        return message.createFileResponse(new byte[0], MessageType.FILE_RESPONSE);
+        return message.createFileMessage(new byte[0], MessageType.FILE_RESPONSE);
     }
 
     @Override

@@ -94,7 +94,7 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
-    public AvMessage createFileResponse(byte[] data, MessageType type) {
+    public AvMessage createFileMessage(byte[] data, MessageType type) {
         return new Builder(Utils.genUuidString())
                 .correlationId(this.getId())
                 .filename(this.getFilename())
