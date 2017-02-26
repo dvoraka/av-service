@@ -1,13 +1,14 @@
-## v0.6
- * File service concept
- * Redesign REST
- * Redesign message processing
- * Redesign DB module
- * Remove service ID field from AvMessage
+## v0.6-rc1 (Feb 26, 2017)
+ * File service prototype
+ * Redesigned REST
+ * Redesigned message processing
+ * Redesigned DB module
+ * Removed service ID field from AvMessage
  * New socket pooling utility prototype
- * Remove old XML performance test configuration
+ * Removed old XML performance test configuration
  * New file server runner
- * Redesign performance testing
+ * Redesigned performance testing
+ * Environment configurator has its own configuration
  * New script for finding all Spring profiles
  * New script for testing Gradle tasks
  * New script for load testing
