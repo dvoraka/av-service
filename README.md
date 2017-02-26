@@ -4,14 +4,17 @@
 [![Latest release](https://img.shields.io/badge/release-0.5-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.5)
 [![Open Hub](https://www.openhub.net/p/av-service/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/av-service/)
 
-Replacement for [amqpav](https://github.com/dvoraka/amqpav). Network anti-virus service supports
-JMS, AMQP and REST for communication. AV-checker project was integrated as the checker submodule,
+A replacement for [amqpav](https://github.com/dvoraka/amqpav)
+and first requirements were from the old service.
+Actual network anti-virus service supports JMS, AMQP and REST for communication.
+AV-checker project was integrated as the checker submodule,
 then completely rewritten and the old code was removed.
 
-From version 0.6 it is mostly a file service with an AV check. Currently it is still a bit experimental.
+From version 0.6 it is mostly a file service with an AV check.
+Currently it is still a bit experimental feature.
 
 ### Contribution
-Current possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage),
+Possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage),
 Linux admin for better deployment and distribution, Server for testing
 
 --
@@ -128,7 +131,7 @@ you need only:
 
         Checker checker = context.getBean(Checker.class);
 
-        AvMessage message = Utils.genNormalMessage();
+        AvMessage message = Utils.genMessage();
         // send message to check exchange
         checker.sendMessage(message);
 
