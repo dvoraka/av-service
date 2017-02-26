@@ -78,6 +78,41 @@ class DbFileServiceISpec extends Specification {
             service.loadFile(loadRequest).getType() == MessageType.FILE_NOT_FOUND
     }
 
+    def "save and update file"() {
+        given:
+            AvMessage message = Utils.genFileMessage(testingOwner)
+
+            AvMessage loadRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .filename(message.getFilename())
+                    .owner(message.getOwner())
+                    .type(MessageType.FILE_LOAD)
+                    .build()
+
+            byte[] newData = new byte[3]
+            AvMessage updateRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .filename(message.getFilename())
+                    .owner(message.getOwner())
+                    .data(newData)
+                    .type(MessageType.FILE_UPDATE)
+                    .build()
+
+        when:
+            service.saveFile(message)
+            FileMessage response = service.loadFile(loadRequest)
+
+        then:
+            message.owner == response.owner
+            message.filename == response.filename
+            !Arrays.equals(response.getData(), newData)
+
+        when:
+            service.updateFile(updateRequest)
+            FileMessage updatedFile = service.loadFile(loadRequest)
+
+        then:
+            Arrays.equals(updatedFile.getData(), newData)
+    }
+
     def "load non-existent file"() {
         given:
             AvMessage message = Utils.genFileMessage(testingOwner)
