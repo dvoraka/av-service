@@ -1,4 +1,4 @@
-## v0.6-rc1 (Feb 26, 2017)
+## v0.6-RC1 (Feb 26, 2017)
  * File service prototype
  * Redesigned REST
  * Redesigned message processing
