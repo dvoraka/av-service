@@ -130,9 +130,30 @@ class RestServiceISpec extends Specification {
             message.getVirusInfo() != Utils.OK_VIRUS_INFO
     }
 
+    def "get non-existent path"() {
+        when:
+            ResponseEntity<String> response = restTemplate
+                    .getForEntity('/XXXX', String.class)
+
+        then:
+            response.getStatusCode() == HttpStatus.NOT_FOUND
+    }
+
     //
     // File operations
     //
+    def "get about"() {
+        when:
+            ResponseEntity<String> response = restTemplate
+                    .getForEntity(filePath + '/about', String.class)
+            String message = response.getBody()
+
+        then:
+            response.getStatusCode() == HttpStatus.OK
+            message != null
+            message == 'File operations'
+    }
+
     def "save message with unauthorized random username"() {
         given:
             AvMessage message = Utils.genFileMessage()

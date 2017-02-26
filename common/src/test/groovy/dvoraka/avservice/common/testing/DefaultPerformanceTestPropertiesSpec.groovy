@@ -29,4 +29,13 @@ class DefaultPerformanceTestPropertiesSpec extends Specification {
                 isSendOnly() == sendOnly
             }
     }
+
+    def "to string"() {
+        given:
+            properties = new DefaultPerformanceTestProperties.Builder()
+                    .build()
+
+        expect:
+            properties.toString().endsWith('}')
+    }
 }
