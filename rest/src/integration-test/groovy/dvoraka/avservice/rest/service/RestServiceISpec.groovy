@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -166,7 +167,7 @@ class RestServiceISpec extends Specification {
             responseEntity.getStatusCode() == HttpStatus.UNAUTHORIZED
     }
 
-    def "save message with authorized random username"() {
+    def "save message with authorized and random username"() {
         given:
             AvMessage message = Utils.genFileMessage()
 
@@ -176,6 +177,24 @@ class RestServiceISpec extends Specification {
 
         then:
             responseEntity.getStatusCode() == HttpStatus.FORBIDDEN
+    }
+
+    def "update message with authorized and random username"() {
+        given:
+            AvMessage message = Utils.genUpdateMessage()
+
+            HttpHeaders headers = new HttpHeaders()
+            HttpEntity<AvMessage> requestEntity = new HttpEntity<>(message, headers)
+
+        when:
+            HttpEntity<Void> response = restTemplate.exchange(
+                    filePath + message.getFilename(),
+                    HttpMethod.PUT,
+                    requestEntity,
+                    Void.class)
+
+        then:
+            response.getStatusCode() == HttpStatus.FORBIDDEN
     }
 
     def "save message with test username"() {
