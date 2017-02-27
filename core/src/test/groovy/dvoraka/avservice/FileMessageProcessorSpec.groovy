@@ -26,6 +26,10 @@ class FileMessageProcessorSpec extends Specification {
         processor.addProcessedAVMessageListener(listener)
     }
 
+    def cleanup() {
+        processor.removeProcessedAVMessageListener(listener)
+    }
+
     def "save message"() {
         given:
             AvMessage message = Utils.genSaveMessage()
@@ -34,7 +38,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.saveFile(message)
+            1 * service.saveFile(_)
             1 * listener.onAvMessage(_)
     }
 
@@ -48,5 +52,41 @@ class FileMessageProcessorSpec extends Specification {
         then:
             1 * service.loadFile(_) >> message
             1 * listener.onAvMessage(_)
+    }
+
+    def "update message"() {
+        given:
+            AvMessage message = Utils.genUpdateMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            1 * service.updateFile(_)
+            1 * listener.onAvMessage(_)
+    }
+
+    def "delete message"() {
+        given:
+            AvMessage message = Utils.genDeleteMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            1 * service.deleteFile(_)
+            1 * listener.onAvMessage(_)
+    }
+
+    def "unknown message"() {
+        given: "normal message for AV check"
+            AvMessage message = Utils.genMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            0 * service._
+            0 * listener.onAvMessage(_)
     }
 }
