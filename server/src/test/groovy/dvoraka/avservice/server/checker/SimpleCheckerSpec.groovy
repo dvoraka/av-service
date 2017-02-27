@@ -54,4 +54,15 @@ class SimpleCheckerSpec extends Specification {
         then: "it is not possible to find them"
             thrown(MessageNotFoundException)
     }
+
+    def "check with troubles"() {
+        given:
+            checker = Spy(constructorArgs: [Mock(ServerComponent)])
+            checker.receiveMessage(_) >>
+                    Utils.genMessage().createResponse(Utils.OK_VIRUS_INFO) >>
+                    { throw new MessageNotFoundException() }
+
+        expect:
+            !checker.check()
+    }
 }
