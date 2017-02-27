@@ -1,5 +1,6 @@
 package dvoraka.avservice
 
+import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageType
@@ -17,19 +18,26 @@ class CompositeMessageProcessorSpec extends Specification {
     @Subject
     CompositeMessageProcessor processor
 
+    AvService avService
     FileService fileService
+
+    AvMessageListener listener
 
 
     def setup() {
         processor = new CompositeMessageProcessor()
 
+        avService = Mock()
+
         fileService = Mock()
         fileService.loadFile(_) >> Utils.genFileMessage()
+
+        listener = Mock()
 
         MessageProcessor checkMessageProcessor = new AvCheckMessageProcessor(
                 4,
                 'test',
-                Mock(AvService),
+                avService,
                 Mock(MessageInfoService)
         )
         MessageProcessor fileMessageProcessor = new FileMessageProcessor(fileService)
@@ -73,7 +81,27 @@ class CompositeMessageProcessorSpec extends Specification {
         processor.addProcessor(fileSaveUpdateConfig)
         processor.addProcessor(fileLoadDeleteConfig)
 
+        processor.addProcessedAVMessageListener(listener)
+
         processor.start()
+    }
+
+    def cleanup() {
+        processor.stop()
+        processor.removeProcessedAVMessageListener(listener)
+    }
+
+    def "send message for check"() {
+        given:
+            AvMessage message = Utils.genMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            1 * avService.scanBytesWithInfo(_)
+            1 * listener.onAvMessage(_)
+            0 * fileService._
     }
 
     def "send load message"() {
