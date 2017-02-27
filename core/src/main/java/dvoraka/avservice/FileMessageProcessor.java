@@ -79,7 +79,7 @@ public class FileMessageProcessor implements MessageProcessor {
     }
 
     private void unknown(AvMessage message) {
-        log.info("Unknown mapping for: " + message);
+        log.warn("Unknown mapping for: " + message);
     }
 
     private void notifyListeners(AvMessage message) {
