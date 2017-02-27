@@ -65,7 +65,6 @@ public class FileMessageProcessor implements MessageProcessor {
 
     private void load(AvMessage message) {
         FileMessage fileMessage = fileService.loadFile(message);
-
         notifyListeners(message.createFileMessage(fileMessage.getData(), fileMessage.getType()));
     }
 

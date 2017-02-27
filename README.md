@@ -10,7 +10,7 @@ Actual network anti-virus service supports JMS, AMQP and REST for communication.
 AV-checker project was integrated as the checker submodule,
 then completely rewritten and the old code was removed.
 
-From version 0.6 it is mostly a file service with an AV check.
+From version 0.6 it is mostly a file service with an AV checking.
 Currently it is still a bit experimental feature.
 
 ### Contribution
