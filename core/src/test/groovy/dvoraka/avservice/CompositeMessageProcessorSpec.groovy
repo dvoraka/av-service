@@ -2,52 +2,85 @@ package dvoraka.avservice
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
 import dvoraka.avservice.storage.service.FileService
-import spock.lang.Ignore
 import spock.lang.Specification
-
-import java.util.function.Predicate
+import spock.lang.Subject
 
 /**
  * CompositeMessageProcessor spec.
  */
-@Ignore('WIP')
 class CompositeMessageProcessorSpec extends Specification {
 
-    def "test"() {
+    @Subject
+    CompositeMessageProcessor processor
+
+    FileService fileService
+
+
+    def setup() {
+        processor = new CompositeMessageProcessor()
+
+        fileService = Mock()
+        fileService.loadFile(_) >> Utils.genFileMessage()
+
+        MessageProcessor checkMessageProcessor = new AvCheckMessageProcessor(
+                4,
+                'test',
+                Mock(AvService),
+                Mock(MessageInfoService)
+        )
+        MessageProcessor fileMessageProcessor = new FileMessageProcessor(fileService)
+
+        List<InputConditions> checkConditions =
+                new InputConditions.Builder()
+                        .originalType(MessageType.REQUEST)
+                        .originalType(MessageType.FILE_SAVE)
+                        .originalType(MessageType.FILE_UPDATE)
+                        .build().toList()
+
+        List<InputConditions> fileSaveUpdateConditions =
+                new InputConditions.Builder()
+                        .originalType(MessageType.FILE_SAVE)
+                        .originalType(MessageType.FILE_UPDATE)
+                        .build().toList()
+
+        List<InputConditions> fileLoadDeleteConditions =
+                new InputConditions.Builder()
+                        .originalType(MessageType.FILE_LOAD)
+                        .originalType(MessageType.FILE_DELETE)
+                        .build().toList()
+
+        ProcessorConfiguration checkConfig = new ProcessorConfiguration(
+                checkMessageProcessor,
+                checkConditions,
+                true
+        )
+        ProcessorConfiguration fileSaveUpdateConfig = new ProcessorConfiguration(
+                fileMessageProcessor,
+                fileSaveUpdateConditions,
+                true
+        )
+        ProcessorConfiguration fileLoadDeleteConfig = new ProcessorConfiguration(
+                fileMessageProcessor,
+                fileLoadDeleteConditions,
+                true
+        )
+
+        processor.addProcessor(checkConfig)
+        processor.addProcessor(fileSaveUpdateConfig)
+        processor.addProcessor(fileLoadDeleteConfig)
+
+        processor.start()
+    }
+
+    def "send load message"() {
         given:
-            AvCheckMessageProcessor processor1 = new AvCheckMessageProcessor(
-                    1, "test", Mock(AvService), Mock(MessageInfoService)
-            )
-            FileMessageProcessor processor2 = new FileMessageProcessor(Mock(FileService))
-            FileMessageProcessor processor3 = new FileMessageProcessor(Mock(FileService))
-
-            ProcessorConfiguration configuration1 = new ProcessorConfiguration(processor1)
-            ProcessorConfiguration configuration2 = new ProcessorConfiguration(processor2)
-
-            List<Predicate<? super AvMessage>> conditions = new ArrayList<>()
-            conditions.add(new Predicate<AvMessage>() {
-                @Override
-                boolean test(AvMessage message) {
-                    return message.getOwner() != null
-                }
-            })
-
-            ProcessorConfiguration configuration3 = new ProcessorConfiguration(
-                    processor3,
-                    conditions,
-                    false)
-
-            CompositeMessageProcessor processor = new CompositeMessageProcessor()
-            processor.addProcessor(configuration1)
-            processor.addProcessor(configuration2)
-            processor.addProcessor(configuration1)
-            processor.addProcessor(configuration3)
+            AvMessage message = Utils.genLoadMessage()
 
         expect:
-            processor.start()
-            processor.sendMessage(Utils.genFileMessage())
+            processor.sendMessage(message)
     }
 }
