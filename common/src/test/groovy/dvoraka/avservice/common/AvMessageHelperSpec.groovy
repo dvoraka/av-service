@@ -46,4 +46,16 @@ class AvMessageHelperSpec extends Specification {
         then:
             1 * message.createResponse(info)
     }
+
+    def "prepare error response"() {
+        given:
+            AvMessage message = Mock()
+            String error = 'error'
+
+        when:
+            helper.prepareErrorResponse(message, error)
+
+        then:
+            1 * message.createErrorResponse(error)
+    }
 }
