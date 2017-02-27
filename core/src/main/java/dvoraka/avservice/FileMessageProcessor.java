@@ -92,6 +92,7 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public MessageStatus messageStatus(String id) {
+        //TODO
         return MessageStatus.UNKNOWN;
     }
 

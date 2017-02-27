@@ -3,6 +3,7 @@ package dvoraka.avservice
 import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.storage.service.FileService
 import spock.lang.Specification
 import spock.lang.Subject
@@ -88,5 +89,20 @@ class FileMessageProcessorSpec extends Specification {
         then:
             0 * service._
             0 * listener.onAvMessage(_)
+    }
+
+    def "message status"() {
+        expect:
+            processor.messageStatus('XXX') == MessageStatus.UNKNOWN
+    }
+
+    def "start and stop processor"() {
+        when:
+            processor.start()
+            processor.stop()
+
+        then:
+            notThrown(Exception)
+            0 * _
     }
 }
