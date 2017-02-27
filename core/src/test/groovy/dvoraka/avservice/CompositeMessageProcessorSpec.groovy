@@ -99,9 +99,39 @@ class CompositeMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * avService.scanBytesWithInfo(_)
+            1 * avService._
             1 * listener.onAvMessage(_)
             0 * fileService._
+    }
+
+    def "send save message"() {
+        given:
+            AvMessage message = Utils.genSaveMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            1 * avService._
+            1 * listener.onAvMessage(_)
+
+            1 * fileService.saveFile(_)
+            1 * listener.onAvMessage(_)
+    }
+
+    def "send update message"() {
+        given:
+            AvMessage message = Utils.genUpdateMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            1 * avService._
+            1 * listener.onAvMessage(_)
+
+            1 * fileService.updateFile(_)
+            1 * listener.onAvMessage(_)
     }
 
     def "send load message"() {
