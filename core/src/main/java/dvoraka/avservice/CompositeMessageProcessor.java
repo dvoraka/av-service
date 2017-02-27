@@ -70,6 +70,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
     @Override
     public MessageStatus messageStatus(String id) {
+        //TODO
         List<ProcessorConfiguration> configurations = new ArrayList<>(processors);
         Collections.reverse(configurations);
 

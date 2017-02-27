@@ -53,6 +53,11 @@ class CompositeMessageProcessorSpec extends Specification {
                 new InputConditions.Builder()
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
+                        .condition(
+                        { orig, last ->
+                            (last.getVirusInfo() != null
+                                    && last.getVirusInfo() == Utils.OK_VIRUS_INFO)
+                        })
                         .build().toList()
 
         List<InputConditions> fileLoadDeleteConditions =
@@ -101,6 +106,7 @@ class CompositeMessageProcessorSpec extends Specification {
         then:
             1 * avService._
             1 * listener.onAvMessage(_)
+
             0 * fileService._
     }
 
@@ -112,7 +118,7 @@ class CompositeMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * avService._
+            1 * avService._ >> Utils.OK_VIRUS_INFO
             1 * listener.onAvMessage(_)
 
             1 * fileService.saveFile(_)
@@ -127,7 +133,7 @@ class CompositeMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * avService._
+            1 * avService._ >> Utils.OK_VIRUS_INFO
             1 * listener.onAvMessage(_)
 
             1 * fileService.updateFile(_)
@@ -138,7 +144,27 @@ class CompositeMessageProcessorSpec extends Specification {
         given:
             AvMessage message = Utils.genLoadMessage()
 
-        expect:
+        when:
             processor.sendMessage(message)
+
+        then:
+            0 * avService._
+
+            1 * fileService.loadFile(_) >> Utils.genFileMessage()
+            1 * listener.onAvMessage(_)
+    }
+
+    def "send delete message"() {
+        given:
+            AvMessage message = Utils.genDeleteMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            0 * avService._
+
+            1 * fileService.deleteFile(_)
+            1 * listener.onAvMessage(_)
     }
 }
