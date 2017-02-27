@@ -3,6 +3,7 @@ package dvoraka.avservice.common
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageInfo
 import dvoraka.avservice.common.data.AvMessageSource
+import dvoraka.avservice.common.data.MessageType
 import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
@@ -40,6 +41,46 @@ class UtilsSpec extends Specification {
         expect:
             checkMessageFields(fileMessage)
             checkFileMessageFields(fileMessage)
+    }
+
+    def "generate save message"() {
+        setup:
+            AvMessage fileMessage = Utils.genSaveMessage()
+
+        expect:
+            checkMessageFields(fileMessage)
+            checkFileMessageFields(fileMessage)
+            fileMessage.getType() == MessageType.FILE_SAVE
+    }
+
+    def "generate load message"() {
+        setup:
+            AvMessage fileMessage = Utils.genLoadMessage()
+
+        expect:
+            checkMessageFields(fileMessage)
+            checkFileMessageFields(fileMessage)
+            fileMessage.getType() == MessageType.FILE_LOAD
+    }
+
+    def "generate update message"() {
+        setup:
+            AvMessage fileMessage = Utils.genUpdateMessage()
+
+        expect:
+            checkMessageFields(fileMessage)
+            checkFileMessageFields(fileMessage)
+            fileMessage.getType() == MessageType.FILE_UPDATE
+    }
+
+    def "generate delete message"() {
+        setup:
+            AvMessage fileMessage = Utils.genDeleteMessage()
+
+        expect:
+            checkMessageFields(fileMessage)
+            checkFileMessageFields(fileMessage)
+            fileMessage.getType() == MessageType.FILE_DELETE
     }
 
     def "generate file message with username"() {
