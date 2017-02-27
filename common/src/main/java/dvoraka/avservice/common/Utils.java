@@ -22,6 +22,7 @@ public final class Utils {
     public static final String TEST_SERVICE_ID = "TEST-SERVICE";
     public static final String TEST_CORR_ID = "1-2-3";
     public static final String TEST_FILENAME = "testFilename";
+    public static final String TEST_USERNAME = "testUsername";
     public static final String OK_VIRUS_INFO = "stream: OK";
 
     private static final Random RAND = new Random();
@@ -35,7 +36,11 @@ public final class Utils {
     }
 
     public static String genFilename() {
-        return TEST_FILENAME + RAND.nextInt();
+        return TEST_FILENAME + RAND.nextInt(Integer.MAX_VALUE);
+    }
+
+    public static String genUsername() {
+        return TEST_USERNAME + RAND.nextInt(Integer.MAX_VALUE);
     }
 
     public static AvMessage genMessage() {
@@ -82,6 +87,33 @@ public final class Utils {
                 .filename(genFilename())
                 .owner(username)
                 .build();
+    }
+
+    public static AvMessage genFileMessage(MessageType type) {
+        final int dataSize = 40;
+        return new DefaultAvMessage.Builder(genUuidString())
+                .correlationId(TEST_CORR_ID)
+                .data(new byte[dataSize])
+                .type(type)
+                .filename(genFilename())
+                .owner(genUsername())
+                .build();
+    }
+
+    public static AvMessage genSaveMessage() {
+        return genFileMessage(MessageType.FILE_SAVE);
+    }
+
+    public static AvMessage genLoadMessage() {
+        return genFileMessage(MessageType.FILE_LOAD);
+    }
+
+    public static AvMessage genUpdateMessage() {
+        return genFileMessage(MessageType.FILE_UPDATE);
+    }
+
+    public static AvMessage genDeleteMessage() {
+        return genFileMessage(MessageType.FILE_DELETE);
     }
 
     public static AvMessageInfo genAvMessageInfo(AvMessageSource source) {
