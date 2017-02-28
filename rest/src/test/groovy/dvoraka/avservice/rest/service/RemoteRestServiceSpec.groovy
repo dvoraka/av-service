@@ -8,108 +8,120 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * Remote REST strategy spec.
+ * Remote REST service spec.
  */
 class RemoteRestServiceSpec extends Specification {
 
     @Subject
-    RemoteRestService strategy
+    RemoteRestService service
 
     ServerComponent serverComponent
 
 
     def setup() {
         serverComponent = Mock()
-        strategy = new RemoteRestService(serverComponent)
+        service = new RemoteRestService(serverComponent)
     }
 
     def cleanup() {
-        strategy.stop()
+        service.stop()
     }
 
     def "start"() {
         when:
-            strategy.start()
+            service.start()
 
         then:
             notThrown(Exception)
-            strategy.isStarted()
+            service.isStarted()
     }
 
     def "start twice"() {
         when:
-            strategy.start()
+            service.start()
 
         then:
             1 * serverComponent.addAvMessageListener(_)
-            strategy.isStarted()
+            service.isStarted()
 
         when: "start again"
-            strategy.start()
+            service.start()
 
         then:
             0 * serverComponent.addAvMessageListener(_)
-            strategy.isStarted()
+            service.isStarted()
     }
 
     def "start and stop"() {
         when:
-            strategy.start()
+            service.start()
 
         then:
             notThrown(Exception)
-            strategy.isStarted()
+            service.isStarted()
 
         when:
-            strategy.stop()
+            service.stop()
 
         then:
             notThrown(Exception)
-            !strategy.isStarted()
+            !service.isStarted()
     }
 
     def "get message status without sent message"() {
         expect:
-            strategy.messageStatus('AAA') == MessageStatus.UNKNOWN
+            service.messageStatus('AAA') == MessageStatus.UNKNOWN
     }
 
-    def "message check"() {
+    def "check message"() {
         given:
             AvMessage message = Utils.genMessage()
 
         when:
-            strategy.checkMessage(message)
+            service.checkMessage(message)
 
         then:
             1 * serverComponent.sendAvMessage(message)
-            strategy.messageStatus(message.getId()) == MessageStatus.PROCESSING
+            service.messageStatus(message.getId()) == MessageStatus.PROCESSING
+    }
+
+    def "save message"() {
+        given:
+            AvMessage message = Utils.genSaveMessage()
+
+        when:
+            service.saveMessage(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
+            service.messageStatus(message.getId()) == MessageStatus.PROCESSING
     }
 
     def "get message from cache without sending"() {
         when:
-            strategy.start()
+            service.start()
 
         then:
-            strategy.getResponse('AAA') == null
+            service.getResponse('AAA') == null
     }
 
     def "check message, send response and check status"() {
         given:
             AvMessage message = Utils.genMessage()
-            strategy.start()
+            service.start()
 
         when:
-            strategy.checkMessage(message)
+            service.checkMessage(message)
 
         then:
-            strategy.messageStatus(message.getId()) == MessageStatus.PROCESSING
+            service.messageStatus(message.getId()) == MessageStatus.PROCESSING
 
         when:
             AvMessage response = message.createResponse("")
-            strategy.onAvMessage(response)
+            service.onAvMessage(response)
 
         then:
-            strategy.messageStatus(message.getId()) != MessageStatus.PROCESSING
-            strategy.messageStatus(message.getId()) == MessageStatus.PROCESSED
+            service.messageStatus(message.getId()) != MessageStatus.PROCESSING
+            service.messageStatus(message.getId()) == MessageStatus.PROCESSED
     }
 }
