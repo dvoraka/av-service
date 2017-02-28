@@ -4,6 +4,7 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.server.ServerComponent
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -91,6 +92,19 @@ class RemoteRestServiceSpec extends Specification {
 
         when:
             service.saveMessage(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
+            service.messageStatus(message.getId()) == MessageStatus.PROCESSING
+    }
+
+    @Ignore('WIP')
+    def "load message"() {
+        given:
+            AvMessage message = Utils.genLoadMessage()
+
+        when:
+            service.loadMessage(message)
 
         then:
             1 * serverComponent.sendAvMessage(message)
