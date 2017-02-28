@@ -17,10 +17,17 @@ class ClamAvProgramISpec extends Specification {
     byte[] cleanData = "TESTDATA".getBytes()
 
     ClamAvProgram program
+    ClamAvProgram programWithPooling
 
 
     def setup() {
         program = new ClamAvProgram()
+        programWithPooling = new ClamAvProgram(
+                ClamAvProgram.DEFAULT_HOST,
+                ClamAvProgram.DEFAULT_PORT,
+                ClamAvProgram.DEFAULT_MAX_ARRAY_SIZE,
+                true
+        )
     }
 
     def "is running"() {
@@ -59,19 +66,19 @@ class ClamAvProgramISpec extends Specification {
             program.scanBytes(eicarString.getBytes())
     }
 
-    @Ignore('WIP')
+    @Ignore('manual testing')
     def "scan bytes new - performance"() {
         when:
             // warm up
             1000.times {
-                program.scanBytesPooling(eicarString.getBytes())
+                programWithPooling.scanBytesWithInfo(eicarString.getBytes())
                 program.scanBytesWithInfo(eicarString.getBytes())
             }
 
             int count = 100_000
             long start = System.currentTimeMillis()
             count.times {
-                program.scanBytesPooling(eicarString.getBytes())
+                programWithPooling.scanBytesWithInfo(eicarString.getBytes())
             }
             println(System.currentTimeMillis() - start)
 
@@ -87,12 +94,12 @@ class ClamAvProgramISpec extends Specification {
 
     def "scan bytes new - normal message"() {
         expect:
-            program.scanBytesPooling(cleanData) == program.CLEAN_STREAM_RESPONSE
+            programWithPooling.scanBytesWithInfo(cleanData) == program.CLEAN_STREAM_RESPONSE
     }
 
     def "scan bytes new - infected message"() {
         expect:
-            program.scanBytesPooling(eicarString.getBytes()) != program.CLEAN_STREAM_RESPONSE
+            programWithPooling.scanBytesWithInfo(eicarString.getBytes()) != program.CLEAN_STREAM_RESPONSE
     }
 
     def "scan too big array"() {
