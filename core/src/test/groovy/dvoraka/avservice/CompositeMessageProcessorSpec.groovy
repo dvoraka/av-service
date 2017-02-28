@@ -3,6 +3,7 @@ package dvoraka.avservice
 import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.service.AvService
@@ -166,5 +167,10 @@ class CompositeMessageProcessorSpec extends Specification {
 
             1 * fileService.deleteFile(_)
             1 * listener.onAvMessage(_)
+    }
+
+    def "message status for unknown ID"() {
+        expect:
+            processor.messageStatus('XXX') == MessageStatus.UNKNOWN
     }
 }
