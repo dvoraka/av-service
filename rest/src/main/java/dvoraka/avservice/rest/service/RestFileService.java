@@ -24,6 +24,7 @@ public interface RestFileService {
      * @param message the message
      * @return the loaded message
      */
+    //TODO: remove return value
     AvMessage loadMessage(AvMessage message);
 
     /**
