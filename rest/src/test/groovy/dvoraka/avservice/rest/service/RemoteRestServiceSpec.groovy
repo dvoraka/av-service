@@ -97,6 +97,30 @@ class RemoteRestServiceSpec extends Specification {
             service.messageStatus(message.getId()) == MessageStatus.PROCESSING
     }
 
+    def "update message"() {
+        given:
+            AvMessage message = Utils.genUpdateMessage()
+
+        when:
+            service.updateMessage(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
+            service.messageStatus(message.getId()) == MessageStatus.PROCESSING
+    }
+
+    def "delete message"() {
+        given:
+            AvMessage message = Utils.genDeleteMessage()
+
+        when:
+            service.deleteMessage(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
+            service.messageStatus(message.getId()) == MessageStatus.PROCESSING
+    }
+
     def "get message from cache without sending"() {
         when:
             service.start()

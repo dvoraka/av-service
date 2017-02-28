@@ -87,18 +87,21 @@ public class RemoteRestService implements RestService, AvMessageListener {
         processingMsgs.put(message.getId());
     }
 
-    @Override
-    public void checkMessage(AvMessage message) {
-        log.debug("Checking: {}", message);
+    private void processMessage(AvMessage message) {
         addToProcessing(message);
         serverComponent.sendAvMessage(message);
     }
 
     @Override
+    public void checkMessage(AvMessage message) {
+        log.debug("Checking: {}", message);
+        processMessage(message);
+    }
+
+    @Override
     public void saveMessage(AvMessage message) {
         log.debug("Saving: {}", message);
-        addToProcessing(message);
-        serverComponent.sendAvMessage(message);
+        processMessage(message);
     }
 
     @Override
@@ -109,14 +112,15 @@ public class RemoteRestService implements RestService, AvMessageListener {
 
     @Override
     public void updateMessage(AvMessage message) {
-        //TODO
+        log.debug("Updating: {}", message);
+        processMessage(message);
     }
 
     @Override
     public void deleteMessage(AvMessage message) {
-        //TODO
+        log.debug("Deleting: {}", message);
+        processMessage(message);
     }
-
 
     @Override
     public AvMessage getResponse(String id) {
