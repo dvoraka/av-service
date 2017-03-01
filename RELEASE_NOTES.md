@@ -1,3 +1,6 @@
+## v0.6 (Mar 1, 2017)
+ * Improved tests
+
 ## v0.6-RC1 (Feb 26, 2017)
  * File service prototype
  * Redesigned REST
@@ -12,6 +15,7 @@
  * New script for finding all Spring profiles
  * New script for testing Gradle tasks
  * New script for load testing
+ * Improved tests
  
 #### modules
  * New storage module
