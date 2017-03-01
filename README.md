@@ -1,7 +1,7 @@
 # Network anti-virus service
 [![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
 [![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service/branch/master)
-[![Latest release](https://img.shields.io/badge/release-0.5-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.5)
+[![Latest release](https://img.shields.io/badge/release-0.6-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.6)
 [![Open Hub](https://www.openhub.net/p/av-service/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/av-service/)
 
 A replacement for [amqpav](https://github.com/dvoraka/amqpav)
