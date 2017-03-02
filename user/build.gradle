@@ -1,0 +1,5 @@
+description = 'User module'
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-security')
+}
