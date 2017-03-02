@@ -3,11 +3,9 @@ package dvoraka.avservice.configuration;
 import dvoraka.avservice.avprogram.configuration.AvProgramConfig;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.storage.configuration.StorageConfig;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * AV service Spring configuration.
@@ -26,8 +24,8 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 public class ServiceConfig { //NOSONAR
 
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
+//    @Bean
+//    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+//        return new PropertySourcesPlaceholderConfigurer();
+//    }
 }
