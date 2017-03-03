@@ -1,6 +1,6 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.rest.service.BasicUserDetailsService;
+import dvoraka.avservice.user.service.DummyUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,7 +20,7 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        return new BasicUserDetailsService();
+        return new DummyUserService();
     }
 
     @Override
