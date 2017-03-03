@@ -35,7 +35,6 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("guest").password("guest").roles("USER");
         // user for testing for now
         auth.inMemoryAuthentication().withUser("test").password("test").roles("USER");
         auth.inMemoryAuthentication().withUser("admin").password("admin").roles("USER", "ADMIN");
