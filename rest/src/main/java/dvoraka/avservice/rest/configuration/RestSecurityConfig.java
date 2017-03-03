@@ -17,15 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @EnableWebSecurity
 public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // TODO: usernames should be in the same data store as message logs
-//    private final DataSource dataSource;
-//
-//
-//    @Autowired
-//    public RestSecurityConfig(DataSource dataSource) {
-//        this.dataSource = dataSource;
-//    }
-
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
@@ -50,11 +41,5 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().withUser("admin").password("admin").roles("USER", "ADMIN");
 
         auth.userDetailsService(userDetailsService());
-
-//        auth.jdbcAuthentication().dataSource(dataSource)
-//                .usersByUsernameQuery(
-//                        "select username, password, enabled from public.user where username=?")
-//                .authoritiesByUsernameQuery(
-//                        "select username, authority from public.authority where username=?");
     }
 }
