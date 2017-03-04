@@ -4,6 +4,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageInfoData;
 import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.service.ExecutorServiceHelper;
 import dvoraka.avservice.db.model.MessageInfoDocument;
 import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +19,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -26,26 +30,34 @@ import static java.util.Objects.requireNonNull;
  * Solr message info service implementation.
  */
 @Service
-public class SolrMessageInfoService implements MessageInfoService {
+public class SolrMessageInfoService implements MessageInfoService, ExecutorServiceHelper {
+
+    private final SolrMessageInfoRepository messageInfoRepository;
 
     private static final Logger log = LogManager.getLogger(SolrMessageInfoService.class);
 
     private static final int BATCH_SIZE = 199;
-
-    private final SolrMessageInfoRepository messageInfoRepository;
+    public static final long COMMIT_MAX_TIME = 10_000L;
 
     // batching
     private volatile boolean batching;
     private Collection<MessageInfoDocument> documents = new ArrayList<>();
     private int batchSize = BATCH_SIZE;
-    //TODO
-    //    private long commitEveryMs = 10_000L;
-//    private long lastCommitTime;
+    private long commitEveryMs = COMMIT_MAX_TIME;
+    private final ScheduledExecutorService executorService;
 
 
     @Autowired
     public SolrMessageInfoService(SolrMessageInfoRepository messageInfoRepository) {
         this.messageInfoRepository = requireNonNull(messageInfoRepository);
+
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleWithFixedDelay(
+                this::flushCache,
+                commitEveryMs,
+                commitEveryMs,
+                TimeUnit.MILLISECONDS
+        );
     }
 
     @PreDestroy
@@ -53,9 +65,12 @@ public class SolrMessageInfoService implements MessageInfoService {
         if (isBatching()) {
             flushCache();
         }
+
+        final long waitTime = 10;
+        shutdownAndAwaitTermination(executorService, waitTime, log);
     }
 
-    private void flushCache() {
+    private synchronized void flushCache() {
         if (!documents.isEmpty()) {
             messageInfoRepository.save(documents);
             documents.clear();
