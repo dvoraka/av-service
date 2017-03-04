@@ -88,11 +88,13 @@ public class FileController {
                 break;
             }
 
-            final long sleepTime = 500;
+            final long sleepTime = 100;
             try {
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.warn("Loading interrupted!", e);
+                Thread.currentThread().interrupt();
+                break;
             }
         }
 
