@@ -90,7 +90,7 @@ class InputConditionsSpec extends Specification {
                     .condition(cond)
                     .build()
 
-            AvMessage responseMessage = Utils.genMessage().createResponse("TEST")
+            AvMessage responseMessage = Utils.genMessage().createCheckResponse("TEST")
 
         expect:
             conditions.test(responseMessage, responseMessage)

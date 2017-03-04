@@ -153,7 +153,7 @@ class RemoteRestServiceSpec extends Specification {
             service.messageStatus(message.getId()) == MessageStatus.PROCESSING
 
         when:
-            AvMessage response = message.createResponse("")
+            AvMessage response = message.createCheckResponse("")
             service.onAvMessage(response)
 
         then:

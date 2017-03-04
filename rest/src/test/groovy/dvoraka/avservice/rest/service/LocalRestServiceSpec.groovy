@@ -66,7 +66,7 @@ class LocalRestServiceSpec extends Specification {
     def "get real response"() {
         given:
             AvMessage request = new DefaultAvMessage.Builder(testId).build()
-            AvMessage response = request.createResponse(Utils.OK_VIRUS_INFO)
+            AvMessage response = request.createCheckResponse(Utils.OK_VIRUS_INFO)
 
         when:
             strategy.start()

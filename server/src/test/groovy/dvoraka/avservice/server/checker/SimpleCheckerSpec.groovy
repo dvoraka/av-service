@@ -59,7 +59,7 @@ class SimpleCheckerSpec extends Specification {
         given:
             checker = Spy(constructorArgs: [Mock(ServerComponent)])
             checker.receiveMessage(_) >>
-                    Utils.genMessage().createResponse(Utils.OK_VIRUS_INFO) >>
+                    Utils.genMessage().createCheckResponse(Utils.OK_VIRUS_INFO) >>
                     { throw new MessageNotFoundException() }
 
         expect:

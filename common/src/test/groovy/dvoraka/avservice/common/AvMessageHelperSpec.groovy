@@ -44,7 +44,7 @@ class AvMessageHelperSpec extends Specification {
             helper.prepareResponse(message, info)
 
         then:
-            1 * message.createResponse(info)
+            1 * message.createCheckResponse(info)
     }
 
     def "prepare error response"() {

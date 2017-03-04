@@ -1,29 +1,51 @@
 package dvoraka.avservice.common.data;
 
-//TODO
-
 /**
- * Data structure for the whole AV service.
+ * Data structure for the whole service.
  * <br>
  * <br>
  * Data:
  * <ul>
- * <li>ID - message UUID</li>
+ * <li>id - message UUID</li>
  * <li>correlationId - correlation UUID</li>
  * <li>type - message type</li>
  * <li>data - message data</li>
- * <li>filename - file name</li>
- * <ln>owner - owner of file</ln>
- * <li>virusInfo - info about infection</li>
+ * <li>filename - filename of the data</li>
+ * <li>owner - owner of file/data</li>
+ * <li>virusInfo - info about infection in data</li>
  * </ul>
  */
 public interface AvMessage extends FileMessage {
 
+    /**
+     * Returns an info about virus.
+     *
+     * @return the info
+     */
     String getVirusInfo();
 
-    AvMessage createResponse(String virusInfo);
+    /**
+     * Creates an AV check response to a check message.
+     *
+     * @param virusInfo the virus info
+     * @return the AV check message response
+     */
+    AvMessage createCheckResponse(String virusInfo);
 
+    /**
+     * Creates an error response to a message. Good for an error signaling.
+     *
+     * @param errorMessage the error message
+     * @return the response message
+     */
     AvMessage createErrorResponse(String errorMessage);
 
+    /**
+     * Creates a file message response to a message.
+     *
+     * @param data the data for the response
+     * @param type the type of the message
+     * @return the new file message
+     */
     AvMessage createFileMessage(byte[] data, MessageType type);
 }

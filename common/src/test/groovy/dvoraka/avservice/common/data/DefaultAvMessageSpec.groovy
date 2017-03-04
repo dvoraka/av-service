@@ -41,7 +41,7 @@ class DefaultAvMessageSpec extends Specification {
             String expCorrId = message.getId()
             String virusInfo = 'Bad virus!'
 
-            AvMessage response = message.createResponse(virusInfo)
+            AvMessage response = message.createCheckResponse(virusInfo)
 
         expect:
             response.getCorrelationId() == expCorrId

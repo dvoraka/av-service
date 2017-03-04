@@ -28,7 +28,7 @@ public interface AvMessageHelper {
      * @return new response
      */
     default AvMessage prepareResponse(AvMessage message, String virusInfo) {
-        return message.createResponse(virusInfo);
+        return message.createCheckResponse(virusInfo);
     }
 
     /**

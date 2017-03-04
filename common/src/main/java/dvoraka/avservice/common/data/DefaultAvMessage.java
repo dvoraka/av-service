@@ -76,7 +76,7 @@ public final class DefaultAvMessage implements AvMessage {
     }
 
     @Override
-    public AvMessage createResponse(String virusInfo) {
+    public AvMessage createCheckResponse(String virusInfo) {
         return new Builder(Utils.genUuidString())
                 .correlationId(this.getId())
                 .virusInfo(virusInfo)
