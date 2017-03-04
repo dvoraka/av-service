@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
 public class StorageDbConfig {
 
     @Bean
-    FileService dbFileService(DbFileRepository dbFileRepository) {
+    public FileService dbFileService(DbFileRepository dbFileRepository) {
         return new DbFileService(dbFileRepository);
     }
 }

@@ -2,5 +2,6 @@ description = 'User module'
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.data:spring-data-ldap:1.0.1.RELEASE')
+//    compile('org.springframework.data:spring-data-ldap:1.0.1.RELEASE')
+    compile('org.springframework.ldap:spring-ldap-test')
 }
