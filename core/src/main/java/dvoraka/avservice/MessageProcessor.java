@@ -4,11 +4,12 @@ import dvoraka.avservice.common.AvMessageHelper;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import dvoraka.avservice.common.service.ExecutorServiceHelper;
 
 /**
  * Abstraction for message processing.
  */
-public interface MessageProcessor extends AvMessageHelper {
+public interface MessageProcessor extends AvMessageHelper, ExecutorServiceHelper {
 
     /**
      * Sends a message to the processor.

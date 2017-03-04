@@ -23,7 +23,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static java.util.Objects.requireNonNull;
@@ -111,21 +110,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
         processingMessages.stop();
         processedMessages.stop();
 
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-                if (!executorService.awaitTermination(POOL_TERM_TIME_S, TimeUnit.SECONDS)) {
-                    log.warn("Thread pool termination problem!");
-                }
-            } else {
-                log.debug("Thread pool stopping done.");
-            }
-        } catch (InterruptedException e) {
-            log.warn("Stopping interrupted!", e);
-            executorService.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
+        shutdownAndAwaitTermination(executorService, POOL_TERM_TIME_S, log);
     }
 
     @Override
