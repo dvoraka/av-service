@@ -36,6 +36,7 @@ public class FileController {
     private static final Logger log = LogManager.getLogger(FileController.class);
 
     public static final String MAPPING = "/file";
+    public static final long LOAD_MAX_TIME = 5_000L;
 
 
     @Autowired
@@ -72,11 +73,31 @@ public class FileController {
                 .owner(principal.getName())
                 .type(MessageType.FILE_LOAD)
                 .build();
+        restService.loadMessage(fileRequest);
 
-        //TODO
-        AvMessage fileMessage = restService.loadMessage(fileRequest);
+        AvMessage response;
+        long start = System.currentTimeMillis();
+        while (true) {
+            response = restService.getResponse(fileRequest.getId());
 
-        return new ResponseEntity<>(fileMessage, HttpStatus.OK);
+            if (response != null) {
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+
+            if (System.currentTimeMillis() - start > LOAD_MAX_TIME) {
+                break;
+            }
+
+            final long sleepTime = 500;
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new ResponseEntity<>(
+                fileRequest.createErrorResponse("Load timed out."), HttpStatus.OK);
     }
 
     @PutMapping("/{filename}")
