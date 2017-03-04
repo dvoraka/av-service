@@ -22,10 +22,8 @@ public interface RestFileService {
      * Loads an AV message with a given description.
      *
      * @param message the message
-     * @return the loaded message
      */
-    //TODO: remove return value
-    AvMessage loadMessage(AvMessage message);
+    void loadMessage(AvMessage message);
 
     /**
      * Updates a file.

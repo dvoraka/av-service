@@ -105,10 +105,9 @@ public class RemoteRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public AvMessage loadMessage(AvMessage message) {
+    public void loadMessage(AvMessage message) {
         log.debug("Loading: {}", message);
         processMessage(message);
-        return null;
     }
 
     @Override

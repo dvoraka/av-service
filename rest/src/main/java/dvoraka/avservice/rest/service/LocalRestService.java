@@ -80,25 +80,8 @@ public class LocalRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public AvMessage loadMessage(AvMessage message) {
+    public void loadMessage(AvMessage message) {
         checkAndFileProcessor.sendMessage(message);
-
-        //TODO
-        while (true) {
-            if (messageCache.containsKey(message.getId())) {
-                break;
-            }
-
-            final long sleepTime = 500;
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                log.warn("Sleeping interrupted!", e);
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        return messageCache.get(message.getId());
     }
 
     @Override
