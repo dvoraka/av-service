@@ -10,6 +10,8 @@ import org.springframework.test.context.ContextConfiguration
  */
 @ContextConfiguration(classes = [AmqpConfig.class])
 @ActiveProfiles(['amqp', 'amqp-checker', 'no-db'])
+//TODO: sometimes failed and it is probably because of tests ordering and shared context
+//TODO: needs investigation
 class AmqpFileServerCheckerISpec extends SimpleCheckerISpec {
 
     def setupSpec() {
