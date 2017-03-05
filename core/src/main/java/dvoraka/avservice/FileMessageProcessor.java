@@ -108,7 +108,7 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public void start() {
-        //TODO
+        // do nothing for now
     }
 
     @Override
