@@ -12,4 +12,6 @@ public interface MessageStatusStorage {
     void processed(String id);
 
     MessageStatus getStatus(String id);
+
+    void stop();
 }

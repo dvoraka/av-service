@@ -15,9 +15,9 @@ public class BasicMessageStatusStorage implements MessageStatusStorage {
     private final TimedStorage<String> processedMessages;
 
 
-    public BasicMessageStatusStorage() {
-        this.processingMessages = new TimedStorage<>();
-        this.processedMessages = new TimedStorage<>();
+    public BasicMessageStatusStorage(long cacheTimeout) {
+        this.processingMessages = new TimedStorage<>(cacheTimeout);
+        this.processedMessages = new TimedStorage<>(cacheTimeout);
     }
 
     @Override
@@ -40,5 +40,11 @@ public class BasicMessageStatusStorage implements MessageStatusStorage {
         } else {
             return MessageStatus.UNKNOWN;
         }
+    }
+
+    @Override
+    public void stop() {
+        processingMessages.stop();
+        processedMessages.stop();
     }
 }

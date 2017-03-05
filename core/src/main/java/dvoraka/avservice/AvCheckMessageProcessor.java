@@ -6,7 +6,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanException;
-import dvoraka.avservice.common.service.TimedStorage;
+import dvoraka.avservice.common.service.BasicMessageStatusStorage;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
 import org.apache.logging.log4j.LogManager;
@@ -43,8 +43,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
 
-    private final TimedStorage<String> processingMessages;
-    private final TimedStorage<String> processedMessages;
+    private final BasicMessageStatusStorage statusStorage;
 
     private final AtomicLong receivedMsgCount = new AtomicLong();
     private final AtomicLong processedMsgCount = new AtomicLong();
@@ -83,8 +82,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
         ThreadFactory threadFactory = new CustomThreadFactory("check-message-processor-");
         executorService = Executors.newFixedThreadPool(threadCount, threadFactory);
 
-        processingMessages = new TimedStorage<>(CACHE_TIMEOUT);
-        processedMessages = new TimedStorage<>(CACHE_TIMEOUT);
+        statusStorage = new BasicMessageStatusStorage(CACHE_TIMEOUT);
 
         avMessageListeners = new CopyOnWriteArraySet<>();
     }
@@ -110,8 +108,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
         log.debug("Stopping thread pool...");
         setRunning(false);
 
-        processingMessages.stop();
-        processedMessages.stop();
+        statusStorage.stop();
 
         shutdownAndAwaitTermination(executorService, POOL_TERM_TIME_S, log);
     }
@@ -121,7 +118,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
         receivedMsgCount.getAndIncrement();
 
         log.debug("Processing message...");
-        processingMessages.put(message.getId());
+        statusStorage.started(message.getId());
 
         messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
 
@@ -133,13 +130,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     public MessageStatus messageStatus(String id) {
         log.debug("Message status call from: " + Thread.currentThread().getName());
 
-        if (processedMessages.contains(id)) {
-            return MessageStatus.PROCESSED;
-        } else if (processingMessages.contains(id)) {
-            return MessageStatus.PROCESSING;
-        } else {
-            return MessageStatus.UNKNOWN;
-        }
+        return statusStorage.getStatus(id);
     }
 
     private void processMessage(AvMessage message) {
@@ -160,8 +151,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
         }
         log.debug("Scanning done in: " + Thread.currentThread().getName());
 
-        processedMessages.put(message.getId());
-        processingMessages.remove(message.getId());
+        statusStorage.processed(message.getId());
 
         processedMsgCount.getAndIncrement();
 
