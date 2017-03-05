@@ -5,6 +5,8 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.common.service.BasicMessageStatusStorage;
+import dvoraka.avservice.common.service.MessageStatusStorage;
 import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +32,10 @@ public class FileMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(FileMessageProcessor.class);
 
+    public static final int CACHE_TIMEOUT = 10 * 60 * 1_000;
+
+    private final MessageStatusStorage statusStorage;
+
     private final Set<AvMessageListener> listeners;
     private final Map<MessageType, Consumer<AvMessage>> processMap;
 
@@ -37,6 +43,8 @@ public class FileMessageProcessor implements MessageProcessor {
     @Autowired
     public FileMessageProcessor(FileService fileService) {
         this.fileService = requireNonNull(fileService);
+
+        statusStorage = new BasicMessageStatusStorage(CACHE_TIMEOUT);
         listeners = new CopyOnWriteArraySet<>();
         processMap = getCallConfiguration();
     }
@@ -54,8 +62,11 @@ public class FileMessageProcessor implements MessageProcessor {
     @Override
     public void sendMessage(AvMessage message) {
         log.debug("Receive message: " + message);
+        statusStorage.started(message.getId());
         processMap.getOrDefault(message.getType(), this::unknown)
                 .accept(message);
+
+        statusStorage.processed(message.getId());
     }
 
     private void save(AvMessage message) {
@@ -92,8 +103,7 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        //TODO
-        return MessageStatus.UNKNOWN;
+        return statusStorage.getStatus(id);
     }
 
     @Override
@@ -103,7 +113,7 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public void stop() {
-        //TODO
+        statusStorage.stop();
     }
 
     @Override

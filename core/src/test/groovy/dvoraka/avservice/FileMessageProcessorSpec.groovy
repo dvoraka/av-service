@@ -91,9 +91,20 @@ class FileMessageProcessorSpec extends Specification {
             0 * listener.onAvMessage(_)
     }
 
-    def "message status"() {
+    def "message status for unknown message"() {
         expect:
             processor.messageStatus('XXX') == MessageStatus.UNKNOWN
+    }
+
+    def "message status"() {
+        given: "normal message for AV check"
+            AvMessage message = Utils.genMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            processor.messageStatus(message.getId()) == MessageStatus.PROCESSED
     }
 
     def "start and stop processor"() {
