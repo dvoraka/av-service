@@ -106,12 +106,12 @@ public class AvCheckMessageProcessor implements MessageProcessor {
             return;
         }
 
-        log.debug("Stopping thread pool...");
+        log.debug("Stopping processor...");
         setRunning(false);
-
         statusStorage.stop();
 
         shutdownAndAwaitTermination(executorService, POOL_TERM_TIME_S, log);
+        log.debug("Processor stopped.");
     }
 
     @Override
