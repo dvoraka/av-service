@@ -7,6 +7,7 @@ import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanException;
 import dvoraka.avservice.common.service.BasicMessageStatusStorage;
+import dvoraka.avservice.common.service.MessageStatusStorage;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.service.AvService;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +44,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
 
-    private final BasicMessageStatusStorage statusStorage;
+    private final MessageStatusStorage statusStorage;
 
     private final AtomicLong receivedMsgCount = new AtomicLong();
     private final AtomicLong processedMsgCount = new AtomicLong();
