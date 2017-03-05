@@ -15,6 +15,7 @@ public interface ExecutorServiceHelper {
             long waitSeconds,
             Logger logger
     ) {
+        logger.info("Stopping executor service...");
         executorService.shutdown();
         try {
             if (!executorService.awaitTermination(waitSeconds, TimeUnit.SECONDS)) {

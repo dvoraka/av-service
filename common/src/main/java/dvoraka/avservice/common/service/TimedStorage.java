@@ -23,14 +23,14 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Service
 @Scope("prototype")
-public class TimedStorage<T> {
+public class TimedStorage<T> implements ExecutorServiceHelper {
 
     private static final Logger log = LogManager.getLogger(TimedStorage.class);
 
     /**
      * Default maximum time in milliseconds.
      */
-    public static final long MAX_TIME = 60_000;
+    public static final long MAX_TIME = 60_000L;
     @SuppressWarnings("checkstyle:ConstantName")
     private static final AtomicLong storageNumber = new AtomicLong();
     /**
@@ -97,21 +97,7 @@ public class TimedStorage<T> {
     @PreDestroy
     public void stop() {
         running = false;
-
         final long timeout = 5;
-        log.info("Stopping thread pool...");
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(timeout, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-                if (!executorService.awaitTermination(timeout, TimeUnit.SECONDS)) {
-                    log.warn("Can't stop thread pool!");
-                }
-            }
-        } catch (InterruptedException e) {
-            log.warn("Stopping interrupted!", e);
-            executorService.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
+        shutdownAndAwaitTermination(executorService, timeout, log);
     }
 }

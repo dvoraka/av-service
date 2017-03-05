@@ -44,7 +44,9 @@ public class BasicMessageStatusStorage implements MessageStatusStorage {
 
     @Override
     public void stop() {
+        log.info("Stopping storage...");
         processingMessages.stop();
         processedMessages.stop();
+        log.info("Storage stopped.");
     }
 }
