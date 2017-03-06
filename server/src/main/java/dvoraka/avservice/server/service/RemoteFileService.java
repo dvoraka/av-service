@@ -9,9 +9,17 @@ public interface RemoteFileService {
 
     void saveFile(AvMessage message);
 
-    AvMessage loadFile(AvMessage message);
+    void loadFile(AvMessage message);
 
     void updateFile(AvMessage message);
 
     void deleteFile(AvMessage message);
+
+    /**
+     * Returns a response message.
+     *
+     * @param id the request message ID
+     * @return the response message or null if message is not available
+     */
+    AvMessage getResponse(String id);
 }

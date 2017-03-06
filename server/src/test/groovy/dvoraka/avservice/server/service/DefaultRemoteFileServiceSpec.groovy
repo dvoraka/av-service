@@ -1,41 +1,68 @@
 package dvoraka.avservice.server.service
 
-import spock.lang.Ignore
+import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.server.ServerComponent
 import spock.lang.Specification
 import spock.lang.Subject
 
 /**
  * Remote file service spec.
  */
-//TODO
-@Ignore('WIP')
 class DefaultRemoteFileServiceSpec extends Specification {
 
     @Subject
     DefaultRemoteFileService service
 
+    ServerComponent serverComponent
+
 
     def setup() {
-        service = null
+        serverComponent = Mock()
+        service = new DefaultRemoteFileService(serverComponent)
     }
 
     def "save file"() {
-        expect:
-            service.saveFile(null)
+        setup:
+            AvMessage message = Utils.genSaveMessage()
+
+        when:
+            service.saveFile(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
     }
 
     def "load file"() {
-        expect:
-            service.loadFile(null) == null
+        setup:
+            AvMessage message = Utils.genLoadMessage()
+
+        when:
+            service.loadFile(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
     }
 
     def "update file"() {
-        expect:
-            service.updateFile(null)
+        setup:
+            AvMessage message = Utils.genUpdateMessage()
+
+        when:
+            service.updateFile(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
     }
 
     def "delete file"() {
-        expect:
-            service.deleteFile(null)
+        setup:
+            AvMessage message = Utils.genDeleteMessage()
+
+        when:
+            service.deleteFile(message)
+
+        then:
+            1 * serverComponent.sendAvMessage(message)
     }
 }

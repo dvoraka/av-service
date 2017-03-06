@@ -25,9 +25,8 @@ public class DefaultRemoteFileService implements RemoteFileService {
     }
 
     @Override
-    public AvMessage loadFile(AvMessage message) {
+    public void loadFile(AvMessage message) {
         sendMessage(message);
-        return null;
     }
 
     @Override
@@ -38,5 +37,11 @@ public class DefaultRemoteFileService implements RemoteFileService {
     @Override
     public void deleteFile(AvMessage message) {
         sendMessage(message);
+    }
+
+    @Override
+    public AvMessage getResponse(String id) {
+        //TODO
+        return null;
     }
 }
