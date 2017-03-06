@@ -1,6 +1,5 @@
 package dvoraka.avservice.server.service
 
-import dvoraka.avservice.storage.service.FileService
 import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
@@ -10,16 +9,13 @@ import spock.lang.Subject
  */
 //TODO
 @Ignore('WIP')
-class RemoteFileServiceSpec extends Specification {
+class DefaultRemoteFileServiceSpec extends Specification {
 
     @Subject
-    RemoteFileService service
-
-    FileService fileService
+    DefaultRemoteFileService service
 
 
     def setup() {
-        fileService = Mock()
         service = null
     }
 
