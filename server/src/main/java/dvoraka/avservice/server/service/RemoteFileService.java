@@ -1,6 +1,7 @@
-package dvoraka.avservice.storage.service;
+package dvoraka.avservice.server.service;
 
 import dvoraka.avservice.common.data.FileMessage;
+import dvoraka.avservice.storage.service.FileService;
 
 /**
  * File service with a remote connection.

@@ -1,5 +1,6 @@
-package dvoraka.avservice.storage.service
+package dvoraka.avservice.server.service
 
+import dvoraka.avservice.storage.service.FileService
 import spock.lang.Specification
 import spock.lang.Subject
 
