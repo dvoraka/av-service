@@ -1,38 +1,17 @@
 package dvoraka.avservice.server.service;
 
-import dvoraka.avservice.common.data.FileMessage;
-import dvoraka.avservice.storage.service.FileService;
+import dvoraka.avservice.common.data.AvMessage;
 
 /**
- * File service with a remote connection.
+ * Client file service with a remote connection.
  */
-public class RemoteFileService implements FileService {
+public interface RemoteFileService {
 
-    private final FileService service;
+    void saveFile(AvMessage message);
 
+    AvMessage loadFile(AvMessage message);
 
-    public RemoteFileService(FileService service) {
-        this.service = service;
-    }
+    void updateFile(AvMessage message);
 
-    @Override
-    public void saveFile(FileMessage message) {
-        //TODO
-    }
-
-    @Override
-    public FileMessage loadFile(FileMessage message) {
-        //TODO
-        return null;
-    }
-
-    @Override
-    public void updateFile(FileMessage message) {
-        //TODO
-    }
-
-    @Override
-    public void deleteFile(FileMessage message) {
-        //TODO
-    }
+    void deleteFile(AvMessage message);
 }
