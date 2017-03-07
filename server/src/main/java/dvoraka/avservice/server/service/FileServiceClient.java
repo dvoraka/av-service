@@ -3,9 +3,11 @@ package dvoraka.avservice.server.service;
 import dvoraka.avservice.common.data.AvMessage;
 
 /**
- * Client file service with a remote connection.
+ * File service client. It is used for client connections to the file service.
+ *
+ * @see dvoraka.avservice.storage.service.FileService
  */
-public interface RemoteFileService {
+public interface FileServiceClient {
 
     /**
      * Saves a file from the message.

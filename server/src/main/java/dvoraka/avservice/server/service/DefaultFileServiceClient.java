@@ -6,12 +6,12 @@ import dvoraka.avservice.server.ServerComponent;
 /**
  * Default implementation for the remote file service.
  */
-public class DefaultRemoteFileService implements RemoteFileService {
+public class DefaultFileServiceClient implements FileServiceClient {
 
     private final ServerComponent serverComponent;
 
 
-    public DefaultRemoteFileService(ServerComponent serverComponent) {
+    public DefaultFileServiceClient(ServerComponent serverComponent) {
         this.serverComponent = serverComponent;
     }
 

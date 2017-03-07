@@ -12,14 +12,14 @@ import spock.lang.Subject
 class DefaultRemoteFileServiceSpec extends Specification {
 
     @Subject
-    DefaultRemoteFileService service
+    DefaultFileServiceClient service
 
     ServerComponent serverComponent
 
 
     def setup() {
         serverComponent = Mock()
-        service = new DefaultRemoteFileService(serverComponent)
+        service = new DefaultFileServiceClient(serverComponent)
     }
 
     def "save file"() {
