@@ -1,13 +1,13 @@
 package dvoraka.avservice.rest.service;
 
 import dvoraka.avservice.common.data.MessageStatus;
-import org.springframework.validation.annotation.Validated;
+import dvoraka.avservice.server.service.AvServiceClient;
+import dvoraka.avservice.server.service.FileServiceClient;
 
 /**
  * Main REST service.
  */
-@Validated
-public interface RestService extends RestAvService, RestFileService {
+public interface RestService extends AvServiceClient, FileServiceClient {
 
     /**
      * Returns a message status.
