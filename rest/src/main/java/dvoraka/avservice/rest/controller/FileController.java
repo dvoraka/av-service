@@ -59,7 +59,7 @@ public class FileController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        restService.saveMessage(fileMessage);
+        restService.saveFile(fileMessage);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
@@ -73,7 +73,7 @@ public class FileController {
                 .owner(principal.getName())
                 .type(MessageType.FILE_LOAD)
                 .build();
-        restService.loadMessage(fileRequest);
+        restService.loadFile(fileRequest);
 
         AvMessage response;
         long start = System.currentTimeMillis();
@@ -111,7 +111,7 @@ public class FileController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        restService.updateMessage(fileMessage);
+        restService.updateFile(fileMessage);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
@@ -126,7 +126,7 @@ public class FileController {
                 .type(MessageType.FILE_DELETE)
                 .build();
 
-        restService.deleteMessage(fileRequest);
+        restService.deleteFile(fileRequest);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

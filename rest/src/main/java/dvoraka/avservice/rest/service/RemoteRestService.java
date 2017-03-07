@@ -99,25 +99,25 @@ public class RemoteRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public void saveMessage(AvMessage message) {
+    public void saveFile(AvMessage message) {
         log.debug("Saving: {}", message);
         processMessage(message);
     }
 
     @Override
-    public void loadMessage(AvMessage message) {
+    public void loadFile(AvMessage message) {
         log.debug("Loading: {}", message);
         processMessage(message);
     }
 
     @Override
-    public void updateMessage(AvMessage message) {
+    public void updateFile(AvMessage message) {
         log.debug("Updating: {}", message);
         processMessage(message);
     }
 
     @Override
-    public void deleteMessage(AvMessage message) {
+    public void deleteFile(AvMessage message) {
         log.debug("Deleting: {}", message);
         processMessage(message);
     }

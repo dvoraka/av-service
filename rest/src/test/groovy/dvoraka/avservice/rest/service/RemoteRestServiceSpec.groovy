@@ -90,7 +90,7 @@ class RemoteRestServiceSpec extends Specification {
             AvMessage message = Utils.genSaveMessage()
 
         when:
-            service.saveMessage(message)
+            service.saveFile(message)
 
         then:
             1 * serverComponent.sendAvMessage(message)
@@ -102,7 +102,7 @@ class RemoteRestServiceSpec extends Specification {
             AvMessage message = Utils.genLoadMessage()
 
         when:
-            service.loadMessage(message)
+            service.loadFile(message)
 
         then:
             1 * serverComponent.sendAvMessage(message)
@@ -114,7 +114,7 @@ class RemoteRestServiceSpec extends Specification {
             AvMessage message = Utils.genUpdateMessage()
 
         when:
-            service.updateMessage(message)
+            service.updateFile(message)
 
         then:
             1 * serverComponent.sendAvMessage(message)
@@ -126,7 +126,7 @@ class RemoteRestServiceSpec extends Specification {
             AvMessage message = Utils.genDeleteMessage()
 
         when:
-            service.deleteMessage(message)
+            service.deleteFile(message)
 
         then:
             1 * serverComponent.sendAvMessage(message)

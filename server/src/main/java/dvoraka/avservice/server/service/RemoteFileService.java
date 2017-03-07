@@ -7,12 +7,32 @@ import dvoraka.avservice.common.data.AvMessage;
  */
 public interface RemoteFileService {
 
+    /**
+     * Saves a file from the message.
+     *
+     * @param message the message.
+     */
     void saveFile(AvMessage message);
 
+    /**
+     * Loads a message with a given description.
+     *
+     * @param message the load message
+     */
     void loadFile(AvMessage message);
 
+    /**
+     * Updates a file.
+     *
+     * @param message the update message
+     */
     void updateFile(AvMessage message);
 
+    /**
+     * Deletes a file.
+     *
+     * @param message the delete message
+     */
     void deleteFile(AvMessage message);
 
     /**

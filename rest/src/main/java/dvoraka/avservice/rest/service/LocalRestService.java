@@ -75,22 +75,22 @@ public class LocalRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public void saveMessage(AvMessage message) {
+    public void saveFile(AvMessage message) {
         checkAndFileProcessor.sendMessage(message);
     }
 
     @Override
-    public void loadMessage(AvMessage message) {
+    public void loadFile(AvMessage message) {
         checkAndFileProcessor.sendMessage(message);
     }
 
     @Override
-    public void updateMessage(AvMessage message) {
+    public void updateFile(AvMessage message) {
         checkAndFileProcessor.sendMessage(message);
     }
 
     @Override
-    public void deleteMessage(AvMessage message) {
+    public void deleteFile(AvMessage message) {
         checkAndFileProcessor.sendMessage(message);
     }
 
