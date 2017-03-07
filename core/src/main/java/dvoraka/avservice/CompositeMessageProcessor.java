@@ -3,12 +3,12 @@ package dvoraka.avservice;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import dvoraka.avservice.common.service.BasicMessageStatusStorage;
+import dvoraka.avservice.common.service.MessageStatusStorage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -23,10 +23,13 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
     private static final Logger log = LogManager.getLogger(CompositeMessageProcessor.class);
 
+    public static final int CACHE_TIMEOUT = 10 * 60 * 1_000;
+
     private final List<ProcessorConfiguration> processors;
     private final List<AvMessageListener> listeners;
 
     private final BlockingQueue<AvMessage> queue;
+    private final MessageStatusStorage statusStorage;
 
     private volatile AvMessage actualMessage;
 
@@ -35,10 +38,13 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
         processors = new CopyOnWriteArrayList<>();
         listeners = new CopyOnWriteArrayList<>();
         queue = new SynchronousQueue<>();
+        statusStorage = new BasicMessageStatusStorage(CACHE_TIMEOUT);
     }
 
     @Override
     public void sendMessage(AvMessage message) {
+        statusStorage.started(message.getId());
+
         AvMessage lastResult = message;
         for (ProcessorConfiguration processor : processors) {
 
@@ -66,19 +72,13 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
                 return;
             }
         }
+
+        statusStorage.processed(message.getId());
     }
 
     @Override
     public MessageStatus messageStatus(String id) {
-        //TODO
-        List<ProcessorConfiguration> configurations = new ArrayList<>(processors);
-        Collections.reverse(configurations);
-
-        return configurations.stream()
-                .filter(conf -> conf.getProcessor().messageStatus(id) != MessageStatus.UNKNOWN)
-                .findFirst()
-                .map(conf -> conf.getProcessor().messageStatus(id))
-                .orElse(MessageStatus.UNKNOWN);
+        return statusStorage.getStatus(id);
     }
 
     @Override
@@ -93,6 +93,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
         processors.forEach(
                 configuration -> configuration.getProcessor()
                         .stop());
+        statusStorage.stop();
     }
 
     @Override
