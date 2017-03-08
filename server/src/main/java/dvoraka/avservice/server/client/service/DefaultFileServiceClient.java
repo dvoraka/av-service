@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.service;
+package dvoraka.avservice.server.client.service;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.server.ServerComponent;
