@@ -36,12 +36,4 @@ public interface FileServiceClient {
      * @param message the delete message
      */
     void deleteFile(AvMessage message);
-
-    /**
-     * Returns a response message.
-     *
-     * @param id the request message ID
-     * @return the response message or null if message is not available
-     */
-    AvMessage getResponse(String id);
 }

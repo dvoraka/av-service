@@ -3,11 +3,12 @@ package dvoraka.avservice.rest.service;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.server.client.service.AvServiceClient;
 import dvoraka.avservice.server.client.service.FileServiceClient;
+import dvoraka.avservice.server.client.service.ResponseClient;
 
 /**
  * Main REST service.
  */
-public interface RestService extends AvServiceClient, FileServiceClient {
+public interface RestService extends AvServiceClient, FileServiceClient, ResponseClient {
 
     /**
      * Returns a message status.

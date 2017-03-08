@@ -38,10 +38,4 @@ public class DefaultFileServiceClient implements FileServiceClient {
     public void deleteFile(AvMessage message) {
         sendMessage(message);
     }
-
-    @Override
-    public AvMessage getResponse(String id) {
-        //TODO
-        return null;
-    }
 }
