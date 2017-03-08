@@ -3,10 +3,14 @@ package dvoraka.avservice.server.configuration;
 import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.configuration.ServiceConfig;
+import dvoraka.avservice.server.ServerComponent;
+import dvoraka.avservice.server.client.service.AvServiceClient;
+import dvoraka.avservice.server.client.service.DefaultAvServiceClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 
 /**
  * Server common configuration.
@@ -24,5 +28,11 @@ public class ServerCommonConfig {
         return new DefaultPerformanceTestProperties.Builder()
                 .msgCount(msgCount)
                 .build();
+    }
+
+    @Bean
+    @Profile("client")
+    public AvServiceClient avServiceClient(ServerComponent serverComponent) {
+        return new DefaultAvServiceClient(serverComponent);
     }
 }

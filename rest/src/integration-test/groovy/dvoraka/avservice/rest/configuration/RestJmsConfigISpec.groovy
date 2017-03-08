@@ -11,7 +11,7 @@ import spock.lang.Specification
  * Configuration spec.
  */
 @ContextConfiguration(classes = SpringWebConfig.class)
-@ActiveProfiles(['rest', 'rest-jms', 'core', 'jms', 'jms-rest', 'db'])
+@ActiveProfiles(['rest', 'rest-jms', 'core', 'jms', 'client', 'jms-rest', 'db'])
 @WebAppConfiguration
 class RestJmsConfigISpec extends Specification {
 
