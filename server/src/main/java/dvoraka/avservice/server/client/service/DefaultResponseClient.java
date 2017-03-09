@@ -13,6 +13,7 @@ import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -31,8 +32,8 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
     private static final Logger log = LogManager.getLogger(DefaultResponseClient.class);
 
-    private static final String CACHE_NAME = "remoteRestCache";
-    public static final int CACHE_TIMEOUT = 10 * 60 * 1_000;
+    private static final String CACHE_NAME = "messageCache";
+    public static final int CACHE_TIMEOUT = 60 * 1_000; // one minute
 
     private CacheManager cacheManager;
     private Cache<String, AvMessage> messageCache;
@@ -40,12 +41,13 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
     private volatile boolean started;
 
 
+    @Autowired
     public DefaultResponseClient(ServerComponent serverComponent) {
         this.serverComponent = requireNonNull(serverComponent);
     }
 
     @PostConstruct
-    public void start() {
+    public synchronized void start() {
         if (isStarted()) {
             log.info("Service is already started.");
             return;
@@ -58,7 +60,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
     }
 
     @PreDestroy
-    public void stop() {
+    public synchronized void stop() {
         if (!isStarted()) {
             log.info("Service is already stopped.");
             return;
@@ -74,19 +76,19 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache(CACHE_NAME, getCacheConfiguration())
                 .build(true);
-
         messageCache = cacheManager.getCache(CACHE_NAME, String.class, AvMessage.class);
     }
 
     private CacheConfiguration<String, AvMessage> getCacheConfiguration() {
-        final long expirationTime = 10_000;
         final long heapEntries = 10;
 
         return CacheConfigurationBuilder
                 .newCacheConfigurationBuilder(
-                        String.class, AvMessage.class, ResourcePoolsBuilder.heap(heapEntries))
+                        String.class,
+                        AvMessage.class,
+                        ResourcePoolsBuilder.heap(heapEntries))
                 .withExpiry(Expirations.timeToLiveExpiration(
-                        new Duration(expirationTime, TimeUnit.MILLISECONDS)))
+                        new Duration(CACHE_TIMEOUT, TimeUnit.MILLISECONDS)))
                 .build();
     }
 
