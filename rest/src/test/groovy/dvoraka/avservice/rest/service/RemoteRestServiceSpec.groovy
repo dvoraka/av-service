@@ -111,7 +111,7 @@ class RemoteRestServiceSpec extends Specification {
             service.loadFile(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * fileServiceClient.loadFile(message)
             service.messageStatus(message.getId()) == MessageStatus.PROCESSING
     }
 
@@ -123,7 +123,7 @@ class RemoteRestServiceSpec extends Specification {
             service.updateFile(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * fileServiceClient.updateFile(message)
             service.messageStatus(message.getId()) == MessageStatus.PROCESSING
     }
 
@@ -135,7 +135,7 @@ class RemoteRestServiceSpec extends Specification {
             service.deleteFile(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * fileServiceClient.deleteFile(message)
             service.messageStatus(message.getId()) == MessageStatus.PROCESSING
     }
 

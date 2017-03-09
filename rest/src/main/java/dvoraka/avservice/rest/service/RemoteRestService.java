@@ -89,45 +89,39 @@ public class RemoteRestService implements RestService, AvMessageListener {
         return statusStorage.getStatus(id);
     }
 
-    private void addToProcessing(AvMessage message) {
-        statusStorage.started(message.getId());
-    }
-
-    private void processMessage(AvMessage message) {
-        addToProcessing(message);
-        serverComponent.sendAvMessage(message);
-    }
-
     @Override
     public void checkMessage(AvMessage message) {
         log.debug("Checking: {}", message);
-        addToProcessing(message);
+        statusStorage.started(message.getId());
         avServiceClient.checkMessage(message);
     }
 
     @Override
     public void saveFile(AvMessage message) {
         log.debug("Saving: {}", message);
-        addToProcessing(message);
+        statusStorage.started(message.getId());
         fileServiceClient.saveFile(message);
     }
 
     @Override
     public void loadFile(AvMessage message) {
         log.debug("Loading: {}", message);
-        processMessage(message);
+        statusStorage.started(message.getId());
+        fileServiceClient.loadFile(message);
     }
 
     @Override
     public void updateFile(AvMessage message) {
         log.debug("Updating: {}", message);
-        processMessage(message);
+        statusStorage.started(message.getId());
+        fileServiceClient.updateFile(message);
     }
 
     @Override
     public void deleteFile(AvMessage message) {
         log.debug("Deleting: {}", message);
-        processMessage(message);
+        statusStorage.started(message.getId());
+        fileServiceClient.deleteFile(message);
     }
 
     @Override
