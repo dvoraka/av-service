@@ -8,6 +8,7 @@ import dvoraka.avservice.common.service.MessageStatusStorage;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.client.service.AvServiceClient;
 import dvoraka.avservice.server.client.service.FileServiceClient;
+import dvoraka.avservice.server.client.service.ResponseClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;
@@ -37,6 +38,7 @@ public class RemoteRestService implements RestService, AvMessageListener {
     private final ServerComponent serverComponent;
     private final AvServiceClient avServiceClient;
     private final FileServiceClient fileServiceClient;
+    private final ResponseClient responseClient;
 
     private static final Logger log = LogManager.getLogger(RemoteRestService.class);
 
@@ -56,11 +58,12 @@ public class RemoteRestService implements RestService, AvMessageListener {
     public RemoteRestService(
             ServerComponent serverComponent,
             AvServiceClient avServiceClient,
-            FileServiceClient fileServiceClient
-    ) {
+            FileServiceClient fileServiceClient,
+            ResponseClient responseClient) {
         this.serverComponent = requireNonNull(serverComponent);
         this.avServiceClient = requireNonNull(avServiceClient);
         this.fileServiceClient = requireNonNull(fileServiceClient);
+        this.responseClient = requireNonNull(responseClient);
         statusStorage = new BasicMessageStatusStorage(CACHE_TIMEOUT);
     }
 

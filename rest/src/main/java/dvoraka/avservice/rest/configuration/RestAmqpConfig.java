@@ -5,6 +5,7 @@ import dvoraka.avservice.rest.service.RestService;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.client.service.AvServiceClient;
 import dvoraka.avservice.server.client.service.FileServiceClient;
+import dvoraka.avservice.server.client.service.ResponseClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,8 +21,10 @@ public class RestAmqpConfig {
     public RestService avRestService(
             ServerComponent serverComponent,
             AvServiceClient avServiceClient,
-            FileServiceClient fileServiceClient
+            FileServiceClient fileServiceClient,
+            ResponseClient responseClient
     ) {
-        return new RemoteRestService(serverComponent, avServiceClient, fileServiceClient);
+        return new RemoteRestService(
+                serverComponent, avServiceClient, fileServiceClient, responseClient);
     }
 }
