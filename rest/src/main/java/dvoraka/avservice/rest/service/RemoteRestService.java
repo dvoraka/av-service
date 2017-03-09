@@ -3,7 +3,8 @@ package dvoraka.avservice.rest.service;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
-import dvoraka.avservice.common.service.TimedStorage;
+import dvoraka.avservice.common.service.BasicMessageStatusStorage;
+import dvoraka.avservice.common.service.MessageStatusStorage;
 import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.client.service.AvServiceClient;
 import dvoraka.avservice.server.client.service.FileServiceClient;
@@ -40,9 +41,9 @@ public class RemoteRestService implements RestService, AvMessageListener {
     private static final Logger log = LogManager.getLogger(RemoteRestService.class);
 
     private static final String CACHE_NAME = "remoteRestCache";
+    public static final int CACHE_TIMEOUT = 10 * 60 * 1_000;
 
-    private final TimedStorage<String> processingMsgs = new TimedStorage<>();
-    private final TimedStorage<String> processedMsgs = new TimedStorage<>();
+    private final MessageStatusStorage statusStorage;
 
     private volatile boolean started;
 
@@ -60,6 +61,7 @@ public class RemoteRestService implements RestService, AvMessageListener {
         this.serverComponent = requireNonNull(serverComponent);
         this.avServiceClient = requireNonNull(avServiceClient);
         this.fileServiceClient = requireNonNull(fileServiceClient);
+        statusStorage = new BasicMessageStatusStorage(CACHE_TIMEOUT);
     }
 
     private void initializeCache() {
@@ -84,17 +86,11 @@ public class RemoteRestService implements RestService, AvMessageListener {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        if (processedMsgs.contains(id)) {
-            return MessageStatus.PROCESSED;
-        } else if (processingMsgs.contains(id)) {
-            return MessageStatus.PROCESSING;
-        }
-
-        return MessageStatus.UNKNOWN;
+        return statusStorage.getStatus(id);
     }
 
     private void addToProcessing(AvMessage message) {
-        processingMsgs.put(message.getId());
+        statusStorage.started(message.getId());
     }
 
     private void processMessage(AvMessage message) {
@@ -112,7 +108,8 @@ public class RemoteRestService implements RestService, AvMessageListener {
     @Override
     public void saveFile(AvMessage message) {
         log.debug("Saving: {}", message);
-        processMessage(message);
+        addToProcessing(message);
+        fileServiceClient.saveFile(message);
     }
 
     @Override
@@ -161,8 +158,7 @@ public class RemoteRestService implements RestService, AvMessageListener {
 
             serverComponent.removeAvMessageListener(this);
 
-            processingMsgs.stop();
-            processedMsgs.stop();
+            statusStorage.stop();
 
             cacheManager.close();
         } else {
@@ -175,13 +171,10 @@ public class RemoteRestService implements RestService, AvMessageListener {
         log.debug("REST on message: {}", response);
 
         // skip other messages
-        if (processingMsgs.contains(response.getCorrelationId())) {
+        if (statusStorage.getStatus(response.getCorrelationId()) == MessageStatus.PROCESSING) {
             log.debug("Saving response: {}", response);
-
             messageCache.put(response.getCorrelationId(), response);
-            processedMsgs.put(response.getCorrelationId());
-
-            processingMsgs.remove(response.getCorrelationId());
+            statusStorage.processed(response.getCorrelationId());
         }
     }
 

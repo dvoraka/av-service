@@ -99,7 +99,7 @@ class RemoteRestServiceSpec extends Specification {
             service.saveFile(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * fileServiceClient.saveFile(message)
             service.messageStatus(message.getId()) == MessageStatus.PROCESSING
     }
 
