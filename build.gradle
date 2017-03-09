@@ -2,10 +2,10 @@ plugins {
     // SonarQube
     id 'org.sonarqube' version '2.2.1'
     // Spring Boot and dependency management
-    id 'org.springframework.boot' version '1.5.1.RELEASE'
+    id 'org.springframework.boot' version '1.5.2.RELEASE'
 }
 
-description = 'Project for anti-virus service'
+description = 'Anti-virus and file network service'
 
 // Temporary overrides for BOMs
 ext['spring.version'] = '5.0.0.M5'
@@ -97,7 +97,7 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.5.1.RELEASE')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.5.2.RELEASE')
         }
     }
 
