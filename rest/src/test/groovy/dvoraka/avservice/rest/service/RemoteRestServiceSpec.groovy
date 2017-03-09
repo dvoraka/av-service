@@ -3,7 +3,6 @@ package dvoraka.avservice.rest.service
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
-import dvoraka.avservice.server.ServerComponent
 import dvoraka.avservice.server.client.service.AvServiceClient
 import dvoraka.avservice.server.client.service.FileServiceClient
 import dvoraka.avservice.server.client.service.ResponseClient
@@ -18,19 +17,16 @@ class RemoteRestServiceSpec extends Specification {
     @Subject
     RemoteRestService service
 
-    ServerComponent serverComponent
     AvServiceClient avServiceClient
     FileServiceClient fileServiceClient
     ResponseClient responseClient
 
 
     def setup() {
-        serverComponent = Mock()
         avServiceClient = Mock()
         fileServiceClient = Mock()
         responseClient = Mock()
-        service = new RemoteRestService(
-                serverComponent, avServiceClient, fileServiceClient, responseClient)
+        service = new RemoteRestService(avServiceClient, fileServiceClient, responseClient)
     }
 
     def cleanup() {
@@ -51,14 +47,12 @@ class RemoteRestServiceSpec extends Specification {
             service.start()
 
         then:
-            1 * serverComponent.addAvMessageListener(_)
             service.isStarted()
 
         when: "start again"
             service.start()
 
         then:
-            0 * serverComponent.addAvMessageListener(_)
             service.isStarted()
     }
 
@@ -149,25 +143,5 @@ class RemoteRestServiceSpec extends Specification {
 
         then:
             service.getResponse('AAA') == null
-    }
-
-    def "check message, send response and check status"() {
-        given:
-            AvMessage message = Utils.genMessage()
-            service.start()
-
-        when:
-            service.checkMessage(message)
-
-        then:
-            service.messageStatus(message.getId()) == MessageStatus.PROCESSING
-
-        when:
-            AvMessage response = message.createCheckResponse("")
-            service.onAvMessage(response)
-
-        then:
-            service.messageStatus(message.getId()) != MessageStatus.PROCESSING
-            service.messageStatus(message.getId()) == MessageStatus.PROCESSED
     }
 }

@@ -43,7 +43,7 @@ public class BasicMessageStatusStorage implements MessageStatusStorage {
     }
 
     @Override
-    public void stop() {
+    public synchronized void stop() {
         log.info("Stopping storage...");
         processingMessages.stop();
         processedMessages.stop();

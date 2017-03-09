@@ -2,7 +2,6 @@ package dvoraka.avservice.rest.configuration;
 
 import dvoraka.avservice.rest.service.RemoteRestService;
 import dvoraka.avservice.rest.service.RestService;
-import dvoraka.avservice.server.ServerComponent;
 import dvoraka.avservice.server.client.service.AvServiceClient;
 import dvoraka.avservice.server.client.service.FileServiceClient;
 import dvoraka.avservice.server.client.service.ResponseClient;
@@ -19,12 +18,10 @@ public class RestJmsConfig {
 
     @Bean
     public RestService avRestService(
-            ServerComponent serverComponent,
             AvServiceClient avServiceClient,
             FileServiceClient fileServiceClient,
             ResponseClient responseClient
     ) {
-        return new RemoteRestService(
-                serverComponent, avServiceClient, fileServiceClient, responseClient);
+        return new RemoteRestService(avServiceClient, fileServiceClient, responseClient);
     }
 }
