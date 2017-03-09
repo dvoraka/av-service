@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.server.ServerComponent
 import dvoraka.avservice.server.client.service.AvServiceClient
+import dvoraka.avservice.server.client.service.FileServiceClient
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -18,12 +19,14 @@ class RemoteRestServiceSpec extends Specification {
 
     ServerComponent serverComponent
     AvServiceClient avServiceClient
+    FileServiceClient fileServiceClient
 
 
     def setup() {
         serverComponent = Mock()
         avServiceClient = Mock()
-        service = new RemoteRestService(serverComponent, avServiceClient)
+        fileServiceClient = Mock()
+        service = new RemoteRestService(serverComponent, avServiceClient, fileServiceClient)
     }
 
     def cleanup() {
