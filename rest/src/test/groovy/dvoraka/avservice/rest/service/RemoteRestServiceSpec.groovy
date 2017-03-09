@@ -84,7 +84,7 @@ class RemoteRestServiceSpec extends Specification {
             service.checkMessage(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * avServiceClient.checkMessage(message)
             service.messageStatus(message.getId()) == MessageStatus.PROCESSING
     }
 

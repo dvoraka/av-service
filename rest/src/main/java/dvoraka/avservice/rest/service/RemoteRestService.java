@@ -98,7 +98,8 @@ public class RemoteRestService implements RestService, AvMessageListener {
     @Override
     public void checkMessage(AvMessage message) {
         log.debug("Checking: {}", message);
-        processMessage(message);
+        addToProcessing(message);
+        avServiceClient.checkMessage(message);
     }
 
     @Override
