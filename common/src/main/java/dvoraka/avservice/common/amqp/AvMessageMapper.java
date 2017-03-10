@@ -22,10 +22,10 @@ public class AvMessageMapper {
 
     private static final Logger log = LogManager.getLogger(AvMessageMapper.class);
 
+    public static final String DEFAULT_EMPTY_VALUE = null;
     public static final String VIRUS_INFO_KEY = "virusInfo";
-    public static final String DEFAULT_VIRUS_INFO = null;
-    public static final String SERVICE_ID_KEY = "serviceId";
-    public static final String DEFAULT_SERVICE_ID = "noservice";
+    public static final String OWNER_KEY = "owner";
+    public static final String FILENAME_KEY = "filename";
 
 
     /**
@@ -45,7 +45,12 @@ public class AvMessageMapper {
         checkMandatoryFields(props);
 
         // virus info
-        String virusInfo = getVirusInfo(headers);
+        String virusInfo = getHeaderValue(headers, VIRUS_INFO_KEY);
+        // owner
+        String owner = getHeaderValue(headers, OWNER_KEY);
+        // filename
+        String filename = getHeaderValue(headers, FILENAME_KEY);
+
         // message type
         MessageType messageType = getMessageType(props);
         // correlation ID
@@ -53,8 +58,10 @@ public class AvMessageMapper {
 
         return new DefaultAvMessage.Builder(props.getMessageId())
                 .correlationId(corrId)
-                .data(msg.getBody())
                 .type(messageType)
+                .data(msg.getBody())
+                .owner(owner)
+                .filename(filename)
                 .virusInfo(virusInfo)
                 .build();
     }
@@ -67,16 +74,16 @@ public class AvMessageMapper {
         }
     }
 
-    private String getVirusInfo(Map<String, Object> headers) {
-        Object virusInfoObj = headers.get(VIRUS_INFO_KEY);
-        String virusInfo;
-        if (virusInfoObj != null) {
-            virusInfo = virusInfoObj.toString();
+    private String getHeaderValue(Map<String, Object> headers, String key) {
+        Object valueObj = headers.get(key);
+        String value;
+        if (valueObj != null) {
+            value = valueObj.toString();
         } else {
-            virusInfo = DEFAULT_VIRUS_INFO;
+            value = DEFAULT_EMPTY_VALUE;
         }
 
-        return virusInfo;
+        return value;
     }
 
     private MessageType getMessageType(MessageProperties msgProps) throws MapperException {
@@ -129,6 +136,10 @@ public class AvMessageMapper {
 
         // virus info
         props.setHeader(VIRUS_INFO_KEY, msg.getVirusInfo());
+        // owner
+        props.setHeader(OWNER_KEY, msg.getOwner());
+        // filename
+        props.setHeader(FILENAME_KEY, msg.getFilename());
 
         return new Message(msg.getData(), props);
     }
