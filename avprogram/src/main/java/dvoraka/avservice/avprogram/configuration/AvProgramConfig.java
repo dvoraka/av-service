@@ -28,7 +28,7 @@ public class AvProgramConfig {
 
     @Bean
     public AvProgram avProgram() {
-        AvProgram avProgram = new ClamAvProgram(host, port, maxArraySize, true);
+        AvProgram avProgram = new ClamAvProgram(host, port, maxArraySize, false);
         avProgram.setCaching(false);
 
         return avProgram;

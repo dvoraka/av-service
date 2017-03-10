@@ -21,9 +21,10 @@ public class AmqpRestConfig {
 
     @Value("${avservice.amqp.resultQueue}")
     private String resultQueue;
-
     @Value("${avservice.amqp.checkExchange}")
     private String checkExchange;
+    @Value("${avservice.amqp.fileExchange}")
+    private String fileExchange;
 
     @Value("${avservice.serviceId:default1}")
     private String serviceId;
@@ -34,7 +35,7 @@ public class AmqpRestConfig {
             RabbitTemplate rabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new AmqpComponent(checkExchange, serviceId, rabbitTemplate, messageInfoService);
+        return new AmqpComponent(fileExchange, serviceId, rabbitTemplate, messageInfoService);
     }
 
     @Bean

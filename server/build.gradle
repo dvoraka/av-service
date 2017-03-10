@@ -22,6 +22,15 @@ task runAmqpServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task runAmqpFileServer(type: JavaExec) {
+    description = 'Run AMQP file server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.runner.amqp.AmqpFileServerRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 task runJmsServer(type: JavaExec) {
     description = 'Run JMS server'
     group = "${taskGroupName}"

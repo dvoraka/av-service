@@ -51,6 +51,11 @@ public class RemoteRestService implements RestService {
 
     @Override
     public MessageStatus messageStatus(String id) {
+        if (statusStorage.getStatus(id) == MessageStatus.PROCESSING
+                && responseClient.getResponse(id) != null) {
+            statusStorage.processed(id);
+        }
+
         return statusStorage.getStatus(id);
     }
 
