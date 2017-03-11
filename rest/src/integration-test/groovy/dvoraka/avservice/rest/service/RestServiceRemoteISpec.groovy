@@ -6,9 +6,11 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.data.MessageType
+import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.rest.Application
 import dvoraka.avservice.rest.controller.CheckController
 import dvoraka.avservice.rest.controller.FileController
+import dvoraka.avservice.server.runner.amqp.AmqpFileServerRunner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -20,6 +22,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Ignore
+import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -34,15 +37,18 @@ import spock.lang.Specification
                 'server.contextPath=/av-service',
                 'port=8080'
         ],
-        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@Ignore('WIP')
+//TODO: this is REST with AMQP and we need inherited tests for every configuration
 class RestServiceRemoteISpec extends Specification {
 
     @Autowired
     TestRestTemplate basicRestTemplate
     @Autowired
     ObjectMapper objectMapper
+
+    @Shared
+    ServiceRunner runner
 
     TestRestTemplate restTemplate
 
@@ -52,6 +58,16 @@ class RestServiceRemoteISpec extends Specification {
     String checkPath = CheckController.MAPPING + '/'
     String filePath = FileController.MAPPING + '/'
 
+
+    def setupSpec() {
+        AmqpFileServerRunner.setTestRun(false)
+        runner = new AmqpFileServerRunner()
+        runner.runAsync()
+    }
+
+    def cleanupSpec() {
+        runner.stop()
+    }
 
     def setup() {
         restTemplate = basicRestTemplate.withBasicAuth(testUsername, testPassword)

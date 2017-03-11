@@ -34,7 +34,7 @@ import spock.lang.Specification
                 'server.contextPath=/av-service',
                 'port=8080'
         ],
-        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 class RestServiceISpec extends Specification {
 
