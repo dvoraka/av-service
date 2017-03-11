@@ -117,7 +117,14 @@ public class ClamAvProgram implements AvProgram {
             }
         } catch (IOException e) {
             log.warn(ERROR_MSG, e);
-            throw new ScanException(ERROR_MSG, e);
+            socket.fix();
+            socketPool.returnSocket(socket);
+
+            //TODO: throw error when failed
+
+            return scanBytesPooling(bytes);
+
+//            throw new ScanException(ERROR_MSG, e);
         } finally {
             socketPool.returnSocket(socket);
         }

@@ -19,11 +19,13 @@ import org.springframework.http.ResponseEntity
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Ignore
 import spock.lang.Specification
+import spock.lang.Stepwise
 
 /**
  * REST testing.
  */
 @Ignore('base test')
+@Stepwise
 class RestServiceISpec extends Specification {
 
     @Autowired
@@ -78,7 +80,7 @@ class RestServiceISpec extends Specification {
 
         when:
             restTemplate.postForEntity(checkPath, normalMessage, DefaultAvMessage.class)
-            sleep(2000)
+            sleep(6000) // sometimes a strange delay for remote services
 
             ResponseEntity<MessageStatus> statusResponseEntity = restTemplate
                     .getForEntity('/msg-status/' + id, MessageStatus.class)
@@ -104,7 +106,7 @@ class RestServiceISpec extends Specification {
 
         when:
             restTemplate.postForEntity(checkPath, infectedMessage, DefaultAvMessage.class)
-            sleep(2000)
+            sleep(1000)
 
             ResponseEntity<MessageStatus> statusResponseEntity = restTemplate
                     .getForEntity('/msg-status/' + id, MessageStatus.class)

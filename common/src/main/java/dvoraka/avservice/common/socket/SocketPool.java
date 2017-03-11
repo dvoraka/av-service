@@ -54,7 +54,9 @@ public class SocketPool implements SocketFactory {
     }
 
     public void close() {
+        log.info("Closing sockets...");
         socketWrappers.forEach(SocketWrapper::releaseSocket);
+        log.info("Done.");
     }
 
     /**
@@ -93,6 +95,7 @@ public class SocketPool implements SocketFactory {
 
     @Override
     public Socket createSocket(String host, int port) {
+        log.debug("Creating socket, host: {}, port: {}", host, port);
         Socket socket = null;
         try {
             socket = new Socket(host, port);
@@ -122,7 +125,12 @@ public class SocketPool implements SocketFactory {
         }
 
         private void initialize() {
+            log.debug("Initializing socket...");
+
             if (socket == null) {
+                outputStream = null;
+                reader = null;
+
                 try {
                     socket = socketFactory.createSocket(host, port);
 
@@ -131,21 +139,32 @@ public class SocketPool implements SocketFactory {
                 } catch (IOException e) {
                     log.error("Socket problem!", e);
                 }
-            } else if (socket.isClosed()) {
-                socket = null;
-                initialize();
             }
+        }
+
+        public void fix() {
+            log.debug("Fixing socket...");
+            if (socket != null) {
+                log.debug("Closing old socket...");
+                try {
+                    outputStream.close();
+                    reader.close();
+                    socket.close();
+                } catch (IOException e) {
+                    log.warn("Socket closing failed!", e);
+                }
+            }
+            socket = null;
+            initialize();
         }
 
         public OutputStream getOutputStream() {
             initialize();
 
-            if (outputStream == null) {
-                try {
-                    outputStream = socket.getOutputStream();
-                } catch (IOException e) {
-                    log.error("OutputStream error!", e);
-                }
+            try {
+                outputStream = socket.getOutputStream();
+            } catch (IOException e) {
+                log.error("OutputStream error!", e);
             }
 
             return outputStream;
@@ -154,19 +173,19 @@ public class SocketPool implements SocketFactory {
         public BufferedReader getBufferedReader() {
             initialize();
 
-            if (reader == null) {
-                try {
-                    reader = new BufferedReader(new InputStreamReader(
-                            socket.getInputStream(), StandardCharsets.UTF_8));
-                } catch (IOException e) {
-                    log.error("Reader problem!", e);
-                }
+            try {
+                reader = new BufferedReader(new InputStreamReader(
+                        socket.getInputStream(), StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                log.error("Reader problem!", e);
             }
 
             return reader;
         }
 
         private void releaseSocket() {
+            log.info("Releasing socket...");
+
             if (socket == null) {
                 return;
             }
