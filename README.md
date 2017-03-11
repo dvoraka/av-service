@@ -107,7 +107,6 @@ jms-server | JMS server
 no-db | disable message logging
 rest | enable REST
 rest-amqp | REST to AMQP | 0.5
-rest-client | REST client
 rest-jms | REST to JMS | 0.5
 rest-local | REST with direct connection | 0.5
 stats | enable statistics | 0.5
@@ -116,6 +115,8 @@ storage | enable file service | 0.6
 
 Here will be the best combinations for various usages soon.
 
+You can find all profiles for a concrete code base with the script **findAllSpringProfiles.sh**
+in the ```tools``` directory.
 
 ### How to send a message for check
 You can use AMQP checker from this project for first steps. For sending simple message
