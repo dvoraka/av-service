@@ -6,11 +6,9 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.data.MessageType
-import dvoraka.avservice.rest.Application
 import dvoraka.avservice.rest.controller.CheckController
 import dvoraka.avservice.rest.controller.FileController
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -25,17 +23,7 @@ import spock.lang.Specification
 /**
  * REST testing.
  */
-@SpringBootTest(
-        classes = [
-                Application.class
-        ],
-        properties = [
-                'spring.profiles.active=core,rest,rest-local,storage,db',
-                'server.contextPath=/av-service',
-                'port=8080'
-        ],
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@Ignore('base test')
 class RestServiceISpec extends Specification {
 
     @Autowired
@@ -51,6 +39,10 @@ class RestServiceISpec extends Specification {
     String checkPath = CheckController.MAPPING + '/'
     String filePath = FileController.MAPPING + '/'
 
+
+    def setupSpec() {
+        // start servers if necessary
+    }
 
     def setup() {
         restTemplate = basicRestTemplate.withBasicAuth(testUsername, testPassword)
