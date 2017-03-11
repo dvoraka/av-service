@@ -1,14 +1,16 @@
 package dvoraka.avservice.rest.service
 
-import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * BasicUserDetailsService spec.
  */
 class BasicUserDetailsServiceSpec extends Specification {
 
+    @Subject
     BasicUserDetailsService service
 
 
@@ -18,10 +20,10 @@ class BasicUserDetailsServiceSpec extends Specification {
 
     def "LoadUserByUsername with right username"() {
         when:
-            User user = service.loadUserByUsername("JOHN")
+            UserDetails userDetails = service.loadUserByUsername("JOHN")
 
         then:
-            user
+            userDetails
     }
 
     def "LoadUserByUsername with non-existent username"() {
