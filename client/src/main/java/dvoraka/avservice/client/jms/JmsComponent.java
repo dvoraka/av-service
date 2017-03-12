@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.jms;
+package dvoraka.avservice.client.jms;
 
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.common.AvMessageListener;

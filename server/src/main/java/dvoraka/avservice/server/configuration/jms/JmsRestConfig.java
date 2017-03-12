@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.configuration.jms;
 
 import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.jms.JmsComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.server.jms.JmsComponent;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.beans.factory.annotation.Value;
