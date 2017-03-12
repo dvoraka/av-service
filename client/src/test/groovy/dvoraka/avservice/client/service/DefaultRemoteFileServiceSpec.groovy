@@ -1,7 +1,6 @@
-package dvoraka.avservice.server.client.service
+package dvoraka.avservice.client.service
 
 import dvoraka.avservice.client.ServerComponent
-import dvoraka.avservice.client.service.DefaultFileServiceClient
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import spock.lang.Specification
