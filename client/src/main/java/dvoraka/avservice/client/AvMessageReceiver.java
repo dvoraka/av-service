@@ -1,4 +1,4 @@
-package dvoraka.avservice.server;
+package dvoraka.avservice.client;
 
 import dvoraka.avservice.common.AvMessageListener;
 

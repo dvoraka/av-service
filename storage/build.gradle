@@ -3,4 +3,5 @@ description = 'Storage module'
 dependencies {
     compile project(':common')
     compile project(':database')
+    compile project(':client')
 }

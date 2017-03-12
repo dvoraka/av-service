@@ -2,6 +2,7 @@ description = 'Server components'
 
 dependencies {
     compile project(':common')
+    compile project(':client')
     compile project(':core')
 }
 

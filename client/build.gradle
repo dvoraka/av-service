@@ -1,0 +1,5 @@
+description = 'Server client components'
+
+dependencies {
+    compile project(':common')
+}

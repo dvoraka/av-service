@@ -1,15 +1,15 @@
 package dvoraka.avservice.server.configuration;
 
+import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.service.AvServiceClient;
+import dvoraka.avservice.client.service.DefaultAvServiceClient;
+import dvoraka.avservice.client.service.DefaultFileServiceClient;
+import dvoraka.avservice.client.service.DefaultResponseClient;
+import dvoraka.avservice.client.service.FileServiceClient;
+import dvoraka.avservice.client.service.ResponseClient;
 import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.configuration.ServiceConfig;
-import dvoraka.avservice.server.ServerComponent;
-import dvoraka.avservice.server.client.service.AvServiceClient;
-import dvoraka.avservice.server.client.service.DefaultAvServiceClient;
-import dvoraka.avservice.server.client.service.DefaultFileServiceClient;
-import dvoraka.avservice.server.client.service.DefaultResponseClient;
-import dvoraka.avservice.server.client.service.FileServiceClient;
-import dvoraka.avservice.server.client.service.ResponseClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

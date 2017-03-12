@@ -1,6 +1,7 @@
 package dvoraka.avservice.server;
 
 import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;

@@ -1,6 +1,7 @@
 package dvoraka.avservice.server
 
 import dvoraka.avservice.MessageProcessor
+import dvoraka.avservice.client.ServerComponent
 import dvoraka.avservice.db.service.MessageInfoService
 import spock.lang.Specification
 import spock.lang.Subject

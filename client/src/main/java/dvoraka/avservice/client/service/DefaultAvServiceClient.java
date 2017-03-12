@@ -1,7 +1,7 @@
-package dvoraka.avservice.server.client.service;
+package dvoraka.avservice.client.service;
 
+import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.server.ServerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

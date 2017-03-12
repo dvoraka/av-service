@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.bridge;
 
-import dvoraka.avservice.server.ServerComponent;
+import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.server.ServerComponentBridge;
 import dvoraka.avservice.server.configuration.ServerCommonConfig;
 import dvoraka.avservice.server.configuration.amqp.AmqpBridgeInputConfig;
