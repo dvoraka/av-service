@@ -1,9 +1,9 @@
 package dvoraka.avservice.server.configuration.amqp;
 
 import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.amqp.AmqpComponent;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.server.amqp.AmqpComponent;
 import dvoraka.avservice.server.checker.CheckApp;
 import dvoraka.avservice.server.checker.Checker;
 import dvoraka.avservice.server.checker.PerformanceTester;

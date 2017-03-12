@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.amqp;
+package dvoraka.avservice.client.amqp;
 
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.common.AvMessageListener;

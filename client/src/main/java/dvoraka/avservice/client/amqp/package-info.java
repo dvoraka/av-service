@@ -1,4 +1,4 @@
 /**
  * AMQP server infrastructure.
  */
-package dvoraka.avservice.server.amqp;
+package dvoraka.avservice.client.amqp;
