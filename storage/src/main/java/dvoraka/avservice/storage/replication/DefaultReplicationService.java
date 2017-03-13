@@ -43,4 +43,9 @@ public class DefaultReplicationService implements ReplicationService {
     public void deleteFile(FileMessage message) {
 
     }
+
+    @Override
+    public ReplicationStatus getStatus(FileMessage message) {
+        return null;
+    }
 }
