@@ -1,5 +1,6 @@
 package dvoraka.avservice.storage.replication;
 
+import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.ResponseClient;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.storage.service.FileService;
@@ -14,13 +15,19 @@ import static java.util.Objects.requireNonNull;
 public class DefaultReplicationService implements ReplicationService {
 
     private final FileService fileService;
+    private final ReplicationServiceClient replicationServiceClient;
     private final ResponseClient responseClient;
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
 
-    public DefaultReplicationService(FileService fileService, ResponseClient responseClient) {
+    public DefaultReplicationService(
+            FileService fileService,
+            ReplicationServiceClient replicationServiceClient,
+            ResponseClient responseClient
+    ) {
         this.fileService = requireNonNull(fileService);
+        this.replicationServiceClient = requireNonNull(replicationServiceClient);
         this.responseClient = requireNonNull(responseClient);
     }
 

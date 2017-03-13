@@ -1,6 +1,4 @@
-package dvoraka.avservice.storage.replication;
-
-import dvoraka.avservice.common.data.FileMessage;
+package dvoraka.avservice.common.data;
 
 /**
  * Replication message.
