@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service;
 
-import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,13 +12,13 @@ import static java.util.Objects.requireNonNull;
  */
 public class DefaultReplicationServiceClient implements ReplicationServiceClient {
 
-    private final ServerComponent serverComponent;
+    private final ReplicationComponent replicationComponent;
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationServiceClient.class);
 
 
-    public DefaultReplicationServiceClient(ServerComponent serverComponent) {
-        this.serverComponent = requireNonNull(serverComponent);
+    public DefaultReplicationServiceClient(ReplicationComponent replicationComponent) {
+        this.replicationComponent = requireNonNull(replicationComponent);
     }
 
     @Override
