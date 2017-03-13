@@ -101,14 +101,4 @@ public class JmsComponent implements ServerComponent {
     public int listenersCount() {
         return listeners.size();
     }
-
-    /**
-     * AMQP method.
-     *
-     * @param message AMQP message
-     */
-    @Override
-    public void onMessage(org.springframework.amqp.core.Message message) {
-        throw new UnsupportedOperationException();
-    }
 }
