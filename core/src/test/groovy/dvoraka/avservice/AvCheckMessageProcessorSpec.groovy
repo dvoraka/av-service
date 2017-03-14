@@ -203,7 +203,9 @@ class AvCheckMessageProcessorSpec extends Specification {
             }
 
         then:
-            observers == processor.observersCount()
+            conditions.eventually {
+                observers == processor.observersCount()
+            }
     }
 
     def "remove observers from different threads"() {
@@ -233,6 +235,8 @@ class AvCheckMessageProcessorSpec extends Specification {
             }
 
         then:
-            processor.observersCount() == 0
+            conditions.eventually {
+                processor.observersCount() == 0
+            }
     }
 }
