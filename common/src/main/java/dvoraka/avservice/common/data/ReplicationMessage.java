@@ -10,4 +10,6 @@ public interface ReplicationMessage extends FileMessage {
     String getToId();
 
     MessageRouting getRouting();
+
+    ReplicationStatus getReplicationStatus();
 }

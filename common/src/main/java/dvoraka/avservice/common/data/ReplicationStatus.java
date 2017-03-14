@@ -1,4 +1,4 @@
-package dvoraka.avservice.storage.replication;
+package dvoraka.avservice.common.data;
 
 /**
  * Enum represents replication status for a file.

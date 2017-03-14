@@ -1,8 +1,11 @@
 package dvoraka.avservice.storage.replication;
 
+import dvoraka.avservice.client.service.ReplicationResponseClient;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
-import dvoraka.avservice.client.service.ResponseClient;
 import dvoraka.avservice.common.data.FileMessage;
+import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.common.data.ReplicationMessage;
+import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,8 +18,8 @@ import static java.util.Objects.requireNonNull;
 public class DefaultReplicationService implements ReplicationService {
 
     private final FileService fileService;
-    private final ReplicationServiceClient replicationServiceClient;
-    private final ResponseClient responseClient;
+    private final ReplicationServiceClient serviceClient;
+    private final ReplicationResponseClient responseClient;
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
@@ -24,15 +27,22 @@ public class DefaultReplicationService implements ReplicationService {
     public DefaultReplicationService(
             FileService fileService,
             ReplicationServiceClient replicationServiceClient,
-            ResponseClient responseClient
+            ReplicationResponseClient replicationResponseClient
     ) {
         this.fileService = requireNonNull(fileService);
-        this.replicationServiceClient = requireNonNull(replicationServiceClient);
-        this.responseClient = requireNonNull(responseClient);
+        this.serviceClient = requireNonNull(replicationServiceClient);
+        this.responseClient = requireNonNull(replicationResponseClient);
     }
 
     @Override
     public void saveFile(FileMessage message) {
+        // check if file exists locally
+        FileMessage fileMessage = loadFile(message);
+        if (fileMessage.getType().equals(MessageType.FILE_NOT_FOUND)) {
+            // check if file exists anywhere
+            ReplicationMessage replicationMessage = null; // we need broadcast replication query
+            serviceClient.sendMessage(replicationMessage);
+        }
 
     }
 
@@ -53,6 +63,12 @@ public class DefaultReplicationService implements ReplicationService {
 
     @Override
     public ReplicationStatus getStatus(FileMessage message) {
-        return null;
+        ReplicationMessage replicationMessage = null; // broadcast status
+        serviceClient.sendMessage(replicationMessage);
+
+        ReplicationMessage response = responseClient.getResponse(message.getId());
+        ReplicationStatus status = response.getReplicationStatus();
+
+        return status;
     }
 }
