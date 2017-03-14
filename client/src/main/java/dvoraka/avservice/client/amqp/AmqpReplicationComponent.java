@@ -1,5 +1,6 @@
-package dvoraka.avservice.client;
+package dvoraka.avservice.client.amqp;
 
+import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import org.apache.logging.log4j.LogManager;
