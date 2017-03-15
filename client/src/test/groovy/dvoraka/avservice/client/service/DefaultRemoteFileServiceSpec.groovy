@@ -9,7 +9,7 @@ import spock.lang.Subject
 /**
  * Remote file service spec.
  */
-class DefaultRemoteFileServiceSpec extends Specification {
+class DefaultFileServiceClientSpec extends Specification {
 
     @Subject
     DefaultFileServiceClient service
