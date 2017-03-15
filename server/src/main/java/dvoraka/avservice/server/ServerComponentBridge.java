@@ -8,16 +8,18 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Server components bridge.
  */
 @Component
 public class ServerComponentBridge implements ServiceManagement {
 
-    private static final Logger log = LogManager.getLogger(ServerComponentBridge.class);
-
     private final ServerComponent inComponent;
     private final ServerComponent outComponent;
+
+    private static final Logger log = LogManager.getLogger(ServerComponentBridge.class);
 
     private AvMessageListener inListener;
     private AvMessageListener outListener;
@@ -33,8 +35,8 @@ public class ServerComponentBridge implements ServiceManagement {
             throw new IllegalArgumentException("Components must not be the same!");
         }
 
-        this.inComponent = inComponent;
-        this.outComponent = outComponent;
+        this.inComponent = requireNonNull(inComponent);
+        this.outComponent = requireNonNull(outComponent);
 
         inListener = outComponent::sendAvMessage;
         outListener = inComponent::sendAvMessage;

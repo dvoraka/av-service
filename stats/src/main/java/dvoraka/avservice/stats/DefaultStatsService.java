@@ -8,6 +8,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Statistics service.
  */
@@ -19,7 +21,7 @@ public class DefaultStatsService implements StatsService {
 
     @Autowired
     public DefaultStatsService(Messages messages) {
-        this.messages = messages;
+        this.messages = requireNonNull(messages);
     }
 
     @Override

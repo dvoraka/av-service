@@ -16,6 +16,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Simple checker class for checking if a transport of messages works. Class has a buffer
  * for incoming messages but if the buffer is full some messages will be lost. Also foreign
@@ -24,12 +26,12 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class SimpleChecker implements Checker, AvMessageListener {
 
+    private final ServerComponent component;
+
     private static final Logger log = LogManager.getLogger(SimpleChecker.class.getName());
 
     private static final long MAX_TIMEOUT = 1_000;
     private static final int QUEUE_CAPACITY = 10;
-
-    private final ServerComponent component;
 
     private final BlockingQueue<AvMessage> queue;
 
@@ -40,7 +42,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
     }
 
     public SimpleChecker(ServerComponent component, int queueSize) {
-        this.component = component;
+        this.component = requireNonNull(component);
         this.component.addAvMessageListener(this);
         queue = new ArrayBlockingQueue<>(queueSize);
     }

@@ -23,9 +23,9 @@ import static java.util.Objects.requireNonNull;
 @Transactional
 public class DbFileService implements FileService {
 
-    private static final Logger log = LogManager.getLogger(DbFileService.class);
-
     private final DbFileRepository repository;
+
+    private static final Logger log = LogManager.getLogger(DbFileService.class);
 
 
     @Autowired
