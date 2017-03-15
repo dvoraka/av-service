@@ -26,4 +26,9 @@ public class DummyFileService implements FileService {
     public void deleteFile(FileMessage message) {
         // do nothing
     }
+
+    @Override
+    public boolean exists(String filename, String owner) {
+        return false;
+    }
 }

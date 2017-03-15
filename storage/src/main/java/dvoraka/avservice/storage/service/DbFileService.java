@@ -82,4 +82,10 @@ public class DbFileService implements FileService {
                 message.getOwner()
         );
     }
+
+    @Override
+    public boolean exists(String filename, String owner) {
+        //TODO
+        return false;
+    }
 }

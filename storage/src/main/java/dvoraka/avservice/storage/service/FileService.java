@@ -14,4 +14,6 @@ public interface FileService {
     void updateFile(FileMessage message);
 
     void deleteFile(FileMessage message);
+
+    boolean exists(String filename, String owner);
 }

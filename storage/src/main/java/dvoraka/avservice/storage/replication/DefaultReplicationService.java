@@ -48,6 +48,7 @@ public class DefaultReplicationService implements ReplicationService {
 
     @Override
     public FileMessage loadFile(FileMessage message) {
+        // we load locally first and then remotely
         return null;
     }
 
@@ -59,6 +60,12 @@ public class DefaultReplicationService implements ReplicationService {
     @Override
     public void deleteFile(FileMessage message) {
 
+    }
+
+    @Override
+    public boolean exists(String filename, String owner) {
+        //TODO
+        return false;
     }
 
     @Override
