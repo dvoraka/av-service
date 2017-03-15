@@ -1,7 +1,7 @@
 package dvoraka.avservice.storage.replication;
 
-import dvoraka.avservice.client.service.ReplicationResponseClient;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
+import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.data.ReplicationMessage;

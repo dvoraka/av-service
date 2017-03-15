@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.checker;
 
-import dvoraka.avservice.common.AvMessageSender;
+import dvoraka.avservice.client.AvMessageSender;
 
 /**
  * Interface for various message checkers.

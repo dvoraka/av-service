@@ -2,7 +2,7 @@ package dvoraka.avservice.rest.configuration;
 
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.FileServiceClient;
-import dvoraka.avservice.client.service.ResponseClient;
+import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.rest.service.RemoteRestService;
 import dvoraka.avservice.rest.service.RestService;
 import org.springframework.context.annotation.Bean;

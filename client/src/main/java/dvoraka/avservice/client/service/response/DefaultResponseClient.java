@@ -1,9 +1,8 @@
-package dvoraka.avservice.client.service;
+package dvoraka.avservice.client.service.response;
 
-import dvoraka.avservice.client.ReplicationComponent;
-import dvoraka.avservice.common.ReplicationMessageListener;
+import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.ReplicationMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;
@@ -24,28 +23,27 @@ import java.util.concurrent.TimeUnit;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Default replication response client implementation.
+ * Default response client implementation.
  */
 @Service
-public class DefaultReplicationResponseClient implements
-        ReplicationResponseClient, ReplicationMessageListener {
+public class DefaultResponseClient implements ResponseClient, AvMessageListener {
 
-    private final ReplicationComponent replicationComponent;
+    private final ServerComponent serverComponent;
 
-    private static final Logger log = LogManager.getLogger(DefaultReplicationResponseClient.class);
+    private static final Logger log = LogManager.getLogger(DefaultResponseClient.class);
 
-    private static final String CACHE_NAME = "replicationMessageCache";
+    private static final String CACHE_NAME = "messageCache";
     public static final int CACHE_TIMEOUT = 60 * 1_000; // one minute
 
     private CacheManager cacheManager;
-    private Cache<String, ReplicationMessage> messageCache;
+    private Cache<String, AvMessage> messageCache;
 
     private volatile boolean started;
 
 
     @Autowired
-    public DefaultReplicationResponseClient(ReplicationComponent replicationComponent) {
-        this.replicationComponent = requireNonNull(replicationComponent);
+    public DefaultResponseClient(ServerComponent serverComponent) {
+        this.serverComponent = requireNonNull(serverComponent);
     }
 
     @PostConstruct
@@ -58,7 +56,7 @@ public class DefaultReplicationResponseClient implements
         log.info("Start.");
         setStarted(true);
         initializeCache();
-        replicationComponent.addReplicationMessageListener(this);
+        serverComponent.addAvMessageListener(this);
     }
 
     @PreDestroy
@@ -70,7 +68,7 @@ public class DefaultReplicationResponseClient implements
 
         log.info("Stop.");
         setStarted(false);
-        replicationComponent.removeReplicationMessageListener(this);
+        serverComponent.removeAvMessageListener(this);
         cacheManager.close();
     }
 
@@ -78,7 +76,7 @@ public class DefaultReplicationResponseClient implements
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache(CACHE_NAME, getCacheConfiguration())
                 .build(true);
-        messageCache = cacheManager.getCache(CACHE_NAME, String.class, ReplicationMessage.class);
+        messageCache = cacheManager.getCache(CACHE_NAME, String.class, AvMessage.class);
     }
 
     private CacheConfiguration<String, AvMessage> getCacheConfiguration() {
@@ -103,12 +101,12 @@ public class DefaultReplicationResponseClient implements
     }
 
     @Override
-    public ReplicationMessage getResponse(String id) {
+    public AvMessage getResponse(String id) {
         return messageCache.get(id);
     }
 
     @Override
-    public void onMessage(ReplicationMessage response) {
+    public void onAvMessage(AvMessage response) {
         log.debug("On message: {}", response);
         messageCache.put(response.getCorrelationId(), response);
     }

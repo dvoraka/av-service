@@ -2,7 +2,7 @@ package dvoraka.avservice.rest.service;
 
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.FileServiceClient;
-import dvoraka.avservice.client.service.ResponseClient;
+import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.data.MessageStatus;
 
 /**
