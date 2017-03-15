@@ -3,7 +3,7 @@ package dvoraka.avservice.common;
 import dvoraka.avservice.common.data.ReplicationMessage;
 
 /**
- * Message listener.
+ * Replication message listener.
  */
 @FunctionalInterface
 public interface ReplicationMessageListener {

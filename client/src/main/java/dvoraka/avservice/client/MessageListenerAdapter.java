@@ -1,4 +1,4 @@
-package dvoraka.avservice.common;
+package dvoraka.avservice.client;
 
 import javax.jms.Message;
 
