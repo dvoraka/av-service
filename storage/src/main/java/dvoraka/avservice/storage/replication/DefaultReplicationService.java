@@ -3,7 +3,6 @@ package dvoraka.avservice.storage.replication;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.data.FileMessage;
-import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.storage.service.FileService;
@@ -36,36 +35,55 @@ public class DefaultReplicationService implements ReplicationService {
 
     @Override
     public void saveFile(FileMessage message) {
-        // check if file exists locally
-        FileMessage fileMessage = loadFile(message);
-        if (fileMessage.getType().equals(MessageType.FILE_NOT_FOUND)) {
-            // check if file exists anywhere
-            ReplicationMessage replicationMessage = null; // we need broadcast replication query
-            serviceClient.sendMessage(replicationMessage);
+        if (exists(message)) {
+            // throw something
+        } else {
+            // save
         }
-
     }
 
     @Override
     public FileMessage loadFile(FileMessage message) {
-        // we load locally first and then remotely
+        if (exists(message)) {
+            // load locally if possible then remotely
+        } else {
+            // throw something
+        }
+
         return null;
     }
 
     @Override
     public void updateFile(FileMessage message) {
-
+        if (exists(message)) {
+            // update
+        } else {
+            // throw something
+        }
     }
 
     @Override
     public void deleteFile(FileMessage message) {
-
+        if (exists(message)) {
+            // delete
+        } else {
+            // throw something
+        }
     }
 
     @Override
     public boolean exists(String filename, String owner) {
-        //TODO
-        return false;
+        boolean result;
+        // local check
+        result = fileService.exists(filename, owner);
+        // remote check
+        serviceClient.sendMessage(null);
+
+        return result;
+    }
+
+    private boolean exists(FileMessage message) {
+        return exists(message.getFilename(), message.getOwner());
     }
 
     @Override
