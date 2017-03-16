@@ -27,6 +27,7 @@ public class DefaultReplicationService implements ReplicationService {
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
     private BlockingQueue<ReplicationMessage> commands;
+    private RemoteLock remoteLock;
 
 
     public DefaultReplicationService(
@@ -47,7 +48,22 @@ public class DefaultReplicationService implements ReplicationService {
         if (exists(message)) {
             throw new ExistingFileException();
         } else {
-            // save
+            try {
+                if (remoteLock.lockForFile(message.getFilename(), message.getOwner())) {
+                    if (!exists(message)) {
+                        // save locally
+                        // save remotely
+                    } else {
+                        throw new ExistingFileException();
+                    }
+                } else {
+                    log.warn("Save problem for: " + message);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                remoteLock.unlockForFile(message.getFilename(), message.getOwner());
+            }
         }
     }
 
