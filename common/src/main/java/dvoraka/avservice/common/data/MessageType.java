@@ -39,5 +39,13 @@ public enum MessageType {
     /**
      * Response with a file status.
      */
-    FILE_RESPONSE
+    FILE_RESPONSE,
+    /**
+     * Replication normal command.
+     */
+    REPLICATION_COMMAND,
+    /**
+     * Replication service command.
+     */
+    REPLICATION_SERVICE
 }

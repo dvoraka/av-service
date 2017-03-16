@@ -9,6 +9,9 @@ import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -22,6 +25,8 @@ public class DefaultReplicationService implements ReplicationService {
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
+    private BlockingQueue<ReplicationMessage> commands;
+
 
     public DefaultReplicationService(
             FileService fileService,
@@ -31,6 +36,9 @@ public class DefaultReplicationService implements ReplicationService {
         this.fileService = requireNonNull(fileService);
         this.serviceClient = requireNonNull(replicationServiceClient);
         this.responseClient = requireNonNull(replicationResponseClient);
+
+        final int size = 10;
+        commands = new ArrayBlockingQueue<>(size);
     }
 
     @Override
