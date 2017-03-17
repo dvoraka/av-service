@@ -108,10 +108,6 @@ public class DefaultReplicationService implements ReplicationService {
         return result;
     }
 
-    private boolean exists(FileMessage message) {
-        return exists(message.getFilename(), message.getOwner());
-    }
-
     @Override
     public ReplicationStatus getStatus(FileMessage message) {
         ReplicationMessage replicationMessage = null; // broadcast status

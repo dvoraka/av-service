@@ -39,7 +39,7 @@ public class DbFileService implements FileService {
     public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Saving: " + message);
 
-        if (exists(message.getFilename(), message.getOwner())) {
+        if (exists(message)) {
             throw new ExistingFileException();
         } else {
             repository.save(buildFile(message));

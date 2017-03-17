@@ -17,4 +17,8 @@ public interface FileService {
     void deleteFile(FileMessage message);
 
     boolean exists(String filename, String owner);
+
+    default boolean exists(FileMessage message) {
+        return exists(message.getFilename(), message.getOwner());
+    }
 }
