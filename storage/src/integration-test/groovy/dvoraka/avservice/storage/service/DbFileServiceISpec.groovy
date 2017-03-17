@@ -53,6 +53,11 @@ class DbFileServiceISpec extends Specification {
 
         when:
             service.saveFile(message)
+
+        then:
+            service.exists(message.getFilename(), message.getOwner())
+
+        when:
             FileMessage response = service.loadFile(request)
 
         then:
