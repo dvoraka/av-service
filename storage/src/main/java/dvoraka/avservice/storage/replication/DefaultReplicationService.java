@@ -28,6 +28,7 @@ public class DefaultReplicationService implements ReplicationService {
 
     private BlockingQueue<ReplicationMessage> commands;
     private RemoteLock remoteLock;
+    private int neighbourCount;
 
 
     public DefaultReplicationService(

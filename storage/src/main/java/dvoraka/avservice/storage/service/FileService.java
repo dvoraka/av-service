@@ -1,14 +1,14 @@
 package dvoraka.avservice.storage.service;
 
 import dvoraka.avservice.common.data.FileMessage;
-import dvoraka.avservice.storage.ExistingFileException;
+import dvoraka.avservice.storage.FileServiceException;
 
 /**
  * File service interface.
  */
 public interface FileService {
 
-    void saveFile(FileMessage message) throws ExistingFileException;
+    void saveFile(FileMessage message) throws FileServiceException;
 
     FileMessage loadFile(FileMessage message);
 

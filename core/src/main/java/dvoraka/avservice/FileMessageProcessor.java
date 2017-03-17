@@ -7,7 +7,7 @@ import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.service.BasicMessageStatusStorage;
 import dvoraka.avservice.common.service.MessageStatusStorage;
-import dvoraka.avservice.storage.ExistingFileException;
+import dvoraka.avservice.storage.FileServiceException;
 import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -73,7 +73,8 @@ public class FileMessageProcessor implements MessageProcessor {
     private void save(AvMessage message) {
         try {
             fileService.saveFile(message);
-        } catch (ExistingFileException e) {
+        } catch (FileServiceException e) {
+            //TODO
             e.printStackTrace();
             //notify error
         }
