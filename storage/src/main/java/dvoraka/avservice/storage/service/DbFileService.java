@@ -5,6 +5,8 @@ import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.db.model.File;
 import dvoraka.avservice.db.repository.db.DbFileRepository;
+import dvoraka.avservice.storage.ExistingFileException;
+import dvoraka.avservice.storage.FileServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +36,14 @@ public class DbFileService implements FileService {
     }
 
     @Override
-    public void saveFile(FileMessage message) {
+    public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Saving: " + message);
-        repository.save(buildFile(message));
+
+        if (exists(message.getFilename(), message.getOwner())) {
+            throw new ExistingFileException();
+        } else {
+            repository.save(buildFile(message));
+        }
     }
 
     private File buildFile(FileMessage message) {
@@ -85,7 +92,7 @@ public class DbFileService implements FileService {
 
     @Override
     public boolean exists(String filename, String owner) {
-        //TODO
-        return false;
+        return repository.findByFilenameAndOwner(filename, owner)
+                .isPresent();
     }
 }

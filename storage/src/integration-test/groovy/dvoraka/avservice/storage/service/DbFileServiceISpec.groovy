@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
+import dvoraka.avservice.storage.ExistingFileException
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -27,6 +28,18 @@ class DbFileServiceISpec extends Specification {
     def "save file"() {
         expect:
             service.saveFile(Utils.genFileMessage())
+    }
+
+    def "save same file twice"() {
+        given:
+            FileMessage message = Utils.genFileMessage()
+
+        when:
+            service.saveFile(message)
+            service.saveFile(message)
+
+        then:
+            thrown(ExistingFileException)
     }
 
     def "save and load file"() {
