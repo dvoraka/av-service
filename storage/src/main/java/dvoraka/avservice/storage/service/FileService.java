@@ -4,7 +4,7 @@ import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.storage.FileServiceException;
 
 /**
- * File service interface.
+ * File service synchronous interface.
  */
 public interface FileService {
 

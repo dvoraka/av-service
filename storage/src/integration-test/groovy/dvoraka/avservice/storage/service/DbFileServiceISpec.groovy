@@ -182,7 +182,10 @@ class DbFileServiceISpec extends Specification {
                     .type(MessageType.FILE_DELETE)
                     .build()
 
-        expect:
+        when:
             service.deleteFile(deleteRequest)
+
+        then:
+            !service.exists(message)
     }
 }
