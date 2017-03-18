@@ -7,7 +7,6 @@ import dvoraka.avservice.db.model.File;
 import dvoraka.avservice.db.repository.db.DbFileRepository;
 import dvoraka.avservice.storage.ExistingFileException;
 import dvoraka.avservice.storage.FileNotFoundException;
-import dvoraka.avservice.storage.FileServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class DbFileService implements FileService {
     }
 
     @Override
-    public void saveFile(FileMessage message) throws FileServiceException {
+    public void saveFile(FileMessage message) throws ExistingFileException {
         log.debug("Saving: " + message);
 
         if (exists(message)) {
@@ -76,7 +75,7 @@ public class DbFileService implements FileService {
     }
 
     @Override
-    public void updateFile(FileMessage message) throws FileServiceException {
+    public void updateFile(FileMessage message) throws FileNotFoundException {
         log.debug("Updating: " + message);
 
         Optional<File> oldFile = repository.findByFilenameAndOwner(
