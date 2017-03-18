@@ -61,8 +61,10 @@ class DbFileServiceISpec extends Specification {
             FileMessage response = service.loadFile(request)
 
         then:
-            message.owner == response.owner
-            message.filename == response.filename
+            message.getOwner() == response.getOwner()
+            message.getFilename() == response.getFilename()
+
+            request.getId() == response.getCorrelationId()
     }
 
     def "save and delete file"() {
@@ -83,17 +85,21 @@ class DbFileServiceISpec extends Specification {
 
         when:
             service.saveFile(message)
-            FileMessage response = service.loadFile(loadRequest)
 
         then:
-            message.owner == response.owner
-            message.filename == response.filename
+            service.exists(message)
 
         when:
             service.deleteFile(deleteRequest)
 
         then:
-            service.loadFile(loadRequest).getType() == MessageType.FILE_NOT_FOUND
+            !service.exists(message)
+
+        when:
+            FileMessage notFound = service.loadFile(loadRequest)
+
+        then:
+            notFound.getType() == MessageType.FILE_NOT_FOUND
     }
 
     def "save and update file"() {
