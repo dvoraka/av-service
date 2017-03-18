@@ -12,7 +12,7 @@ public interface FileService {
 
     FileMessage loadFile(FileMessage message);
 
-    void updateFile(FileMessage message);
+    void updateFile(FileMessage message) throws FileServiceException;
 
     void deleteFile(FileMessage message);
 

@@ -6,6 +6,7 @@ import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.db.model.File;
 import dvoraka.avservice.db.repository.db.DbFileRepository;
 import dvoraka.avservice.storage.ExistingFileException;
+import dvoraka.avservice.storage.FileNotFoundException;
 import dvoraka.avservice.storage.FileServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,11 +76,18 @@ public class DbFileService implements FileService {
     }
 
     @Override
-    public void updateFile(FileMessage message) {
+    public void updateFile(FileMessage message) throws FileServiceException {
+        log.debug("Updating: " + message);
+
         Optional<File> oldFile = repository.findByFilenameAndOwner(
                 message.getFilename(), message.getOwner());
-        oldFile.ifPresent(f -> f.setData(message.getData()));
-        oldFile.ifPresent(repository::save);
+
+        if (oldFile.isPresent()) {
+            oldFile.get().setData(message.getData());
+            repository.save(oldFile.get());
+        } else {
+            throw new FileNotFoundException();
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.storage.ExistingFileException
+import dvoraka.avservice.storage.FileNotFoundException
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -122,11 +123,14 @@ class DbFileServiceISpec extends Specification {
 
         when:
             service.saveFile(message)
+
+        then:
+            service.exists(message)
+
+        when:
             FileMessage response = service.loadFile(loadRequest)
 
         then:
-            message.owner == response.owner
-            message.filename == response.filename
             !Arrays.equals(response.getData(), newData)
 
         when:
@@ -148,6 +152,25 @@ class DbFileServiceISpec extends Specification {
 
         expect:
             service.loadFile(loadRequest).getType() == MessageType.FILE_NOT_FOUND
+    }
+
+    def "update non-existent file"() {
+        given:
+            AvMessage message = Utils.genFileMessage(testingOwner)
+
+            byte[] newData = new byte[3]
+            AvMessage updateRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .filename(message.getFilename())
+                    .owner(message.getOwner())
+                    .data(newData)
+                    .type(MessageType.FILE_UPDATE)
+                    .build()
+
+        when:
+            service.updateFile(updateRequest)
+
+        then:
+            thrown(FileNotFoundException)
     }
 
     def "delete non-existent file"() {

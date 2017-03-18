@@ -87,7 +87,12 @@ public class FileMessageProcessor implements MessageProcessor {
     }
 
     private void update(AvMessage message) {
-        fileService.updateFile(message);
+        try {
+            fileService.updateFile(message);
+        } catch (FileServiceException e) {
+            //TODO
+            e.printStackTrace();
+        }
         notifyListeners(createOkResponse(message));
     }
 
