@@ -1,5 +1,7 @@
 package dvoraka.avservice.common.data;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Default replication message implementation.
  */
@@ -17,6 +19,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
     private final String toId;
     private final MessageRouting routing;
     private final ReplicationStatus replicationStatus;
+    private final QueryType queryType;
 
 
     private DefaultReplicationMessage(Builder builder) {
@@ -32,6 +35,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
         this.toId = builder.toId;
         this.routing = builder.routing;
         this.replicationStatus = builder.replicationStatus;
+        this.queryType = builder.queryType;
     }
 
     @Override
@@ -51,8 +55,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
 
     @Override
     public byte[] getData() {
-//        return data;
-        return null;
+        return data.clone();
     }
 
     @Override
@@ -87,7 +90,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
 
     @Override
     public QueryType getQueryType() {
-        return null;
+        return queryType;
     }
 
     public static class Builder {
@@ -104,8 +107,71 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
         private String toId;
         private MessageRouting routing;
         private ReplicationStatus replicationStatus;
+        private QueryType queryType;
 
-        public Builder() {
+
+        public Builder(String id) {
+            this.id = requireNonNull(id);
+        }
+
+        public Builder correlationId(String correlationId) {
+            this.correlationId = correlationId;
+            return this;
+        }
+
+        public Builder type(MessageType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder data(byte[] data) {
+            if (data != null) {
+                this.data = data.clone();
+            }
+            return this;
+        }
+
+        public Builder filename(String filename) {
+            this.filename = filename;
+            return this;
+        }
+
+        public Builder owner(String owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Builder fromId(String fromId) {
+            this.fromId = fromId;
+            return this;
+        }
+
+        public Builder toId(String toId) {
+            this.toId = toId;
+            return this;
+        }
+
+        public Builder routing(MessageRouting routing) {
+            this.routing = routing;
+            return this;
+        }
+
+        public Builder replicationStatus(ReplicationStatus replicationStatus) {
+            this.replicationStatus = replicationStatus;
+            return this;
+        }
+
+        public Builder queryType(QueryType queryType) {
+            this.queryType = queryType;
+            return this;
+        }
+
+        public DefaultReplicationMessage build() {
+            if (data == null) {
+                data = new byte[0];
+            }
+
+            return new DefaultReplicationMessage(this);
         }
     }
 }
