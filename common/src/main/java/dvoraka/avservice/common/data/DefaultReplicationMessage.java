@@ -85,6 +85,11 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
         return replicationStatus;
     }
 
+    @Override
+    public QueryType getQueryType() {
+        return null;
+    }
+
     public static class Builder {
 
         private String id;

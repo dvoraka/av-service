@@ -42,6 +42,7 @@ public class DefaultReplicationService implements ReplicationService {
 
         final int size = 10;
         commands = new ArrayBlockingQueue<>(size);
+        remoteLock = new DefaultRemoteLock();
     }
 
     @Override

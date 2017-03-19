@@ -12,4 +12,6 @@ public interface ReplicationMessage extends FileMessage {
     MessageRouting getRouting();
 
     ReplicationStatus getReplicationStatus();
+
+    QueryType getQueryType();
 }
