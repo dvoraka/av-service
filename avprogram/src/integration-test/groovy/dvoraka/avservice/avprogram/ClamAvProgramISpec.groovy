@@ -2,7 +2,6 @@ package dvoraka.avservice.avprogram
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.ScanException
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -66,32 +65,6 @@ class ClamAvProgramISpec extends Specification {
             program.scanBytes(eicarString.getBytes())
     }
 
-    @Ignore('manual testing')
-    def "scan bytes new - performance"() {
-        when:
-            // warm up
-            1000.times {
-                programWithPooling.scanBytesWithInfo(eicarString.getBytes())
-                program.scanBytesWithInfo(eicarString.getBytes())
-            }
-
-            int count = 100_000
-            long start = System.currentTimeMillis()
-            count.times {
-                programWithPooling.scanBytesWithInfo(eicarString.getBytes())
-            }
-            println(System.currentTimeMillis() - start)
-
-            start = System.currentTimeMillis()
-            count.times {
-                program.scanBytesWithInfo(eicarString.getBytes())
-            }
-            println(System.currentTimeMillis() - start)
-
-        then:
-            true
-    }
-
     def "scan bytes new - normal message"() {
         expect:
             programWithPooling.scanBytesWithInfo(cleanData) == program.CLEAN_STREAM_RESPONSE
@@ -99,7 +72,8 @@ class ClamAvProgramISpec extends Specification {
 
     def "scan bytes new - infected message"() {
         expect:
-            programWithPooling.scanBytesWithInfo(eicarString.getBytes()) != program.CLEAN_STREAM_RESPONSE
+            programWithPooling
+                    .scanBytesWithInfo(eicarString.getBytes()) != program.CLEAN_STREAM_RESPONSE
     }
 
     def "scan too big array"() {

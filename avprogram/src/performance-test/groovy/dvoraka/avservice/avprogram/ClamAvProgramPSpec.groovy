@@ -14,10 +14,17 @@ class ClamAvProgramPSpec extends Specification {
     String eicarString = Utils.EICAR
 
     ClamAvProgram program
+    ClamAvProgram programWithPooling
 
 
     def setup() {
         program = new ClamAvProgram()
+        programWithPooling = new ClamAvProgram(
+                ClamAvProgram.DEFAULT_HOST,
+                ClamAvProgram.DEFAULT_PORT,
+                ClamAvProgram.DEFAULT_MAX_ARRAY_SIZE,
+                true
+        )
     }
 
     def "single thread performance"() {
@@ -28,6 +35,31 @@ class ClamAvProgramPSpec extends Specification {
             fileCount.times {
                 program.scanBytes(eicarString.getBytes())
             }
+
+        then:
+            notThrown(Exception)
+    }
+
+    def "scan bytes new - performance"() {
+        when:
+            // warm up
+            1000.times {
+                programWithPooling.scanBytesWithInfo(eicarString.getBytes())
+                program.scanBytesWithInfo(eicarString.getBytes())
+            }
+
+            int count = 100_000
+            long start = System.currentTimeMillis()
+            count.times {
+                programWithPooling.scanBytesWithInfo(eicarString.getBytes())
+            }
+            println(System.currentTimeMillis() - start)
+
+            start = System.currentTimeMillis()
+            count.times {
+                program.scanBytesWithInfo(eicarString.getBytes())
+            }
+            println(System.currentTimeMillis() - start)
 
         then:
             notThrown(Exception)
