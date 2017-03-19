@@ -48,23 +48,24 @@ public class DefaultReplicationService implements ReplicationService {
     public void saveFile(FileMessage message) throws ExistingFileException {
         if (exists(message)) {
             throw new ExistingFileException();
-        } else {
-            try {
-                if (remoteLock.lockForFile(message.getFilename(), message.getOwner())) {
-                    if (!exists(message)) {
-                        // save locally
-                        // save remotely
-                    } else {
-                        throw new ExistingFileException();
-                    }
+        }
+
+        try {
+            if (remoteLock.lockForFile(message.getFilename(), message.getOwner())) {
+                if (!exists(message)) {
+                    // save locally
+                    // save remotely
                 } else {
-                    log.warn("Save problem for: " + message);
+                    throw new ExistingFileException();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                remoteLock.unlockForFile(message.getFilename(), message.getOwner());
+            } else {
+                log.warn("Save problem for: " + message);
             }
+        } catch (InterruptedException e) {
+            log.warn("Locking interrupted!", e);
+            Thread.currentThread().interrupt();
+        } finally {
+            remoteLock.unlockForFile(message.getFilename(), message.getOwner());
         }
     }
 
