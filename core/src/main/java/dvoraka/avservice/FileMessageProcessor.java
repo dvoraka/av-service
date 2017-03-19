@@ -73,12 +73,11 @@ public class FileMessageProcessor implements MessageProcessor {
     private void save(AvMessage message) {
         try {
             fileService.saveFile(message);
+            notifyListeners(createOkResponse(message));
         } catch (FileServiceException e) {
-            //TODO
-            e.printStackTrace();
-            //notify error
+            log.warn("File service problem!", e);
+            notifyListeners(message.createErrorResponse("Save problem"));
         }
-        notifyListeners(createOkResponse(message));
     }
 
     private void load(AvMessage message) {
@@ -89,11 +88,11 @@ public class FileMessageProcessor implements MessageProcessor {
     private void update(AvMessage message) {
         try {
             fileService.updateFile(message);
+            notifyListeners(createOkResponse(message));
         } catch (FileServiceException e) {
-            //TODO
-            e.printStackTrace();
+            log.warn("File service problem!", e);
+            notifyListeners(message.createErrorResponse("Update problem"));
         }
-        notifyListeners(createOkResponse(message));
     }
 
     private void delete(AvMessage message) {
