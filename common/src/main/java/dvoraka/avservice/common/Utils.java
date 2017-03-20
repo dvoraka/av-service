@@ -120,7 +120,7 @@ public final class Utils {
         return genFileMessage(MessageType.FILE_DELETE);
     }
 
-    public static ReplicationMessage genExistsMessage(String filename, String owner) {
+    public static ReplicationMessage genExistsQueryMessage(String filename, String owner) {
         return new DefaultReplicationMessage.Builder(genUuidString())
                 .correlationId(TEST_CORR_ID)
                 .type(MessageType.REPLICATION_SERVICE)

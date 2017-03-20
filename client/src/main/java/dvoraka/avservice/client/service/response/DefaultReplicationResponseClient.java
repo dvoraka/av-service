@@ -27,6 +27,7 @@ import static java.util.Objects.requireNonNull;
  * Default replication response client implementation.
  */
 @Service
+//TODO: multiple responses with the same correlation ID
 public class DefaultReplicationResponseClient implements
         ReplicationResponseClient, ReplicationMessageListener {
 

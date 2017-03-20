@@ -103,16 +103,19 @@ public class DefaultReplicationService implements ReplicationService {
 
     @Override
     public boolean exists(String filename, String owner) {
-        boolean result;
-
         // local check
-        result = fileService.exists(filename, owner);
+        if (fileService.exists(filename, owner)) {
+            return true;
+        }
 
         // remote check
         serviceClient.sendMessage(null);
-//        ReplicationMessage message = responseClient.getResponseWait("", MAX_RESPONSE_TIME);
+        ReplicationMessage message = responseClient.getResponseWait("", MAX_RESPONSE_TIME);
+        if (message.getReplicationStatus() == ReplicationStatus.OK) {
+            return true;
+        }
 
-        return result;
+        return false;
     }
 
     @Override

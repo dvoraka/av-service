@@ -31,6 +31,7 @@ class DefaultReplicationServiceSpec extends Specification {
         service = new DefaultReplicationService(fileService, serviceClient, responseClient)
     }
 
+    @Ignore
     def "save"() {
         given:
             FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
@@ -42,7 +43,6 @@ class DefaultReplicationServiceSpec extends Specification {
             (1.._) * fileService.exists(message.getFilename(), message.getOwner())
     }
 
-    @Ignore
     def "exists"() {
         given:
             String filename = 'testF'
@@ -55,6 +55,6 @@ class DefaultReplicationServiceSpec extends Specification {
             1 * fileService.exists(filename, owner)
             1 * serviceClient.sendMessage(_)
 
-            1 * responseClient.getResponseWait(_, _)
+            1 * responseClient.getResponseWait(_, _) >> Utils.genExistsQueryMessage(filename, owner)
     }
 }
