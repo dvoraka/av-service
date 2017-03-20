@@ -108,6 +108,34 @@ public class DefaultReplicationResponseClient implements
     }
 
     @Override
+    public ReplicationMessage getResponseWait(String id, long waitTime) {
+        final long start = System.currentTimeMillis();
+        final int sleepTime = 100;
+
+        ReplicationMessage result;
+        while (true) {
+            result = getResponse(id);
+            if (result != null) {
+                break;
+            }
+
+            if ((System.currentTimeMillis() - start) > waitTime) {
+                break;
+            } else {
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    log.warn("Sleeping interrupted!", e);
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+    @Override
     public void onMessage(ReplicationMessage response) {
         log.debug("On message: {}", response);
         messageCache.put(response.getCorrelationId(), response);

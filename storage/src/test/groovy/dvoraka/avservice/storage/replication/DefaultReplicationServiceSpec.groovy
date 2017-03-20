@@ -6,6 +6,7 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.storage.service.FileService
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -39,5 +40,21 @@ class DefaultReplicationServiceSpec extends Specification {
 
         then:
             (1.._) * fileService.exists(message.getFilename(), message.getOwner())
+    }
+
+    @Ignore
+    def "exists"() {
+        given:
+            String filename = 'testF'
+            String owner = 'testO'
+
+        when:
+            service.exists(filename, owner)
+
+        then:
+            1 * fileService.exists(filename, owner)
+            1 * serviceClient.sendMessage(_)
+
+            1 * responseClient.getResponseWait(_, _)
     }
 }

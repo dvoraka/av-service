@@ -26,6 +26,8 @@ public class DefaultReplicationService implements ReplicationService {
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
+    private static final int MAX_RESPONSE_TIME = 1_000; // one second
+
     private BlockingQueue<ReplicationMessage> commands;
     private RemoteLock remoteLock;
     private int neighbourCount;
@@ -102,10 +104,13 @@ public class DefaultReplicationService implements ReplicationService {
     @Override
     public boolean exists(String filename, String owner) {
         boolean result;
+
         // local check
         result = fileService.exists(filename, owner);
+
         // remote check
         serviceClient.sendMessage(null);
+//        ReplicationMessage message = responseClient.getResponseWait("", MAX_RESPONSE_TIME);
 
         return result;
     }

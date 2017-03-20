@@ -14,4 +14,6 @@ public interface ReplicationResponseClient {
      * @return the response message or null if message is not available
      */
     ReplicationMessage getResponse(String id);
+
+    ReplicationMessage getResponseWait(String id, long waitTime);
 }
