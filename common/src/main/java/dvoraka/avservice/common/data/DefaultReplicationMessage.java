@@ -1,6 +1,6 @@
 package dvoraka.avservice.common.data;
 
-import static java.util.Objects.requireNonNull;
+import java.util.UUID;
 
 /**
  * Default replication message implementation.
@@ -111,7 +111,11 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
 
 
         public Builder(String id) {
-            this.id = requireNonNull(id);
+            if (id == null) {
+                this.id = UUID.randomUUID().toString();
+            } else {
+                this.id = id;
+            }
         }
 
         public Builder correlationId(String correlationId) {

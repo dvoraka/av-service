@@ -2,7 +2,11 @@ package dvoraka.avservice.storage.replication;
 
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
+import dvoraka.avservice.common.data.DefaultReplicationMessage;
 import dvoraka.avservice.common.data.FileMessage;
+import dvoraka.avservice.common.data.MessageRouting;
+import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.common.data.QueryType;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.storage.ExistingFileException;
@@ -109,13 +113,26 @@ public class DefaultReplicationService implements ReplicationService {
         }
 
         // remote check
-        serviceClient.sendMessage(null);
-        ReplicationMessage message = responseClient.getResponseWait("", MAX_RESPONSE_TIME);
-        if (message.getReplicationStatus() == ReplicationStatus.OK) {
+        ReplicationMessage query = createExistsQuery(filename, owner);
+        serviceClient.sendMessage(query);
+
+        ReplicationMessage response = responseClient.getResponseWait(
+                query.getId(), MAX_RESPONSE_TIME);
+        if (response.getReplicationStatus() == ReplicationStatus.OK) {
             return true;
         }
 
         return false;
+    }
+
+    private ReplicationMessage createExistsQuery(String filename, String owner) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.BROADCAST)
+                .queryType(QueryType.EXISTS)
+                .filename(filename)
+                .owner(owner)
+                .build();
     }
 
     @Override

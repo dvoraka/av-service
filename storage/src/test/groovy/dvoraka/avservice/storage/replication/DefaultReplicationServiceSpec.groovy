@@ -6,7 +6,6 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.storage.service.FileService
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -31,7 +30,6 @@ class DefaultReplicationServiceSpec extends Specification {
         service = new DefaultReplicationService(fileService, serviceClient, responseClient)
     }
 
-    @Ignore
     def "save"() {
         given:
             FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
@@ -41,6 +39,9 @@ class DefaultReplicationServiceSpec extends Specification {
 
         then:
             (1.._) * fileService.exists(message.getFilename(), message.getOwner())
+
+            (1.._) * responseClient.getResponseWait(_, _) >> Utils
+                    .genExistsQueryMessage(message.getFilename(), message.getOwner())
     }
 
     def "exists"() {
