@@ -1,6 +1,7 @@
 package dvoraka.avservice.storage.replication;
 
 import dvoraka.avservice.client.service.ReplicationServiceClient;
+import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.data.DefaultReplicationMessage;
 import dvoraka.avservice.common.data.FileMessage;
@@ -116,14 +117,15 @@ public class DefaultReplicationService implements ReplicationService {
         ReplicationMessage query = createExistsQuery(filename, owner);
         serviceClient.sendMessage(query);
 
-        ReplicationMessage response;
-//        while ((response = responseClient.getResponseWait(
-//                query.getId(), MAX_RESPONSE_TIME)) != null) {
-//
-//            if (response.getReplicationStatus() == ReplicationStatus.OK) {
-//                return true;
-//            }
-//        }
+        ReplicationMessageList response;
+        while ((response = responseClient.getResponseWait(
+                query.getId(), MAX_RESPONSE_TIME)) != null) {
+
+            if (response.stream()
+                    .anyMatch(message -> message.getReplicationStatus() == ReplicationStatus.OK)) {
+                return true;
+            }
+        }
 
         return false;
     }
