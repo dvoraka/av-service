@@ -19,7 +19,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
     private final String toId;
     private final MessageRouting routing;
     private final ReplicationStatus replicationStatus;
-    private final QueryType queryType;
+    private final Command command;
 
 
     private DefaultReplicationMessage(Builder builder) {
@@ -35,7 +35,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
         this.toId = builder.toId;
         this.routing = builder.routing;
         this.replicationStatus = builder.replicationStatus;
-        this.queryType = builder.queryType;
+        this.command = builder.command;
     }
 
     @Override
@@ -89,8 +89,8 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
     }
 
     @Override
-    public QueryType getQueryType() {
-        return queryType;
+    public Command getCommand() {
+        return command;
     }
 
     public static class Builder {
@@ -107,7 +107,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
         private String toId;
         private MessageRouting routing;
         private ReplicationStatus replicationStatus;
-        private QueryType queryType;
+        private Command command;
 
 
         public Builder(String id) {
@@ -165,8 +165,8 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
             return this;
         }
 
-        public Builder queryType(QueryType queryType) {
-            this.queryType = queryType;
+        public Builder command(Command command) {
+            this.command = command;
             return this;
         }
 

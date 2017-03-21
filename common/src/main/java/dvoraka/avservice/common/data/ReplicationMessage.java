@@ -13,5 +13,5 @@ public interface ReplicationMessage extends FileMessage {
 
     ReplicationStatus getReplicationStatus();
 
-    QueryType getQueryType();
+    Command getCommand();
 }

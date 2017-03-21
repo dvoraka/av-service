@@ -3,11 +3,11 @@ package dvoraka.avservice.storage.replication;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
+import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.DefaultReplicationMessage;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.MessageType;
-import dvoraka.avservice.common.data.QueryType;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.storage.ExistingFileException;
@@ -61,8 +61,10 @@ public class DefaultReplicationService implements ReplicationService {
         try {
             if (remoteLock.lockForFile(message.getFilename(), message.getOwner())) {
                 if (!exists(message)) {
-                    // save locally
-                    // save remotely
+                    fileService.saveFile(message);
+
+                    ReplicationMessage saveMessage = createSaveMessage(message, "test");
+                    serviceClient.sendMessage(saveMessage);
                 } else {
                     throw new ExistingFileException();
                 }
@@ -134,9 +136,21 @@ public class DefaultReplicationService implements ReplicationService {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
-                .queryType(QueryType.EXISTS)
+                .command(Command.EXISTS)
                 .filename(filename)
                 .owner(owner)
+                .build();
+    }
+
+    private ReplicationMessage createSaveMessage(FileMessage message, String neighbourId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.SAVE)
+                .toId(neighbourId)
+                .data(message.getData())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
                 .build();
     }
 

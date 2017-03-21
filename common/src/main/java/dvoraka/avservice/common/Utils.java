@@ -3,12 +3,12 @@ package dvoraka.avservice.common;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessageInfo;
 import dvoraka.avservice.common.data.DefaultReplicationMessage;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.MessageType;
-import dvoraka.avservice.common.data.QueryType;
 import dvoraka.avservice.common.data.ReplicationMessage;
 
 import java.nio.charset.StandardCharsets;
@@ -125,7 +125,7 @@ public final class Utils {
                 .correlationId(TEST_CORR_ID)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
-                .queryType(QueryType.EXISTS)
+                .command(Command.EXISTS)
                 .filename(filename)
                 .owner(owner)
                 .build();
