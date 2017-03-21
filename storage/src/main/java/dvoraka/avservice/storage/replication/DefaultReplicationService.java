@@ -116,11 +116,14 @@ public class DefaultReplicationService implements ReplicationService {
         ReplicationMessage query = createExistsQuery(filename, owner);
         serviceClient.sendMessage(query);
 
-        ReplicationMessage response = responseClient.getResponseWait(
-                query.getId(), MAX_RESPONSE_TIME);
-        if (response.getReplicationStatus() == ReplicationStatus.OK) {
-            return true;
-        }
+        ReplicationMessage response;
+//        while ((response = responseClient.getResponseWait(
+//                query.getId(), MAX_RESPONSE_TIME)) != null) {
+//
+//            if (response.getReplicationStatus() == ReplicationStatus.OK) {
+//                return true;
+//            }
+//        }
 
         return false;
     }
@@ -140,9 +143,10 @@ public class DefaultReplicationService implements ReplicationService {
         ReplicationMessage replicationMessage = null; // broadcast status
         serviceClient.sendMessage(replicationMessage);
 
-        ReplicationMessage response = responseClient.getResponse(message.getId());
-        ReplicationStatus status = response.getReplicationStatus();
+//        ReplicationMessage response = responseClient.getResponse(message.getId());
+//        ReplicationStatus status = response.getReplicationStatus();
 
-        return status;
+//        return status;
+        return null;
     }
 }

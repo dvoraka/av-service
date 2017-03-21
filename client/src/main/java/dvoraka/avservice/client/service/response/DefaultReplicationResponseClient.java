@@ -2,7 +2,6 @@ package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.common.ReplicationMessageListener;
-import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +26,6 @@ import static java.util.Objects.requireNonNull;
  * Default replication response client implementation.
  */
 @Service
-//TODO: multiple responses with the same correlation ID
 public class DefaultReplicationResponseClient implements
         ReplicationResponseClient, ReplicationMessageListener {
 
@@ -39,7 +37,7 @@ public class DefaultReplicationResponseClient implements
     public static final int CACHE_TIMEOUT = 60 * 1_000; // one minute
 
     private CacheManager cacheManager;
-    private Cache<String, ReplicationMessage> messageCache;
+    private Cache<String, ReplicationMessageList> messageCache;
 
     private volatile boolean started;
 
@@ -79,16 +77,17 @@ public class DefaultReplicationResponseClient implements
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache(CACHE_NAME, getCacheConfiguration())
                 .build(true);
-        messageCache = cacheManager.getCache(CACHE_NAME, String.class, ReplicationMessage.class);
+        messageCache = cacheManager.getCache(
+                CACHE_NAME, String.class, ReplicationMessageList.class);
     }
 
-    private CacheConfiguration<String, AvMessage> getCacheConfiguration() {
+    private CacheConfiguration<String, ReplicationMessageList> getCacheConfiguration() {
         final long heapEntries = 10;
 
         return CacheConfigurationBuilder
                 .newCacheConfigurationBuilder(
                         String.class,
-                        AvMessage.class,
+                        ReplicationMessageList.class,
                         ResourcePoolsBuilder.heap(heapEntries))
                 .withExpiry(Expirations.timeToLiveExpiration(
                         new Duration(CACHE_TIMEOUT, TimeUnit.MILLISECONDS)))
@@ -104,16 +103,16 @@ public class DefaultReplicationResponseClient implements
     }
 
     @Override
-    public ReplicationMessage getResponse(String id) {
+    public ReplicationMessageList getResponse(String id) {
         return messageCache.get(id);
     }
 
     @Override
-    public ReplicationMessage getResponseWait(String id, long waitTime) {
+    public ReplicationMessageList getResponseWait(String id, long waitTime) {
         final long start = System.currentTimeMillis();
         final int sleepTime = 100;
 
-        ReplicationMessage result;
+        ReplicationMessageList result;
         while (true) {
             result = getResponse(id);
             if (result != null) {
@@ -139,6 +138,6 @@ public class DefaultReplicationResponseClient implements
     @Override
     public void onMessage(ReplicationMessage response) {
         log.debug("On message: {}", response);
-        messageCache.put(response.getCorrelationId(), response);
+//        messageCache.put(response.getCorrelationId(), response);
     }
 }

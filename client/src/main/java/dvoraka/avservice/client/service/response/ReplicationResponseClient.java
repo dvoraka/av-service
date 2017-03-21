@@ -1,7 +1,5 @@
 package dvoraka.avservice.client.service.response;
 
-import dvoraka.avservice.common.data.ReplicationMessage;
-
 /**
  * Client interface for getting a replication response.
  */
@@ -13,7 +11,7 @@ public interface ReplicationResponseClient {
      * @param id the request message ID
      * @return the response message or null if message is not available
      */
-    ReplicationMessage getResponse(String id);
+    ReplicationMessageList getResponse(String id);
 
-    ReplicationMessage getResponseWait(String id, long waitTime);
+    ReplicationMessageList getResponseWait(String id, long waitTime);
 }

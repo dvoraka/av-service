@@ -6,12 +6,14 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.storage.service.FileService
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
 /**
  * Default replication service spec.
  */
+@Ignore('WIP')
 class DefaultReplicationServiceSpec extends Specification {
 
     @Subject
