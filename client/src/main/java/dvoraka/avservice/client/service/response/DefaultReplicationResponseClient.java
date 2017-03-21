@@ -138,6 +138,14 @@ public class DefaultReplicationResponseClient implements
     @Override
     public void onMessage(ReplicationMessage response) {
         log.debug("On message: {}", response);
-//        messageCache.put(response.getCorrelationId(), response);
+
+        String corrId = response.getCorrelationId();
+        if (messageCache.containsKey(corrId)) {
+            messageCache.get(corrId).add(response);
+        } else {
+            ReplicationMessageList messageList = new ReplicationMessageList();
+            messageList.add(response);
+            messageCache.put(corrId, messageList);
+        }
     }
 }
