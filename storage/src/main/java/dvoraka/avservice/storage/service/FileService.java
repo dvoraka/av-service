@@ -22,8 +22,9 @@ public interface FileService {
      *
      * @param message the load request/message
      * @return the file response
+     * @throws FileNotFoundException if the file is not found
      */
-    FileMessage loadFile(FileMessage message);
+    FileMessage loadFile(FileMessage message) throws FileNotFoundException;
 
     /**
      * Updates a file.

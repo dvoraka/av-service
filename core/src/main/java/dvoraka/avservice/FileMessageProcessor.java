@@ -7,6 +7,7 @@ import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.service.BasicMessageStatusStorage;
 import dvoraka.avservice.common.service.MessageStatusStorage;
+import dvoraka.avservice.storage.FileNotFoundException;
 import dvoraka.avservice.storage.FileServiceException;
 import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
@@ -81,8 +82,14 @@ public class FileMessageProcessor implements MessageProcessor {
     }
 
     private void load(AvMessage message) {
-        FileMessage fileMessage = fileService.loadFile(message);
-        notifyListeners(message.createFileMessage(fileMessage.getData(), fileMessage.getType()));
+        FileMessage fileMessage;
+        try {
+            fileMessage = fileService.loadFile(message);
+            notifyListeners(message.createFileMessage(fileMessage.getData(), fileMessage.getType()));
+        } catch (FileNotFoundException e) {
+            log.warn("File service problem!", e);
+            notifyListeners(message.createErrorResponse("Load problem"));
+        }
     }
 
     private void update(AvMessage message) {

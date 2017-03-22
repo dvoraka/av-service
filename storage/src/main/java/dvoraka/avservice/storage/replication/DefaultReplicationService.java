@@ -86,13 +86,17 @@ public class DefaultReplicationService implements ReplicationService {
     }
 
     @Override
-    public FileMessage loadFile(FileMessage message) {
+    public FileMessage loadFile(FileMessage message) throws FileNotFoundException {
         log.debug("Load: " + message);
 
+        if (fileService.exists(message.getFilename(), message.getOwner())) {
+            return fileService.loadFile(message);
+        }
+
         if (exists(message)) {
-            // load locally if possible then remotely
+            // load remotely
         } else {
-            // throw something
+            throw new FileNotFoundException();
         }
 
         return null;
@@ -122,12 +126,12 @@ public class DefaultReplicationService implements ReplicationService {
 
     @Override
     public boolean exists(String filename, String owner) {
-        // local check
+        log.debug("Exists: {}, {}", filename, owner);
+
         if (fileService.exists(filename, owner)) {
             return true;
         }
 
-        // remote check
         ReplicationMessage query = createExistsQuery(filename, owner);
         serviceClient.sendMessage(query);
 
