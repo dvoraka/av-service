@@ -11,10 +11,13 @@ import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.storage.ExistingFileException;
+import dvoraka.avservice.storage.FileNotFoundException;
 import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -35,7 +38,7 @@ public class DefaultReplicationService implements ReplicationService {
 
     private BlockingQueue<ReplicationMessage> commands;
     private RemoteLock remoteLock;
-    private int neighbourCount;
+    private Set neighbours;
 
 
     public DefaultReplicationService(
@@ -50,10 +53,13 @@ public class DefaultReplicationService implements ReplicationService {
         final int size = 10;
         commands = new ArrayBlockingQueue<>(size);
         remoteLock = new DefaultRemoteLock();
+        neighbours = new HashSet();
     }
 
     @Override
     public void saveFile(FileMessage message) throws ExistingFileException {
+        log.debug("Save: " + message);
+
         if (exists(message)) {
             throw new ExistingFileException();
         }
@@ -81,6 +87,8 @@ public class DefaultReplicationService implements ReplicationService {
 
     @Override
     public FileMessage loadFile(FileMessage message) {
+        log.debug("Load: " + message);
+
         if (exists(message)) {
             // load locally if possible then remotely
         } else {
@@ -91,21 +99,25 @@ public class DefaultReplicationService implements ReplicationService {
     }
 
     @Override
-    public void updateFile(FileMessage message) {
-        if (exists(message)) {
-            // update
-        } else {
-            // throw something
+    public void updateFile(FileMessage message) throws FileNotFoundException {
+        log.debug("Update: " + message);
+
+        if (!exists(message)) {
+            throw new FileNotFoundException();
         }
+
+        // update
     }
 
     @Override
     public void deleteFile(FileMessage message) {
-        if (exists(message)) {
-            // delete
-        } else {
-            // throw something
+        log.debug("Delete: " + message);
+
+        if (!exists(message)) {
+            return;
         }
+
+        // delete
     }
 
     @Override
