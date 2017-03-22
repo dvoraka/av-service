@@ -32,6 +32,14 @@ public interface ReplicationHelper {
                 .build();
     }
 
+    default ReplicationMessage createDiscoverQuery() {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.BROADCAST)
+                .command(Command.DISCOVER)
+                .build();
+    }
+
     default ReplicationMessage createSaveMessage(FileMessage message, String neighbourId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)

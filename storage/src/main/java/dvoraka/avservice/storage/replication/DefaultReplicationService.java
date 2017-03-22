@@ -12,10 +12,12 @@ import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.util.Objects.requireNonNull;
 
@@ -34,7 +36,9 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     private BlockingQueue<ReplicationMessage> commands;
     private RemoteLock remoteLock;
+
     private Set<String> neighbours;
+    private ExecutorService executorService;
 
 
     public DefaultReplicationService(
@@ -49,7 +53,25 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         final int size = 10;
         commands = new ArrayBlockingQueue<>(size);
         remoteLock = new DefaultRemoteLock();
-        neighbours = new HashSet<>();
+
+        neighbours = new CopyOnWriteArraySet<>();
+        executorService = Executors.newSingleThreadScheduledExecutor();
+    }
+
+    private void discoverNeighbours() {
+        ReplicationMessage message = createDiscoverQuery();
+        serviceClient.sendMessage(message);
+
+        ReplicationMessageList responses = responseClient
+                .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
+
+        if (responses == null) {
+            return;
+        }
+
+        responses.stream()
+                .filter(msg -> msg.getReplicationStatus().equals(ReplicationStatus.READY))
+                .forEach(msg -> neighbours.add(msg.getFromId()));
     }
 
     @Override

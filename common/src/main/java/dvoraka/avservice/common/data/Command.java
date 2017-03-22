@@ -6,6 +6,7 @@ package dvoraka.avservice.common.data;
 public enum Command {
     EXISTS,
     STATUS,
+    DISCOVER,
 
     SAVE,
     LOAD,
