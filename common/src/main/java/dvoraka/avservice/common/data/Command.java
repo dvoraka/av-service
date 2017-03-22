@@ -8,4 +8,5 @@ public enum Command {
     STATUS,
 
     SAVE,
+    LOAD
 }

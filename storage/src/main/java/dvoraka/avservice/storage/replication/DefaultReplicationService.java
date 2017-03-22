@@ -38,7 +38,7 @@ public class DefaultReplicationService implements ReplicationService {
 
     private BlockingQueue<ReplicationMessage> commands;
     private RemoteLock remoteLock;
-    private Set neighbours;
+    private Set<String> neighbours;
 
 
     public DefaultReplicationService(
@@ -53,7 +53,7 @@ public class DefaultReplicationService implements ReplicationService {
         final int size = 10;
         commands = new ArrayBlockingQueue<>(size);
         remoteLock = new DefaultRemoteLock();
-        neighbours = new HashSet();
+        neighbours = new HashSet<>();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class DefaultReplicationService implements ReplicationService {
                 if (!exists(message)) {
                     fileService.saveFile(message);
 
-                    ReplicationMessage saveMessage = createSaveMessage(message, "test");
+                    ReplicationMessage saveMessage = createSaveMessage(message, "neighbour");
                     serviceClient.sendMessage(saveMessage);
                 } else {
                     throw new ExistingFileException();
@@ -94,18 +94,18 @@ public class DefaultReplicationService implements ReplicationService {
         }
 
         if (exists(message)) {
-            // load remotely
-            serviceClient.sendMessage(null);
+            serviceClient.sendMessage(createLoadMessage(message, "neighbour"));
 
             ReplicationMessageList replicationMessages = responseClient.getResponseWait(
                     message.getId(), MAX_RESPONSE_TIME);
-
-            FileMessage fileMessage = null;
-
-            return fileMessage;
-        } else {
-            throw new FileNotFoundException();
+            if (replicationMessages != null) {
+                return replicationMessages.stream()
+                        .findFirst()
+                        .orElseThrow(FileNotFoundException::new);
+            }
         }
+
+        throw new FileNotFoundException();
     }
 
     @Override
@@ -158,6 +158,16 @@ public class DefaultReplicationService implements ReplicationService {
                 .build();
     }
 
+    private ReplicationMessage createStatusQuery(String filename, String owner) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.BROADCAST)
+                .command(Command.STATUS)
+                .filename(filename)
+                .owner(owner)
+                .build();
+    }
+
     private ReplicationMessage createSaveMessage(FileMessage message, String neighbourId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
@@ -170,13 +180,15 @@ public class DefaultReplicationService implements ReplicationService {
                 .build();
     }
 
-    private ReplicationMessage createStatusQuery(String filename, String owner) {
+    private ReplicationMessage createLoadMessage(FileMessage message, String neighbourId) {
         return new DefaultReplicationMessage.Builder(null)
-                .type(MessageType.REPLICATION_SERVICE)
-                .routing(MessageRouting.BROADCAST)
-                .command(Command.STATUS)
-                .filename(filename)
-                .owner(owner)
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.LOAD)
+                .toId(neighbourId)
+                .data(message.getData())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
                 .build();
     }
 
