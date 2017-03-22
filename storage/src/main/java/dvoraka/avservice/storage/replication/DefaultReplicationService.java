@@ -3,11 +3,7 @@ package dvoraka.avservice.storage.replication;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
-import dvoraka.avservice.common.data.Command;
-import dvoraka.avservice.common.data.DefaultReplicationMessage;
 import dvoraka.avservice.common.data.FileMessage;
-import dvoraka.avservice.common.data.MessageRouting;
-import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.storage.ExistingFileException;
@@ -26,7 +22,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Default replication service implementation.
  */
-public class DefaultReplicationService implements ReplicationService {
+public class DefaultReplicationService implements ReplicationService, ReplicationHelper {
 
     private final FileService fileService;
     private final ReplicationServiceClient serviceClient;
@@ -164,72 +160,6 @@ public class DefaultReplicationService implements ReplicationService {
 
         return response != null && response.stream()
                 .anyMatch(message -> message.getReplicationStatus() == ReplicationStatus.OK);
-    }
-
-    private ReplicationMessage createExistsQuery(String filename, String owner) {
-        return new DefaultReplicationMessage.Builder(null)
-                .type(MessageType.REPLICATION_SERVICE)
-                .routing(MessageRouting.BROADCAST)
-                .command(Command.EXISTS)
-                .filename(filename)
-                .owner(owner)
-                .build();
-    }
-
-    private ReplicationMessage createStatusQuery(String filename, String owner) {
-        return new DefaultReplicationMessage.Builder(null)
-                .type(MessageType.REPLICATION_SERVICE)
-                .routing(MessageRouting.BROADCAST)
-                .command(Command.STATUS)
-                .filename(filename)
-                .owner(owner)
-                .build();
-    }
-
-    private ReplicationMessage createSaveMessage(FileMessage message, String neighbourId) {
-        return new DefaultReplicationMessage.Builder(null)
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.UNICAST)
-                .command(Command.SAVE)
-                .toId(neighbourId)
-                .data(message.getData())
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
-    }
-
-    private ReplicationMessage createLoadMessage(FileMessage message, String neighbourId) {
-        return new DefaultReplicationMessage.Builder(null)
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.UNICAST)
-                .command(Command.LOAD)
-                .toId(neighbourId)
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
-    }
-
-    private ReplicationMessage createUpdateMessage(FileMessage message, String neighbourId) {
-        return new DefaultReplicationMessage.Builder(null)
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.UNICAST)
-                .command(Command.UPDATE)
-                .toId(neighbourId)
-                .data(message.getData())
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
-    }
-
-    private ReplicationMessage createDeleteMessage(FileMessage message, String neighbourId) {
-        return new DefaultReplicationMessage.Builder(null)
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.UNICAST)
-                .command(Command.DELETE)
-                .toId(neighbourId)
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
     }
 
     @Override
