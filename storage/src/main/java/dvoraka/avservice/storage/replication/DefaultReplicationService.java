@@ -116,7 +116,17 @@ public class DefaultReplicationService implements ReplicationService {
             throw new FileNotFoundException();
         }
 
-        // update
+        if (fileService.exists(message)) {
+            fileService.updateFile(message);
+        }
+
+        serviceClient.sendMessage(createUpdateMessage(message, "neighbour"));
+
+//        ReplicationMessageList replicationMessages = responseClient.getResponseWait(
+//                message.getId(), MAX_RESPONSE_TIME);
+//        if (replicationMessages != null) {
+//
+//        }
     }
 
     @Override
@@ -127,7 +137,15 @@ public class DefaultReplicationService implements ReplicationService {
             return;
         }
 
-        // delete
+        fileService.deleteFile(message);
+
+        serviceClient.sendMessage(createDeleteMessage(message, "neighbour"));
+
+//        ReplicationMessageList replicationMessages = responseClient.getResponseWait(
+//                message.getId(), MAX_RESPONSE_TIME);
+//        if (replicationMessages != null) {
+//
+//        }
     }
 
     @Override
@@ -186,7 +204,29 @@ public class DefaultReplicationService implements ReplicationService {
                 .routing(MessageRouting.UNICAST)
                 .command(Command.LOAD)
                 .toId(neighbourId)
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
+    private ReplicationMessage createUpdateMessage(FileMessage message, String neighbourId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.UPDATE)
+                .toId(neighbourId)
                 .data(message.getData())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
+    private ReplicationMessage createDeleteMessage(FileMessage message, String neighbourId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.DELETE)
+                .toId(neighbourId)
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();
