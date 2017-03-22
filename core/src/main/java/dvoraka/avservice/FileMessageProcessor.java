@@ -85,7 +85,8 @@ public class FileMessageProcessor implements MessageProcessor {
         FileMessage fileMessage;
         try {
             fileMessage = fileService.loadFile(message);
-            notifyListeners(message.createFileMessage(fileMessage.getData(), fileMessage.getType()));
+            notifyListeners(message.createFileMessage(
+                    fileMessage.getData(), fileMessage.getType()));
         } catch (FileNotFoundException e) {
             log.warn("File service problem!", e);
             notifyListeners(message.createErrorResponse("Load problem"));

@@ -95,11 +95,17 @@ public class DefaultReplicationService implements ReplicationService {
 
         if (exists(message)) {
             // load remotely
+            serviceClient.sendMessage(null);
+
+            ReplicationMessageList replicationMessages = responseClient.getResponseWait(
+                    message.getId(), MAX_RESPONSE_TIME);
+
+            FileMessage fileMessage = null;
+
+            return fileMessage;
         } else {
             throw new FileNotFoundException();
         }
-
-        return null;
     }
 
     @Override
@@ -164,10 +170,19 @@ public class DefaultReplicationService implements ReplicationService {
                 .build();
     }
 
+    private ReplicationMessage createStatusQuery(String filename, String owner) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.BROADCAST)
+                .command(Command.STATUS)
+                .filename(filename)
+                .owner(owner)
+                .build();
+    }
+
     @Override
     public ReplicationStatus getStatus(FileMessage message) {
-        ReplicationMessage replicationMessage = null; // broadcast status
-        serviceClient.sendMessage(replicationMessage);
+        serviceClient.sendMessage(createStatusQuery(message.getFilename(), message.getOwner()));
 
 //        ReplicationMessage response = responseClient.getResponse(message.getId());
 //        ReplicationStatus status = response.getReplicationStatus();
