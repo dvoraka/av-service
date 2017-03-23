@@ -39,11 +39,13 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private static final int MAX_RESPONSE_TIME = 1_000; // one second
     private static final int DISCOVER_DELAY = 10_000; // ten seconds
     private static final int TERM_TIME = 10;
+    private static final int REPLICATION_COUNT = 3;
 
     private BlockingQueue<ReplicationMessage> commands;
     private RemoteLock remoteLock;
 
     private Set<String> neighbours;
+    private int replicationCount;
     private ScheduledExecutorService executorService;
 
 
@@ -61,6 +63,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         remoteLock = new DefaultRemoteLock();
 
         neighbours = new CopyOnWriteArraySet<>();
+        replicationCount = REPLICATION_COUNT;
         executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -94,6 +97,10 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         neighbours.retainAll(newNeighbours);
     }
 
+    public int neighbourCount() {
+        return neighbours.size();
+    }
+
     @Override
     public void saveFile(FileMessage message) throws ExistingFileException {
         log.debug("Save: " + message);
@@ -106,9 +113,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             if (remoteLock.lockForFile(message.getFilename(), message.getOwner())) {
                 if (!exists(message)) {
                     fileService.saveFile(message);
-
-                    ReplicationMessage saveMessage = createSaveMessage(message, "neighbour");
-                    serviceClient.sendMessage(saveMessage);
+                    sendSaveMessage(message);
                 } else {
                     throw new ExistingFileException();
                 }
@@ -121,6 +126,13 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         } finally {
             remoteLock.unlockForFile(message.getFilename(), message.getOwner());
         }
+    }
+
+    private void sendSaveMessage(FileMessage message) {
+        neighbours.stream()
+                .map(id -> createSaveMessage(message, id))
+                .limit(getReplicationCount())
+                .forEach(serviceClient::sendMessage);
     }
 
     @Override
@@ -213,5 +225,9 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
 //        return status;
         return null;
+    }
+
+    public int getReplicationCount() {
+        return replicationCount;
     }
 }
