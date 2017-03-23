@@ -12,12 +12,15 @@ import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
@@ -34,12 +37,14 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
     private static final int MAX_RESPONSE_TIME = 1_000; // one second
+    private static final int DISCOVER_DELAY = 10_000; // ten seconds
+    private static final int TERM_TIME = 10;
 
     private BlockingQueue<ReplicationMessage> commands;
     private RemoteLock remoteLock;
 
     private Set<String> neighbours;
-    private ExecutorService executorService;
+    private ScheduledExecutorService executorService;
 
 
     public DefaultReplicationService(
@@ -57,6 +62,17 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
         neighbours = new CopyOnWriteArraySet<>();
         executorService = Executors.newSingleThreadScheduledExecutor();
+    }
+
+    @PostConstruct
+    public void start() {
+        executorService.scheduleWithFixedDelay(
+                this::discoverNeighbours, 0L, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
+    }
+
+    @PreDestroy
+    public void stop() {
+        shutdownAndAwaitTermination(executorService, TERM_TIME, log);
     }
 
     private void discoverNeighbours() {
