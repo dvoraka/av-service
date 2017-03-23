@@ -220,11 +220,15 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public ReplicationStatus getStatus(FileMessage message) {
         serviceClient.sendMessage(createStatusQuery(message.getFilename(), message.getOwner()));
 
-//        ReplicationMessage response = responseClient.getResponse(message.getId());
-//        ReplicationStatus status = response.getReplicationStatus();
+        ReplicationMessageList responses = responseClient.getResponse(message.getId());
+        if (responses.stream()
+                .filter(msg -> msg.getReplicationStatus().equals(ReplicationStatus.OK))
+                .count() >= getReplicationCount()) {
 
-//        return status;
-        return null;
+            return ReplicationStatus.OK;
+        }
+
+        return ReplicationStatus.FAILED;
     }
 
     public int getReplicationCount() {

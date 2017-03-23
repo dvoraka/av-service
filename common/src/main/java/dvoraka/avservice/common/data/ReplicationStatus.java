@@ -5,5 +5,6 @@ package dvoraka.avservice.common.data;
  */
 public enum ReplicationStatus {
     OK,
-    READY
+    READY,
+    FAILED
 }
