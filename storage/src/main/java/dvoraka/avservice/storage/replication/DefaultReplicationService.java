@@ -18,6 +18,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
@@ -69,9 +70,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             return;
         }
 
-        responses.stream()
+        Set<String> newNeighbours = responses.stream()
                 .filter(msg -> msg.getReplicationStatus().equals(ReplicationStatus.READY))
-                .forEach(msg -> neighbours.add(msg.getFromId()));
+                .map(ReplicationMessage::getFromId)
+                .collect(Collectors.toSet());
+
+        neighbours.retainAll(newNeighbours);
     }
 
     @Override
