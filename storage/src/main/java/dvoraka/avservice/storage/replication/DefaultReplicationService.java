@@ -79,6 +79,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     }
 
     private void discoverNeighbours() {
+        log.debug("Discovering neighbours...");
+
         ReplicationMessage message = createDiscoverQuery();
         serviceClient.sendMessage(message);
 
@@ -95,6 +97,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 .collect(Collectors.toSet());
 
         neighbours.retainAll(newNeighbours);
+        log.debug("Discovered: " + newNeighbours.size());
     }
 
     public int neighbourCount() {
@@ -218,6 +221,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public ReplicationStatus getStatus(FileMessage message) {
+        log.debug("Status: " + message);
+
         serviceClient.sendMessage(createStatusQuery(message.getFilename(), message.getOwner()));
 
         ReplicationMessageList responses = responseClient.getResponse(message.getId());
