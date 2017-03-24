@@ -38,40 +38,40 @@ public class AmqpCommonConfig {
     private String userPassword;
 
 
-    @Bean
-    public AvMessageMapper avMessageMapper() {
-        return new AvMessageMapper();
-    }
-
-    @Bean
-    public MessageConverter messageConverter(AvMessageMapper messageMapper) {
-        return new AvMessageConverter(messageMapper);
-    }
-
-    @Bean
-    public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
-        connectionFactory.setUsername(userName);
-        connectionFactory.setPassword(userPassword);
-        connectionFactory.setVirtualHost(virtualHost);
-
-        return connectionFactory;
-    }
-
-    @Bean
-    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
-        return new RabbitAdmin(connectionFactory);
-    }
-
-    @Bean
-    public RabbitTemplate rabbitTemplate(
-            ConnectionFactory connectionFactory,
-            MessageConverter messageConverter) {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setReceiveTimeout(listeningTimeout);
-        template.setRoutingKey("test");
-        template.setMessageConverter(messageConverter);
-
-        return template;
-    }
+//    @Bean
+//    public AvMessageMapper avMessageMapper() {
+//        return new AvMessageMapper();
+//    }
+//
+//    @Bean
+//    public MessageConverter messageConverter(AvMessageMapper messageMapper) {
+//        return new AvMessageConverter(messageMapper);
+//    }
+//
+//    @Bean
+//    public ConnectionFactory connectionFactory() {
+//        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
+//        connectionFactory.setUsername(userName);
+//        connectionFactory.setPassword(userPassword);
+//        connectionFactory.setVirtualHost(virtualHost);
+//
+//        return connectionFactory;
+//    }
+//
+//    @Bean
+//    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
+//        return new RabbitAdmin(connectionFactory);
+//    }
+//
+//    @Bean
+//    public RabbitTemplate rabbitTemplate(
+//            ConnectionFactory connectionFactory,
+//            MessageConverter messageConverter) {
+//        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+//        template.setReceiveTimeout(listeningTimeout);
+//        template.setRoutingKey("test");
+//        template.setMessageConverter(messageConverter);
+//
+//        return template;
+//    }
 }

@@ -34,21 +34,21 @@ public class ServerCommonConfig {
                 .build();
     }
 
-    @Bean
-    @Profile("client")
-    public AvServiceClient avServiceClient(ServerComponent serverComponent) {
-        return new DefaultAvServiceClient(serverComponent);
-    }
-
-    @Bean
-    @Profile("client")
-    public FileServiceClient fileServiceClient(ServerComponent serverComponent) {
-        return new DefaultFileServiceClient(serverComponent);
-    }
-
-    @Bean
-    @Profile("client")
-    public ResponseClient responseClient(ServerComponent serverComponent) {
-        return new DefaultResponseClient(serverComponent);
-    }
+//    @Bean
+//    @Profile("client")
+//    public AvServiceClient avServiceClient(ServerComponent serverComponent) {
+//        return new DefaultAvServiceClient(serverComponent);
+//    }
+//
+//    @Bean
+//    @Profile("client")
+//    public FileServiceClient fileServiceClient(ServerComponent serverComponent) {
+//        return new DefaultFileServiceClient(serverComponent);
+//    }
+//
+//    @Bean
+//    @Profile("client")
+//    public ResponseClient responseClient(ServerComponent serverComponent) {
+//        return new DefaultResponseClient(serverComponent);
+//    }
 }

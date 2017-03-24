@@ -1,7 +1,6 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
-import dvoraka.avservice.server.configuration.jms.JmsConfig;
+import dvoraka.avservice.client.configuration.ClientConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -14,10 +13,11 @@ import org.springframework.context.annotation.Import;
         RestLocalConfig.class,
         // AMQP
         RestAmqpConfig.class,
-        AmqpConfig.class,
+//        AmqpConfig.class,
         // JMS
         RestJmsConfig.class,
-        JmsConfig.class,
+//        JmsConfig.class,
+        ClientConfig.class
 })
 public class RestConfig {
 }

@@ -12,7 +12,7 @@ import spock.lang.Specification
  * Configuration spec.
  */
 @ContextConfiguration(classes = SpringWebConfig.class)
-@ActiveProfiles(['rest', 'rest-jms', 'core', 'jms', 'client', 'jms-rest', 'db'])
+@ActiveProfiles(['rest', 'rest-jms', 'core', 'jms', 'client', 'jms-client', 'db'])
 @WebAppConfiguration
 @DirtiesContext
 class RestJmsConfigISpec extends Specification {

@@ -4,7 +4,8 @@ description = 'REST components'
 
 dependencies {
     compile project(':common')
-    compile project(':server')
+    compile project(':client')
+    compile project(':core')
     compile project(':stats')
     compile project(':user')
 
@@ -14,4 +15,6 @@ dependencies {
     }
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-actuator')
+
+    testCompile project(':server')
 }
