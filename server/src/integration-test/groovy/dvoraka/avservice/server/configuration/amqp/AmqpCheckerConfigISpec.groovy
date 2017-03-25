@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.amqp
 
-import dvoraka.avservice.server.checker.PerformanceTester
+import dvoraka.avservice.client.checker.PerformanceTester
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles

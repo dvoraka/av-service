@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration.jms;
+package dvoraka.avservice.client.configuration;
 
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.client.checker.CheckApp;
@@ -6,26 +6,16 @@ import dvoraka.avservice.client.checker.Checker;
 import dvoraka.avservice.client.checker.PerformanceTester;
 import dvoraka.avservice.client.checker.SimpleChecker;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * JMS checker configuration for import.
+ * Checker configuration for the import.
  */
 @Configuration
-@Profile("jms-checker")
-public class JmsCheckerConfig {
-
-    @Value("${avservice.jms.checkDestination:check}")
-    private String checkDestination;
-    @Value("${avservice.jms.resultDestination:result}")
-    private String resultDestination;
-
-    @Value("${avservice.serviceId:default1}")
-    private String serviceId;
-
+@Profile("checker")
+public class CheckerConfig {
 
     @Bean
     public Checker checker(ServerComponent serverComponent) {

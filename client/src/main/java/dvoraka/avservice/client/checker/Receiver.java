@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.checker;
+package dvoraka.avservice.client.checker;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;

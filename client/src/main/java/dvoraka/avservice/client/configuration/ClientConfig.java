@@ -29,7 +29,8 @@ import org.springframework.context.annotation.PropertySource;
         DatabaseConfig.class,
         AmqpClient.class,
         AmqpCommonConfig.class,
-        JmsClient.class
+        JmsClient.class,
+        CheckerConfig.class
 })
 @PropertySource("classpath:avservice.properties")
 public class ClientConfig {

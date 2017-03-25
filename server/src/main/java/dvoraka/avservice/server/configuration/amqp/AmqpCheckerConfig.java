@@ -1,11 +1,11 @@
 package dvoraka.avservice.server.configuration.amqp;
 
 import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.checker.CheckApp;
+import dvoraka.avservice.client.checker.Checker;
+import dvoraka.avservice.client.checker.PerformanceTester;
+import dvoraka.avservice.client.checker.SimpleChecker;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
-import dvoraka.avservice.server.checker.CheckApp;
-import dvoraka.avservice.server.checker.Checker;
-import dvoraka.avservice.server.checker.PerformanceTester;
-import dvoraka.avservice.server.checker.SimpleChecker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

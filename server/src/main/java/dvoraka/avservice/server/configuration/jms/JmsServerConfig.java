@@ -25,7 +25,6 @@ public class JmsServerConfig {
 
     @Value("${avservice.jms.resultDestination:result}")
     private String resultDestination;
-
     @Value("${avservice.jms.checkDestination:check}")
     private String checkDestination;
 
