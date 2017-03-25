@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration
  * AMQP checker spec.
  */
 @ContextConfiguration(classes = [AmqpConfig.class])
-@ActiveProfiles(['client', 'amqp', 'amqp-client', 'amqp-checker', 'no-db'])
+@ActiveProfiles(['client', 'amqp', 'amqp-client', 'checker', 'no-db'])
 class AmqpSimpleCheckerISpec extends SimpleCheckerISpec {
 
     def setupSpec() {

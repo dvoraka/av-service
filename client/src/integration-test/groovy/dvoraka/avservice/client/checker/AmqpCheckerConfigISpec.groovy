@@ -1,6 +1,6 @@
-package dvoraka.avservice.server.configuration.amqp
+package dvoraka.avservice.client.checker
 
-import dvoraka.avservice.client.checker.PerformanceTester
+import dvoraka.avservice.client.configuration.ClientConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
@@ -10,9 +10,9 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [AmqpConfig.class])
+@ContextConfiguration(classes = [ClientConfig.class])
 @DirtiesContext
-@ActiveProfiles(['client', 'amqp', 'amqp-client', 'amqp-checker', 'no-db'])
+@ActiveProfiles(['client', 'amqp', 'amqp-client', 'checker', 'no-db'])
 class AmqpCheckerConfigISpec extends Specification {
 
     @Autowired
