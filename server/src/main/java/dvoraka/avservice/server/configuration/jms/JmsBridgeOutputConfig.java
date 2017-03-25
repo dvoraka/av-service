@@ -58,7 +58,8 @@ public class JmsBridgeOutputConfig {
     @Bean
     public JmsTemplate outJmsTemplate(
             ConnectionFactory outConnectionFactory,
-            MessageConverter outMessageConverter) {
+            MessageConverter outMessageConverter
+    ) {
         JmsTemplate template = new JmsTemplate(outConnectionFactory);
         template.setReceiveTimeout(receiveTimeout);
         template.setMessageConverter(outMessageConverter);
@@ -82,7 +83,8 @@ public class JmsBridgeOutputConfig {
     @Bean
     public SimpleMessageListenerContainer outMessageListenerContainer(
             ActiveMQConnectionFactory outActiveMQConnectionFactory,
-            MessageListener outMessageListener) {
+            MessageListener outMessageListener
+    ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(outActiveMQConnectionFactory);
         container.setDestinationName(resultDestination);

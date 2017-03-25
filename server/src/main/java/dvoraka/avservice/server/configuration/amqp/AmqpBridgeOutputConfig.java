@@ -80,9 +80,10 @@ public class AmqpBridgeOutputConfig {
     }
 
     @Bean
-    public RabbitTemplate outAmqpTemplate(
+    public RabbitTemplate outRabbitTemplate(
             ConnectionFactory outConnectionFactory,
-            MessageConverter outMessageConverter) {
+            MessageConverter outMessageConverter
+    ) {
         RabbitTemplate template = new RabbitTemplate(outConnectionFactory);
         template.setReceiveTimeout(listeningTimeout);
         template.setQueue(resultQueue);
@@ -99,7 +100,8 @@ public class AmqpBridgeOutputConfig {
     @Bean
     public MessageListenerContainer outMessageListenerContainer(
             ConnectionFactory outConnectionFactory,
-            MessageListener outMessageListener) {
+            MessageListener outMessageListener
+    ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(outConnectionFactory);
         container.setQueueNames(resultQueue);

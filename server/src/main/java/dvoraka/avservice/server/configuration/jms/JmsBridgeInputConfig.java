@@ -40,7 +40,8 @@ public class JmsBridgeInputConfig {
     @Bean
     public ServerComponent inComponent(
             JmsTemplate inJmsTemplate,
-            MessageInfoService messageInfoService) {
+            MessageInfoService messageInfoService
+    ) {
         return new JmsComponent(resultDestination, serviceId, inJmsTemplate, messageInfoService);
     }
 
@@ -57,7 +58,8 @@ public class JmsBridgeInputConfig {
     @Bean
     public SimpleMessageListenerContainer inMessageListenerContainer(
             ConnectionFactory inActiveMQConnFactory,
-            MessageListener inMessageListener) {
+            MessageListener inMessageListener
+    ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(inActiveMQConnFactory);
         container.setDestinationName(checkDestination);
@@ -77,7 +79,8 @@ public class JmsBridgeInputConfig {
     @Bean
     public JmsTemplate inJmsTemplate(
             ConnectionFactory inConnectionFactory,
-            MessageConverter inMessageConverter) {
+            MessageConverter inMessageConverter
+    ) {
         JmsTemplate template = new JmsTemplate(inConnectionFactory);
         template.setReceiveTimeout(receiveTimeout);
         template.setMessageConverter(inMessageConverter);
