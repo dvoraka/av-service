@@ -12,7 +12,7 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [AmqpConfig.class])
 @DirtiesContext
-@ActiveProfiles(['core', 'amqp', 'amqp-rest', 'no-db'])
+@ActiveProfiles(['core', 'client', 'amqp', 'amqp-client', 'no-db'])
 class AmqpRestConfigISpec extends Specification {
 
     @Autowired
