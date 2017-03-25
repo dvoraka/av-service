@@ -14,8 +14,7 @@ import org.springframework.context.annotation.Profile;
         AmqpCommonConfig.class,
         AmqpServerConfig.class,
         AmqpFileServerConfig.class,
-        AmqpCheckerConfig.class,
-        AmqpRestConfig.class
+        AmqpCheckerConfig.class
 })
 @Profile("amqp")
 public class AmqpConfig {

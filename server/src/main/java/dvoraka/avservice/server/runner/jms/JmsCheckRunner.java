@@ -20,7 +20,7 @@ public class JmsCheckRunner extends AbstractAppRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"jms", "jms-checker", "no-db"};
+        return new String[]{"client", "jms", "jms-checker", "no-db"};
     }
 
     @Override

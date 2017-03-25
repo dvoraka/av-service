@@ -115,5 +115,4 @@ public class EnvironmentConfiguratorConfig {
     public Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
         return BindingBuilder.bind(resultQueue).to(resultExchange);
     }
-
 }
