@@ -1,74 +1,68 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.common.amqp.AvMessageConverter;
-import dvoraka.avservice.common.amqp.AvMessageMapper;
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.amqp.AmqpComponent;
+import dvoraka.avservice.db.service.MessageInfoService;
+import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * AMQP client config for the import.
+ * AMQP client configuration for the import.
  */
 @Configuration
 @Profile("amqp-client")
 public class AmqpClient {
 
-    @Value("${avservice.amqp.host:localhost}")
+    @Value("${avservice.amqp.resultQueue}")
+    private String resultQueue;
+    @Value("${avservice.amqp.checkExchange}")
+    private String checkExchange;
+    @Value("${avservice.amqp.fileExchange}")
+    private String fileExchange;
+
+    @Value("${avservice.serviceId}")
+    private String serviceId;
+
+    @Value("${avservice.amqp.host}")
     private String host;
-
-    @Value("${avservice.amqp.vhost:antivirus}")
+    @Value("${avservice.amqp.vhost}")
     private String virtualHost;
-
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
 
-    @Value("${avservice.amqp.user:guest}")
+    @Value("${avservice.amqp.user}")
     private String userName;
-    @Value("${avservice.amqp.pass:guest}")
+    @Value("${avservice.amqp.pass}")
     private String userPassword;
 
 
     @Bean
-    public AvMessageMapper avMessageMapper() {
-        return new AvMessageMapper();
+    public ServerComponent serverComponent(
+            RabbitTemplate rabbitTemplate,
+            MessageInfoService messageInfoService
+    ) {
+        return new AmqpComponent(fileExchange, serviceId, rabbitTemplate, messageInfoService);
     }
 
     @Bean
-    public MessageConverter messageConverter(AvMessageMapper messageMapper) {
-        return new AvMessageConverter(messageMapper);
+    public MessageListener messageListener(ServerComponent serverComponent) {
+        return serverComponent;
     }
 
     @Bean
-    public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
-        connectionFactory.setUsername(userName);
-        connectionFactory.setPassword(userPassword);
-        connectionFactory.setVirtualHost(virtualHost);
+    public SimpleMessageListenerContainer messageListenerContainer(
+            ConnectionFactory connectionFactory, MessageListener messageListener) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(resultQueue);
+        container.setMessageListener(messageListener);
 
-        return connectionFactory;
-    }
-
-    @Bean
-    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
-        return new RabbitAdmin(connectionFactory);
-    }
-
-    @Bean
-    public RabbitTemplate rabbitTemplate(
-            ConnectionFactory connectionFactory,
-            MessageConverter messageConverter) {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setReceiveTimeout(listeningTimeout);
-        template.setRoutingKey("test");
-        template.setMessageConverter(messageConverter);
-
-        return template;
+        return container;
     }
 }

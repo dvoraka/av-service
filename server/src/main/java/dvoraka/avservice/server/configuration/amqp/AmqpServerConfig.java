@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * AMQP server configuration for import.
+ * AMQP server configuration for the import.
  */
 @Configuration
 @Profile("amqp-server")

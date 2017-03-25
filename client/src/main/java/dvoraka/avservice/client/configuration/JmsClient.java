@@ -24,10 +24,9 @@ import javax.jms.MessageListener;
 @Profile("jms-client")
 public class JmsClient {
 
-    @Value("${avservice.jms.resultDestination:result}")
+    @Value("${avservice.jms.resultDestination}")
     private String resultDestination;
-
-    @Value("${avservice.jms.checkDestination:check}")
+    @Value("${avservice.jms.checkDestination}")
     private String checkDestination;
 
     @Value("${avservice.serviceId}")
@@ -35,9 +34,9 @@ public class JmsClient {
 
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
-
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
+
 
     @Bean
     public ServerComponent serverComponent(

@@ -11,15 +11,18 @@ import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.DefaultResponseClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 /**
  * Client main configuration.
  */
+@Configuration
 @Profile("client")
 @Import({
         AmqpClient.class,
+        AmqpCommonConfig.class,
         JmsClient.class
 })
 public class ClientConfig {
@@ -30,6 +33,7 @@ public class ClientConfig {
     }
 
     @Bean
+    @Profile("replication")
     public ReplicationServiceClient replicationServiceClient(
             ReplicationComponent replicationComponent) {
         return new DefaultReplicationServiceClient(replicationComponent);
