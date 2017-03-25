@@ -29,18 +29,6 @@ public class AmqpClient {
     @Value("${avservice.serviceId}")
     private String serviceId;
 
-    @Value("${avservice.amqp.host}")
-    private String host;
-    @Value("${avservice.amqp.vhost}")
-    private String virtualHost;
-    @Value("${avservice.amqp.listeningTimeout:4000}")
-    private long listeningTimeout;
-
-    @Value("${avservice.amqp.user}")
-    private String userName;
-    @Value("${avservice.amqp.pass}")
-    private String userPassword;
-
 
     @Bean
     public ServerComponent serverComponent(
