@@ -1,11 +1,9 @@
-package dvoraka.avservice.server.configuration.jms;
+package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.server.configuration.ServerCommonConfig;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -15,19 +13,14 @@ import org.springframework.jms.support.converter.MessageConverter;
 import javax.jms.ConnectionFactory;
 
 /**
- * JMS common configuration for import.
+ * JMS client common configuration for the import.
  */
 @Configuration
-@Import({ServerCommonConfig.class})
 @Profile("jms")
 public class JmsCommonConfig {
 
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
-
-    @Value("${avservice.serviceId:default1}")
-    private String serviceId;
-
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
 

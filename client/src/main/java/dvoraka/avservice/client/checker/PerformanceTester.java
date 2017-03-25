@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.checker;
+package dvoraka.avservice.client.checker;
 
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;

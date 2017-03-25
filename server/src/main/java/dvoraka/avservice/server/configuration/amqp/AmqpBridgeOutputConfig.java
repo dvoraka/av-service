@@ -16,10 +16,12 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * AMQP bridge output configuration for import.
  */
+@Configuration
 public class AmqpBridgeOutputConfig {
 
     @Value("${avservice.amqp.host:localhost}")
@@ -78,9 +80,10 @@ public class AmqpBridgeOutputConfig {
     }
 
     @Bean
-    public RabbitTemplate outAmqpTemplate(
+    public RabbitTemplate outRabbitTemplate(
             ConnectionFactory outConnectionFactory,
-            MessageConverter outMessageConverter) {
+            MessageConverter outMessageConverter
+    ) {
         RabbitTemplate template = new RabbitTemplate(outConnectionFactory);
         template.setReceiveTimeout(listeningTimeout);
         template.setQueue(resultQueue);
@@ -97,7 +100,8 @@ public class AmqpBridgeOutputConfig {
     @Bean
     public MessageListenerContainer outMessageListenerContainer(
             ConnectionFactory outConnectionFactory,
-            MessageListener outMessageListener) {
+            MessageListener outMessageListener
+    ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(outConnectionFactory);
         container.setQueueNames(resultQueue);

@@ -1,8 +1,7 @@
-package dvoraka.avservice.server.configuration.amqp;
+package dvoraka.avservice.client.configuration;
 
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.common.amqp.AvMessageMapper;
-import dvoraka.avservice.server.configuration.ServerCommonConfig;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -12,20 +11,17 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 /**
- * AMQP common configuration for import.
+ * AMQP common configuration for the import.
  */
 @Configuration
-@Import({ServerCommonConfig.class})
 @Profile("amqp")
 public class AmqpCommonConfig {
 
     @Value("${avservice.amqp.host:localhost}")
     private String host;
-
     @Value("${avservice.amqp.vhost:antivirus}")
     private String virtualHost;
 

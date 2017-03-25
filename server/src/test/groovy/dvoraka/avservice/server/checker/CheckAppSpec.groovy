@@ -1,5 +1,7 @@
 package dvoraka.avservice.server.checker
 
+import dvoraka.avservice.client.checker.CheckApp
+import dvoraka.avservice.client.checker.Checker
 import spock.lang.Specification
 import spock.lang.Subject
 

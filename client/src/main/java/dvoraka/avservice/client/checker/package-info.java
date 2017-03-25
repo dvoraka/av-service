@@ -1,4 +1,4 @@
 /**
  * Testing framework for checking server infrastructure.
  */
-package dvoraka.avservice.server.checker;
+package dvoraka.avservice.client.checker;

@@ -1,6 +1,6 @@
-package dvoraka.avservice.server.configuration.jms
+package dvoraka.avservice.client.configuration
 
-import dvoraka.avservice.server.checker.PerformanceTester
+import dvoraka.avservice.client.checker.PerformanceTester
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
@@ -10,8 +10,8 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [JmsConfig.class])
-@ActiveProfiles(['jms', 'jms-checker', 'no-db'])
+@ContextConfiguration(classes = [ClientConfig.class])
+@ActiveProfiles(['client', 'jms', 'jms-client', 'checker', 'no-db'])
 @DirtiesContext
 class JmsCheckerConfigISpec extends Specification {
 

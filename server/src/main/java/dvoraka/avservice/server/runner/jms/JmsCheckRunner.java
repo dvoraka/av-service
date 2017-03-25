@@ -1,9 +1,9 @@
 package dvoraka.avservice.server.runner.jms;
 
+import dvoraka.avservice.client.checker.CheckApp;
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
 import dvoraka.avservice.common.service.ApplicationManagement;
-import dvoraka.avservice.server.checker.CheckApp;
 import dvoraka.avservice.server.configuration.jms.JmsConfig;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class JmsCheckRunner extends AbstractAppRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"jms", "jms-checker", "no-db"};
+        return new String[]{"client", "jms", "jms-client", "checker", "no-db"};
     }
 
     @Override

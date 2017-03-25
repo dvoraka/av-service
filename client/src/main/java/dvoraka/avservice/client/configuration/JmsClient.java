@@ -1,13 +1,8 @@
-package dvoraka.avservice.server.configuration.jms;
+package dvoraka.avservice.client.configuration;
 
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.client.jms.JmsComponent;
-import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.server.checker.CheckApp;
-import dvoraka.avservice.server.checker.Checker;
-import dvoraka.avservice.server.checker.PerformanceTester;
-import dvoraka.avservice.server.checker.SimpleChecker;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,17 +14,18 @@ import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import javax.jms.MessageListener;
 
 /**
- * JMS checker configuration for import.
+ * JMS client configuration for the import.
  */
 @Configuration
-@Profile("jms-checker")
-public class JmsCheckerConfig {
+@Profile("jms-client")
+public class JmsClient {
 
-    @Value("${avservice.jms.checkDestination:check}")
-    private String checkDestination;
-    @Value("${avservice.jms.resultDestination:result}")
+    @Value("${avservice.jms.resultDestination}")
     private String resultDestination;
-    @Value("${avservice.serviceId:default1}")
+    @Value("${avservice.jms.checkDestination}")
+    private String checkDestination;
+
+    @Value("${avservice.serviceId}")
     private String serviceId;
 
 
@@ -56,23 +52,5 @@ public class JmsCheckerConfig {
         container.setMessageListener(messageListener);
 
         return container;
-    }
-
-    @Bean
-    public Checker checker(ServerComponent serverComponent) {
-        return new SimpleChecker(serverComponent);
-    }
-
-    @Bean
-    public PerformanceTester defaultLoadTester(
-            Checker checker,
-            PerformanceTestProperties testProperties
-    ) {
-        return new PerformanceTester(checker, testProperties);
-    }
-
-    @Bean
-    public CheckApp checkApp(Checker checker) {
-        return new CheckApp(checker);
     }
 }
