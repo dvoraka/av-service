@@ -1,7 +1,6 @@
-package dvoraka.avservice.server.checker
+package dvoraka.avservice.client.checker
 
 import dvoraka.avservice.client.ServerComponent
-import dvoraka.avservice.client.checker.SimpleChecker
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage

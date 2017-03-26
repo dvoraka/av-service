@@ -1,7 +1,5 @@
-package dvoraka.avservice.server.checker
+package dvoraka.avservice.client.checker
 
-import dvoraka.avservice.client.checker.Checker
-import dvoraka.avservice.client.checker.PerformanceTester
 import dvoraka.avservice.common.exception.MessageNotFoundException
 import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties
 import dvoraka.avservice.common.testing.PerformanceTestProperties
