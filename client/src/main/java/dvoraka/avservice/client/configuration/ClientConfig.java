@@ -26,11 +26,15 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @Profile("client")
 @Import({
+        // Message info service
         DatabaseConfig.class,
+        // AMQP
         AmqpClient.class,
         AmqpCommonConfig.class,
+        // JMS
         JmsClient.class,
         JmsCommonConfig.class,
+        // Checker
         CheckerConfig.class
 })
 @PropertySource("classpath:avservice.properties")

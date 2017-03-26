@@ -20,17 +20,17 @@ import org.springframework.context.annotation.Profile;
 @Profile("amqp")
 public class AmqpCommonConfig {
 
-    @Value("${avservice.amqp.host:localhost}")
+    @Value("${avservice.amqp.host}")
     private String host;
-    @Value("${avservice.amqp.vhost:antivirus}")
+    @Value("${avservice.amqp.vhost}")
     private String virtualHost;
 
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
 
-    @Value("${avservice.amqp.user:guest}")
+    @Value("${avservice.amqp.user}")
     private String userName;
-    @Value("${avservice.amqp.pass:guest}")
+    @Value("${avservice.amqp.pass}")
     private String userPassword;
 
 
