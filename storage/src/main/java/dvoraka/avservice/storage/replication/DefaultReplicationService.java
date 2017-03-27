@@ -69,12 +69,14 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @PostConstruct
     public void start() {
+        log.info("Starting service...");
         executorService.scheduleWithFixedDelay(
                 this::discoverNeighbours, 0L, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }
 
     @PreDestroy
     public void stop() {
+        log.info("Stopping service...");
         shutdownAndAwaitTermination(executorService, TERM_TIME, log);
     }
 

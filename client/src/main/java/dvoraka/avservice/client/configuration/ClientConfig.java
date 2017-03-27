@@ -55,7 +55,8 @@ public class ClientConfig {
     @Bean
     @Profile("replication")
     public ReplicationServiceClient replicationServiceClient(
-            ReplicationComponent replicationComponent) {
+            ReplicationComponent replicationComponent
+    ) {
         return new DefaultReplicationServiceClient(replicationComponent);
     }
 
