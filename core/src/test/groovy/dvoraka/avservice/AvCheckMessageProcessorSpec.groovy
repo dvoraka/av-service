@@ -34,7 +34,7 @@ class AvCheckMessageProcessorSpec extends Specification {
         processor = new AvCheckMessageProcessor(2, serviceId, avService, infoService)
         processor.start()
 
-        conditions = new PollingConditions(timeout: 2)
+        conditions = new PollingConditions(timeout: 3)
     }
 
     def cleanup() {
