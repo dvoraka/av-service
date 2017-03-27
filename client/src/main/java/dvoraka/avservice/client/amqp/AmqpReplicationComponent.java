@@ -41,7 +41,7 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
     @Override
     public void sendMessage(ReplicationMessage message) {
-
+        log.debug("Send: " + message);
     }
 
     @Override
