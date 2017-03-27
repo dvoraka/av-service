@@ -1,8 +1,8 @@
 package dvoraka.avservice.client.configuration;
 
+import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.client.ServerComponent;
-import dvoraka.avservice.client.amqp.AmqpComponent;
-import dvoraka.avservice.db.service.MessageInfoService;
+import dvoraka.avservice.client.amqp.AmqpReplicationComponent;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,8 +16,8 @@ import org.springframework.context.annotation.Profile;
  * AMQP client configuration for the import.
  */
 @Configuration
-@Profile("amqp-client")
-public class AmqpClient {
+@Profile({"amqp-client", "replication"})
+public class AmqpReplicationClientConfig {
 
     @Value("${avservice.amqp.resultQueue}")
     private String resultQueue;
@@ -30,12 +30,17 @@ public class AmqpClient {
     private String serviceId;
 
 
+//    @Bean
+//    public ServerComponent serverComponent(
+//            RabbitTemplate rabbitTemplate,
+//            MessageInfoService messageInfoService
+//    ) {
+//        return new AmqpComponent(fileExchange, serviceId, rabbitTemplate, messageInfoService);
+//    }
+
     @Bean
-    public ServerComponent serverComponent(
-            RabbitTemplate rabbitTemplate,
-            MessageInfoService messageInfoService
-    ) {
-        return new AmqpComponent(fileExchange, serviceId, rabbitTemplate, messageInfoService);
+    public ReplicationComponent replicationComponent(RabbitTemplate rabbitTemplate) {
+        return new AmqpReplicationComponent(rabbitTemplate);
     }
 
     @Bean
