@@ -60,12 +60,12 @@ public class AmqpCommonConfig {
     }
 
     @Bean
+    @Profile("!replication")
     public RabbitTemplate rabbitTemplate(
             ConnectionFactory connectionFactory,
             MessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
-//        template.setRoutingKey("test");
         template.setMessageConverter(messageConverter);
 
         return template;

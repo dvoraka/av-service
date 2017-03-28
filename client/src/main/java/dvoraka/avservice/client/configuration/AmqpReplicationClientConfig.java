@@ -6,6 +6,8 @@ import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,9 @@ public class AmqpReplicationClientConfig {
     private String replicationQueue;
     @Value("${avservice.amqp.replicationExchange}")
     private String replicationExchange;
+
+    @Value("${avservice.amqp.listeningTimeout:4000}")
+    private long listeningTimeout;
 
     @Value("${avservice.serviceId}")
     private String serviceId;
@@ -56,5 +61,22 @@ public class AmqpReplicationClientConfig {
         container.setMessageListener(replicationMessageListener);
 
         return container;
+    }
+
+    @Bean
+    public MessageConverter replicationMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(
+            ConnectionFactory connectionFactory,
+            MessageConverter replicationMessageConverter) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setReceiveTimeout(listeningTimeout);
+        template.setExchange(replicationExchange);
+        template.setMessageConverter(replicationMessageConverter);
+
+        return template;
     }
 }
