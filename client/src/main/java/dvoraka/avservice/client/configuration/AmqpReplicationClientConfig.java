@@ -47,7 +47,9 @@ public class AmqpReplicationClientConfig {
 
     @Bean
     public SimpleMessageListenerContainer replicationMessageListenerContainer(
-            ConnectionFactory connectionFactory, MessageListener replicationMessageListener) {
+            ConnectionFactory connectionFactory,
+            MessageListener replicationMessageListener
+    ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(replicationQueue);
