@@ -1,7 +1,6 @@
-package dvoraka.avservice.server;
+package dvoraka.avservice.storage.replication;
 
 import dvoraka.avservice.common.service.ServiceManagement;
-import dvoraka.avservice.storage.replication.ReplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
