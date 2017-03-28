@@ -1,12 +1,10 @@
 package dvoraka.avservice.server.runner.amqp
 
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
- * Test for service running.
+ * Test for service runner.
  */
-@Ignore("WIP")
 class AmqpReplicationServiceRunnerISpec extends Specification {
 
     def "Run AMQP replication service runner"() {
