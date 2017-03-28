@@ -2,7 +2,11 @@ package dvoraka.avservice.client.configuration;
 
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.client.amqp.AmqpReplicationComponent;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.MessageListener;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -21,7 +25,7 @@ import org.springframework.context.annotation.Profile;
 public class AmqpReplicationClientConfig {
 
     @Value("${avservice.amqp.replicationQueue}")
-    private String replicationQueue;
+    private String replicationQueueName;
     @Value("${avservice.amqp.replicationExchange}")
     private String replicationExchange;
 
@@ -30,6 +34,11 @@ public class AmqpReplicationClientConfig {
 
     @Value("${avservice.serviceId}")
     private String serviceId;
+    @Value("${avservice.storage.replication.nodeId}")
+    private String nodeId;
+
+    @Value("${avservice.amqp.replicationQueue}.${avservice.storage.replication.nodeId}")
+    private String fullQueueName;
 
 
 //    @Bean
@@ -57,7 +66,7 @@ public class AmqpReplicationClientConfig {
     ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(replicationQueue);
+        container.setQueueNames(fullQueueName);
         container.setMessageListener(replicationMessageListener);
 
         return container;
@@ -66,6 +75,18 @@ public class AmqpReplicationClientConfig {
     @Bean
     public MessageConverter replicationMessageConverter() {
         return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public Queue replicationQueue() {
+        return new Queue(fullQueueName);
+    }
+
+    @Bean
+    public Binding bindReplication(Queue replicationQueue) {
+        return BindingBuilder
+                .bind(replicationQueue)
+                .to(new FanoutExchange(replicationExchange));
     }
 
     @Bean
