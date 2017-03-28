@@ -36,12 +36,13 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
     @Override
     public void onMessage(Message message) {
-
+        log.debug("Receive: " + message);
     }
 
     @Override
     public void sendMessage(ReplicationMessage message) {
         log.debug("Send: " + message);
+        rabbitTemplate.convertAndSend(message);
     }
 
     @Override

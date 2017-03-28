@@ -80,7 +80,7 @@ class RestServiceISpec extends Specification {
 
         when:
             restTemplate.postForEntity(checkPath, normalMessage, DefaultAvMessage.class)
-            sleep(6000) // sometimes a strange delay for remote services
+            sleep(6000) // sometimes a strange delay necessary for remote services
 
             ResponseEntity<MessageStatus> statusResponseEntity = restTemplate
                     .getForEntity('/msg-status/' + id, MessageStatus.class)

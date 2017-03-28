@@ -1,7 +1,6 @@
 package dvoraka.avservice.client.configuration;
 
 import dvoraka.avservice.client.ReplicationComponent;
-import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.client.amqp.AmqpReplicationComponent;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -19,12 +18,10 @@ import org.springframework.context.annotation.Profile;
 @Profile({"amqp-client", "replication"})
 public class AmqpReplicationClientConfig {
 
-    @Value("${avservice.amqp.resultQueue}")
-    private String resultQueue;
-    @Value("${avservice.amqp.checkExchange}")
-    private String checkExchange;
-    @Value("${avservice.amqp.fileExchange}")
-    private String fileExchange;
+    @Value("${avservice.amqp.replicationQueue}")
+    private String replicationQueue;
+    @Value("${avservice.amqp.replicationExchange}")
+    private String replicationExchange;
 
     @Value("${avservice.serviceId}")
     private String serviceId;
@@ -44,17 +41,17 @@ public class AmqpReplicationClientConfig {
     }
 
     @Bean
-    public MessageListener messageListener(ServerComponent serverComponent) {
-        return serverComponent;
+    public MessageListener replicationMessageListener(ReplicationComponent replicationComponent) {
+        return replicationComponent;
     }
 
     @Bean
-    public SimpleMessageListenerContainer messageListenerContainer(
-            ConnectionFactory connectionFactory, MessageListener messageListener) {
+    public SimpleMessageListenerContainer replicationMessageListenerContainer(
+            ConnectionFactory connectionFactory, MessageListener replicationMessageListener) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(resultQueue);
-        container.setMessageListener(messageListener);
+        container.setQueueNames(replicationQueue);
+        container.setMessageListener(replicationMessageListener);
 
         return container;
     }

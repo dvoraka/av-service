@@ -65,7 +65,7 @@ public class AmqpCommonConfig {
             MessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
-        template.setRoutingKey("test");
+//        template.setRoutingKey("test");
         template.setMessageConverter(messageConverter);
 
         return template;
