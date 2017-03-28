@@ -38,6 +38,8 @@ public class EnvironmentConfiguratorConfig {
     private String fileQueue;
     @Value("${avservice.amqp.resultQueue}")
     private String resultQueue;
+    @Value("${avservice.amqp.replicationQueue}")
+    private String replicationQueue;
 
     @Value("${avservice.amqp.checkExchange}")
     private String checkExchange;
@@ -45,6 +47,8 @@ public class EnvironmentConfiguratorConfig {
     private String fileExchange;
     @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
+    @Value("${avservice.amqp.replicationExchange}")
+    private String replicationExchange;
 
 
     @Bean
@@ -87,6 +91,11 @@ public class EnvironmentConfiguratorConfig {
     }
 
     @Bean
+    public Queue replicationQueue() {
+        return new Queue(replicationQueue);
+    }
+
+    @Bean
     public FanoutExchange checkExchange() {
         return new FanoutExchange(checkExchange);
     }
@@ -102,17 +111,35 @@ public class EnvironmentConfiguratorConfig {
     }
 
     @Bean
+    public FanoutExchange replicationExchange() {
+        return new FanoutExchange(replicationExchange);
+    }
+
+    @Bean
     public Binding bindingCheck(Queue checkQueue, FanoutExchange checkExchange) {
-        return BindingBuilder.bind(checkQueue).to(checkExchange);
+        return BindingBuilder
+                .bind(checkQueue)
+                .to(checkExchange);
     }
 
     @Bean
     public Binding bindingFile(Queue fileQueue, FanoutExchange fileExchange) {
-        return BindingBuilder.bind(fileQueue).to(fileExchange);
+        return BindingBuilder
+                .bind(fileQueue)
+                .to(fileExchange);
     }
 
     @Bean
     public Binding bindingResult(Queue resultQueue, FanoutExchange resultExchange) {
-        return BindingBuilder.bind(resultQueue).to(resultExchange);
+        return BindingBuilder
+                .bind(resultQueue)
+                .to(resultExchange);
+    }
+
+    @Bean
+    public Binding bindingReplication(Queue replicationQueue, FanoutExchange replicationExchange) {
+        return BindingBuilder
+                .bind(replicationQueue)
+                .to(replicationExchange);
     }
 }

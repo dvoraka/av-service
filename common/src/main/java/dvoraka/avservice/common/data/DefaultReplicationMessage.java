@@ -1,5 +1,6 @@
 package dvoraka.avservice.common.data;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -91,6 +92,24 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
     @Override
     public Command getCommand() {
         return command;
+    }
+
+    @Override
+    @SuppressWarnings("checkstyle:OperatorWrap")
+    public String toString() {
+        return "DefaultReplicationMessage{" +
+                "id='" + id + '\'' +
+                ", correlationId='" + correlationId + '\'' +
+                ", type=" + type +
+                ", data=" + Arrays.toString(data) +
+                ", filename='" + filename + '\'' +
+                ", owner='" + owner + '\'' +
+                ", fromId='" + fromId + '\'' +
+                ", toId='" + toId + '\'' +
+                ", routing=" + routing +
+                ", replicationStatus=" + replicationStatus +
+                ", command=" + command +
+                '}';
     }
 
     public static class Builder {
