@@ -152,4 +152,12 @@ public class DefaultReplicationResponseClient implements
             messageCache.put(corrId, messageList);
         }
     }
+
+    public void addNoResponseMessageListener(ReplicationMessageListener listener) {
+
+    }
+
+    public void removeNoResponseMessageListener(ReplicationMessageListener listener) {
+
+    }
 }

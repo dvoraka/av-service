@@ -248,4 +248,9 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public int getReplicationCount() {
         return replicationCount;
     }
+
+    @Override
+    public void onMessage(ReplicationMessage message) {
+        // broadcast messages from replication network
+    }
 }
