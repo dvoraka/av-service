@@ -25,7 +25,8 @@ public class AmqpServerConfig {
 
     @Value("${avservice.amqp.checkQueue}")
     private String checkQueue;
-
+    @Value("${avservice.amqp.fileQueue}")
+    private String fileQueue;
     @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
 
@@ -57,10 +58,11 @@ public class AmqpServerConfig {
 
     @Bean
     public MessageListenerContainer messageListenerContainer(
-            ConnectionFactory connectionFactory, MessageListener messageListener) {
+            ConnectionFactory connectionFactory, MessageListener messageListener
+    ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(checkQueue);
+        container.setQueueNames(checkQueue, fileQueue);
         container.setMessageListener(messageListener);
 
         return container;
