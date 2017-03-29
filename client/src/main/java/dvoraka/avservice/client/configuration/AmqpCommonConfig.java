@@ -63,7 +63,8 @@ public class AmqpCommonConfig {
     @Profile("!replication")
     public RabbitTemplate rabbitTemplate(
             ConnectionFactory connectionFactory,
-            MessageConverter messageConverter) {
+            MessageConverter messageConverter
+    ) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
         template.setMessageConverter(messageConverter);

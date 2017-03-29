@@ -1,11 +1,16 @@
 package dvoraka.avservice.common.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.util.Arrays;
 import java.util.UUID;
 
 /**
  * Default replication message implementation.
  */
+@JsonDeserialize(builder = DefaultReplicationMessage.Builder.class)
 public final class DefaultReplicationMessage implements ReplicationMessage {
 
     private final String id;
@@ -112,6 +117,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
                 '}';
     }
 
+    @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
 
         private String id;
@@ -129,7 +135,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
         private Command command;
 
 
-        public Builder(String id) {
+        public Builder(@JsonProperty("id") String id) {
             if (id == null) {
                 this.id = UUID.randomUUID().toString();
             } else {

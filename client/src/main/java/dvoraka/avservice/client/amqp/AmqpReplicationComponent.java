@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,18 +26,21 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
     private static final Logger log = LogManager.getLogger(AmqpReplicationComponent.class);
 
+    private final MessageConverter messageConverter;
     private final Set<ReplicationMessageListener> listeners;
 
 
     @Autowired
     public AmqpReplicationComponent(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = requireNonNull(rabbitTemplate);
+        messageConverter = requireNonNull(rabbitTemplate.getMessageConverter());
         listeners = new CopyOnWriteArraySet<>();
     }
 
     @Override
     public void onMessage(Message message) {
         log.debug("Receive: " + message);
+        log.debug("Converted: " + messageConverter.fromMessage(message));
     }
 
     @Override

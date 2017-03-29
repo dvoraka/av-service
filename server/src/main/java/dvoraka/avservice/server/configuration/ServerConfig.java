@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Profile;
  * Server main configuration.
  */
 @Configuration
-@Profile("server")
 @Import({
         AmqpConfig.class,
         JmsConfig.class
 })
+@Profile("server")
 public class ServerConfig {
 }
