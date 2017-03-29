@@ -140,6 +140,10 @@ public class DefaultReplicationResponseClient implements
         log.debug("On message: {}", response);
 
         String corrId = response.getCorrelationId();
+        if (corrId == null) { // not response
+            return;
+        }
+
         if (messageCache.containsKey(corrId)) {
             messageCache.get(corrId).add(response);
         } else {
