@@ -8,6 +8,7 @@ import dvoraka.avservice.storage.replication.DefaultReplicationService;
 import dvoraka.avservice.storage.replication.ReplicationService;
 import dvoraka.avservice.storage.replication.ReplicationServiceApp;
 import dvoraka.avservice.storage.service.FileService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -26,6 +27,10 @@ import org.springframework.context.annotation.Profile;
 @Profile("storage")
 public class StorageConfig {
 
+    @Value("${avservice.storage.replication.nodeId}")
+    private String nodeId;
+
+
     @Bean
     @Profile("replication")
     public ReplicationService replicationService(
@@ -33,7 +38,7 @@ public class StorageConfig {
             ReplicationServiceClient serviceClient,
             ReplicationResponseClient responseClient
     ) {
-        return new DefaultReplicationService(fileService, serviceClient, responseClient);
+        return new DefaultReplicationService(fileService, serviceClient, responseClient, nodeId);
     }
 
     @Bean

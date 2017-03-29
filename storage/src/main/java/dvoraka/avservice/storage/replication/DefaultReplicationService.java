@@ -11,6 +11,8 @@ import dvoraka.avservice.storage.FileNotFoundException;
 import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -28,11 +30,13 @@ import static java.util.Objects.requireNonNull;
 /**
  * Default replication service implementation.
  */
+@Service
 public class DefaultReplicationService implements ReplicationService, ReplicationHelper {
 
     private final FileService fileService;
     private final ReplicationServiceClient serviceClient;
     private final ReplicationResponseClient responseClient;
+    private final String nodeId;
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
@@ -49,14 +53,17 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private ScheduledExecutorService executorService;
 
 
+    @Autowired
     public DefaultReplicationService(
             FileService fileService,
             ReplicationServiceClient replicationServiceClient,
-            ReplicationResponseClient replicationResponseClient
+            ReplicationResponseClient replicationResponseClient,
+            String nodeId
     ) {
         this.fileService = requireNonNull(fileService);
         this.serviceClient = requireNonNull(replicationServiceClient);
         this.responseClient = requireNonNull(replicationResponseClient);
+        this.nodeId = requireNonNull(nodeId);
 
         final int size = 10;
         commands = new ArrayBlockingQueue<>(size);
@@ -83,7 +90,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private void discoverNeighbours() {
         log.debug("Discovering neighbours...");
 
-        ReplicationMessage message = createDiscoverQuery();
+        ReplicationMessage message = createDiscoverQuery(nodeId);
         serviceClient.sendMessage(message);
 
         ReplicationMessageList responses = responseClient

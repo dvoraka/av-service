@@ -32,11 +32,12 @@ public interface ReplicationHelper {
                 .build();
     }
 
-    default ReplicationMessage createDiscoverQuery() {
+    default ReplicationMessage createDiscoverQuery(String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
                 .command(Command.DISCOVER)
+                .fromId(nodeId)
                 .build();
     }
 

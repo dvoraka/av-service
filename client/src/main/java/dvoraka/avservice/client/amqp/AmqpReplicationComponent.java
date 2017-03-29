@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,17 @@ public class AmqpReplicationComponent implements ReplicationComponent {
     public void onMessage(Message message) {
         log.debug("Receive: " + message);
         log.debug("Converted: " + messageConverter.fromMessage(message));
+
+        ReplicationMessage replicationMessage;
+        try {
+            replicationMessage = (ReplicationMessage) messageConverter.fromMessage(message);
+        } catch (MessageConversionException e) {
+            log.warn("Conversion error!", e);
+
+            return;
+        }
+
+        listeners.forEach(listener -> listener.onMessage(replicationMessage));
     }
 
     @Override

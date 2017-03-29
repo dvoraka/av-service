@@ -41,14 +41,6 @@ public class AmqpReplicationClientConfig {
     private String fullQueueName;
 
 
-//    @Bean
-//    public ServerComponent serverComponent(
-//            RabbitTemplate rabbitTemplate,
-//            MessageInfoService messageInfoService
-//    ) {
-//        return new AmqpComponent(fileExchange, serviceId, rabbitTemplate, messageInfoService);
-//    }
-
     @Bean
     public ReplicationComponent replicationComponent(RabbitTemplate rabbitTemplate) {
         return new AmqpReplicationComponent(rabbitTemplate);
@@ -92,7 +84,8 @@ public class AmqpReplicationClientConfig {
     @Bean
     public RabbitTemplate rabbitTemplate(
             ConnectionFactory connectionFactory,
-            MessageConverter replicationMessageConverter) {
+            MessageConverter replicationMessageConverter
+    ) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setReceiveTimeout(listeningTimeout);
         template.setExchange(replicationExchange);
