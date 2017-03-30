@@ -161,7 +161,9 @@ public class DefaultReplicationResponseClient implements
 
         String corrId = response.getCorrelationId();
         if (corrId == null) { // not response
-            noResponseListeners.forEach(listener -> listener.onMessage(response));
+            if (!nodeId.equals(response.getFromId())) {
+                noResponseListeners.forEach(listener -> listener.onMessage(response));
+            }
 
             return;
         }

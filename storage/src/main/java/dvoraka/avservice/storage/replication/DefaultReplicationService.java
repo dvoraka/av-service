@@ -3,7 +3,9 @@ package dvoraka.avservice.storage.replication;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
+import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.FileMessage;
+import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.storage.ExistingFileException;
@@ -103,7 +105,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         }
 
         Set<String> newNeighbours = responses.stream()
-                .filter(msg -> msg.getReplicationStatus().equals(ReplicationStatus.READY))
+                .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.READY)
                 .map(ReplicationMessage::getFromId)
                 .collect(Collectors.toSet());
 
@@ -255,5 +257,10 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void onMessage(ReplicationMessage message) {
         // broadcast and unicast messages from replication network
         log.debug("On message: {}", message);
+
+        if (message.getRouting() == MessageRouting.BROADCAST
+                && message.getCommand() == Command.DISCOVER) {
+            serviceClient.sendMessage(createDiscoverReply(message, nodeId));
+        }
     }
 }

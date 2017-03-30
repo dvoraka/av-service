@@ -6,6 +6,7 @@ import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.data.ReplicationMessage;
+import dvoraka.avservice.common.data.ReplicationStatus;
 
 /**
  * Replication helper interface.
@@ -38,6 +39,18 @@ public interface ReplicationHelper {
                 .routing(MessageRouting.BROADCAST)
                 .command(Command.DISCOVER)
                 .fromId(nodeId)
+                .build();
+    }
+
+    default ReplicationMessage createDiscoverReply(ReplicationMessage message, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.DISCOVER)
+                .replicationStatus(ReplicationStatus.READY)
+                .fromId(nodeId)
+                .toId(message.getFromId())
                 .build();
     }
 
