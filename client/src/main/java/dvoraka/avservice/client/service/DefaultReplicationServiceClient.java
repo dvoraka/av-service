@@ -10,23 +10,29 @@ import org.springframework.stereotype.Service;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Default implementation for the remote replication service.
+ * Default client implementation for the remote replication service.
  */
 @Service
 public class DefaultReplicationServiceClient implements ReplicationServiceClient {
 
     private final ReplicationComponent replicationComponent;
+    private final String nodeId;
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationServiceClient.class);
 
 
     @Autowired
-    public DefaultReplicationServiceClient(ReplicationComponent replicationComponent) {
+    public DefaultReplicationServiceClient(
+            ReplicationComponent replicationComponent,
+            String nodeId
+    ) {
         this.replicationComponent = requireNonNull(replicationComponent);
+        this.nodeId = requireNonNull(nodeId);
     }
 
     @Override
     public void sendMessage(ReplicationMessage message) {
+        log.debug("Send: " + message);
         replicationComponent.sendMessage(message);
     }
 }

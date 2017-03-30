@@ -4,7 +4,7 @@ import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.ReplicationMessage;
 
 /**
- * Component for sending a receiving replication messages.
+ * Component for sending and receiving replication messages.
  */
 public interface ReplicationComponent extends MessageListenerAdapter {
 

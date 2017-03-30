@@ -1,16 +1,11 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.DefaultAvServiceClient;
 import dvoraka.avservice.client.service.DefaultFileServiceClient;
-import dvoraka.avservice.client.service.DefaultReplicationServiceClient;
 import dvoraka.avservice.client.service.FileServiceClient;
-import dvoraka.avservice.client.service.ReplicationServiceClient;
-import dvoraka.avservice.client.service.response.DefaultReplicationResponseClient;
 import dvoraka.avservice.client.service.response.DefaultResponseClient;
-import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
@@ -38,7 +33,9 @@ import org.springframework.context.annotation.PropertySource;
         JmsClient.class,
         JmsCommonConfig.class,
         // Checker
-        CheckerConfig.class
+        CheckerConfig.class,
+        // Replication
+        ReplicationClientConfig.class
 })
 @PropertySource("classpath:avservice.properties")
 public class ClientConfig {
@@ -53,14 +50,6 @@ public class ClientConfig {
     }
 
     @Bean
-    @Profile("replication")
-    public ReplicationServiceClient replicationServiceClient(
-            ReplicationComponent replicationComponent
-    ) {
-        return new DefaultReplicationServiceClient(replicationComponent);
-    }
-
-    @Bean
     public FileServiceClient fileServiceClient(ServerComponent serverComponent) {
         return new DefaultFileServiceClient(serverComponent);
     }
@@ -68,14 +57,6 @@ public class ClientConfig {
     @Bean
     public ResponseClient responseClient(ServerComponent serverComponent) {
         return new DefaultResponseClient(serverComponent);
-    }
-
-    @Bean
-    @Profile("replication")
-    public ReplicationResponseClient replicationResponseClient(
-            ReplicationComponent replicationComponent
-    ) {
-        return new DefaultReplicationResponseClient(replicationComponent);
     }
 
     @Bean
