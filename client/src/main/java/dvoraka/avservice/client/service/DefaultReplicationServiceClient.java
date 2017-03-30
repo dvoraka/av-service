@@ -33,6 +33,12 @@ public class DefaultReplicationServiceClient implements ReplicationServiceClient
     @Override
     public void sendMessage(ReplicationMessage message) {
         log.debug("Send: " + message);
+
+        if (!message.getFromId().equals(nodeId)) {
+            log.warn("Wrong from node ID in the message!");
+            return;
+        }
+
         replicationComponent.sendMessage(message);
     }
 }
