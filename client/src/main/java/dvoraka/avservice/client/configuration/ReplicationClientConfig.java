@@ -32,6 +32,6 @@ public class ReplicationClientConfig {
     public ReplicationResponseClient replicationResponseClient(
             ReplicationComponent replicationComponent
     ) {
-        return new DefaultReplicationResponseClient(replicationComponent);
+        return new DefaultReplicationResponseClient(replicationComponent, nodeId);
     }
 }

@@ -30,6 +30,7 @@ public class DefaultReplicationResponseClient implements
         ReplicationResponseClient, ReplicationMessageListener {
 
     private final ReplicationComponent replicationComponent;
+    private final String nodeId;
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationResponseClient.class);
 
@@ -43,8 +44,12 @@ public class DefaultReplicationResponseClient implements
 
 
     @Autowired
-    public DefaultReplicationResponseClient(ReplicationComponent replicationComponent) {
+    public DefaultReplicationResponseClient(
+            ReplicationComponent replicationComponent,
+            String nodeId
+    ) {
         this.replicationComponent = requireNonNull(replicationComponent);
+        this.nodeId = nodeId;
     }
 
     @PostConstruct
@@ -74,6 +79,7 @@ public class DefaultReplicationResponseClient implements
     }
 
     private void initializeCache() {
+        log.debug("Initializing cache...");
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache(CACHE_NAME, getCacheConfiguration())
                 .build(true);
