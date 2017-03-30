@@ -41,7 +41,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
     private static final int MAX_RESPONSE_TIME = 1_000; // one second
-    private static final int DISCOVER_DELAY = 10_000; // ten seconds
+    private static final int DISCOVER_DELAY = 20_000;
     private static final int TERM_TIME = 10;
     private static final int REPLICATION_COUNT = 3;
 
@@ -77,6 +77,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     @PostConstruct
     public void start() {
         log.info("Starting service...");
+        responseClient.addNoResponseMessageListener(this);
         executorService.scheduleWithFixedDelay(
                 this::discoverNeighbours, 0L, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }
@@ -84,6 +85,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     @PreDestroy
     public void stop() {
         log.info("Stopping service...");
+        responseClient.removeNoResponseMessageListener(this);
         shutdownAndAwaitTermination(executorService, TERM_TIME, log);
     }
 
@@ -251,6 +253,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public void onMessage(ReplicationMessage message) {
-        // broadcast messages from replication network
+        // broadcast and unicast messages from replication network
+        log.debug("On message: {}", message);
     }
 }

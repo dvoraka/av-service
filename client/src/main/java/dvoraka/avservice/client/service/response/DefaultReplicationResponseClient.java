@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Objects.requireNonNull;
@@ -41,6 +43,8 @@ public class DefaultReplicationResponseClient implements
     private CacheManager cacheManager;
     private Cache<String, ReplicationMessageList> messageCache;
 
+    private Set<ReplicationMessageListener> noResponseListeners;
+
     private volatile boolean started;
 
 
@@ -51,6 +55,8 @@ public class DefaultReplicationResponseClient implements
     ) {
         this.replicationComponent = requireNonNull(replicationComponent);
         this.nodeId = nodeId;
+
+        noResponseListeners = new CopyOnWriteArraySet<>();
     }
 
     @PostConstruct
@@ -155,6 +161,8 @@ public class DefaultReplicationResponseClient implements
 
         String corrId = response.getCorrelationId();
         if (corrId == null) { // not response
+            noResponseListeners.forEach(listener -> listener.onMessage(response));
+
             return;
         }
 
@@ -167,11 +175,13 @@ public class DefaultReplicationResponseClient implements
         }
     }
 
+    @Override
     public void addNoResponseMessageListener(ReplicationMessageListener listener) {
-
+        noResponseListeners.add(listener);
     }
 
+    @Override
     public void removeNoResponseMessageListener(ReplicationMessageListener listener) {
-
+        noResponseListeners.remove(listener);
     }
 }
