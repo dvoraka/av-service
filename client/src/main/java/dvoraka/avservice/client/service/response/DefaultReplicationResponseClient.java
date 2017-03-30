@@ -153,7 +153,7 @@ public class DefaultReplicationResponseClient implements
         log.debug("On message: {}", response);
 
         if (response.getRouting() == MessageRouting.UNICAST
-                && !response.getToId().equals(nodeId)) {
+                && !nodeId.equals(response.getToId())) {
             log.debug("Filtering: {}", response);
 
             return;
