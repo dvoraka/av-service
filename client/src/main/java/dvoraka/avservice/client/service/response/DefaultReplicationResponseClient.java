@@ -2,6 +2,7 @@ package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.common.ReplicationMessageListener;
+import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -144,6 +145,13 @@ public class DefaultReplicationResponseClient implements
     @Override
     public void onMessage(ReplicationMessage response) {
         log.debug("On message: {}", response);
+
+        if (response.getRouting() == MessageRouting.UNICAST
+                && !response.getToId().equals(nodeId)) {
+            log.debug("Filtering: {}", response);
+
+            return;
+        }
 
         String corrId = response.getCorrelationId();
         if (corrId == null) { // not response
