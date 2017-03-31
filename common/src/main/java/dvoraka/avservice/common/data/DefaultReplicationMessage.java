@@ -23,6 +23,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
 
     private final String fromId;
     private final String toId;
+    private final long sequence;
     private final MessageRouting routing;
     private final ReplicationStatus replicationStatus;
     private final Command command;
@@ -39,6 +40,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
 
         this.fromId = builder.fromId;
         this.toId = builder.toId;
+        this.sequence = builder.sequence;
         this.routing = builder.routing;
         this.replicationStatus = builder.replicationStatus;
         this.command = builder.command;
@@ -85,6 +87,11 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
     }
 
     @Override
+    public long getSequence() {
+        return sequence;
+    }
+
+    @Override
     public MessageRouting getRouting() {
         return routing;
     }
@@ -111,6 +118,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
                 ", owner='" + owner + '\'' +
                 ", fromId='" + fromId + '\'' +
                 ", toId='" + toId + '\'' +
+                ", sequence=" + sequence +
                 ", routing=" + routing +
                 ", replicationStatus=" + replicationStatus +
                 ", command=" + command +
@@ -130,6 +138,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
 
         private String fromId;
         private String toId;
+        private long sequence;
         private MessageRouting routing;
         private ReplicationStatus replicationStatus;
         private Command command;
@@ -177,6 +186,11 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
 
         public Builder toId(String toId) {
             this.toId = toId;
+            return this;
+        }
+
+        public Builder sequence(long sequence) {
+            this.sequence = sequence;
             return this;
         }
 

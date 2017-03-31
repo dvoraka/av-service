@@ -74,6 +74,20 @@ public interface ReplicationHelper {
                 .build();
     }
 
+    default ReplicationMessage createSequenceReply(
+            ReplicationMessage message, String nodeId, long sequence
+    ) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.SEQUENCE)
+                .fromId(nodeId)
+                .toId(message.getFromId())
+                .sequence(sequence)
+                .build();
+    }
+
     default ReplicationMessage createSaveMessage(FileMessage message, String neighbourId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
