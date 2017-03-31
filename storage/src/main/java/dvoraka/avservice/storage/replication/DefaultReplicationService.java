@@ -101,6 +101,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
 
         if (responses == null) {
+            log.debug("Discovered: 0");
+
             return;
         }
 
