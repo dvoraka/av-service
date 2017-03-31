@@ -4,6 +4,8 @@ import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.ReplicationMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,8 @@ public class DefaultRemoteLock implements
     private final ReplicationServiceClient serviceClient;
     private final ReplicationResponseClient responseClient;
     private final String nodeId;
+
+    private static final Logger log = LogManager.getLogger(DefaultRemoteLock.class);
 
     private AtomicLong sequence;
 
@@ -38,9 +42,16 @@ public class DefaultRemoteLock implements
     }
 
     @PostConstruct
+    @Override
     public void start() {
+        log.info("Start.");
         responseClient.addNoResponseMessageListener(this);
         initializeSequence();
+    }
+
+    @Override
+    public void stop() {
+        log.info("Stop.");
     }
 
     @Override
@@ -73,6 +84,7 @@ public class DefaultRemoteLock implements
     }
 
     private void initializeSequence() {
+        log.debug("Initializing sequence...");
         serviceClient.sendMessage(createSequenceRequest(nodeId));
 
         // read response

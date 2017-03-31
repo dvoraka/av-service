@@ -80,6 +80,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void start() {
         log.info("Starting service...");
         responseClient.addNoResponseMessageListener(this);
+        remoteLock.start();
         executorService.scheduleWithFixedDelay(
                 this::discoverNeighbours, 0L, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }
@@ -88,6 +89,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void stop() {
         log.info("Stopping service...");
         responseClient.removeNoResponseMessageListener(this);
+        remoteLock.stop();
         shutdownAndAwaitTermination(executorService, TERM_TIME, log);
     }
 

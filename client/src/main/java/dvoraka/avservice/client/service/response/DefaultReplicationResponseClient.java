@@ -152,6 +152,14 @@ public class DefaultReplicationResponseClient implements
     public void onMessage(ReplicationMessage response) {
         log.debug("On message: {}", response);
 
+        // filter out own messages
+        if (nodeId.equals(response.getFromId())) {
+            log.debug("Filtering: {}", response);
+
+            return;
+        }
+
+        // filter out unicast messages for other nodes
         if (response.getRouting() == MessageRouting.UNICAST
                 && !nodeId.equals(response.getToId())) {
             log.debug("Filtering: {}", response);

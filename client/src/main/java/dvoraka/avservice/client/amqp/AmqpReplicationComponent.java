@@ -40,7 +40,7 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
     @Override
     public void onMessage(Message message) {
-        log.debug("Receive: " + message);
+//        log.debug("Receive: " + message);
         log.debug("Converted: " + messageConverter.fromMessage(message));
 
         ReplicationMessage replicationMessage;
