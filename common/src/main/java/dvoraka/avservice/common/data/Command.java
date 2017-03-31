@@ -4,9 +4,11 @@ package dvoraka.avservice.common.data;
  * Enum for command types.
  */
 public enum Command {
-    EXISTS,
-    STATUS,
     DISCOVER,
+    EXISTS,
+    LOCK,
+    SEQUENCE,
+    STATUS,
 
     SAVE,
     LOAD,

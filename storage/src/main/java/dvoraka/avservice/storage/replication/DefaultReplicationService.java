@@ -69,7 +69,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
         final int size = 10;
         commands = new ArrayBlockingQueue<>(size);
-        remoteLock = new DefaultRemoteLock(serviceClient, responseClient);
+        remoteLock = new DefaultRemoteLock(serviceClient, responseClient, nodeId);
 
         neighbours = new CopyOnWriteArraySet<>();
         replicationCount = REPLICATION_COUNT;

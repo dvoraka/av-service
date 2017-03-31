@@ -54,6 +54,26 @@ public interface ReplicationHelper {
                 .build();
     }
 
+    default ReplicationMessage createLockRequest(String filename, String owner, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.BROADCAST)
+                .command(Command.LOCK)
+                .fromId(nodeId)
+                .filename(filename)
+                .owner(owner)
+                .build();
+    }
+
+    default ReplicationMessage createSequenceRequest(String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.BROADCAST)
+                .command(Command.SEQUENCE)
+                .fromId(nodeId)
+                .build();
+    }
+
     default ReplicationMessage createSaveMessage(FileMessage message, String neighbourId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)

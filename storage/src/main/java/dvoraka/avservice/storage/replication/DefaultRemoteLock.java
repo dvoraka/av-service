@@ -19,6 +19,7 @@ public class DefaultRemoteLock implements
 
     private final ReplicationServiceClient serviceClient;
     private final ReplicationResponseClient responseClient;
+    private final String nodeId;
 
     private AtomicLong sequence;
 
@@ -26,10 +27,12 @@ public class DefaultRemoteLock implements
     @Autowired
     public DefaultRemoteLock(
             ReplicationServiceClient serviceClient,
-            ReplicationResponseClient responseClient
+            ReplicationResponseClient responseClient,
+            String nodeId
     ) {
         this.serviceClient = serviceClient;
         this.responseClient = responseClient;
+        this.nodeId = nodeId;
 
         sequence = new AtomicLong();
     }
@@ -53,9 +56,9 @@ public class DefaultRemoteLock implements
         //
         // get lock query responses
         //
-        // return locking status
+        serviceClient.sendMessage(createLockRequest(filename, owner, nodeId));
 
-        serviceClient.sendMessage(null);
+        // return locking status
         return true;
     }
 
@@ -70,7 +73,7 @@ public class DefaultRemoteLock implements
     }
 
     private void initializeSequence() {
-        serviceClient.sendMessage(null); // sequence request
+        serviceClient.sendMessage(createSequenceRequest(nodeId));
 
         // read response
 
