@@ -14,7 +14,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * Default remote lock implementation.
  */
 @Component
-public class DefaultRemoteLock implements RemoteLock, ReplicationMessageListener {
+public class DefaultRemoteLock implements
+        RemoteLock, ReplicationMessageListener, ReplicationHelper {
 
     private final ReplicationServiceClient serviceClient;
     private final ReplicationResponseClient responseClient;

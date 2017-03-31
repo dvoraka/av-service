@@ -13,7 +13,7 @@ import dvoraka.avservice.common.data.ReplicationStatus;
  */
 public interface ReplicationHelper {
 
-    default ReplicationMessage createExistsQuery(String filename, String owner) {
+    default ReplicationMessage createExistsRequest(String filename, String owner) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
@@ -23,7 +23,7 @@ public interface ReplicationHelper {
                 .build();
     }
 
-    default ReplicationMessage createStatusQuery(String filename, String owner) {
+    default ReplicationMessage createStatusRequest(String filename, String owner) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
@@ -33,7 +33,7 @@ public interface ReplicationHelper {
                 .build();
     }
 
-    default ReplicationMessage createDiscoverQuery(String nodeId) {
+    default ReplicationMessage createDiscoverRequest(String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
