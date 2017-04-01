@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Profile;
  * AMQP client configuration for the import.
  */
 @Configuration
-@Profile({"amqp-client", "replication"})
+@Profile("replication")
 public class AmqpReplicationClientConfig {
 
     @Value("${avservice.amqp.replicationQueue}")
