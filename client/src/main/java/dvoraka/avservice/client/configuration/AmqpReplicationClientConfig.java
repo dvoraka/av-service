@@ -71,7 +71,7 @@ public class AmqpReplicationClientConfig {
 
     @Bean
     public Queue replicationQueue() {
-        return new Queue(fullQueueName);
+        return new Queue(fullQueueName, false, true, true);
     }
 
     @Bean
