@@ -194,6 +194,7 @@ allprojects {
         testLogging {
             // show events - "PASSED", "STARTED", "FAILED", "SKIPPED"
 //            events "PASSED", "FAILED"
+            exceptionFormat = 'full'
         }
     }
 
