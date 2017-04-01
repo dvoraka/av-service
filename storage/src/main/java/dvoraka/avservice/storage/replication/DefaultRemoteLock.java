@@ -4,6 +4,8 @@ import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.ReplicationMessageListener;
+import dvoraka.avservice.common.data.Command;
+import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
 
 /**
  * Default remote lock implementation.
@@ -58,6 +58,7 @@ public class DefaultRemoteLock implements
     @Override
     public void stop() {
         log.info("Stop.");
+        responseClient.removeNoResponseMessageListener(this);
     }
 
     @Override
@@ -99,11 +100,13 @@ public class DefaultRemoteLock implements
         ReplicationMessage request = createSequenceRequest(nodeId);
         serviceClient.sendMessage(request);
 
-        Optional<ReplicationMessageList> responses = responseClient
-                .getResponseWait(request.getId(), MAX_RESPONSE_TIME);
+        ReplicationMessageList responses = responseClient
+                .getResponseWait(request.getId(), MAX_RESPONSE_TIME)
+                .orElseGet(ReplicationMessageList::new);
 
-        long actualSequence = responses.map(ReplicationMessageList::stream)
-                .flatMap(Stream::findFirst)
+        long actualSequence = responses.stream()
+                .peek(message -> log.debug("Sequence: {}", message))
+                .findFirst()
                 .map(ReplicationMessage::getSequence)
                 .orElse(1L);
 
@@ -125,6 +128,11 @@ public class DefaultRemoteLock implements
 
     @Override
     public void onMessage(ReplicationMessage message) {
+        log.debug("On message: {}", message);
 
+        if (message.getRouting() == MessageRouting.BROADCAST
+                && message.getCommand() == Command.SEQUENCE) {
+            serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
+        }
     }
 }
