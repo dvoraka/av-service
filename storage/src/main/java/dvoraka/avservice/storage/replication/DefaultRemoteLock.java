@@ -1,6 +1,7 @@
 package dvoraka.avservice.storage.replication;
 
 import dvoraka.avservice.client.service.ReplicationServiceClient;
+import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.ReplicationMessage;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
 /**
  * Default remote lock implementation.
@@ -24,6 +27,9 @@ public class DefaultRemoteLock implements
     private final String nodeId;
 
     private static final Logger log = LogManager.getLogger(DefaultRemoteLock.class);
+
+    private static final int MAX_RESPONSE_TIME = 1_000; // one second
+
 
     private AtomicLong sequence;
 
@@ -46,7 +52,7 @@ public class DefaultRemoteLock implements
     public void start() {
         log.info("Start.");
         responseClient.addNoResponseMessageListener(this);
-        initializeSequence();
+        synchronize();
     }
 
     @Override
@@ -83,13 +89,25 @@ public class DefaultRemoteLock implements
         return true;
     }
 
+    private void synchronize() {
+        initializeSequence();
+    }
+
     private void initializeSequence() {
         log.debug("Initializing sequence...");
-        serviceClient.sendMessage(createSequenceRequest(nodeId));
 
-        // read response
+        ReplicationMessage request = createSequenceRequest(nodeId);
+        serviceClient.sendMessage(request);
 
-        // set sequence
+        Optional<ReplicationMessageList> responses = responseClient
+                .getResponseWait(request.getId(), MAX_RESPONSE_TIME);
+
+        long actualSequence = responses.map(ReplicationMessageList::stream)
+                .flatMap(Stream::findFirst)
+                .map(ReplicationMessage::getSequence)
+                .orElse(1L);
+
+        setSequence(actualSequence);
     }
 
     public long getSequence() {
@@ -97,6 +115,7 @@ public class DefaultRemoteLock implements
     }
 
     private void setSequence(long sequence) {
+        log.debug("Setting sequence: {}", sequence);
         this.sequence.set(sequence);
     }
 

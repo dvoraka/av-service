@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -99,7 +100,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         ReplicationMessage message = createDiscoverRequest(nodeId);
         serviceClient.sendMessage(message);
 
-        ReplicationMessageList responses = responseClient
+        Optional<ReplicationMessageList> responses = responseClient
                 .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
 
         if (responses == null) {
@@ -108,7 +109,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             return;
         }
 
-        Set<String> newNeighbours = responses.stream()
+        ReplicationMessageList messages = responses.orElseGet(ReplicationMessageList::new);
+        Set<String> newNeighbours = messages.stream()
                 .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.READY)
                 .map(ReplicationMessage::getFromId)
                 .collect(Collectors.toSet());
@@ -166,13 +168,14 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         if (exists(message)) {
             serviceClient.sendMessage(createLoadMessage(message, "neighbour"));
 
-            ReplicationMessageList replicationMessages = responseClient.getResponseWait(
-                    message.getId(), MAX_RESPONSE_TIME);
-            if (replicationMessages != null) {
-                return replicationMessages.stream()
-                        .findFirst()
-                        .orElseThrow(FileNotFoundException::new);
-            }
+            Optional<ReplicationMessageList> replicationMessages = responseClient
+                    .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
+            ReplicationMessageList messages = replicationMessages
+                    .orElseGet(ReplicationMessageList::new);
+
+            return messages.stream()
+                    .findFirst()
+                    .orElseThrow(FileNotFoundException::new);
         }
 
         throw new FileNotFoundException();
@@ -229,10 +232,11 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         ReplicationMessage query = createExistsRequest(filename, owner);
         serviceClient.sendMessage(query);
 
-        ReplicationMessageList response;
+        Optional<ReplicationMessageList> response;
         response = responseClient.getResponseWait(query.getId(), MAX_RESPONSE_TIME);
+        ReplicationMessageList messages = response.orElseGet(ReplicationMessageList::new);
 
-        return response != null && response.stream()
+        return messages.stream()
                 .anyMatch(message -> message.getReplicationStatus() == ReplicationStatus.OK);
     }
 

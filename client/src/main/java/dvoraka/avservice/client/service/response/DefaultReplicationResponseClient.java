@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
@@ -121,7 +122,7 @@ public class DefaultReplicationResponseClient implements
     }
 
     @Override
-    public ReplicationMessageList getResponseWait(String id, long waitTime) {
+    public Optional<ReplicationMessageList> getResponseWait(String id, long waitTime) {
         final long start = System.currentTimeMillis();
         final int sleepTime = 100;
 
@@ -144,7 +145,7 @@ public class DefaultReplicationResponseClient implements
             }
         }
 
-        return result;
+        return Optional.ofNullable(result);
     }
 
 

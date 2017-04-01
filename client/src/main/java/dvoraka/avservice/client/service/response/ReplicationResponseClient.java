@@ -2,6 +2,8 @@ package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.common.ReplicationMessageListener;
 
+import java.util.Optional;
+
 /**
  * Client interface for getting a replication response.
  */
@@ -15,7 +17,7 @@ public interface ReplicationResponseClient {
      */
     ReplicationMessageList getResponse(String id);
 
-    ReplicationMessageList getResponseWait(String id, long waitTime);
+    Optional<ReplicationMessageList> getResponseWait(String id, long waitTime);
 
     void addNoResponseMessageListener(ReplicationMessageListener listener);
 
