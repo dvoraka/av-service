@@ -92,8 +92,7 @@ public class CoreConfig {
                 new InputConditions.Builder()
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
-                        .condition((orig, last) -> last.getVirusInfo() != null
-                                && last.getVirusInfo().equals(Utils.OK_VIRUS_INFO))
+                        .condition((orig, last) -> Utils.OK_VIRUS_INFO.equals(last.getVirusInfo()))
                         .build().toList();
 
         List<InputConditions> fileLoadDeleteConditions =

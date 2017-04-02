@@ -182,6 +182,7 @@ public class DefaultReplicationResponseClient implements
         } else {
             ReplicationMessageList messageList = new ReplicationMessageList();
             messageList.add(response);
+            log.debug("Adding to cache: {}", response);
             messageCache.put(corrId, messageList);
         }
     }
