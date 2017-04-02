@@ -9,9 +9,9 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [ServiceConfig.class])
+@ContextConfiguration(classes = [CoreConfig.class])
 @ActiveProfiles(['core', 'no-db'])
-class ServiceConfigISpec extends Specification {
+class CoreConfigISpec extends Specification {
 
     @Autowired
     MessageProcessor messageProcessor

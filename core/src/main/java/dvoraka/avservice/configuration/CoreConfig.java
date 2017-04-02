@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * AV service Spring configuration.
+ * Core Spring configuration.
  */
 @Configuration
 @PropertySource("classpath:avservice.properties")
@@ -22,7 +22,7 @@ import org.springframework.context.annotation.PropertySource;
         StorageConfig.class
 })
 @SuppressWarnings("checkstyle:HideUtilityClassConstructor")
-public class ServiceConfig { //NOSONAR
+public class CoreConfig { //NOSONAR
 
 //    @Bean
 //    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

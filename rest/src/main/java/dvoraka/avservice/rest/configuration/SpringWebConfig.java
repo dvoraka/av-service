@@ -1,6 +1,6 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.configuration.ServiceConfig;
+import dvoraka.avservice.configuration.CoreConfig;
 import dvoraka.avservice.rest.controller.CheckController;
 import dvoraka.avservice.rest.controller.FileController;
 import dvoraka.avservice.rest.controller.MainController;
@@ -27,7 +27,7 @@ import javax.validation.Validator;
 @Profile("rest")
 @Import({
         RestConfig.class,
-        ServiceConfig.class,
+        CoreConfig.class,
         StatsConfig.class
 })
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
