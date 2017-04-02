@@ -2,6 +2,8 @@ package dvoraka.avservice.avprogram.configuration;
 
 import dvoraka.avservice.avprogram.AvProgram;
 import dvoraka.avservice.avprogram.ClamAvProgram;
+import dvoraka.avservice.avprogram.service.AvService;
+import dvoraka.avservice.avprogram.service.DefaultAvService;
 import dvoraka.avservice.common.service.CachingService;
 import dvoraka.avservice.common.service.DefaultCachingService;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,5 +39,10 @@ public class AvProgramConfig {
     @Bean
     public CachingService cachingService() {
         return new DefaultCachingService();
+    }
+
+    @Bean
+    public AvService avService(AvProgram avProgram) {
+        return new DefaultAvService(avProgram);
     }
 }

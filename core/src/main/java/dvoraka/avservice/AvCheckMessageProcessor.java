@@ -1,5 +1,6 @@
 package dvoraka.avservice;
 
+import dvoraka.avservice.avprogram.service.AvService;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AvMessage;
@@ -9,7 +10,6 @@ import dvoraka.avservice.common.exception.ScanException;
 import dvoraka.avservice.common.service.BasicMessageStatusStorage;
 import dvoraka.avservice.common.service.MessageStatusStorage;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.service.AvService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

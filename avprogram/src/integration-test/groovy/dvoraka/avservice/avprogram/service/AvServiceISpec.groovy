@@ -1,7 +1,7 @@
-package dvoraka.avservice.service
+package dvoraka.avservice.avprogram.service
 
+import dvoraka.avservice.avprogram.configuration.AvProgramConfig
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.configuration.CoreConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -11,7 +11,7 @@ import spock.lang.Specification
 /**
  * Specification class for AvService.
  */
-@ContextConfiguration(classes = [CoreConfig.class])
+@ContextConfiguration(classes = [AvProgramConfig.class])
 @ActiveProfiles(['core', 'no-db'])
 class AvServiceISpec extends Specification {
 

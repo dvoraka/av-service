@@ -6,12 +6,10 @@ import dvoraka.avservice.FileMessageProcessor;
 import dvoraka.avservice.InputConditions;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessorConfiguration;
-import dvoraka.avservice.avprogram.AvProgram;
+import dvoraka.avservice.avprogram.service.AvService;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.service.AvService;
-import dvoraka.avservice.service.DefaultAvService;
 import dvoraka.avservice.storage.service.FileService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -45,11 +43,6 @@ public class ServiceCoreConfig {
         exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
 
         return exporter;
-    }
-
-    @Bean
-    public AvService avService(AvProgram avProgram) {
-        return new DefaultAvService(avProgram);
     }
 
     @Bean

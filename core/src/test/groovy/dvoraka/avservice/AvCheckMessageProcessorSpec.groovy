@@ -1,5 +1,6 @@
 package dvoraka.avservice
 
+import dvoraka.avservice.avprogram.service.AvService
 import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
@@ -7,7 +8,6 @@ import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.exception.ScanException
 import dvoraka.avservice.db.service.MessageInfoService
-import dvoraka.avservice.service.AvService
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.util.concurrent.PollingConditions

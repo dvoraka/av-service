@@ -1,4 +1,4 @@
-package dvoraka.avservice.service
+package dvoraka.avservice.avprogram.service
 
 import dvoraka.avservice.avprogram.AvProgram
 import dvoraka.avservice.common.Utils
