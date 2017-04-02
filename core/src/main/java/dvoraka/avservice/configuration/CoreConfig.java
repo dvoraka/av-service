@@ -20,9 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jmx.export.MBeanExporter;
-import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
-import org.springframework.jmx.support.RegistrationPolicy;
 
 import java.util.List;
 
@@ -48,14 +45,6 @@ public class CoreConfig {
     @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
-
-    @Bean
-    public MBeanExporter mbeanExporter() {
-        MBeanExporter exporter = new AnnotationMBeanExporter();
-        exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
-
-        return exporter;
-    }
 
     @Bean
     public MessageProcessor checkMessageProcessor(
