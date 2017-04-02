@@ -4,6 +4,7 @@ import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.rest.Application
 import dvoraka.avservice.server.runner.amqp.AmqpFileServerRunner
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
 import spock.lang.Shared
 
 /**
@@ -19,6 +20,7 @@ import spock.lang.Shared
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
+@DirtiesContext
 class RestServiceRemoteAmqpISpec extends RestServiceISpec {
 
     @Shared

@@ -2,6 +2,7 @@ package dvoraka.avservice.rest.service
 
 import dvoraka.avservice.rest.Application
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
 
 /**
  * REST with local connections.
@@ -16,5 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
+@DirtiesContext
 class RestServiceLocalISpec extends RestServiceISpec {
 }
