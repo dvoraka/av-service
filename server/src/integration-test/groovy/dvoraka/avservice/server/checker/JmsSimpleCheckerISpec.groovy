@@ -2,6 +2,7 @@ package dvoraka.avservice.server.checker
 
 import dvoraka.avservice.server.configuration.jms.JmsConfig
 import dvoraka.avservice.server.runner.jms.JmsServerRunner
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 
@@ -10,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration
  */
 @ContextConfiguration(classes = [JmsConfig.class])
 @ActiveProfiles(['client', 'jms', 'jms-client', 'checker', 'no-db'])
+@DirtiesContext
 class JmsSimpleCheckerISpec extends SimpleCheckerISpec {
 
     def setupSpec() {

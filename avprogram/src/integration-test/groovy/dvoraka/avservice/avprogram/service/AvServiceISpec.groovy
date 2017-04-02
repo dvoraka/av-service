@@ -12,7 +12,7 @@ import spock.lang.Specification
  * Specification class for AvService.
  */
 @ContextConfiguration(classes = [AvProgramConfig.class])
-@ActiveProfiles(['core', 'no-db'])
+@ActiveProfiles(['core'])
 class AvServiceISpec extends Specification {
 
     @Shared

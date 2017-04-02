@@ -14,7 +14,7 @@ import spock.lang.Unroll
  * AvProgram test.
  */
 @ContextConfiguration(classes = [AvProgramConfig.class])
-@ActiveProfiles(['core', 'no-db'])
+@ActiveProfiles(['core'])
 class AvProgramISpec extends Specification {
 
     @Shared

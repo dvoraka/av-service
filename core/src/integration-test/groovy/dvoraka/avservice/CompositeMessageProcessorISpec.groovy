@@ -7,6 +7,7 @@ import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.configuration.CoreConfig
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit
  * CompositeMessageProcessor spec.
  */
 @ContextConfiguration(classes = [CoreConfig.class])
+@DirtiesContext
 @ActiveProfiles(['core', 'storage', 'db'])
 class CompositeMessageProcessorISpec extends Specification {
 

@@ -2,6 +2,7 @@ package dvoraka.avservice.configuration
 
 import dvoraka.avservice.MessageProcessor
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -11,6 +12,7 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [CoreConfig.class])
 @ActiveProfiles(['core', 'no-db'])
+@DirtiesContext
 class CoreConfigISpec extends Specification {
 
     @Autowired

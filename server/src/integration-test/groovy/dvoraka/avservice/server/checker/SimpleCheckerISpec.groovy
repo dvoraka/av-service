@@ -29,6 +29,7 @@ class SimpleCheckerISpec extends Specification {
 
     def cleanupSpec() {
         runner.stop()
+        sleep(1_000) // wait for stop
     }
 
     def setup() {

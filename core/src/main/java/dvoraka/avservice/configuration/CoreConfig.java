@@ -17,6 +17,7 @@ import dvoraka.avservice.storage.service.FileService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -28,6 +29,7 @@ import java.util.List;
  */
 @Configuration
 @PropertySource("classpath:avservice.properties")
+@EnableMBeanExport
 @Profile("core")
 @Import({
         // AV program
