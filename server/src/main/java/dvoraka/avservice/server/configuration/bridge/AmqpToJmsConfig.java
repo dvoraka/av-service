@@ -1,25 +1,27 @@
 package dvoraka.avservice.server.configuration.bridge;
 
 import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.server.ServerComponentBridge;
-import dvoraka.avservice.server.configuration.ServerCommonConfig;
 import dvoraka.avservice.server.configuration.amqp.AmqpBridgeInputConfig;
 import dvoraka.avservice.server.configuration.jms.JmsBridgeOutputConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * AMQP to JMS bridge configuration.
  */
 @Configuration
+@PropertySource("classpath:avservice.properties")
+@Profile("amqp2jms")
 @Import({
-        ServerCommonConfig.class,
+        DatabaseConfig.class,
         AmqpBridgeInputConfig.class,
         JmsBridgeOutputConfig.class
 })
-@Profile("amqp2jms")
 public class AmqpToJmsConfig {
 
     @Bean

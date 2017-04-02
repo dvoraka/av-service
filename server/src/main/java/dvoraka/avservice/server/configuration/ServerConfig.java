@@ -5,15 +5,17 @@ import dvoraka.avservice.server.configuration.jms.JmsConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Server main configuration.
  */
 @Configuration
+@PropertySource("classpath:avservice.properties")
+@Profile("server")
 @Import({
         AmqpConfig.class,
         JmsConfig.class
 })
-@Profile("server")
 public class ServerConfig {
 }
