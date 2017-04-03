@@ -4,13 +4,17 @@ import dvoraka.avservice.client.configuration.ClientConfig
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
+import dvoraka.avservice.common.data.Command
+import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.ReplicationMessage
+import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.server.runner.amqp.AmqpReplicationServiceRunner
 import dvoraka.avservice.storage.replication.ReplicationHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
@@ -24,6 +28,7 @@ import spock.lang.Specification
 @ActiveProfiles(['replication-test', 'client', 'amqp', 'amqp-client', 'no-db'])
 @PropertySource('classpath:avservice.properties')
 @Ignore('WIP')
+@DirtiesContext
 class ReplicationServiceISpec extends Specification implements ReplicationHelper {
 
     @Autowired
@@ -46,7 +51,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
     def setupSpec() {
         runner = new AmqpReplicationServiceRunner()
         runner.runAsync()
-        sleep(7_000)
+        sleep(6_000) // wait for server start
     }
 
     def cleanupSpec() {
@@ -57,13 +62,20 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
         given:
             ReplicationMessage request = createDiscoverRequest(nodeId)
 
-        when:
+        when: "send discovery request"
             client.sendMessage(request)
             Optional<ReplicationMessageList> messages =
                     responseClient.getResponseWait(request.getId(), responseTime)
 
-        then:
+        then: "we should get one response"
             messages.isPresent()
             messages.get().stream().count() == 1
+
+        and: "check response fields"
+            ReplicationMessage response = messages.get().stream().findAny().get()
+            response.getCommand() == Command.DISCOVER
+            response.getReplicationStatus() == ReplicationStatus.READY
+            response.getRouting() == MessageRouting.UNICAST
+            response.getToId() == nodeId
     }
 }
