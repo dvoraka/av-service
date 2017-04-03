@@ -12,6 +12,7 @@ find ${SRC_ROOT} -name "*.java" -exec cat {} \; | \
     # clean the output
     sed -e 's/.*\(@.*)\)/\1/g' | \
     sed -e 's/@Profile("\(.\+\)")/\1/g' | \
+    grep -v '!' | \
     # sort the output
     sort | \
     # remove duplicities from the output
