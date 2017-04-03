@@ -29,13 +29,15 @@ import org.springframework.context.annotation.PropertySource;
         AmqpClientConfig.class,
         AmqpReplicationClientConfig.class,
         AmqpCommonConfig.class,
+        TestAmqpReplicationClientConfig.class,
         // JMS
         JmsClient.class,
         JmsCommonConfig.class,
         // Checker
         CheckerConfig.class,
         // Replication
-        ReplicationClientConfig.class
+        ReplicationClientConfig.class,
+        TestReplicationClientConfig.class
 })
 @PropertySource("classpath:avservice.properties")
 public class ClientConfig {

@@ -1,15 +1,16 @@
 package dvoraka.avservice.server.replication
 
-import dvoraka.avservice.client.ReplicationComponent
-import dvoraka.avservice.client.amqp.AmqpReplicationComponent
 import dvoraka.avservice.client.configuration.ClientConfig
-import dvoraka.avservice.client.service.DefaultReplicationServiceClient
 import dvoraka.avservice.client.service.ReplicationServiceClient
-import dvoraka.avservice.common.Utils
+import dvoraka.avservice.client.service.response.ReplicationMessageList
+import dvoraka.avservice.client.service.response.ReplicationResponseClient
+import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.server.runner.amqp.AmqpReplicationServiceRunner
-import org.springframework.amqp.rabbit.core.RabbitTemplate
+import dvoraka.avservice.storage.replication.ReplicationHelper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.PropertySource
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
@@ -20,42 +21,49 @@ import spock.lang.Specification
  * Replication service spec.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
-@ActiveProfiles(['client', 'amqp', 'amqp-client', 'no-db'])
+@ActiveProfiles(['replication-test', 'client', 'amqp', 'amqp-client', 'no-db'])
+@PropertySource('classpath:avservice.properties')
 @Ignore('WIP')
-class ReplicationServiceISpec extends Specification {
+class ReplicationServiceISpec extends Specification implements ReplicationHelper {
 
     @Autowired
-    RabbitTemplate rabbitTemplate
-
-    ReplicationComponent component
     ReplicationServiceClient client
+    @Autowired
+    ReplicationResponseClient responseClient
+
+    @Value('${avservice.storage.replication.testNodeId}')
+    String nodeId
+
+    long responseTime = 2_000
 
     @Shared
     ServiceRunner runner
 
 
     def setup() {
-        component = new AmqpReplicationComponent(rabbitTemplate)
-        client = new DefaultReplicationServiceClient(component, "testNode")
     }
 
     def setupSpec() {
         runner = new AmqpReplicationServiceRunner()
         runner.runAsync()
+        sleep(7_000)
     }
 
     def cleanupSpec() {
         runner.stop()
     }
 
-    def "test"() {
-        expect:
-            true
-    }
+    def "discovery testing"() {
+        given:
+            ReplicationMessage request = createDiscoverRequest(nodeId)
 
-    @Ignore
-    def "save file"() {
-        expect:
-            service.saveFile(Utils.genSaveMessage())
+        when:
+            client.sendMessage(request)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(request.getId(), responseTime)
+
+        then:
+            messages.isPresent()
+            messages.get().stream().count() == 1
     }
 }
