@@ -76,6 +76,29 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getCommand() == Command.DISCOVER
             response.getReplicationStatus() == ReplicationStatus.READY
             response.getRouting() == MessageRouting.UNICAST
+            response.getFromId()
             response.getToId() == nodeId
+    }
+
+    def "synchronization testing"() {
+        given:
+            ReplicationMessage request = createSequenceRequest(nodeId)
+
+        when: "send sequence request"
+            client.sendMessage(request)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(request.getId(), responseTime)
+
+        then: "we should get one response"
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        and: "check response fields"
+            ReplicationMessage response = messages.get().stream().findAny().get()
+            response.getCommand() == Command.SEQUENCE
+            response.getRouting() == MessageRouting.UNICAST
+            response.getFromId()
+            response.getToId() == nodeId
+            response.getSequence()
     }
 }
