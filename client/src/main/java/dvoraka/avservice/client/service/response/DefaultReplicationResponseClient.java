@@ -87,7 +87,7 @@ public class DefaultReplicationResponseClient implements
     }
 
     private void initializeCache() {
-        log.debug("Initializing cache...");
+        log.debug("Initializing cache ({})...", nodeId);
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache(CACHE_NAME, getCacheConfiguration())
                 .build(true);
@@ -118,6 +118,7 @@ public class DefaultReplicationResponseClient implements
 
     @Override
     public ReplicationMessageList getResponse(String id) {
+        log.debug("Asking for ({}): {}", nodeId, id);
         return messageCache.get(id);
     }
 
@@ -151,11 +152,11 @@ public class DefaultReplicationResponseClient implements
 
     @Override
     public void onMessage(ReplicationMessage response) {
-        log.debug("On message: {}", response);
+        log.debug("On message ({}): {}", nodeId, response);
 
         // filter out own messages
         if (nodeId.equals(response.getFromId())) {
-            log.debug("Filtering: {}", response);
+            log.debug("Filtering ({}): {}", nodeId, response);
 
             return;
         }
@@ -163,7 +164,7 @@ public class DefaultReplicationResponseClient implements
         // filter out unicast messages for other nodes
         if (response.getRouting() == MessageRouting.UNICAST
                 && !nodeId.equals(response.getToId())) {
-            log.debug("Filtering: {}", response);
+            log.debug("Filtering ({}): {}", nodeId, response);
 
             return;
         }
@@ -182,7 +183,7 @@ public class DefaultReplicationResponseClient implements
         } else {
             ReplicationMessageList messageList = new ReplicationMessageList();
             messageList.add(response);
-            log.debug("Adding to cache: {}", response);
+            log.debug("Adding to cache ({}): {}", nodeId, response);
             messageCache.put(corrId, messageList);
         }
     }
