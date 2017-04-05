@@ -125,7 +125,7 @@ public class DefaultReplicationResponseClient implements
     @Override
     public Optional<ReplicationMessageList> getResponseWait(String id, long waitTime) {
         final long start = System.currentTimeMillis();
-        final int sleepTime = 100;
+        final int sleepTime = 300;
 
         ReplicationMessageList result;
         while (true) {
@@ -178,14 +178,17 @@ public class DefaultReplicationResponseClient implements
             return;
         }
 
+        ReplicationMessageList messageList;
         if (messageCache.containsKey(corrId)) {
-            messageCache.get(corrId).add(response);
+            messageList = messageCache.get(corrId);
         } else {
-            ReplicationMessageList messageList = new ReplicationMessageList();
-            messageList.add(response);
-            log.debug("Adding to cache ({}): {}", nodeId, response);
-            messageCache.put(corrId, messageList);
+            messageList = new ReplicationMessageList();
         }
+
+        messageList.add(response);
+        log.debug("Adding to cache ({}): {}", nodeId, response);
+        messageCache.put(corrId, messageList);
+
     }
 
     @Override
