@@ -10,7 +10,7 @@ description = 'Anti-virus and file network service'
 // Temporary overrides for BOMs
 ext['spring.version'] = '5.0.0.M5'
 ext['spring-data-releasetrain.version'] = 'Kay-M1'
-ext['spring-amqp.version'] = '2.0.0.M2'
+ext['spring-amqp.version'] = '2.0.0.M3'
 ext['spock.version'] = '1.1-groovy-2.4-rc-3'
 
 allprojects {
