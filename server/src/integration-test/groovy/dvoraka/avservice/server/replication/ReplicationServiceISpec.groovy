@@ -101,4 +101,17 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getToId() == nodeId
             response.getSequence()
     }
+
+    def "lock request"() {
+        given:
+            String file = 'replTestFile'
+            String owner = 'replTestOwner'
+            ReplicationMessage request = createLockRequest(file, owner, nodeId)
+
+        when:
+            client.sendMessage(request)
+
+        then:
+            true
+    }
 }

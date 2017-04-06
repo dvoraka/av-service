@@ -64,11 +64,6 @@ public class DefaultRemoteLock implements
     @Override
     public boolean lockForFile(String filename, String owner) throws InterruptedException {
 
-        // send lock sequence query
-        //
-        // get actual lock sequence or create new one
-        initializeSequence();
-
         //
         // send lock query
         //
