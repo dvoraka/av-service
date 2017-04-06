@@ -125,9 +125,16 @@ public class DefaultRemoteLock implements
     public void onMessage(ReplicationMessage message) {
         log.debug("On message: {}", message);
 
+        // handle discover
         if (message.getRouting() == MessageRouting.BROADCAST
                 && message.getCommand() == Command.SEQUENCE) {
             serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
+        }
+
+        // handle lock request
+        if (message.getRouting() == MessageRouting.BROADCAST
+                && message.getCommand() == Command.LOCK) {
+            serviceClient.sendMessage(createLockFailReply(message, nodeId));
         }
     }
 }

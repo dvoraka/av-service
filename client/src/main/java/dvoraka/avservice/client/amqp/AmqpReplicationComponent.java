@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 public class AmqpReplicationComponent implements ReplicationComponent {
 
     private final RabbitTemplate rabbitTemplate;
+    private final String nodeId;
 
     private static final Logger log = LogManager.getLogger(AmqpReplicationComponent.class);
 
@@ -32,8 +33,10 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
 
     @Autowired
-    public AmqpReplicationComponent(RabbitTemplate rabbitTemplate) {
+    public AmqpReplicationComponent(RabbitTemplate rabbitTemplate, String nodeId) {
         this.rabbitTemplate = requireNonNull(rabbitTemplate);
+        this.nodeId = requireNonNull(nodeId);
+
         messageConverter = requireNonNull(rabbitTemplate.getMessageConverter());
         listeners = new CopyOnWriteArraySet<>();
     }
@@ -41,7 +44,7 @@ public class AmqpReplicationComponent implements ReplicationComponent {
     @Override
     public void onMessage(Message message) {
 //        log.debug("Receive: " + message);
-        log.debug("Converted: " + messageConverter.fromMessage(message));
+        log.debug("Converted ({}): {}", nodeId, messageConverter.fromMessage(message));
 
         ReplicationMessage replicationMessage;
         try {
@@ -57,7 +60,7 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
     @Override
     public void sendMessage(ReplicationMessage message) {
-        log.debug("Send: " + message);
+        log.debug("Send ({}): {}", nodeId, message);
         rabbitTemplate.convertAndSend(message);
     }
 

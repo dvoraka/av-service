@@ -266,6 +266,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         // broadcast and unicast messages from replication network
         log.debug("On message: {}", message);
 
+        // handle discover
         if (message.getRouting() == MessageRouting.BROADCAST
                 && message.getCommand() == Command.DISCOVER) {
             serviceClient.sendMessage(createDiscoverReply(message, nodeId));

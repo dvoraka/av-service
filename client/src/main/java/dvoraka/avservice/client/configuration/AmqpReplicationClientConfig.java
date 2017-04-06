@@ -43,7 +43,7 @@ public class AmqpReplicationClientConfig {
 
     @Bean
     public ReplicationComponent replicationComponent(RabbitTemplate rabbitTemplate) {
-        return new AmqpReplicationComponent(rabbitTemplate);
+        return new AmqpReplicationComponent(rabbitTemplate, nodeId);
     }
 
     @Bean
