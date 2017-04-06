@@ -52,7 +52,7 @@ public class DefaultRemoteLock implements
     public void start() {
         log.info("Start.");
         responseClient.addNoResponseMessageListener(this);
-        synchronize();
+        new Thread(this::synchronize).start();
     }
 
     @Override

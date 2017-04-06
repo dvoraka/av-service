@@ -2,8 +2,8 @@ package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.common.data.ReplicationMessage;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 /**
@@ -15,7 +15,8 @@ public class ReplicationMessageList {
 
 
     public ReplicationMessageList() {
-        messages = new ArrayList<>();
+        //TODO
+        messages = new CopyOnWriteArrayList<>();
     }
 
     public void add(ReplicationMessage message) {
