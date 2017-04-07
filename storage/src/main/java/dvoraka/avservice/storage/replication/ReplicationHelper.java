@@ -69,11 +69,13 @@ public interface ReplicationHelper {
 
     default ReplicationMessage createLockFailReply(ReplicationMessage message, String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.LOCK)
                 .replicationStatus(ReplicationStatus.FAILED)
                 .fromId(nodeId)
+                .toId(message.getFromId())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();

@@ -110,8 +110,11 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
 
         when:
             client.sendMessage(request)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(request.getId(), responseTime)
 
-        then:
-            true
+        then: "we should get one response"
+            messages.isPresent()
+            messages.get().stream().count() == 1
     }
 }

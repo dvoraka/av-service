@@ -156,7 +156,7 @@ public class DefaultReplicationResponseClient implements
 
         // filter out own messages
         if (nodeId.equals(response.getFromId())) {
-            log.debug("Filtering ({}): {}", nodeId, response);
+            log.debug("Filtering 1 ({}): {}", nodeId, response);
 
             return;
         }
@@ -164,13 +164,15 @@ public class DefaultReplicationResponseClient implements
         // filter out unicast messages for other nodes
         if (response.getRouting() == MessageRouting.UNICAST
                 && !nodeId.equals(response.getToId())) {
-            log.debug("Filtering ({}): {}", nodeId, response);
+            log.debug("Filtering 2 ({}): {}", nodeId, response);
 
             return;
         }
 
+        // filter out and forward messages without a correlation ID
         String corrId = response.getCorrelationId();
         if (corrId == null) { // not response
+            log.debug("No correlation ID ({}): {}", nodeId, response);
             if (!nodeId.equals(response.getFromId())) {
                 noResponseListeners.forEach(listener -> listener.onMessage(response));
             }
