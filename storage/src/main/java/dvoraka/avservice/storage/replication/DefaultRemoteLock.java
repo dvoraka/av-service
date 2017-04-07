@@ -134,7 +134,12 @@ public class DefaultRemoteLock implements
         // handle lock request
         if (message.getRouting() == MessageRouting.BROADCAST
                 && message.getCommand() == Command.LOCK) {
-            serviceClient.sendMessage(createLockFailReply(message, nodeId));
+            if (getSequence() == message.getSequence()) {
+                incSequence();
+                serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
+            } else {
+                serviceClient.sendMessage(createLockFailReply(message, nodeId));
+            }
         }
     }
 }

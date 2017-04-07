@@ -67,6 +67,21 @@ public interface ReplicationHelper {
                 .build();
     }
 
+    default ReplicationMessage createLockSuccessReply(ReplicationMessage message, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.LOCK)
+                .replicationStatus(ReplicationStatus.READY)
+                .fromId(nodeId)
+                .toId(message.getFromId())
+                .sequence(message.getSequence())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
     default ReplicationMessage createLockFailReply(ReplicationMessage message, String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .correlationId(message.getId())
