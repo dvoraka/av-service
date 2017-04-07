@@ -76,6 +76,7 @@ public interface ReplicationHelper {
                 .replicationStatus(ReplicationStatus.FAILED)
                 .fromId(nodeId)
                 .toId(message.getFromId())
+                .sequence(message.getSequence())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();

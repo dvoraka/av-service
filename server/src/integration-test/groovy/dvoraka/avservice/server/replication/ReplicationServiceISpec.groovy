@@ -6,6 +6,7 @@ import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
 import dvoraka.avservice.common.data.Command
 import dvoraka.avservice.common.data.MessageRouting
+import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.runner.ServiceRunner
@@ -95,6 +96,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
 
         and: "check response fields"
             ReplicationMessage response = messages.get().stream().findAny().get()
+            response.getType() == MessageType.REPLICATION_SERVICE
             response.getCommand() == Command.SEQUENCE
             response.getRouting() == MessageRouting.UNICAST
             response.getFromId()
@@ -116,5 +118,14 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
         then: "we should get one response"
             messages.isPresent()
             messages.get().stream().count() == 1
+
+        and:
+            ReplicationMessage response = messages.get().stream().findAny().get()
+            response.getType() == MessageType.REPLICATION_SERVICE
+            response.getCommand() == Command.LOCK
+            response.getRouting() == MessageRouting.UNICAST
+            response.getFromId()
+            response.getToId() == nodeId
+            response.getSequence() == request.getSequence()
     }
 }

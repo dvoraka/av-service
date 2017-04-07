@@ -190,7 +190,6 @@ public class DefaultReplicationResponseClient implements
         messageList.add(response);
         log.debug("Adding to cache ({}): {}", nodeId, response);
         messageCache.put(corrId, messageList);
-
     }
 
     @Override
