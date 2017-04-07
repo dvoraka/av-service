@@ -106,7 +106,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
         given:
             String file = 'replTestFile'
             String owner = 'replTestOwner'
-            ReplicationMessage request = createLockRequest(file, owner, nodeId)
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, 99)
 
         when:
             client.sendMessage(request)

@@ -69,7 +69,7 @@ public class DefaultRemoteLock implements
         //
         // get lock query responses
         //
-        serviceClient.sendMessage(createLockRequest(filename, owner, nodeId));
+        serviceClient.sendMessage(createLockRequest(filename, owner, nodeId, getSequence()));
 
         // return locking status
         return true;

@@ -54,12 +54,14 @@ public interface ReplicationHelper {
                 .build();
     }
 
-    default ReplicationMessage createLockRequest(String filename, String owner, String nodeId) {
+    default ReplicationMessage createLockRequest(
+            String filename, String owner, String nodeId, long sequence) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
                 .command(Command.LOCK)
                 .fromId(nodeId)
+                .sequence(sequence)
                 .filename(filename)
                 .owner(owner)
                 .build();
