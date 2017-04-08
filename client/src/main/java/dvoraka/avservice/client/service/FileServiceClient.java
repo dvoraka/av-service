@@ -4,8 +4,6 @@ import dvoraka.avservice.common.data.AvMessage;
 
 /**
  * File service client. It is used for client connections to the file service.
- *
- * @see dvoraka.avservice.storage.service.FileService
  */
 public interface FileServiceClient {
 

@@ -142,8 +142,8 @@ public class ClamAvProgram implements AvProgram {
      * <p>
      * Scan a stream of data. The stream is sent to  clamd  in  chunks,
      * after  INSTREAM,  on  the  same  socket on which the command was
-     * sent.  This avoids the overhead of establishing new TCP  connec‐
-     * tions  and  problems  with  NAT.  The  format  of  the chunk is:
+     * sent.  This avoids the overhead of establishing new TCP
+     * connections  and  problems  with  NAT.  The  format  of  the chunk is:
      * '{@literal <length><data>}' where {@literal <length>} is the
      * size  of  the  following
      * data  in bytes expressed as a 4 byte unsigned integer in network
@@ -151,8 +151,8 @@ public class ClamAvProgram implements AvProgram {
      * is  terminated  by  sending  a  zero-length  chunk.
      * Note:  do not exceed
      * StreamMaxLength as defined in clamd.conf, otherwise  clamd  will
-     * reply  with  INSTREAM  size limit exceeded and close the connec‐
-     * tion.
+     * reply  with  INSTREAM  size limit exceeded and close the
+     * connection.
      * </p>
      */
     @Override
