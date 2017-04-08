@@ -282,6 +282,7 @@ allprojects {
 
     check.dependsOn integrationTest
     check.dependsOn jacocoTestReport
+    check.dependsOn javadoc
 }
 
 task wrapper(type: Wrapper) {
