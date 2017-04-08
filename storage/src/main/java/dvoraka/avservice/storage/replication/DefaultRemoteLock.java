@@ -7,12 +7,14 @@ import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
+import dvoraka.avservice.common.data.ReplicationStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -69,13 +71,20 @@ public class DefaultRemoteLock implements
         serviceClient.sendMessage(lockRequest);
 
         // get replies
-//        Optional<ReplicationMessageList> lockReplies =
-//                responseClient.getResponseWait(lockRequest.getId(), MAX_RESPONSE_TIME);
+        Optional<ReplicationMessageList> lockReplies =
+                responseClient.getResponseWait(lockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
 
-        // we need at least success lockCount count replies
+        // count success locks
+        if (lockReplies.isPresent()) {
+            long successLocks = lockReplies.get().stream()
+                    .filter(message -> message.getReplicationStatus() == ReplicationStatus.READY)
+                    .count();
 
-        // return locking status
-        return true;
+            return lockCount == successLocks;
+        } else {
+
+            return false;
+        }
     }
 
     @Override
