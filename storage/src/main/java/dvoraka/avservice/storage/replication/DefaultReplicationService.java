@@ -132,7 +132,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         }
 
         try {
-            if (remoteLock.lockForFile(message.getFilename(), message.getOwner())) {
+            if (remoteLock.lockForFile(message.getFilename(), message.getOwner(), 0)) {
                 if (!exists(message)) {
                     fileService.saveFile(message);
                     sendSaveMessage(message);

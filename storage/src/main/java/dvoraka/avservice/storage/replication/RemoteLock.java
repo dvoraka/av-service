@@ -9,7 +9,7 @@ public interface RemoteLock {
 
     void stop();
 
-    boolean lockForFile(String filename, String owner) throws InterruptedException;
+    boolean lockForFile(String filename, String owner, int lockCount) throws InterruptedException;
 
     boolean unlockForFile(String filename, String owner);
 }

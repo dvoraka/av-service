@@ -30,7 +30,6 @@ public class DefaultRemoteLock implements
 
     private static final int MAX_RESPONSE_TIME = 1_000; // one second
 
-
     private AtomicLong sequence;
 
 
@@ -62,14 +61,18 @@ public class DefaultRemoteLock implements
     }
 
     @Override
-    public boolean lockForFile(String filename, String owner) throws InterruptedException {
+    public boolean lockForFile(String filename, String owner, int lockCount)
+            throws InterruptedException {
 
-        //
-        // send lock query
-        //
-        // get lock query responses
-        //
-        serviceClient.sendMessage(createLockRequest(filename, owner, nodeId, getSequence()));
+        // send the lock request
+        ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
+        serviceClient.sendMessage(lockRequest);
+
+        // get replies
+//        Optional<ReplicationMessageList> lockReplies =
+//                responseClient.getResponseWait(lockRequest.getId(), MAX_RESPONSE_TIME);
+
+        // we need at least success lockCount count replies
 
         // return locking status
         return true;

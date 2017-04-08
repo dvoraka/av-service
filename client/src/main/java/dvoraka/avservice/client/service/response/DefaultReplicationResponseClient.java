@@ -124,8 +124,33 @@ public class DefaultReplicationResponseClient implements
 
     @Override
     public Optional<ReplicationMessageList> getResponseWait(String id, long waitTime) {
+        ReplicationMessageList result = checkGetResponse(id, waitTime);
+
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public Optional<ReplicationMessageList> getResponseWait(String id, long waitTime, int size) {
         final long start = System.currentTimeMillis();
-        final int sleepTime = 300;
+
+        ReplicationMessageList result;
+        while (true) {
+            result = checkGetResponse(id, waitTime);
+
+            if (result != null && result.stream().count() == size) {
+                break;
+            }
+
+            if (!sleep(start, waitTime)) {
+                break;
+            }
+        }
+
+        return Optional.ofNullable(result);
+    }
+
+    private ReplicationMessageList checkGetResponse(String id, long maxTime) {
+        final long start = System.currentTimeMillis();
 
         ReplicationMessageList result;
         while (true) {
@@ -134,21 +159,31 @@ public class DefaultReplicationResponseClient implements
                 break;
             }
 
-            if ((System.currentTimeMillis() - start) > waitTime) {
+            if (!sleep(start, maxTime)) {
                 break;
-            } else {
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                    log.warn("Sleeping interrupted!", e);
-                    Thread.currentThread().interrupt();
-                }
             }
         }
 
-        return Optional.ofNullable(result);
+        return result;
     }
 
+    private boolean sleep(long start, long maxTime) {
+        final long sleepTime = 200;
+
+        if ((System.currentTimeMillis() - start) > maxTime) {
+
+            return false;
+        } else {
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                log.warn("Sleeping interrupted!", e);
+                Thread.currentThread().interrupt();
+            }
+
+            return true;
+        }
+    }
 
     @Override
     public void onMessage(ReplicationMessage response) {

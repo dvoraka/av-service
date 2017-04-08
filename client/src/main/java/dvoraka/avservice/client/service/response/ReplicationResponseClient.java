@@ -19,6 +19,8 @@ public interface ReplicationResponseClient {
 
     Optional<ReplicationMessageList> getResponseWait(String id, long waitTime);
 
+    Optional<ReplicationMessageList> getResponseWait(String id, long waitTime, int size);
+
     void addNoResponseMessageListener(ReplicationMessageListener listener);
 
     void removeNoResponseMessageListener(ReplicationMessageListener listener);
