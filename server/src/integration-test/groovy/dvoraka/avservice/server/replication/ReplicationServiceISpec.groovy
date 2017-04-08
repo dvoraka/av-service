@@ -209,4 +209,61 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getToId() == nodeId
             response.getSequence() == request.getSequence()
     }
+
+    def "lock and unlock file"() {
+        given:
+            String file = 'replTestFile'
+            String owner = 'replTestOwner'
+            ReplicationMessage sequenceRequest = createSequenceRequest(nodeId)
+            long sequence = 0
+
+        when: "get actual sequence"
+            client.sendMessage(sequenceRequest)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(sequenceRequest.getId(), responseTime)
+
+        then: "we should get one sequence response"
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        when:
+            ReplicationMessage sequenceResponse = messages.get().stream().findAny().get()
+
+        then:
+            sequenceResponse.getCommand() == Command.SEQUENCE
+            sequenceResponse.getRouting() == MessageRouting.UNICAST
+            sequenceResponse.getFromId()
+            sequenceResponse.getToId() == nodeId
+            sequenceResponse.getSequence()
+
+        when: "try to lock file"
+            sequence = sequenceResponse.getSequence()
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, sequence)
+            client.sendMessage(request)
+            Optional<ReplicationMessageList> lockMessages =
+                    responseClient.getResponseWait(request.getId(), responseTime)
+
+        then: "we should get one response"
+            lockMessages.isPresent()
+            lockMessages.get().stream().count() == 1
+
+        when:
+            ReplicationMessage response = lockMessages.get().stream().findAny().get()
+
+        then:
+            response.getType() == MessageType.REPLICATION_SERVICE
+            response.getCommand() == Command.LOCK
+            response.getRouting() == MessageRouting.UNICAST
+            response.getReplicationStatus() == ReplicationStatus.READY
+            response.getFromId()
+            response.getToId() == nodeId
+            response.getSequence() == request.getSequence()
+
+        when: "try to unlock the locked file"
+            ReplicationMessage unlockRequest = createUnLockRequest(nodeId, sequence)
+            client.sendMessage(unlockRequest)
+
+        then:
+            true
+    }
 }

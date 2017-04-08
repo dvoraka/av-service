@@ -97,6 +97,16 @@ public interface ReplicationHelper {
                 .build();
     }
 
+    default ReplicationMessage createUnLockRequest(String nodeId, long sequence) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.BROADCAST)
+                .command(Command.UNLOCK)
+                .fromId(nodeId)
+                .sequence(sequence)
+                .build();
+    }
+
     default ReplicationMessage createSequenceRequest(String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)

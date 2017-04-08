@@ -9,6 +9,7 @@ public enum Command {
     LOCK,
     SEQUENCE,
     STATUS,
+    UNLOCK,
 
     SAVE,
     LOAD,
