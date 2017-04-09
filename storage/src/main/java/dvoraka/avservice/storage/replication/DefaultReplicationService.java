@@ -132,7 +132,11 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         }
 
         try {
-            if (remoteLock.lockForFile(message.getFilename(), message.getOwner(), 0)) {
+            if (remoteLock.lockForFile(
+                    message.getFilename(),
+                    message.getOwner(),
+                    neighbourCount())) {
+
                 if (!exists(message)) {
                     fileService.saveFile(message);
                     sendSaveMessage(message);
@@ -140,7 +144,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     throw new ExistingFileException();
                 }
             } else {
-                log.warn("Save problem for: " + message);
+                log.warn("Save lock problem for: {}", message);
             }
         } catch (InterruptedException e) {
             log.warn("Locking interrupted!", e);
@@ -153,7 +157,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private void sendSaveMessage(FileMessage message) {
         neighbours.stream()
                 .map(id -> createSaveMessage(message, id))
-                .limit(getReplicationCount())
+                .limit(getReplicationCount() - 1)
                 .forEach(serviceClient::sendMessage);
     }
 
