@@ -1,5 +1,7 @@
 FROM debian:stretch
 
+ARG VERSION=0.6
+
 ENV USER_HOME=/home/user
 ENV PROJECT_ROOT='av-service'
 
@@ -18,7 +20,8 @@ RUN git clone https://github.com/dvoraka/av-service.git
 
 WORKDIR ${USER_HOME}/${PROJECT_ROOT}
 
-RUN ./gradlew compileJava
+RUN git checkout v${VERSION} \
+    && ./gradlew compileJava
 
 
-CMD ["echo", "starting..."]
+CMD ["./gradlew", "tasks"]
