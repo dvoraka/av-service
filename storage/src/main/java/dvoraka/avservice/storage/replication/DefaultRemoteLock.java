@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -32,7 +34,8 @@ public class DefaultRemoteLock implements
 
     private static final int MAX_RESPONSE_TIME = 1_000; // one second
 
-    private AtomicLong sequence;
+    private final AtomicLong sequence;
+    private final Set<String> lockedFiles;
 
 
     @Autowired
@@ -46,6 +49,7 @@ public class DefaultRemoteLock implements
         this.nodeId = nodeId;
 
         sequence = new AtomicLong();
+        lockedFiles = new HashSet<>();
     }
 
     @PostConstruct
@@ -133,6 +137,18 @@ public class DefaultRemoteLock implements
         sequence.getAndIncrement();
     }
 
+    private void lockFile(String filename, String owner) {
+        log.debug("Locking: {}, {}", filename, owner);
+        //TODO: create hash
+//        lockedFiles.add(null);
+    }
+
+    private void unlockFile(String filename, String owner) {
+        log.debug("Unlocking: {}, {}", filename, owner);
+        // create a hash and remove from the map
+//        lockedFiles.remove(null);
+    }
+
     @Override
     public void onMessage(ReplicationMessage message) {
         log.debug("On message: {}", message);
@@ -148,10 +164,21 @@ public class DefaultRemoteLock implements
                 && message.getCommand() == Command.LOCK) {
             if (getSequence() == message.getSequence()) {
                 incSequence();
+                lockFile(message.getFilename(), message.getOwner());
+
                 serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
             } else {
                 serviceClient.sendMessage(createLockFailReply(message, nodeId));
             }
+        }
+
+        // handle unlock request
+        if (message.getRouting() == MessageRouting.BROADCAST
+                && message.getCommand() == Command.UNLOCK) {
+
+            unlockFile(message.getFilename(), message.getOwner());
+
+            serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
         }
     }
 }

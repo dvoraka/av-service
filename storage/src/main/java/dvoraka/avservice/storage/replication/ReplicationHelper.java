@@ -97,13 +97,31 @@ public interface ReplicationHelper {
                 .build();
     }
 
-    default ReplicationMessage createUnLockRequest(String nodeId, long sequence) {
+    default ReplicationMessage createUnLockRequest(
+            String nodeId, long sequence, String filename, String owner) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
                 .command(Command.UNLOCK)
                 .fromId(nodeId)
                 .sequence(sequence)
+                .filename(filename)
+                .owner(owner)
+                .build();
+    }
+
+    default ReplicationMessage createUnlockSuccessReply(
+            ReplicationMessage message, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.UNLOCK)
+                .replicationStatus(ReplicationStatus.OK)
+                .fromId(nodeId)
+                .toId(message.getFromId())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
                 .build();
     }
 
