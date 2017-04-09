@@ -4,7 +4,6 @@ import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.ReplicationMessageListener;
-import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
@@ -124,7 +123,7 @@ public class DefaultRemoteLock implements
         setSequence(actualSequence);
     }
 
-    public long getSequence() {
+    private long getSequence() {
         return sequence.get();
     }
 
@@ -153,32 +152,32 @@ public class DefaultRemoteLock implements
     public void onMessage(ReplicationMessage message) {
         log.debug("On message: {}", message);
 
-        // handle discover
-        if (message.getRouting() == MessageRouting.BROADCAST
-                && message.getCommand() == Command.SEQUENCE) {
-            serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
-        }
+        // handle broadcasts
+        if (message.getRouting() == MessageRouting.BROADCAST) {
+            switch (message.getCommand()) {
 
-        // handle lock request
-        if (message.getRouting() == MessageRouting.BROADCAST
-                && message.getCommand() == Command.LOCK) {
-            if (getSequence() == message.getSequence()) {
-                incSequence();
-                lockFile(message.getFilename(), message.getOwner());
+                case SEQUENCE:
+                    serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
+                    break;
 
-                serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
-            } else {
-                serviceClient.sendMessage(createLockFailReply(message, nodeId));
+                case LOCK:
+                    if (getSequence() == message.getSequence()) {
+                        incSequence();
+                        lockFile(message.getFilename(), message.getOwner());
+                        serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
+                    } else {
+                        serviceClient.sendMessage(createLockFailReply(message, nodeId));
+                    }
+                    break;
+
+                case UNLOCK:
+                    unlockFile(message.getFilename(), message.getOwner());
+                    serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
+                    break;
+
+                default:
+                    log.debug("Unhandled broadcast command: {}", message.getCommand());
             }
-        }
-
-        // handle unlock request
-        if (message.getRouting() == MessageRouting.BROADCAST
-                && message.getCommand() == Command.UNLOCK) {
-
-            unlockFile(message.getFilename(), message.getOwner());
-
-            serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
         }
     }
 }
