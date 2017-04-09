@@ -1,9 +1,12 @@
+
+# Example Docker configuration for service running.
+
 FROM debian:stretch
 
 ARG VERSION=0.6
 
-ENV USER_HOME=/home/user
-ENV PROJECT_ROOT='av-service'
+ENV USER_HOME /home/user
+ENV PROJECT_ROOT av-service
 
 RUN apt-get update \
     && apt-get -y install \
@@ -24,4 +27,4 @@ RUN git checkout v${VERSION} \
     && ./gradlew compileJava
 
 
-CMD ["./gradlew", "tasks"]
+CMD ["./gradlew", "-q", "runCustomServer"]
