@@ -34,7 +34,7 @@ public class DefaultReplicationServiceClient implements ReplicationServiceClient
     public void sendMessage(ReplicationMessage message) {
         log.debug("Send: " + message);
 
-        if (!message.getFromId().equals(nodeId)) {
+        if (!nodeId.equals(message.getFromId())) {
             log.warn("Wrong from node ID in the message!");
             return;
         }

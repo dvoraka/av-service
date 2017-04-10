@@ -156,7 +156,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     private void sendSaveMessage(FileMessage message) {
         neighbours.stream()
-                .map(id -> createSaveMessage(message, id))
+                .map(id -> createSaveMessage(message, nodeId, id))
                 .limit(getReplicationCount() - 1)
                 .forEach(serviceClient::sendMessage);
     }
@@ -274,6 +274,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         if (message.getRouting() == MessageRouting.BROADCAST
                 && message.getCommand() == Command.DISCOVER) {
             serviceClient.sendMessage(createDiscoverReply(message, nodeId));
+        }
+
+        // handle save
+        if (message.getRouting() == MessageRouting.BROADCAST
+                && message.getCommand() == Command.SAVE) {
+            log.debug("SAVE");
         }
     }
 }

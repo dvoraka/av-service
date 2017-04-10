@@ -4,7 +4,9 @@ import dvoraka.avservice.client.configuration.ClientConfig
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
+import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.Command
+import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
@@ -281,5 +283,20 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             unlockResponse.getToId() == nodeId
             unlockResponse.getFilename() == file
             unlockResponse.getOwner() == owner
+    }
+
+    def "save file"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage saveRequest = createSaveMessage(fileMessage, nodeId, 'node1')
+
+        when:
+            client.sendMessage(saveRequest)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(saveRequest.getId(), responseTime)
+
+        then: "we should get one file response"
+            messages.isPresent()
+            messages.get().stream().count() == 1
     }
 }

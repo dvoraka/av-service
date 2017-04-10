@@ -148,12 +148,14 @@ public interface ReplicationHelper {
                 .build();
     }
 
-    default ReplicationMessage createSaveMessage(FileMessage message, String neighbourId) {
+    default ReplicationMessage createSaveMessage(
+            FileMessage message, String nodeId, String neighbourId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.SAVE)
                 .toId(neighbourId)
+                .fromId(nodeId)
                 .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
