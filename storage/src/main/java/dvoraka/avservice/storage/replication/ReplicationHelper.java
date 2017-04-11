@@ -177,6 +177,21 @@ public interface ReplicationHelper {
                 .build();
     }
 
+    default ReplicationMessage createSaveFailed(ReplicationMessage message, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.SAVE)
+                .replicationStatus(ReplicationStatus.FAILED)
+                .toId(message.getFromId())
+                .fromId(nodeId)
+                .data(message.getData())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
     default ReplicationMessage createLoadMessage(FileMessage message, String neighbourId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)

@@ -281,8 +281,13 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         // handle save
         if (message.getRouting() == MessageRouting.UNICAST
                 && message.getCommand() == Command.SAVE) {
-//            fileService.saveFile();
-            serviceClient.sendMessage(createSaveSuccess(message, nodeId));
+            try {
+                fileService.saveFile(message);
+                serviceClient.sendMessage(createSaveSuccess(message, nodeId));
+            } catch (FileServiceException e) {
+                log.warn("Saving failed ({}): ", nodeId, e);
+                serviceClient.sendMessage(createSaveFailed(message, nodeId));
+            }
         }
     }
 }
