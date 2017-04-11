@@ -43,6 +43,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
     String nodeId
 
     long responseTime = 2_000
+    String otherNodeId = 'node1'
 
     @Shared
     ServiceRunner runner
@@ -288,7 +289,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
     def "save file"() {
         given:
             FileMessage fileMessage = Utils.genFileMessage()
-            ReplicationMessage saveRequest = createSaveMessage(fileMessage, nodeId, 'node1')
+            ReplicationMessage saveRequest = createSaveMessage(fileMessage, nodeId, otherNodeId)
 
         when:
             client.sendMessage(saveRequest)

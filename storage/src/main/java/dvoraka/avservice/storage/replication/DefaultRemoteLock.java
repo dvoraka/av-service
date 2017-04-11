@@ -150,6 +150,11 @@ public class DefaultRemoteLock implements
 
     @Override
     public void onMessage(ReplicationMessage message) {
+        // filter unicasts
+        if (message.getRouting() == MessageRouting.UNICAST) {
+            return;
+        }
+
         log.debug("On message: {}", message);
 
         // handle broadcasts

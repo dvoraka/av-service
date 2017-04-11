@@ -141,6 +141,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 if (!exists(message)) {
                     fileService.saveFile(message);
                     sendSaveMessage(message);
+                    //TODO: wait for response
                 } else {
                     throw new ExistingFileException();
                 }
@@ -269,7 +270,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     @Override
     public void onMessage(ReplicationMessage message) {
         // broadcast and unicast messages from replication network
-        log.debug("On message: {}", message);
+        log.debug("On message ({}): {}", nodeId, message);
 
         // handle discover
         if (message.getRouting() == MessageRouting.BROADCAST
@@ -278,9 +279,10 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         }
 
         // handle save
-        if (message.getRouting() == MessageRouting.BROADCAST
+        if (message.getRouting() == MessageRouting.UNICAST
                 && message.getCommand() == Command.SAVE) {
-            log.debug("SAVE");
+//            fileService.saveFile();
+            serviceClient.sendMessage(createSaveSuccess(message, nodeId));
         }
     }
 }
