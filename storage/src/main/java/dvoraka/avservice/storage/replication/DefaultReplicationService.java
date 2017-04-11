@@ -10,6 +10,7 @@ import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.storage.ExistingFileException;
 import dvoraka.avservice.storage.FileNotFoundException;
+import dvoraka.avservice.storage.FileServiceException;
 import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -124,7 +125,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     }
 
     @Override
-    public void saveFile(FileMessage message) throws ExistingFileException {
+    public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Save: " + message);
 
         if (exists(message)) {

@@ -3,6 +3,7 @@ package dvoraka.avservice.storage.service;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.storage.ExistingFileException;
 import dvoraka.avservice.storage.FileNotFoundException;
+import dvoraka.avservice.storage.FileServiceException;
 
 /**
  * File service synchronous interface.
@@ -13,9 +14,10 @@ public interface FileService {
      * Saves a file from a message.
      *
      * @param message the save request/message
-     * @throws ExistingFileException if file already exists
+     * @throws ExistingFileException if the file already exists
+     * @throws FileServiceException if other service problems occurs
      */
-    void saveFile(FileMessage message) throws ExistingFileException;
+    void saveFile(FileMessage message) throws FileServiceException;
 
     /**
      * Loads a file.
