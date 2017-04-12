@@ -7,11 +7,13 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
 
     private final long msgCount;
     private final boolean sendOnly;
+    private final long maxRate;
 
 
     private DefaultPerformanceTestProperties(Builder builder) {
         this.msgCount = builder.msgCount;
         this.sendOnly = builder.sendOnly;
+        this.maxRate = builder.maxRate;
     }
 
     @Override
@@ -26,7 +28,7 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
 
     @Override
     public long getMaxRate() {
-        return 0;
+        return maxRate;
     }
 
     @Override
@@ -44,11 +46,13 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
 
         private long msgCount;
         private boolean sendOnly;
+        private long maxRate;
 
 
         public Builder() {
             this.msgCount = 1;
             this.sendOnly = false;
+            this.maxRate = 0;
         }
 
         public Builder msgCount(long msgCount) {
@@ -58,6 +62,11 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
 
         public Builder sendOnly(boolean sendOnly) {
             this.sendOnly = sendOnly;
+            return this;
+        }
+
+        public Builder maxRate(long maxRate) {
+            this.maxRate = maxRate;
             return this;
         }
 

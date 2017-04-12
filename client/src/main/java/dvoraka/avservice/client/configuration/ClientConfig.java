@@ -44,6 +44,8 @@ public class ClientConfig {
 
     @Value("${avservice.perf.msgCount}")
     private long msgCount;
+    @Value("${avservice.perf.maxRate}")
+    private long maxRate;
 
 
     @Bean
@@ -65,6 +67,7 @@ public class ClientConfig {
     public PerformanceTestProperties testProperties() {
         return new DefaultPerformanceTestProperties.Builder()
                 .msgCount(msgCount)
+                .maxRate(maxRate)
                 .build();
     }
 }
