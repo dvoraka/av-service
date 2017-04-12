@@ -98,7 +98,7 @@ public interface ReplicationHelper {
     }
 
     default ReplicationMessage createUnLockRequest(
-            String nodeId, long sequence, String filename, String owner) {
+            String filename, String owner, String nodeId, long sequence) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)

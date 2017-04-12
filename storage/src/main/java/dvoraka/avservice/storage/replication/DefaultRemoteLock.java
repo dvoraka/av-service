@@ -116,13 +116,30 @@ public class DefaultRemoteLock implements
     }
 
     @Override
-    public boolean unlockForFile(String filename, String owner) {
+    public boolean unlockForFile(String filename, String owner, int lockCount) {
 
-        // send unlock query
-        //
-        // get unlock query responses
+        // send the unlock request
+        ReplicationMessage unlockRequest = createUnLockRequest(filename, owner, nodeId, 0);
+        serviceClient.sendMessage(unlockRequest);
 
-        return true;
+        // get replies
+        Optional<ReplicationMessageList> unlockReplies =
+                responseClient.getResponseWait(unlockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
+
+        // count success unlocks
+        if (unlockReplies.isPresent()) {
+            long successUnlocks = unlockReplies.get().stream()
+                    .filter(message -> message.getReplicationStatus() == ReplicationStatus.OK)
+                    .count();
+
+            if (lockCount == successUnlocks) {
+                unlockFile(filename, owner);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void synchronize() {

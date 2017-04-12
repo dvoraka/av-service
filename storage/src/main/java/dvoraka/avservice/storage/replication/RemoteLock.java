@@ -11,5 +11,5 @@ public interface RemoteLock {
 
     boolean lockForFile(String filename, String owner, int lockCount) throws InterruptedException;
 
-    boolean unlockForFile(String filename, String owner);
+    boolean unlockForFile(String filename, String owner, int lockCount);
 }

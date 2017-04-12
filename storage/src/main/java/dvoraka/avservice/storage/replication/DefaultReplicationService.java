@@ -152,7 +152,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             log.warn("Locking interrupted!", e);
             Thread.currentThread().interrupt();
         } finally {
-            remoteLock.unlockForFile(message.getFilename(), message.getOwner());
+            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
         }
     }
 
@@ -224,7 +224,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             log.warn("Delete problem for: {}", message);
         }
 
-        remoteLock.unlockForFile(message.getFilename(), message.getOwner());
+        remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
     }
 
     private void sendDeleteMessage(FileMessage message) {
@@ -237,7 +237,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     message.getFilename(), message.getOwner(), neighbourCount());
         } catch (InterruptedException e) {
             log.warn("Locking interrupted!", e);
-            remoteLock.unlockForFile(message.getFilename(), message.getOwner());
+            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
             Thread.currentThread().interrupt();
 
             return false;
