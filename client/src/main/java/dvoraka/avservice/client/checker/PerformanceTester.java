@@ -42,7 +42,6 @@ public class PerformanceTester implements ApplicationManagement {
         boolean perfect = true;
         final long loops = testProperties.getMsgCount();
         final long maxRate = testProperties.getMaxRate();
-        final float correction = 0.98f;
         System.out.println("Load test start for " + loops + " messages...");
 
         long start = System.currentTimeMillis();
@@ -64,17 +63,7 @@ public class PerformanceTester implements ApplicationManagement {
 
             long delta = System.currentTimeMillis() - maxRateCounter;
             if (i % maxRate == 0 && delta < MS_PER_SECOND) {
-
-                long sleepTime = (long) ((MS_PER_SECOND * correction) - delta);
-                if (sleepTime > 0) {
-                    try {
-                        Thread.sleep(sleepTime);
-                    } catch (InterruptedException e) {
-                        log.warn("Sleeping interrupted!", e);
-                        Thread.currentThread().interrupt();
-                    }
-                }
-
+                sleep(delta);
                 maxRateCounter = System.currentTimeMillis();
             }
         }
@@ -88,6 +77,25 @@ public class PerformanceTester implements ApplicationManagement {
 
         if (!perfect) {
             System.out.println("\nSome messages were lost.");
+        }
+    }
+
+    /**
+     * Sleeps for (1000 - duration) ms.
+     *
+     * @param duration the duration
+     */
+    private void sleep(long duration) {
+        final float correction = 0.98f;
+        long sleepTime = (long) ((MS_PER_SECOND * correction) - duration);
+
+        if (sleepTime > 0) {
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                log.warn("Sleeping interrupted!", e);
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
