@@ -215,12 +215,25 @@ public interface ReplicationHelper {
                 .build();
     }
 
-    default ReplicationMessage createDeleteMessage(FileMessage message, String neighbourId) {
+    default ReplicationMessage createDeleteMessage(
+            FileMessage message, String nodeId, String neighbourId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.DELETE)
                 .toId(neighbourId)
+                .fromId(nodeId)
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
+    default ReplicationMessage createDeleteBroadcast(FileMessage message, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.BROADCAST)
+                .command(Command.DELETE)
+                .fromId(nodeId)
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();

@@ -216,15 +216,32 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             return;
         }
 
-        fileService.deleteFile(message);
+        if (lockFile(message) && exists(message)) {
+            fileService.deleteFile(message);
+            sendDeleteMessage(message);
+            //TODO: wait for response
+        } else {
+            log.warn("Delete problem for: {}", message);
+        }
 
-        serviceClient.sendMessage(createDeleteMessage(message, "neighbour"));
+        remoteLock.unlockForFile(message.getFilename(), message.getOwner());
+    }
 
-//        ReplicationMessageList replicationMessages = responseClient.getResponseWait(
-//                message.getId(), MAX_RESPONSE_TIME);
-//        if (replicationMessages != null) {
-//
-//        }
+    private void sendDeleteMessage(FileMessage message) {
+        serviceClient.sendMessage(createDeleteBroadcast(message, nodeId));
+    }
+
+    private boolean lockFile(FileMessage message) {
+        try {
+            return remoteLock.lockForFile(
+                    message.getFilename(), message.getOwner(), neighbourCount());
+        } catch (InterruptedException e) {
+            log.warn("Locking interrupted!", e);
+            remoteLock.unlockForFile(message.getFilename(), message.getOwner());
+            Thread.currentThread().interrupt();
+
+            return false;
+        }
     }
 
     @Override

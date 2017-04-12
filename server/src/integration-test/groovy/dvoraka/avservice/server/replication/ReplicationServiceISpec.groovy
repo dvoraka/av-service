@@ -311,4 +311,30 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             saveStatus.getFromId()
             saveStatus.getToId() == nodeId
     }
+
+    def "delete file"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage deleteRequest = createDeleteMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            client.sendMessage(deleteRequest)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(deleteRequest.getId(), responseTime)
+
+        then: "we should get one file response"
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        when:
+            ReplicationMessage deleteStatus = messages.get().stream().findFirst().get()
+
+        then:
+            deleteStatus.getType() == MessageType.REPLICATION_COMMAND
+            deleteStatus.getCommand() == Command.DELETE
+            deleteStatus.getRouting() == MessageRouting.UNICAST
+            deleteStatus.getReplicationStatus() == ReplicationStatus.OK
+            deleteStatus.getFromId()
+            deleteStatus.getToId() == nodeId
+    }
 }
