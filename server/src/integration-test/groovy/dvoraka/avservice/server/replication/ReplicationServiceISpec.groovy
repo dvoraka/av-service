@@ -299,5 +299,16 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
         then: "we should get one file response"
             messages.isPresent()
             messages.get().stream().count() == 1
+
+        when:
+            ReplicationMessage saveStatus = messages.get().stream().findFirst().get()
+
+        then:
+            saveStatus.getType() == MessageType.REPLICATION_COMMAND
+            saveStatus.getCommand() == Command.SAVE
+            saveStatus.getRouting() == MessageRouting.UNICAST
+            saveStatus.getReplicationStatus() == ReplicationStatus.OK
+            saveStatus.getFromId()
+            saveStatus.getToId() == nodeId
     }
 }
