@@ -2,7 +2,7 @@ package dvoraka.avservice
 
 import spock.lang.Specification
 
-class PerformanceTest extends Specification {
+class PerformanceSpec extends Specification {
 
     def "template"() {
         expect:

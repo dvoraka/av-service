@@ -25,6 +25,11 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
     }
 
     @Override
+    public long getMaxRate() {
+        return 0;
+    }
+
+    @Override
     public String toString() {
         return "DefaultPerformanceTestProperties{"
                 + ", msgCount=" + msgCount
