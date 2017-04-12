@@ -7,12 +7,15 @@ import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
+import dvoraka.avservice.common.service.CachingService;
+import dvoraka.avservice.common.service.DefaultCachingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -36,6 +39,8 @@ public class DefaultRemoteLock implements
     private final AtomicLong sequence;
     private final Set<String> lockedFiles;
 
+    private final CachingService cachingService;
+
 
     @Autowired
     public DefaultRemoteLock(
@@ -49,6 +54,9 @@ public class DefaultRemoteLock implements
 
         sequence = new AtomicLong();
         lockedFiles = new HashSet<>();
+
+        // TODO:
+        cachingService = new DefaultCachingService();
     }
 
     @PostConstruct
@@ -69,6 +77,9 @@ public class DefaultRemoteLock implements
     public boolean lockForFile(String filename, String owner, int lockCount)
             throws InterruptedException {
 
+        // lock the local file
+        lockFile(filename, owner);
+
         // send the lock request
         ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(lockRequest);
@@ -83,8 +94,16 @@ public class DefaultRemoteLock implements
                     .filter(message -> message.getReplicationStatus() == ReplicationStatus.READY)
                     .count();
 
-            return lockCount == successLocks;
+            if (lockCount == successLocks) {
+
+                return true;
+            } else {
+                unlockFile(filename, owner);
+
+                return false;
+            }
         } else {
+            unlockFile(filename, owner);
 
             return false;
         }
@@ -138,19 +157,23 @@ public class DefaultRemoteLock implements
 
     private void lockFile(String filename, String owner) {
         log.debug("Locking: {}, {}", filename, owner);
-        //TODO: create hash
-//        lockedFiles.add(null);
+        lockedFiles.add(hash(filename, owner));
     }
 
     private void unlockFile(String filename, String owner) {
         log.debug("Unlocking: {}, {}", filename, owner);
-        // create a hash and remove from the map
-//        lockedFiles.remove(null);
+        lockedFiles.remove(hash(filename, owner));
+    }
+
+    private String hash(String filename, String owner) {
+        byte[] bytes = (filename + owner).getBytes(StandardCharsets.UTF_8);
+
+        return cachingService.arrayDigest(bytes);
     }
 
     @Override
     public void onMessage(ReplicationMessage message) {
-        // filter unicasts
+        // filter out unicasts
         if (message.getRouting() == MessageRouting.UNICAST) {
             return;
         }
