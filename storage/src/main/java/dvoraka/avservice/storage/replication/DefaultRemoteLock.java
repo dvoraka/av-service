@@ -77,8 +77,14 @@ public class DefaultRemoteLock implements
     public boolean lockForFile(String filename, String owner, int lockCount)
             throws InterruptedException {
 
-        // lock the local file
-        lockFile(filename, owner);
+        synchronized (lockedFiles) {
+            // check if the file is already locked
+            if (isFileLocked(filename, owner)) {
+                return false;
+            }
+            // lock the local file
+            lockFile(filename, owner);
+        }
 
         // send the lock request
         ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
@@ -153,6 +159,10 @@ public class DefaultRemoteLock implements
 
     private void incSequence() {
         sequence.getAndIncrement();
+    }
+
+    private boolean isFileLocked(String filename, String owner) {
+        return lockedFiles.contains(hash(filename, owner));
     }
 
     private void lockFile(String filename, String owner) {
