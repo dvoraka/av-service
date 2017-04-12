@@ -40,10 +40,13 @@ public class PerformanceTester implements ApplicationManagement {
         running = true;
 
         boolean perfect = true;
-        long loops = testProperties.getMsgCount();
+        final long loops = testProperties.getMsgCount();
+        final long maxRate = testProperties.getMaxRate();
+        final float correction = 0.98f;
         System.out.println("Load test start for " + loops + " messages...");
 
         long start = System.currentTimeMillis();
+        long maxRateCounter = start;
         AvMessage message;
         for (int i = 0; i < loops; i++) {
             message = Utils.genInfectedMessage();
@@ -53,6 +56,26 @@ public class PerformanceTester implements ApplicationManagement {
             } catch (MessageNotFoundException e) {
                 log.warn("Message not found.", e);
                 perfect = false;
+            }
+
+            if (maxRate == 0) {
+                continue;
+            }
+
+            long delta = System.currentTimeMillis() - maxRateCounter;
+            if (i % maxRate == 0 && delta < MS_PER_SECOND) {
+
+                long sleepTime = (long) ((MS_PER_SECOND * correction) - delta);
+                if (sleepTime > 0) {
+                    try {
+                        Thread.sleep(sleepTime);
+                    } catch (InterruptedException e) {
+                        log.warn("Sleeping interrupted!", e);
+                        Thread.currentThread().interrupt();
+                    }
+                }
+
+                maxRateCounter = System.currentTimeMillis();
             }
         }
 

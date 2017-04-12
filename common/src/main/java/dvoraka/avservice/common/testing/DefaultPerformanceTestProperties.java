@@ -32,11 +32,13 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
     }
 
     @Override
+    @SuppressWarnings("checkstyle:OperatorWrap")
     public String toString() {
-        return "DefaultPerformanceTestProperties{"
-                + ", msgCount=" + msgCount
-                + ", sendOnly=" + sendOnly
-                + '}';
+        return "DefaultPerformanceTestProperties {" +
+                "msgCount=" + msgCount +
+                ", sendOnly=" + sendOnly +
+                ", maxRate=" + maxRate +
+                '}';
     }
 
     /**
