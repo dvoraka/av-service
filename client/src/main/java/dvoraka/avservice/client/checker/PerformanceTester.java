@@ -46,9 +46,8 @@ public class PerformanceTester implements ApplicationManagement {
 
         long start = System.currentTimeMillis();
         long maxRateCounter = start;
-        AvMessage message;
         for (int i = 0; i < loops; i++) {
-            message = Utils.genInfectedMessage();
+            AvMessage message = Utils.genInfectedMessage();
             checker.sendAvMessage(message);
             try {
                 checker.receiveMessage(message.getId());
@@ -78,6 +77,8 @@ public class PerformanceTester implements ApplicationManagement {
         if (!perfect) {
             System.out.println("\nSome messages were lost.");
         }
+
+        running = false;
     }
 
     /**

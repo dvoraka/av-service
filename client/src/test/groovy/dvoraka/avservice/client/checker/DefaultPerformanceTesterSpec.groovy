@@ -15,10 +15,11 @@ class DefaultPerformanceTesterSpec extends Specification {
     PerformanceTester tester
 
     PerformanceTestProperties props
+    Checker checker
 
 
     def setup() {
-        Checker checker = Stub()
+        checker = Stub()
         props = new DefaultPerformanceTestProperties.Builder()
                 .msgCount(1)
                 .build()
@@ -31,22 +32,19 @@ class DefaultPerformanceTesterSpec extends Specification {
             !tester.isRunning()
     }
 
-    def "after start it should be started and running"() {
+    def "after start ended it should be stopped"() {
         when:
             tester.start()
 
         then:
-            tester.isRunning()
+            !tester.isRunning()
     }
 
     def "test with message receiving problem"() {
         given:
-            Checker checker = Stub()
             checker.receiveMessage(_) >> {
                 throw new MessageNotFoundException()
             }
-
-            tester = new PerformanceTester(checker, props)
 
         when:
             tester.start()
