@@ -1,9 +1,10 @@
 package dvoraka.avservice.server.runner;
 
 import dvoraka.avservice.common.runner.AbstractServiceRunner;
+import dvoraka.avservice.common.runner.ServiceRunner;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.BasicAvServer;
-import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
+import dvoraka.avservice.server.configuration.ServerConfig;
 
 import java.io.IOException;
 
@@ -13,18 +14,18 @@ import java.io.IOException;
 public class CustomServerRunner extends AbstractServiceRunner {
 
     public static void main(String[] args) throws IOException {
-        CustomServerRunner runner = new CustomServerRunner();
+        ServiceRunner runner = new CustomServerRunner();
         runner.run();
     }
 
     @Override
     public String[] profiles() {
-        return new String[]{"core", "client", "amqp", "amqp-server", "no-db"};
+        return new String[]{"core", "server", "client", "amqp", "amqp-server", "no-db"};
     }
 
     @Override
     public Class<?>[] configClasses() {
-        return new Class<?>[]{AmqpConfig.class};
+        return new Class<?>[]{ServerConfig.class};
     }
 
     @Override
