@@ -1,10 +1,10 @@
 package dvoraka.avservice.server.runner.amqp;
 
 import dvoraka.avservice.client.checker.CheckApp;
+import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
 import dvoraka.avservice.common.service.ApplicationManagement;
-import dvoraka.avservice.server.configuration.ServerConfig;
 
 import java.io.IOException;
 
@@ -20,12 +20,12 @@ public class AmqpCheckRunner extends AbstractAppRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"server", "client", "amqp", "amqp-client", "checker", "no-db"};
+        return new String[]{"client", "amqp", "amqp-client", "checker", "no-db"};
     }
 
     @Override
     protected Class<?>[] configClasses() {
-        return new Class<?>[]{ServerConfig.class};
+        return new Class<?>[]{ClientConfig.class};
     }
 
     @Override
