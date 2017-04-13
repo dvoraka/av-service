@@ -32,8 +32,6 @@ public class EnvironmentConfiguratorConfig {
     @Value("${avservice.amqp.pass}")
     private String userPassword;
 
-    @Value("${avservice.amqp.checkQueue}")
-    private String checkQueue;
     @Value("${avservice.amqp.fileQueue}")
     private String fileQueue;
     @Value("${avservice.amqp.resultQueue}")
@@ -41,8 +39,6 @@ public class EnvironmentConfiguratorConfig {
     @Value("${avservice.amqp.replicationQueue}")
     private String replicationQueue;
 
-    @Value("${avservice.amqp.checkExchange}")
-    private String checkExchange;
     @Value("${avservice.amqp.fileExchange}")
     private String fileExchange;
     @Value("${avservice.amqp.resultExchange}")
@@ -70,14 +66,9 @@ public class EnvironmentConfiguratorConfig {
     public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(checkQueue);
+        container.setQueueNames(fileQueue);
 
         return container;
-    }
-
-    @Bean
-    public Queue checkQueue() {
-        return new Queue(checkQueue);
     }
 
     @Bean
@@ -96,11 +87,6 @@ public class EnvironmentConfiguratorConfig {
     }
 
     @Bean
-    public FanoutExchange checkExchange() {
-        return new FanoutExchange(checkExchange);
-    }
-
-    @Bean
     public FanoutExchange fileExchange() {
         return new FanoutExchange(fileExchange);
     }
@@ -113,13 +99,6 @@ public class EnvironmentConfiguratorConfig {
     @Bean
     public FanoutExchange replicationExchange() {
         return new FanoutExchange(replicationExchange);
-    }
-
-    @Bean
-    public Binding bindingCheck(Queue checkQueue, FanoutExchange checkExchange) {
-        return BindingBuilder
-                .bind(checkQueue)
-                .to(checkExchange);
     }
 
     @Bean

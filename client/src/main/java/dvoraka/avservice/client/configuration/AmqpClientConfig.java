@@ -21,8 +21,6 @@ public class AmqpClientConfig {
 
     @Value("${avservice.amqp.resultQueue}")
     private String resultQueue;
-    @Value("${avservice.amqp.checkExchange}")
-    private String checkExchange;
     @Value("${avservice.amqp.fileExchange}")
     private String fileExchange;
 
