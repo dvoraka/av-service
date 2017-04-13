@@ -28,16 +28,16 @@ public class AmqpBridgeInputConfig {
     @Value("${avservice.amqp.vhost:antivirus}")
     private String virtualHost;
 
-    @Value("${avservice.amqp.checkQueue:av-check}")
-    private String checkQueue;
-    @Value("${avservice.amqp.resultExchange:result}")
+    @Value("${avservice.amqp.fileQueue}")
+    private String fileQueue;
+    @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
 
-    @Value("${avservice.amqp.user:guest}")
+    @Value("${avservice.amqp.user}")
     private String userName;
-    @Value("${avservice.amqp.pass:guest}")
+    @Value("${avservice.amqp.pass}")
     private String userPassword;
 
     @Value("${avservice.serviceId:default1}")
@@ -101,7 +101,7 @@ public class AmqpBridgeInputConfig {
     ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(checkQueue);
+        container.setQueueNames(fileQueue);
         container.setMessageListener(inMessageListener);
 
         return container;

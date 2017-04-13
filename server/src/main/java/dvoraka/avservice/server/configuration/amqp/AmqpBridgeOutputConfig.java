@@ -29,17 +29,17 @@ public class AmqpBridgeOutputConfig {
     @Value("${avservice.amqp.vhost:antivirus}")
     private String virtualHost;
 
-    @Value("${avservice.amqp.resultQueue:av-result}")
+    @Value("${avservice.amqp.resultQueue}")
     private String resultQueue;
-    @Value("${avservice.amqp.checkExchange:check}")
-    private String checkExchange;
+    @Value("${avservice.amqp.fileExchange}")
+    private String fileExchange;
 
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
 
-    @Value("${avservice.amqp.user:guest}")
+    @Value("${avservice.amqp.user}")
     private String userName;
-    @Value("${avservice.amqp.pass:guest}")
+    @Value("${avservice.amqp.pass}")
     private String userPassword;
 
     @Value("${avservice.serviceId:default1}")
@@ -51,7 +51,7 @@ public class AmqpBridgeOutputConfig {
             RabbitTemplate outRabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new AmqpComponent(checkExchange, serviceId, outRabbitTemplate, messageInfoService);
+        return new AmqpComponent(fileExchange, serviceId, outRabbitTemplate, messageInfoService);
     }
 
     @Bean
