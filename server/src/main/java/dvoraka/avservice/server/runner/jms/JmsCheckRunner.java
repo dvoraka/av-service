@@ -1,10 +1,10 @@
 package dvoraka.avservice.server.runner.jms;
 
 import dvoraka.avservice.client.checker.CheckApp;
+import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
 import dvoraka.avservice.common.service.ApplicationManagement;
-import dvoraka.avservice.server.configuration.jms.JmsConfig;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ public class JmsCheckRunner extends AbstractAppRunner {
 
     @Override
     protected Class<?>[] configClasses() {
-        return new Class<?>[]{JmsConfig.class};
+        return new Class<?>[]{ClientConfig.class};
     }
 
     @Override

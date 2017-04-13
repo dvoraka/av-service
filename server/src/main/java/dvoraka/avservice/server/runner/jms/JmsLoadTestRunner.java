@@ -1,10 +1,10 @@
 package dvoraka.avservice.server.runner.jms;
 
 import dvoraka.avservice.client.checker.PerformanceTester;
+import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
 import dvoraka.avservice.common.service.ApplicationManagement;
-import dvoraka.avservice.server.configuration.jms.JmsConfig;
 
 import java.io.IOException;
 
@@ -20,12 +20,12 @@ public class JmsLoadTestRunner extends AbstractAppRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"jms", "jms-checker", "no-db"};
+        return new String[]{"client", "checker", "jms", "jms-client", "no-db"};
     }
 
     @Override
     protected Class<?>[] configClasses() {
-        return new Class<?>[]{JmsConfig.class};
+        return new Class<?>[]{ClientConfig.class};
     }
 
     @Override
