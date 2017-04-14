@@ -30,7 +30,6 @@ import spock.lang.Specification
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['replication-test', 'client', 'amqp', 'amqp-client', 'no-db'])
 @PropertySource('classpath:avservice.properties')
-@Ignore('WIP')
 @DirtiesContext
 class ReplicationServiceISpec extends Specification implements ReplicationHelper {
 
@@ -312,6 +311,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             saveStatus.getToId() == nodeId
     }
 
+    @Ignore('WIP')
     def "delete file"() {
         given:
             FileMessage fileMessage = Utils.genFileMessage()
