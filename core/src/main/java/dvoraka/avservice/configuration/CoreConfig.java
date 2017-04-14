@@ -21,6 +21,8 @@ import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jmx.export.MBeanExporter;
+import org.springframework.jmx.support.RegistrationPolicy;
 
 import java.util.List;
 
@@ -58,6 +60,15 @@ public class CoreConfig {
                 serviceId,
                 avService,
                 messageInfoService);
+    }
+
+    @Bean
+    @Profile("itest")
+    public MBeanExporter mBeanExporter() {
+        MBeanExporter exporter = new MBeanExporter();
+        exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
+
+        return exporter;
     }
 
     @Bean
