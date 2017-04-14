@@ -50,7 +50,7 @@ public class SocketPool implements SocketFactory {
                 .collect(Collectors.toList());
 
         availableSocketWrappers = new ArrayBlockingQueue<>(socketCount);
-        socketWrappers.forEach(availableSocketWrappers::add);
+        availableSocketWrappers.addAll(socketWrappers);
     }
 
     public void close() {
@@ -143,7 +143,7 @@ public class SocketPool implements SocketFactory {
         }
 
         public void fix() {
-            log.debug("Fixing socket...");
+            log.info("Fixing socket...");
             if (socket != null) {
                 log.debug("Closing old socket...");
                 try {

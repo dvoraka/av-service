@@ -98,8 +98,10 @@ public class ClamAvProgram implements AvProgram {
      * @throws ScanException if scan fails
      * @see ClamAvProgram#scanBytesWithInfo(byte[])
      */
-    private String scanBytesPooling(byte[] bytes) throws ScanException {
+    private String scanBytesPooling(byte[] bytes, int attempt) throws ScanException {
         requireNonNull(bytes);
+
+        final int maxAttempts = 5;
 
         SocketPool.SocketWrapper socket = socketPool.getSocket();
         OutputStream outStream = socket.getOutputStream();
@@ -118,13 +120,13 @@ public class ClamAvProgram implements AvProgram {
         } catch (IOException e) {
             log.warn(ERROR_MSG, e);
             socket.fix();
-            socketPool.returnSocket(socket);
 
-            //TODO: throw error when failed
+            if (attempt >= maxAttempts) {
+                throw new ScanException(ERROR_MSG, e);
+            }
 
-            return scanBytesPooling(bytes);
+            return scanBytesPooling(bytes, ++attempt);
 
-//            throw new ScanException(ERROR_MSG, e);
         } finally {
             socketPool.returnSocket(socket);
         }
@@ -158,7 +160,7 @@ public class ClamAvProgram implements AvProgram {
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanException {
         if (socketPooling) {
-            return scanBytesPooling(bytes);
+            return scanBytesPooling(bytes, 1);
         } else {
             return scanBytesNormal(bytes);
         }
