@@ -6,6 +6,7 @@ import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
+import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.exception.ScanException;
 import dvoraka.avservice.common.service.BasicMessageStatusStorage;
 import dvoraka.avservice.common.service.MessageStatusStorage;
@@ -40,7 +41,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
 
     private static final Logger log = LogManager.getLogger(AvCheckMessageProcessor.class);
 
-    public static final int CACHE_TIMEOUT = 10 * 60 * 1_000;
+    public static final int CACHE_TIMEOUT = 60 * 1_000; // one minute
     private static final long POOL_TERM_TIME_S = 20;
     private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
 
@@ -117,6 +118,15 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     @Override
     public void sendMessage(AvMessage message) {
         receivedMsgCount.getAndIncrement();
+
+        //TODO: filter should probably be outside
+        // filter out messages
+        if (!(message.getType() == MessageType.REQUEST
+                || message.getType() == MessageType.FILE_SAVE
+                || message.getType() == MessageType.FILE_UPDATE)) {
+
+            return;
+        }
 
         log.debug("Processing message...");
         statusStorage.started(message.getId());

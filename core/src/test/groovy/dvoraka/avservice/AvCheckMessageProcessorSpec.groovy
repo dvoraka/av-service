@@ -142,14 +142,14 @@ class AvCheckMessageProcessorSpec extends Specification {
 
     def "processed message status"() {
         given:
-            String testId = "testId"
+            AvMessage message = Utils.genMessage()
 
         when:
-            processor.sendMessage(new DefaultAvMessage.Builder(testId).build())
+            processor.sendMessage(message)
 
         then:
             conditions.eventually {
-                processor.messageStatus(testId) == MessageStatus.PROCESSED
+                processor.messageStatus(message.getId()) == MessageStatus.PROCESSED
             }
     }
 
