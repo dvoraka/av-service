@@ -40,7 +40,7 @@ class ClamAvProgramPSpec extends Specification {
             notThrown(Exception)
     }
 
-    def "scan bytes new - performance"() {
+    def "scan bytes new and old - performance comparison"() {
         when:
             // warm up
             1000.times {
@@ -58,6 +58,24 @@ class ClamAvProgramPSpec extends Specification {
             start = System.currentTimeMillis()
             count.times {
                 program.scanBytesWithInfo(eicarString.getBytes())
+            }
+            println(System.currentTimeMillis() - start)
+
+        then:
+            notThrown(Exception)
+    }
+
+    def "scan bytes new - performance"() {
+        when:
+            // warm up
+            1000.times {
+                programWithPooling.scanBytesWithInfo(eicarString.getBytes())
+            }
+
+            int count = 100_000
+            long start = System.currentTimeMillis()
+            count.times {
+                programWithPooling.scanBytesWithInfo(eicarString.getBytes())
             }
             println(System.currentTimeMillis() - start)
 
