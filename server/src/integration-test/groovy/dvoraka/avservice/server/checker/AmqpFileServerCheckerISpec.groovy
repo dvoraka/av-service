@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration
  * AMQP file server checker spec.
  */
 @ContextConfiguration(classes = [AmqpConfig.class])
-@ActiveProfiles(['client', 'amqp', 'amqp-client', 'checker', 'no-db'])
+@ActiveProfiles(['itest', 'client', 'amqp', 'amqp-client', 'checker', 'no-db'])
 @DirtiesContext
 class AmqpFileServerCheckerISpec extends SimpleCheckerISpec {
 
