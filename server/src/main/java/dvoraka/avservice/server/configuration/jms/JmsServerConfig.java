@@ -62,7 +62,8 @@ public class JmsServerConfig {
     @Bean
     public SimpleMessageListenerContainer messageListenerContainer(
             ActiveMQConnectionFactory activeMQConnectionFactory,
-            MessageListener messageListener) {
+            MessageListener messageListener
+    ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(activeMQConnectionFactory);
         container.setDestinationName(checkDestination);
