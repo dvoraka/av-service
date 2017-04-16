@@ -164,7 +164,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     }
 
     @Override
-    public FileMessage loadFile(FileMessage message) throws FileNotFoundException {
+    public FileMessage loadFile(FileMessage message) throws FileServiceException {
         log.debug("Load: " + message);
 
         if (fileService.exists(message.getFilename(), message.getOwner())) {

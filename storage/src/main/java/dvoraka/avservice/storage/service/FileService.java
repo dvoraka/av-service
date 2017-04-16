@@ -15,7 +15,7 @@ public interface FileService {
      *
      * @param message the save request/message
      * @throws ExistingFileException if the file already exists
-     * @throws FileServiceException if other service problems occurs
+     * @throws FileServiceException  if other service problems occurs
      */
     void saveFile(FileMessage message) throws FileServiceException;
 
@@ -25,8 +25,9 @@ public interface FileService {
      * @param message the load request/message
      * @return the file response
      * @throws FileNotFoundException if the file is not found
+     * @throws FileServiceException  if other service problems occurs
      */
-    FileMessage loadFile(FileMessage message) throws FileNotFoundException;
+    FileMessage loadFile(FileMessage message) throws FileServiceException;
 
     /**
      * Updates a file.
