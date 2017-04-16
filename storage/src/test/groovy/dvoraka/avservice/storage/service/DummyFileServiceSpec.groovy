@@ -35,4 +35,9 @@ class DummyFileServiceSpec extends Specification {
         expect:
             service.deleteFile(null)
     }
+
+    def "exists"() {
+        expect:
+            !service.exists(null, null)
+    }
 }
