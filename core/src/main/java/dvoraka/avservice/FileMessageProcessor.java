@@ -34,6 +34,7 @@ public class FileMessageProcessor implements MessageProcessor {
     private static final Logger log = LogManager.getLogger(FileMessageProcessor.class);
 
     public static final int CACHE_TIMEOUT = 10 * 60 * 1_000;
+    public static final String FILE_SERVICE_PROBLEM = "File service problem!";
 
     private final MessageStatusStorage statusStorage;
 
@@ -75,7 +76,7 @@ public class FileMessageProcessor implements MessageProcessor {
             fileService.saveFile(message);
             notifyListeners(createOkResponse(message));
         } catch (FileServiceException e) {
-            log.warn("File service problem!", e);
+            log.warn(FILE_SERVICE_PROBLEM, e);
             notifyListeners(message.createErrorResponse("Save problem"));
         }
     }
@@ -87,7 +88,7 @@ public class FileMessageProcessor implements MessageProcessor {
             notifyListeners(message.createFileMessage(
                     fileMessage.getData(), fileMessage.getType()));
         } catch (FileServiceException e) {
-            log.warn("File service problem!", e);
+            log.warn(FILE_SERVICE_PROBLEM, e);
             notifyListeners(message.createErrorResponse("Load problem"));
         }
     }
@@ -97,14 +98,19 @@ public class FileMessageProcessor implements MessageProcessor {
             fileService.updateFile(message);
             notifyListeners(createOkResponse(message));
         } catch (FileServiceException e) {
-            log.warn("File service problem!", e);
+            log.warn(FILE_SERVICE_PROBLEM, e);
             notifyListeners(message.createErrorResponse("Update problem"));
         }
     }
 
     private void delete(AvMessage message) {
-        fileService.deleteFile(message);
-        notifyListeners(createOkResponse(message));
+        try {
+            fileService.deleteFile(message);
+            notifyListeners(createOkResponse(message));
+        } catch (FileServiceException e) {
+            log.warn(FILE_SERVICE_PROBLEM, e);
+            notifyListeners(message.createErrorResponse("Delete problem"));
+        }
     }
 
     private void unknown(AvMessage message) {

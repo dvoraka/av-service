@@ -209,7 +209,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     }
 
     @Override
-    public void deleteFile(FileMessage message) {
+    public void deleteFile(FileMessage message) throws FileServiceException {
         log.debug("Delete: " + message);
 
         if (!exists(message)) {

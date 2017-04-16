@@ -42,11 +42,12 @@ public interface FileService {
      * Deletes a file.
      *
      * @param message the delete request/message
+     * @throws FileServiceException if other service problem occurs
      */
-    void deleteFile(FileMessage message);
+    void deleteFile(FileMessage message) throws FileServiceException;
 
     /**
-     * Checks if a file exists.
+     * Checks if the file exists.
      *
      * @param filename the filename
      * @param owner    the owner
