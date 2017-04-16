@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * Client main configuration.
+ * Client module main configuration.
  */
 @Configuration
 @Profile("client")

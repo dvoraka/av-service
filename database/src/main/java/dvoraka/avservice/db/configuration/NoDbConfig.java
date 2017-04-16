@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * No database Spring configuration for disabling DB.
+ * No database configuration for dummy DB for import.
  */
 @Configuration
 @Profile("no-db")

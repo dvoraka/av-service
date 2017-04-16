@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Core storage replication Spring configuration.
+ * Core storage replication configuration for import.
  */
 @Configuration
 @Profile("replication")

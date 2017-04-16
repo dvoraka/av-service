@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * AV program configuration.
+ * AV program module main configuration.
  */
 @Configuration
 @PropertySource("classpath:avservice.properties")

@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Database Spring configuration.
+ * Database configuration for import.
  */
 @Configuration
 @EnableJpaRepositories(basePackages = "dvoraka.avservice.db.repository")

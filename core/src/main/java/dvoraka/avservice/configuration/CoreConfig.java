@@ -18,21 +18,18 @@ import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
 
 /**
- * Core Spring configuration.
+ * Core module main configuration.
  */
 @Configuration
 @PropertySource("classpath:avservice.properties")
 @EnableMBeanExport
 @Profile("core")
 @Import({
-        // Core storage
         CoreStorageConfig.class,
         CoreStorageReplicationConfig.class,
-        // AV program
+
         AvProgramConfig.class,
-        // DB
         DatabaseConfig.class,
-        // Storage
         StorageConfig.class
 })
 public class CoreConfig {

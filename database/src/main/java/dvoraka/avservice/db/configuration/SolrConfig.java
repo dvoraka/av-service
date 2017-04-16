@@ -12,7 +12,7 @@ import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 
 /**
- * Solr Spring configuration.
+ * Solr configuration for import.
  */
 @Configuration
 @EnableSolrRepositories(basePackages = "dvoraka.avservice.db.repository.solr")

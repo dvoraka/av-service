@@ -47,7 +47,7 @@ public interface FileService {
     void deleteFile(FileMessage message) throws FileServiceException;
 
     /**
-     * Checks if the file exists.
+     * Checks if a file exists.
      *
      * @param filename the filename
      * @param owner    the owner

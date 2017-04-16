@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
 import java.util.List;
 
 /**
- * Core storage Spring configuration.
+ * Core storage configuration for import.
  */
 @Configuration
 @Profile("storage")

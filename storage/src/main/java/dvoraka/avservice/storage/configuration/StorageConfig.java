@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Storage configuration.
+ * Storage module main configuration.
  */
 @Configuration
 @Import({
