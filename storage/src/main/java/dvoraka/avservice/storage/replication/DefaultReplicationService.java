@@ -188,7 +188,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     }
 
     @Override
-    public void updateFile(FileMessage message) throws FileNotFoundException {
+    public void updateFile(FileMessage message) throws FileServiceException {
         log.debug("Update: " + message);
 
         if (!exists(message)) {
