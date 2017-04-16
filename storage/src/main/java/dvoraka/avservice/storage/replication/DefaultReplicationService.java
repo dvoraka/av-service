@@ -252,7 +252,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             return true;
         }
 
-        ReplicationMessage query = createExistsRequest(filename, owner);
+        ReplicationMessage query = createExistsRequest(filename, owner, nodeId);
         serviceClient.sendMessage(query);
 
         Optional<ReplicationMessageList> response;
@@ -286,7 +286,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public void onMessage(ReplicationMessage message) {
-        // broadcast and unicast messages from replication network
+        // broadcast and unicast messages from the replication network
         log.debug("On message ({}): {}", nodeId, message);
 
         // handle discover
@@ -294,6 +294,9 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 && message.getCommand() == Command.DISCOVER) {
             serviceClient.sendMessage(createDiscoverReply(message, nodeId));
         }
+
+        // handle exists
+
 
         // handle save
         if (message.getRouting() == MessageRouting.UNICAST
