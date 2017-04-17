@@ -12,6 +12,10 @@ public class ReplicationServiceApp implements ServiceManagement {
 
     private final ReplicationService replicationService;
 
+    private volatile boolean running;
+    private volatile boolean started;
+    private volatile boolean stopped;
+
 
     @Autowired
     public ReplicationServiceApp(ReplicationService replicationService) {
@@ -20,24 +24,28 @@ public class ReplicationServiceApp implements ServiceManagement {
 
     @Override
     public void start() {
+        running = true;
+        started = true;
     }
 
     @Override
     public boolean isRunning() {
-        return false;
+        return running;
     }
 
     @Override
     public void stop() {
+        running = false;
+        stopped = true;
     }
 
     @Override
     public boolean isStarted() {
-        return false;
+        return started;
     }
 
     @Override
     public boolean isStopped() {
-        return false;
+        return stopped;
     }
 }
