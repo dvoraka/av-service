@@ -31,6 +31,7 @@ class RestServiceRemoteAmqpISpec extends RestServiceISpec {
         AmqpFileServerRunner.setTestRun(false)
         runner = new AmqpFileServerRunner()
         runner.runAsync()
+        sleep(4_000) // wait for server
     }
 
     def cleanupSpec() {
