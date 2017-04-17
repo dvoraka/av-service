@@ -299,10 +299,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         if (message.getRouting() == MessageRouting.BROADCAST
                 && message.getCommand() == Command.EXISTS
                 && fileService.exists(message)) {
-
             serviceClient.sendMessage(createExistsReply(message, nodeId));
         }
-
 
         // handle save
         if (message.getRouting() == MessageRouting.UNICAST
