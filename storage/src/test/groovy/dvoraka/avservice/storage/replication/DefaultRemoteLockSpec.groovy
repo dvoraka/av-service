@@ -42,6 +42,24 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
             1 * responseClient.removeNoResponseMessageListener(_)
     }
 
+    def "lock file"() {
+        when:
+            lock.lockForFile('test', 'test', 5)
+
+        then:
+            1 * serviceClient.sendMessage(_)
+            1 * responseClient.getResponseWait(_, _, _) >> Optional.empty()
+    }
+
+    def "unlock file"() {
+        when:
+            lock.unlockForFile('test', 'test', 5)
+
+        then:
+            1 * serviceClient.sendMessage(_)
+            1 * responseClient.getResponseWait(_, _, _) >> Optional.empty()
+    }
+
     def "on message with unicast message"() {
         when:
             lock.onMessage(createDiscoverReply(createDiscoverRequest(nodeId), nodeId))
