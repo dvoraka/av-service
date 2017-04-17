@@ -16,17 +16,20 @@ class DefaultPerformanceTestPropertiesSpec extends Specification {
         given:
             int msgCount = 999
             boolean sendOnly = true
+            long maxRate = 12
 
         when:
             properties = new DefaultPerformanceTestProperties.Builder()
                     .msgCount(msgCount)
                     .sendOnly(sendOnly)
+                    .maxRate(12)
                     .build()
 
         then:
             with(properties) {
                 getMsgCount() == msgCount
                 isSendOnly() == sendOnly
+                getMaxRate() == maxRate
             }
     }
 
