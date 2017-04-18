@@ -1,3 +1,6 @@
+## v0.5.1 (Apr 18, 2017)
+ * Library versions updated
+ 
 ## v0.5 (Jan 20, 2017)
 
 ## v0.5-rc1 (Jan 16, 2017)
