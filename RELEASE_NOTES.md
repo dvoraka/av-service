@@ -1,3 +1,6 @@
+## v0.5.1 (Apr 18, 2017)
+ * Library versions updated
+
 ## v0.6 (Mar 1, 2017)
  * Improved tests
 
