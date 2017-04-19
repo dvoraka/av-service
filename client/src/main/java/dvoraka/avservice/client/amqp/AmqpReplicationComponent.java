@@ -43,12 +43,12 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
     @Override
     public void onMessage(Message message) {
-//        log.debug("Receive: " + message);
-        log.debug("Converted ({}): {}", nodeId, messageConverter.fromMessage(message));
+        log.debug("Receive: " + message);
 
         ReplicationMessage replicationMessage;
         try {
             replicationMessage = (ReplicationMessage) messageConverter.fromMessage(message);
+            log.debug("Converted ({}): {}", nodeId, replicationMessage);
         } catch (MessageConversionException e) {
             log.warn("Conversion error!", e);
 
