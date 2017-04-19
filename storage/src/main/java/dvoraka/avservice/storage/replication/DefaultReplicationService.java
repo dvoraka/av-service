@@ -22,8 +22,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -50,7 +48,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private static final int TERM_TIME = 10;
     private static final int REPLICATION_COUNT = 3;
 
-    private BlockingQueue<ReplicationMessage> commands;
+    //    private BlockingQueue<ReplicationMessage> commands;
     private RemoteLock remoteLock;
 
     private Set<String> neighbours;
@@ -71,7 +69,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         this.nodeId = requireNonNull(nodeId);
 
         final int size = 10;
-        commands = new ArrayBlockingQueue<>(size);
+//        commands = new ArrayBlockingQueue<>(size);
         remoteLock = new DefaultRemoteLock(serviceClient, responseClient, nodeId);
 
         neighbours = new CopyOnWriteArraySet<>();

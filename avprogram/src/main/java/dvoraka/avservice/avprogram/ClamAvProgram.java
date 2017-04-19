@@ -125,7 +125,7 @@ public class ClamAvProgram implements AvProgram {
                 throw new ScanException(ERROR_MSG, e);
             }
 
-            return scanBytesPooling(bytes, ++attempt);
+            return scanBytesPooling(bytes, attempt + 1);
 
         } finally {
             socketPool.returnSocket(socket);

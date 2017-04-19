@@ -233,6 +233,7 @@ public class DefaultRemoteLock implements
 
                 default:
                     log.debug("Unhandled broadcast command: {}", message.getCommand());
+                    break;
             }
         }
     }
