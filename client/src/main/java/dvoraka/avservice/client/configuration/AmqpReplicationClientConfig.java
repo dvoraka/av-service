@@ -24,16 +24,12 @@ import org.springframework.context.annotation.Profile;
 @Profile("replication")
 public class AmqpReplicationClientConfig {
 
-    @Value("${avservice.amqp.replicationQueue}")
-    private String replicationQueueName;
     @Value("${avservice.amqp.replicationExchange}")
     private String replicationExchange;
 
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
 
-    @Value("${avservice.serviceId}")
-    private String serviceId;
     @Value("${avservice.storage.replication.nodeId}")
     private String nodeId;
 
