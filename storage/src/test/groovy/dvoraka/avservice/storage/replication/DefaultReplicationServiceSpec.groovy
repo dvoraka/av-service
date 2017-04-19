@@ -7,6 +7,7 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
+import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.storage.service.FileService
 import spock.lang.Ignore
 import spock.lang.Specification

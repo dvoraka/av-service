@@ -1,4 +1,4 @@
-package dvoraka.avservice.storage.replication;
+package dvoraka.avservice.common.replication;
 
 import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.DefaultReplicationMessage;

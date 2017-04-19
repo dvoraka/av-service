@@ -7,6 +7,7 @@ import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
+import dvoraka.avservice.common.replication.ReplicationHelper;
 import dvoraka.avservice.common.service.CachingService;
 import dvoraka.avservice.common.service.DefaultCachingService;
 import org.apache.logging.log4j.LogManager;

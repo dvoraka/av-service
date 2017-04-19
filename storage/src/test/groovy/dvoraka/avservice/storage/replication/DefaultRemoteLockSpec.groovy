@@ -2,6 +2,7 @@ package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
+import dvoraka.avservice.common.replication.ReplicationHelper
 import spock.lang.Specification
 import spock.lang.Subject
 

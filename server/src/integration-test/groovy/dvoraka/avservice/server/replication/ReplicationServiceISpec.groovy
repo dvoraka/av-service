@@ -11,9 +11,9 @@ import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
+import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.server.runner.amqp.AmqpReplicationServiceRunner
-import dvoraka.avservice.storage.replication.ReplicationHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
