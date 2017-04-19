@@ -5,7 +5,7 @@ ENV PGDATA=/var/lib/postgresql/$VERSION/main
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
-    apt-get -y install \
+    apt-get --no-install-recommends -y install \
         postgresql \
         postgresql-contrib \
     && rm -rf /var/lib/apt/lists/*

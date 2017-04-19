@@ -9,7 +9,7 @@ ENV USER_HOME /home/user
 ENV PROJECT_ROOT av-service
 
 RUN apt-get update \
-    && apt-get -y install \
+    && apt-get --no-install-recommends -y install \
         openjdk-8-jdk-headless \
         git-core \
     && rm -rf /var/lib/apt/lists/*

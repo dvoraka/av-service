@@ -1,7 +1,7 @@
 FROM debian:stretch
 
 RUN apt-get update \
-    && apt-get -y install \
+    && apt-get --no-install-recommends -y install \
         clamav-daemon \
     && rm -rf /var/lib/apt/lists/*
 
