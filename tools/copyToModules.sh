@@ -3,7 +3,7 @@
 # Copy anything to all modules
 #
 
-ROOT=$(dirname `pwd`)
+ROOT=$(dirname $(pwd))
 
 # modules
 MODULES=$(cat $ROOT/settings.gradle | cut -d\' -f 2 | grep -v service)

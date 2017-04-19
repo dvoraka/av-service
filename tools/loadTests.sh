@@ -12,12 +12,12 @@ loops=3
 cd ${SRC_ROOT}
 
 function runTask {
-    for loop in `seq $1`
+    for loop in $(seq $1)
     do
         ./gradlew -q $2 2> /dev/null
         if [ $? -ne 0 ]
         then
-            echo "Test failed for: "$2
+            echo "Test failed for: $2"
             exit 1
         fi
         echo "--------"
