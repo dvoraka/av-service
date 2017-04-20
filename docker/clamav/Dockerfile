@@ -1,4 +1,5 @@
 FROM debian:stretch
+MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
 RUN apt-get update \
     && apt-get --no-install-recommends -y install \

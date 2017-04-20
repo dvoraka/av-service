@@ -1,4 +1,5 @@
 FROM debian:stretch
+MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
 ENV VERSION=9.6
 ENV PGDATA=/var/lib/postgresql/$VERSION/main
