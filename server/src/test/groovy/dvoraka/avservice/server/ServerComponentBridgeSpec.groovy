@@ -35,6 +35,14 @@ class ServerComponentBridgeSpec extends Specification {
             thrown(IllegalArgumentException)
     }
 
+    def "constructor with nulls"() {
+        when:
+            new ServerComponentBridge(null, null)
+
+        then:
+            thrown(NullPointerException)
+    }
+
     def "start and stop"() {
         expect:
             !bridge.isRunning()

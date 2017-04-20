@@ -31,12 +31,12 @@ public class ServerComponentBridge implements ServiceManagement {
 
     @Autowired
     public ServerComponentBridge(ServerComponent inComponent, ServerComponent outComponent) {
-        if (inComponent == outComponent) {
-            throw new IllegalArgumentException("Components must not be the same!");
-        }
-
         this.inComponent = requireNonNull(inComponent);
         this.outComponent = requireNonNull(outComponent);
+
+        if (inComponent.equals(outComponent)) {
+            throw new IllegalArgumentException("Components must not be the same!");
+        }
 
         inListener = outComponent::sendAvMessage;
         outListener = inComponent::sendAvMessage;
