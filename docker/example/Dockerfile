@@ -15,7 +15,7 @@ RUN apt-get update \
         git-core \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m -d $USER_HOME -s /bin/bash user
+RUN useradd -m -d "$USER_HOME" -s /bin/bash user
 
 USER user
 WORKDIR $USER_HOME
@@ -24,7 +24,7 @@ RUN git clone https://github.com/dvoraka/av-service.git
 
 WORKDIR ${USER_HOME}/${PROJECT_ROOT}
 
-RUN git checkout v${VERSION} \
+RUN git checkout v"${VERSION}" \
     && ./gradlew compileJava
 
 

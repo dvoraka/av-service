@@ -24,8 +24,8 @@ public class ReplicationServiceApp implements ServiceManagement {
 
     @Override
     public void start() {
-        running = true;
         started = true;
+        running = true;
     }
 
     @Override
@@ -35,8 +35,8 @@ public class ReplicationServiceApp implements ServiceManagement {
 
     @Override
     public void stop() {
-        running = false;
         stopped = true;
+        running = false;
     }
 
     @Override

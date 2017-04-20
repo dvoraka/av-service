@@ -68,7 +68,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         this.responseClient = requireNonNull(replicationResponseClient);
         this.nodeId = requireNonNull(nodeId);
 
-        final int size = 10;
+//        final int size = 10;
 //        commands = new ArrayBlockingQueue<>(size);
         remoteLock = new DefaultRemoteLock(serviceClient, responseClient, nodeId);
 
