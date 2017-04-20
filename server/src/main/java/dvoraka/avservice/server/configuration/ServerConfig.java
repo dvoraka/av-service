@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * Server main configuration.
+ * Main server configuration.
  */
 @Configuration
 @PropertySource("classpath:avservice.properties")

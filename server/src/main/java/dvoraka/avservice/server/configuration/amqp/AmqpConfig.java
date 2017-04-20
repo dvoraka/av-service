@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Main AMQP configuration for API clients.
+ * Main AMQP configuration for the import.
  */
 @Configuration
 @Import({

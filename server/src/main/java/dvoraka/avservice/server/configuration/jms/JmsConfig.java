@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Main JMS configuration for clients.
+ * Main JMS configuration for the import.
  */
 @Configuration
 @Import({
