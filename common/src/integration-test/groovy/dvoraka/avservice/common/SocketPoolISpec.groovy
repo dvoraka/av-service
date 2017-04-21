@@ -76,6 +76,44 @@ class SocketPoolISpec extends Specification {
             socketPool.getPort() == port
     }
 
+    def "brake and fix socket"() {
+        given:
+            SocketPool.SocketWrapper wrapper
+            OutputStream outputStream
+
+        when:
+            wrapper = socketPool.getSocket()
+            outputStream = wrapper.getOutputStream()
+
+        then:
+            notThrown(Exception)
+
+        when:
+            outputStream.close()
+
+        then:
+            notThrown(Exception)
+
+        when:
+            outputStream.write(0)
+
+        then:
+            thrown(SocketException)
+
+        when:
+            wrapper.fix()
+            outputStream = wrapper.getOutputStream()
+
+        then:
+            notThrown(Exception)
+
+        when:
+            outputStream.write(0)
+
+        then:
+            notThrown(Exception)
+    }
+
     def "close pool"() {
         expect:
             socketPool.close()

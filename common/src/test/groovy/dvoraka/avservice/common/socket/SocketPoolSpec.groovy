@@ -57,4 +57,9 @@ class SocketPoolSpec extends Specification {
         then:
             1 * socketFactory.createSocket(host, port) >> socket
     }
+
+    def "get socket factory"() {
+        expect:
+            socketFactory == socketPool.getSocketFactory()
+    }
 }

@@ -125,19 +125,23 @@ public class SocketPool implements SocketFactory {
         }
 
         private void initialize() {
-            log.debug("Initializing socket...");
-
             if (socket == null) {
+                log.debug("Initializing socket...");
+
                 outputStream = null;
                 reader = null;
 
                 try {
                     socket = socketFactory.createSocket(host, port);
 
-                    OutputStream out = socket.getOutputStream();
-                    out.write("nIDSESSION\n".getBytes("UTF-8"));
+                    outputStream = socket.getOutputStream();
+                    outputStream.write("nIDSESSION\n".getBytes("UTF-8"));
+
+                    reader = new BufferedReader(new InputStreamReader(
+                            socket.getInputStream(), StandardCharsets.UTF_8));
                 } catch (IOException e) {
                     log.error("Socket problem!", e);
+                    socket = null;
                 }
             }
         }
@@ -161,24 +165,11 @@ public class SocketPool implements SocketFactory {
         public OutputStream getOutputStream() {
             initialize();
 
-            try {
-                outputStream = socket.getOutputStream();
-            } catch (IOException e) {
-                log.error("OutputStream error!", e);
-            }
-
             return outputStream;
         }
 
         public BufferedReader getBufferedReader() {
             initialize();
-
-            try {
-                reader = new BufferedReader(new InputStreamReader(
-                        socket.getInputStream(), StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                log.error("Reader problem!", e);
-            }
 
             return reader;
         }
