@@ -3,13 +3,9 @@ package dvoraka.avservice.common;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageSource;
-import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessageInfo;
-import dvoraka.avservice.common.data.DefaultReplicationMessage;
-import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.MessageType;
-import dvoraka.avservice.common.data.ReplicationMessage;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -118,17 +114,6 @@ public final class Utils {
 
     public static AvMessage genDeleteMessage() {
         return genFileMessage(MessageType.FILE_DELETE);
-    }
-
-    public static ReplicationMessage genExistsQueryMessage(String filename, String owner) {
-        return new DefaultReplicationMessage.Builder(genUuidString())
-                .correlationId(TEST_CORR_ID)
-                .type(MessageType.REPLICATION_SERVICE)
-                .routing(MessageRouting.BROADCAST)
-                .command(Command.EXISTS)
-                .filename(filename)
-                .owner(owner)
-                .build();
     }
 
     public static AvMessageInfo genAvMessageInfo(AvMessageSource source) {

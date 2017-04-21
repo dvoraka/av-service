@@ -77,6 +77,6 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             1 * fileService.exists(filename, owner)
             1 * serviceClient.sendMessage(_)
 
-            1 * responseClient.getResponseWait(_, _) >> Utils.genExistsQueryMessage(filename, owner)
+            1 * responseClient.getResponseWait(_, _) >> createExistsRequest(filename, owner, nodeId)
     }
 }
