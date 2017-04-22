@@ -73,6 +73,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         remoteLock = new DefaultRemoteLock(serviceClient, responseClient, nodeId);
 
         neighbours = new CopyOnWriteArraySet<>();
+        //TODO
         replicationCount = REPLICATION_COUNT;
         executorService = Executors.newSingleThreadScheduledExecutor();
     }
@@ -103,7 +104,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         Optional<ReplicationMessageList> responses = responseClient
                 .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
 
-        if (responses == null) {
+        if (!responses.isPresent()) {
             log.debug("Discovered: 0");
 
             return;
@@ -158,7 +159,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private void sendSaveMessage(FileMessage message) {
         neighbours.stream()
                 .map(id -> createSaveMessage(message, nodeId, id))
-                .limit(getReplicationCount() - 1)
+                .limit(getReplicationCount() - 1L)
                 .forEach(serviceClient::sendMessage);
     }
 
