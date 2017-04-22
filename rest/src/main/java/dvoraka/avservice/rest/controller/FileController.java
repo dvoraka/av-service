@@ -77,15 +77,11 @@ public class FileController {
 
         AvMessage response;
         long start = System.currentTimeMillis();
-        while (true) {
+        while (System.currentTimeMillis() - start < LOAD_MAX_TIME) {
             response = restService.getResponse(fileRequest.getId());
 
             if (response != null) {
                 return new ResponseEntity<>(response, HttpStatus.OK);
-            }
-
-            if (System.currentTimeMillis() - start > LOAD_MAX_TIME) {
-                break;
             }
 
             final long sleepTime = 100;
