@@ -2,6 +2,8 @@ package dvoraka.avservice.avprogram
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.ScanException
+import dvoraka.avservice.common.service.CachingService
+import dvoraka.avservice.common.service.DefaultCachingService
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -17,6 +19,7 @@ class ClamAvProgramISpec extends Specification {
 
     ClamAvProgram program
     ClamAvProgram programWithPooling
+    CachingService cachingService
 
 
     def setup() {
@@ -27,6 +30,9 @@ class ClamAvProgramISpec extends Specification {
                 ClamAvProgram.DEFAULT_MAX_ARRAY_SIZE,
                 true
         )
+        cachingService = new DefaultCachingService()
+
+        program.setCachingService(cachingService)
     }
 
     def "is running"() {
@@ -74,6 +80,34 @@ class ClamAvProgramISpec extends Specification {
         expect:
             programWithPooling
                     .scanBytesWithInfo(eicarString.getBytes()) != program.CLEAN_STREAM_RESPONSE
+    }
+
+    def "scan bytes with enabled cache"() {
+        given:
+            boolean result
+
+        expect:
+            !program.isCaching()
+
+        when:
+            program.setCaching(true)
+
+        then:
+            program.isCaching()
+
+        when: "scan and save"
+            result = program.scanBytes(cleanData)
+
+        then:
+            notThrown(Exception)
+            !result
+
+        when: "ask again"
+            result = program.scanBytes(cleanData)
+
+        then:
+            notThrown(Exception)
+            !result
     }
 
     def "scan too big array"() {
