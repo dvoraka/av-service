@@ -13,9 +13,9 @@ RUN apt-get update \
 
 COPY conf/pg_hba.conf /etc/postgresql/$VERSION/main/
 
-RUN mkdir -p /var/run/postgresql/$VERSION-main.pg_stat_tmp
-RUN chown -R postgres:postgres /var/run/postgresql/$VERSION-main.pg_stat_tmp
-RUN chown postgres:postgres /etc/postgresql/$VERSION/main/pg_hba.conf
+RUN mkdir -p /var/run/postgresql/"$VERSION"-main.pg_stat_tmp
+RUN chown -R postgres:postgres /var/run/postgresql/"$VERSION"-main.pg_stat_tmp
+RUN chown postgres:postgres /etc/postgresql/"$VERSION"/main/pg_hba.conf
 
 USER postgres
 
