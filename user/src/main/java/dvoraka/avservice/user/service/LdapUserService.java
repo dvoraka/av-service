@@ -1,7 +1,6 @@
 package dvoraka.avservice.user.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  * LDAP user service.
@@ -9,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class LdapUserService implements UserService {
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         return null;
     }
 }

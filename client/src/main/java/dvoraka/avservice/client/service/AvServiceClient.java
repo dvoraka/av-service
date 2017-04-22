@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessage;
 /**
  * Anti-virus service client. It is used for client connections to the AV service.
  */
+@FunctionalInterface
 public interface AvServiceClient {
 
     /**

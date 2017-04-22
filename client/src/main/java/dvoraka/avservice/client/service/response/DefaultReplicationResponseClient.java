@@ -155,11 +155,7 @@ public class DefaultReplicationResponseClient implements
         ReplicationMessageList result;
         while (true) {
             result = getResponse(id);
-            if (result != null) {
-                break;
-            }
-
-            if (!sleep(start, maxTime)) {
+            if (result != null || !sleep(start, maxTime)) {
                 break;
             }
         }

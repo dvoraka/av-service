@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessage;
 /**
  * Client interface for getting a response.
  */
+@FunctionalInterface
 public interface ResponseClient {
 
     /**
