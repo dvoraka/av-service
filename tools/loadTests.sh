@@ -12,7 +12,7 @@ loops=3
 cd ${SRC_ROOT}
 
 function runTask {
-    for loop in $(seq $1)
+    for _ in $(seq $1)
     do
         ./gradlew -q $2 2> /dev/null
         if [ $? -ne 0 ]
