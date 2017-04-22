@@ -6,17 +6,14 @@ import spock.lang.Subject
 /**
  * Replication service app spec.
  */
-class ReplicationServiceAppSpec extends Specification {
+class CommonServiceAppSpec extends Specification {
 
     @Subject
-    ReplicationServiceApp app
-
-    ReplicationService service
+    CommonServiceApp app
 
 
     def setup() {
-        service = Mock()
-        app = new ReplicationServiceApp(service)
+        app = new CommonServiceApp()
     }
 
     def "before start"() {

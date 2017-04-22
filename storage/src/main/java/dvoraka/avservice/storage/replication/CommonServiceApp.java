@@ -1,27 +1,19 @@
 package dvoraka.avservice.storage.replication;
 
 import dvoraka.avservice.common.service.ServiceManagement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Replication service app.
+ * Common service app class.
  */
+//TODO
 @Service
-public class ReplicationServiceApp implements ServiceManagement {
-
-    //TODO
-//    private final ReplicationService replicationService;
+public class CommonServiceApp implements ServiceManagement {
 
     private volatile boolean running;
     private volatile boolean started;
     private volatile boolean stopped;
 
-
-    @Autowired
-    public ReplicationServiceApp(ReplicationService replicationService) {
-//        this.replicationService = replicationService;
-    }
 
     @Override
     public void start() {

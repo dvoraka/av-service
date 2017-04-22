@@ -4,9 +4,9 @@ import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
+import dvoraka.avservice.storage.replication.CommonServiceApp;
 import dvoraka.avservice.storage.replication.DefaultReplicationService;
 import dvoraka.avservice.storage.replication.ReplicationService;
-import dvoraka.avservice.storage.replication.ReplicationServiceApp;
 import dvoraka.avservice.storage.service.FileService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +43,8 @@ public class StorageConfig {
 
     @Bean
     @Profile("replication")
-    public ReplicationServiceApp replicationServiceApp(ReplicationService replicationService) {
-        return new ReplicationServiceApp(replicationService);
+    public CommonServiceApp replicationServiceApp() {
+        //TODO
+        return new CommonServiceApp();
     }
 }
