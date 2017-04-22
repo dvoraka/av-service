@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReplicationServiceApp implements ServiceManagement {
 
-    private final ReplicationService replicationService;
+    //TODO
+//    private final ReplicationService replicationService;
 
     private volatile boolean running;
     private volatile boolean started;
@@ -19,7 +20,7 @@ public class ReplicationServiceApp implements ServiceManagement {
 
     @Autowired
     public ReplicationServiceApp(ReplicationService replicationService) {
-        this.replicationService = replicationService;
+//        this.replicationService = replicationService;
     }
 
     @Override
