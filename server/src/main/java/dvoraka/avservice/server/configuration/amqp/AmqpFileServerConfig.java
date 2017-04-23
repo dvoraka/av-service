@@ -58,7 +58,8 @@ public class AmqpFileServerConfig {
 
     @Bean
     public MessageListenerContainer messageListenerContainer(
-            ConnectionFactory connectionFactory, MessageListener messageListener) {
+            ConnectionFactory connectionFactory, MessageListener messageListener
+    ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(fileQueue);
