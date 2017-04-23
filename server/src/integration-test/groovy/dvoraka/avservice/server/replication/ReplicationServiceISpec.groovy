@@ -104,7 +104,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getRouting() == MessageRouting.UNICAST
             response.getFromId()
             response.getToId() == nodeId
-            response.getSequence()
+            response.getSequence() == 0
     }
 
     def "lock request"() {
@@ -137,7 +137,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             String file = 'replTestFile'
             String owner = 'replTestOwner'
             ReplicationMessage sequenceRequest = createSequenceRequest(nodeId)
-            long sequence = 0
+            long sequence
 
         when: "get actual sequence"
             client.sendMessage(sequenceRequest)
@@ -156,7 +156,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             sequenceResponse.getRouting() == MessageRouting.UNICAST
             sequenceResponse.getFromId()
             sequenceResponse.getToId() == nodeId
-            sequenceResponse.getSequence()
+            sequenceResponse.getSequence() == 0
 
         when: "try to lock file"
             sequence = sequenceResponse.getSequence()
@@ -217,7 +217,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             String file = 'replTestFile'
             String owner = 'replTestOwner'
             ReplicationMessage sequenceRequest = createSequenceRequest(nodeId)
-            long sequence = 0
+            long sequence
 
         when: "get actual sequence"
             client.sendMessage(sequenceRequest)

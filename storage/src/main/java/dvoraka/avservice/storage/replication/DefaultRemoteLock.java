@@ -65,7 +65,8 @@ public class DefaultRemoteLock implements
     public void start() {
         log.info("Start.");
         responseClient.addNoResponseMessageListener(this);
-        new Thread(this::synchronize).start();
+        //TODO: it is too early to synchronize and with every lock request is sync possible
+//        new Thread(this::synchronize).start();
     }
 
     @Override
