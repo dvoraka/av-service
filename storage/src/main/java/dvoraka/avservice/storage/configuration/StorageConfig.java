@@ -3,8 +3,9 @@ package dvoraka.avservice.storage.configuration;
 import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
+import dvoraka.avservice.common.service.BasicServiceManagement;
+import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
-import dvoraka.avservice.storage.replication.CommonServiceApp;
 import dvoraka.avservice.storage.replication.DefaultReplicationService;
 import dvoraka.avservice.storage.replication.ReplicationService;
 import dvoraka.avservice.storage.service.FileService;
@@ -41,10 +42,10 @@ public class StorageConfig {
         return new DefaultReplicationService(fileService, serviceClient, responseClient, nodeId);
     }
 
+    //TODO: ???
     @Bean
     @Profile("replication")
-    public CommonServiceApp replicationServiceApp() {
-        //TODO
-        return new CommonServiceApp();
+    public ServiceManagement replicationServiceApp() {
+        return new BasicServiceManagement();
     }
 }

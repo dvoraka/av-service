@@ -60,7 +60,6 @@ public class AmqpCommonConfig {
     }
 
     @Bean
-    @Profile("!replication")
     public RabbitTemplate rabbitTemplate(
             ConnectionFactory connectionFactory,
             MessageConverter messageConverter

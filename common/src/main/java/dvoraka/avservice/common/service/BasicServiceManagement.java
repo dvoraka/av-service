@@ -1,14 +1,12 @@
-package dvoraka.avservice.storage.replication;
+package dvoraka.avservice.common.service;
 
-import dvoraka.avservice.common.service.ServiceManagement;
 import org.springframework.stereotype.Service;
 
 /**
- * Common service app class.
+ * Basic service management implementation for the simplest usage.
  */
-//TODO
 @Service
-public class CommonServiceApp implements ServiceManagement {
+public class BasicServiceManagement implements ServiceManagement {
 
     private volatile boolean running;
     private volatile boolean started;

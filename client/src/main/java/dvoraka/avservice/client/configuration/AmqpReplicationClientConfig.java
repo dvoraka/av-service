@@ -38,8 +38,8 @@ public class AmqpReplicationClientConfig {
 
 
     @Bean
-    public ReplicationComponent replicationComponent(RabbitTemplate rabbitTemplate) {
-        return new AmqpReplicationComponent(rabbitTemplate, nodeId);
+    public ReplicationComponent replicationComponent(RabbitTemplate replicationRabbitTemplate) {
+        return new AmqpReplicationComponent(replicationRabbitTemplate, nodeId);
     }
 
     @Bean
@@ -78,7 +78,7 @@ public class AmqpReplicationClientConfig {
     }
 
     @Bean
-    public RabbitTemplate rabbitTemplate(
+    public RabbitTemplate replicationRabbitTemplate(
             ConnectionFactory connectionFactory,
             MessageConverter replicationMessageConverter
     ) {

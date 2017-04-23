@@ -2,9 +2,9 @@ package dvoraka.avservice.server.runner.amqp;
 
 import dvoraka.avservice.common.runner.AbstractServiceRunner;
 import dvoraka.avservice.common.runner.ServiceRunner;
+import dvoraka.avservice.common.service.BasicServiceManagement;
 import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.storage.configuration.StorageConfig;
-import dvoraka.avservice.storage.replication.CommonServiceApp;
 
 /**
  * AMQP replication service runner.
@@ -28,6 +28,6 @@ public class AmqpReplicationServiceRunner extends AbstractServiceRunner {
 
     @Override
     protected Class<? extends ServiceManagement> runClass() {
-        return CommonServiceApp.class;
+        return BasicServiceManagement.class;
     }
 }

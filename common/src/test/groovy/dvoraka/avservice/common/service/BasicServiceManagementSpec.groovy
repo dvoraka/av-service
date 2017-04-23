@@ -1,19 +1,19 @@
-package dvoraka.avservice.storage.replication
+package dvoraka.avservice.common.service
 
 import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * Replication service app spec.
+ * Basic service management spec.
  */
-class CommonServiceAppSpec extends Specification {
+class BasicServiceManagementSpec extends Specification {
 
     @Subject
-    CommonServiceApp app
+    BasicServiceManagement app
 
 
     def setup() {
-        app = new CommonServiceApp()
+        app = new BasicServiceManagement()
     }
 
     def "before start"() {
