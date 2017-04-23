@@ -7,6 +7,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
@@ -19,11 +20,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * AMQP test client configuration for the import.
+ * AMQP replication test client configuration for the import.
  */
 @Configuration
 @Profile("replication-test")
 public class TestAmqpReplicationClientConfig {
+
+    @Value("${avservice.amqp.host}")
+    private String host;
+    @Value("${avservice.amqp.vhost}")
+    private String virtualHost;
+
+    @Value("${avservice.amqp.user}")
+    private String userName;
+    @Value("${avservice.amqp.pass}")
+    private String userPassword;
 
     @Value("${avservice.amqp.replicationExchange}")
     private String replicationExchange;
@@ -33,7 +44,6 @@ public class TestAmqpReplicationClientConfig {
 
     @Value("${avservice.storage.replication.testNodeId}")
     private String testNodeId;
-
     @Value("${avservice.amqp.replicationQueue}.${avservice.storage.replication.testNodeId}")
     private String fullQueueName;
 
@@ -89,5 +99,15 @@ public class TestAmqpReplicationClientConfig {
         template.setMessageConverter(replicationMessageConverter);
 
         return template;
+    }
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
+        connectionFactory.setUsername(userName);
+        connectionFactory.setPassword(userPassword);
+        connectionFactory.setVirtualHost(virtualHost);
+
+        return connectionFactory;
     }
 }

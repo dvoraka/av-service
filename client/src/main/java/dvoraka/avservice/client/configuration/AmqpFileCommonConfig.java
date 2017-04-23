@@ -14,11 +14,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * AMQP common configuration for the import.
+ * AMQP file common configuration for the import.
  */
 @Configuration
 @Profile("amqp")
-public class AmqpCommonConfig {
+public class AmqpFileCommonConfig {
 
     @Value("${avservice.amqp.host}")
     private String host;
