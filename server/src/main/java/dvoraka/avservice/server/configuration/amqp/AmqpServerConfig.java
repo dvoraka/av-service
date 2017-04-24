@@ -28,26 +28,26 @@ public class AmqpServerConfig {
     @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
 
-    @Value("${avservice.serviceId:default1}")
+    @Value("${avservice.serviceId}")
     private String serviceId;
 
 
     @Bean
-    public AvServer avServer(
-            ServerComponent avServerComponent,
-            MessageProcessor checkMessageProcessor,
+    public AvServer fileServer(
+            ServerComponent fileServerComponent,
+            MessageProcessor messageProcessor,
             MessageInfoService messageInfoService
     ) {
         return new BasicAvServer(
                 serviceId,
-                avServerComponent,
-                checkMessageProcessor,
+                fileServerComponent,
+                messageProcessor,
                 messageInfoService
         );
     }
 
     @Bean
-    public ServerComponent avServerComponent(
+    public ServerComponent fileServerComponent(
             RabbitTemplate fileServerRabbitTemplate,
             MessageInfoService messageInfoService
     ) {
@@ -56,19 +56,19 @@ public class AmqpServerConfig {
     }
 
     @Bean
-    public MessageListenerContainer avMessageListenerContainer(
-            ConnectionFactory serverConnectionFactory, MessageListener avMessageListener
+    public MessageListenerContainer fileMessageListenerContainer(
+            ConnectionFactory serverConnectionFactory, MessageListener fileMessageListener
     ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(serverConnectionFactory);
         container.setQueueNames(fileQueue);
-        container.setMessageListener(avMessageListener);
+        container.setMessageListener(fileMessageListener);
 
         return container;
     }
 
     @Bean
-    public MessageListener avMessageListener(ServerComponent avServerComponent) {
-        return avServerComponent;
+    public MessageListener fileMessageListener(ServerComponent fileServerComponent) {
+        return fileServerComponent;
     }
 }

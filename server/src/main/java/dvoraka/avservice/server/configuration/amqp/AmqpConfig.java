@@ -13,8 +13,7 @@ import org.springframework.context.annotation.Profile;
 @Import({
         ClientConfig.class,
         ServerCommonConfig.class,
-        AmqpServerConfig.class,
-        AmqpFileServerConfig.class
+        AmqpServerConfig.class
 })
 @Profile("amqp")
 public class AmqpConfig {
