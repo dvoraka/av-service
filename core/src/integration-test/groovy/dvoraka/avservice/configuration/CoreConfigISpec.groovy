@@ -11,7 +11,7 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [CoreConfig.class])
-@ActiveProfiles(['core', 'no-db'])
+@ActiveProfiles(['core', 'check', 'no-db'])
 @DirtiesContext
 class CoreConfigISpec extends Specification {
 
