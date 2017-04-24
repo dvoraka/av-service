@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
 public class RestLocalConfig {
 
     @Bean
-    public RestService avRestService(MessageProcessor checkAndFileProcessor) {
-        return new LocalRestService(checkAndFileProcessor);
+    public RestService avRestService(MessageProcessor messageProcessor) {
+        return new LocalRestService(messageProcessor);
     }
 }
