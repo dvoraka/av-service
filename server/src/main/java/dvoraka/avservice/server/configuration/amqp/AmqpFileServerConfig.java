@@ -25,7 +25,6 @@ public class AmqpFileServerConfig {
 
     @Value("${avservice.amqp.fileQueue}")
     private String fileQueue;
-
     @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
 
@@ -49,11 +48,11 @@ public class AmqpFileServerConfig {
 
     @Bean
     public ServerComponent serverComponent(
-            RabbitTemplate rabbitTemplate,
+            RabbitTemplate fileServerRabbitTemplate,
             MessageInfoService messageInfoService
     ) {
         return new AmqpComponent(
-                resultExchange, serviceId, rabbitTemplate, messageInfoService);
+                resultExchange, serviceId, fileServerRabbitTemplate, messageInfoService);
     }
 
     @Bean

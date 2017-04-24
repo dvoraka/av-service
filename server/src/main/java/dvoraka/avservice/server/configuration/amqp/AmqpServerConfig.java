@@ -34,40 +34,41 @@ public class AmqpServerConfig {
 
     @Bean
     public AvServer avServer(
-            ServerComponent serverComponent,
+            ServerComponent avServerComponent,
             MessageProcessor checkMessageProcessor,
             MessageInfoService messageInfoService
     ) {
         return new BasicAvServer(
                 serviceId,
-                serverComponent,
+                avServerComponent,
                 checkMessageProcessor,
                 messageInfoService
         );
     }
 
     @Bean
-    public ServerComponent serverComponent(
-            RabbitTemplate rabbitTemplate,
+    public ServerComponent avServerComponent(
+            RabbitTemplate fileServerRabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new AmqpComponent(resultExchange, serviceId, rabbitTemplate, messageInfoService);
+        return new AmqpComponent(
+                resultExchange, serviceId, fileServerRabbitTemplate, messageInfoService);
     }
 
     @Bean
-    public MessageListenerContainer messageListenerContainer(
-            ConnectionFactory connectionFactory, MessageListener messageListener
+    public MessageListenerContainer avMessageListenerContainer(
+            ConnectionFactory serverConnectionFactory, MessageListener avMessageListener
     ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
+        container.setConnectionFactory(serverConnectionFactory);
         container.setQueueNames(fileQueue);
-        container.setMessageListener(messageListener);
+        container.setMessageListener(avMessageListener);
 
         return container;
     }
 
     @Bean
-    public MessageListener messageListener(ServerComponent serverComponent) {
-        return serverComponent;
+    public MessageListener avMessageListener(ServerComponent avServerComponent) {
+        return avServerComponent;
     }
 }

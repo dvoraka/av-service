@@ -35,13 +35,13 @@ public class AmqpFileCommonConfig {
 
 
     @Bean
-    public AvMessageMapper avMessageMapper() {
+    public AvMessageMapper fileMessageMapper() {
         return new AvMessageMapper();
     }
 
     @Bean
-    public MessageConverter messageConverter(AvMessageMapper messageMapper) {
-        return new AvMessageConverter(messageMapper);
+    public MessageConverter messageConverter(AvMessageMapper fileMessageMapper) {
+        return new AvMessageConverter(fileMessageMapper);
     }
 
     @Bean
