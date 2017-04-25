@@ -18,8 +18,7 @@ public class AmqpReplicationServiceRunner extends AbstractServiceRunner {
 
     @Override
     protected String[] profiles() {
-        //TODO: amqp-client is not necessary for this service
-        return new String[]{"storage", "replication", "client", "amqp", "amqp-client", "no-db"};
+        return new String[]{"storage", "replication", "client", "amqp", "no-db"};
     }
 
     @Override

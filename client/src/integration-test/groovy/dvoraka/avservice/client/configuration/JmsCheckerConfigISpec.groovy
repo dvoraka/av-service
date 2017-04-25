@@ -11,7 +11,7 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
-@ActiveProfiles(['client', 'jms', 'jms-client', 'checker', 'no-db'])
+@ActiveProfiles(['client', 'jms', 'file-client', 'checker', 'no-db'])
 @DirtiesContext
 class JmsCheckerConfigISpec extends Specification {
 

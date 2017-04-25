@@ -1,13 +1,17 @@
 package dvoraka.avservice.configuration;
 
+import dvoraka.avservice.AvCheckMessageProcessor;
 import dvoraka.avservice.CompositeMessageProcessor;
 import dvoraka.avservice.FileMessageProcessor;
 import dvoraka.avservice.InputConditions;
 import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.ProcessorConfiguration;
+import dvoraka.avservice.avprogram.service.AvService;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.storage.service.FileService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,6 +25,12 @@ import java.util.List;
 @Profile("storage")
 public class CoreStorageConfig {
 
+    @Value("${avservice.cpuCores:2}")
+    private Integer cpuCores;
+    @Value("${avservice.serviceId:default1}")
+    private String serviceId;
+
+
     @Bean
     @Profile("!replication")
     public MessageProcessor fileMessageProcessor(FileService fileService) {
@@ -28,7 +38,19 @@ public class CoreStorageConfig {
     }
 
     @Bean
-    public MessageProcessor checkAndFileProcessor(
+    public MessageProcessor checkMessageProcessor(
+            AvService avService,
+            MessageInfoService messageInfoService
+    ) {
+        return new AvCheckMessageProcessor(
+                cpuCores,
+                serviceId,
+                avService,
+                messageInfoService);
+    }
+
+    @Bean
+    public MessageProcessor messageProcessor(
             MessageProcessor checkMessageProcessor,
             MessageProcessor fileMessageProcessor
     ) {

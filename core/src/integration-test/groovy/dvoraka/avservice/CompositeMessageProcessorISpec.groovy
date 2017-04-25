@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 class CompositeMessageProcessorISpec extends Specification {
 
     @Autowired
-    MessageProcessor checkAndFileProcessor
+    MessageProcessor messageProcessor
 
     BlockingQueue<AvMessage> queue
     AvMessageListener listener
@@ -44,7 +44,7 @@ class CompositeMessageProcessorISpec extends Specification {
             }
         }
 
-        checkAndFileProcessor.addProcessedAVMessageListener(listener)
+        messageProcessor.addProcessedAVMessageListener(listener)
 
         conditions = new PollingConditions(timeout: 2)
     }
@@ -54,7 +54,7 @@ class CompositeMessageProcessorISpec extends Specification {
             AvMessage message = Utils.genMessage()
 
         when:
-            checkAndFileProcessor.sendMessage(message)
+            messageProcessor.sendMessage(message)
 
         then:
             conditions.eventually {
@@ -71,7 +71,7 @@ class CompositeMessageProcessorISpec extends Specification {
             AvMessage message = Utils.genInfectedMessage()
 
         when:
-            checkAndFileProcessor.sendMessage(message)
+            messageProcessor.sendMessage(message)
 
         then:
             conditions.eventually {
@@ -88,7 +88,7 @@ class CompositeMessageProcessorISpec extends Specification {
             AvMessage message = Utils.genFileMessage()
 
         when:
-            checkAndFileProcessor.sendMessage(message)
+            messageProcessor.sendMessage(message)
 
         then:
             conditions.eventually {
@@ -104,7 +104,7 @@ class CompositeMessageProcessorISpec extends Specification {
             AvMessage message = Utils.genInfectedFileMessage()
 
         when:
-            checkAndFileProcessor.sendMessage(message)
+            messageProcessor.sendMessage(message)
 
         then:
             conditions.eventually {
@@ -127,7 +127,7 @@ class CompositeMessageProcessorISpec extends Specification {
                     .build();
 
         when:
-            checkAndFileProcessor.sendMessage(message)
+            messageProcessor.sendMessage(message)
 
         then:
             conditions.eventually {
@@ -138,7 +138,7 @@ class CompositeMessageProcessorISpec extends Specification {
             }
 
         when:
-            checkAndFileProcessor.sendMessage(update)
+            messageProcessor.sendMessage(update)
 
         then:
             conditions.eventually {

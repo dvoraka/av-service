@@ -13,7 +13,7 @@ import spock.lang.Specification
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['client', 'replication-test', 'amqp', 'amqp-client', 'no-db'])
 @DirtiesContext
-class TestAmqpReplicationClientConfigISpec extends Specification {
+class AmqpTestReplicationClientConfigISpec extends Specification {
 
     @Autowired
     ReplicationServiceClient client

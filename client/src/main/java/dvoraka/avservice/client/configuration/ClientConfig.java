@@ -1,12 +1,5 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.client.ServerComponent;
-import dvoraka.avservice.client.service.AvServiceClient;
-import dvoraka.avservice.client.service.DefaultAvServiceClient;
-import dvoraka.avservice.client.service.DefaultFileServiceClient;
-import dvoraka.avservice.client.service.FileServiceClient;
-import dvoraka.avservice.client.service.response.DefaultResponseClient;
-import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
@@ -23,21 +16,13 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @Profile("client")
 @Import({
+        FileClientConfig.class,
+        ReplicationClientConfig.class,
+        TestReplicationClientConfig.class,
+        CheckerConfig.class,
+
         // Message info service
         DatabaseConfig.class,
-        // AMQP
-        AmqpClientConfig.class,
-        AmqpReplicationClientConfig.class,
-        AmqpCommonConfig.class,
-        TestAmqpReplicationClientConfig.class,
-        // JMS
-        JmsClient.class,
-        JmsCommonConfig.class,
-        // Checker
-        CheckerConfig.class,
-        // Replication
-        ReplicationClientConfig.class,
-        TestReplicationClientConfig.class
 })
 @PropertySource("classpath:avservice.properties")
 public class ClientConfig {
@@ -47,21 +32,6 @@ public class ClientConfig {
     @Value("${avservice.perf.maxRate}")
     private long maxRate;
 
-
-    @Bean
-    public AvServiceClient avServiceClient(ServerComponent serverComponent) {
-        return new DefaultAvServiceClient(serverComponent);
-    }
-
-    @Bean
-    public FileServiceClient fileServiceClient(ServerComponent serverComponent) {
-        return new DefaultFileServiceClient(serverComponent);
-    }
-
-    @Bean
-    public ResponseClient responseClient(ServerComponent serverComponent) {
-        return new DefaultResponseClient(serverComponent);
-    }
 
     @Bean
     public PerformanceTestProperties testProperties() {

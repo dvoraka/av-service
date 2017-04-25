@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Import;
  * Server common configuration.
  */
 @Configuration
-@Import({CoreConfig.class})
+@Import({
+        AmqpServerCommonConfig.class,
+        JmsServerCommonConfig.class,
+
+        CoreConfig.class
+})
 public class ServerCommonConfig {
 }

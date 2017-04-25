@@ -28,46 +28,47 @@ public class AmqpServerConfig {
     @Value("${avservice.amqp.resultExchange}")
     private String resultExchange;
 
-    @Value("${avservice.serviceId:default1}")
+    @Value("${avservice.serviceId}")
     private String serviceId;
 
 
     @Bean
-    public AvServer avServer(
-            ServerComponent serverComponent,
-            MessageProcessor checkMessageProcessor,
+    public AvServer fileServer(
+            ServerComponent fileServerComponent,
+            MessageProcessor messageProcessor,
             MessageInfoService messageInfoService
     ) {
         return new BasicAvServer(
                 serviceId,
-                serverComponent,
-                checkMessageProcessor,
+                fileServerComponent,
+                messageProcessor,
                 messageInfoService
         );
     }
 
     @Bean
-    public ServerComponent serverComponent(
-            RabbitTemplate rabbitTemplate,
+    public ServerComponent fileServerComponent(
+            RabbitTemplate fileServerRabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new AmqpComponent(resultExchange, serviceId, rabbitTemplate, messageInfoService);
+        return new AmqpComponent(
+                resultExchange, serviceId, fileServerRabbitTemplate, messageInfoService);
     }
 
     @Bean
-    public MessageListenerContainer messageListenerContainer(
-            ConnectionFactory connectionFactory, MessageListener messageListener
+    public MessageListenerContainer fileMessageListenerContainer(
+            ConnectionFactory serverConnectionFactory, MessageListener fileMessageListener
     ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
+        container.setConnectionFactory(serverConnectionFactory);
         container.setQueueNames(fileQueue);
-        container.setMessageListener(messageListener);
+        container.setMessageListener(fileMessageListener);
 
         return container;
     }
 
     @Bean
-    public MessageListener messageListener(ServerComponent serverComponent) {
-        return serverComponent;
+    public MessageListener fileMessageListener(ServerComponent fileServerComponent) {
+        return fileServerComponent;
     }
 }
