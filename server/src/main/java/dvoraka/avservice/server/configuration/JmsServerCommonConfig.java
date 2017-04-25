@@ -26,7 +26,7 @@ public class JmsServerCommonConfig {
 
 
     @Bean
-    public ActiveMQConnectionFactory activeMQConnFactory() {
+    public ActiveMQConnectionFactory serverActiveMQConnectionFactory() {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
         factory.setUseAsyncSend(true);
 
@@ -34,8 +34,10 @@ public class JmsServerCommonConfig {
     }
 
     @Bean
-    public ConnectionFactory serverConnectionFactory(ConnectionFactory activeMQConnFactory) {
-        return new CachingConnectionFactory(activeMQConnFactory);
+    public ConnectionFactory serverConnectionFactory(
+            ConnectionFactory serverActiveMQConnectionFactory
+    ) {
+        return new CachingConnectionFactory(serverActiveMQConnectionFactory);
     }
 
     @Bean

@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
  * Replication client configuration for the import.
  */
 @Configuration
-@Profile({"replication", "replication-test"})
+@Profile("replication")
 @Import({
         AmqpReplicationClientConfig.class
 })

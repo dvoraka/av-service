@@ -16,15 +16,13 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @Profile("client")
 @Import({
-        // new design
         FileClientConfig.class,
         ReplicationClientConfig.class,
         TestReplicationClientConfig.class,
+        CheckerConfig.class,
 
         // Message info service
         DatabaseConfig.class,
-        // Checker
-        CheckerConfig.class,
 })
 @PropertySource("classpath:avservice.properties")
 public class ClientConfig {
