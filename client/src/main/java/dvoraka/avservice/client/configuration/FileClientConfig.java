@@ -20,7 +20,10 @@ import org.springframework.context.annotation.Profile;
 @Import({
         // AMQP
         AmqpFileClientConfig.class,
-        AmqpFileCommonConfig.class
+        AmqpFileCommonConfig.class,
+        // JMS
+        JmsFileClientConfig.class,
+        JmsFileCommonConfig.class
 })
 public class FileClientConfig {
 

@@ -23,9 +23,6 @@ import org.springframework.context.annotation.PropertySource;
 
         // Message info service
         DatabaseConfig.class,
-        // JMS
-        JmsClient.class,
-        JmsCommonConfig.class,
         // Checker
         CheckerConfig.class,
 })

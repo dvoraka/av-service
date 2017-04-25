@@ -3,7 +3,6 @@ package dvoraka.avservice.client.configuration;
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.client.jms.JmsComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,14 +10,15 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
 
+import javax.jms.ConnectionFactory;
 import javax.jms.MessageListener;
 
 /**
- * JMS client configuration for the import.
+ * JMS file client configuration for the import.
  */
 @Configuration
-@Profile("jms-client")
-public class JmsClient {
+@Profile("jms")
+public class JmsFileClientConfig {
 
     @Value("${avservice.jms.resultDestination}")
     private String resultDestination;
@@ -44,10 +44,11 @@ public class JmsClient {
 
     @Bean
     public SimpleMessageListenerContainer messageListenerContainer(
-            ActiveMQConnectionFactory activeMQConnectionFactory,
-            MessageListener messageListener) {
+            ConnectionFactory connectionFactory,
+            MessageListener messageListener
+    ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(activeMQConnectionFactory);
+        container.setConnectionFactory(connectionFactory);
         container.setDestinationName(resultDestination);
         container.setMessageListener(messageListener);
 

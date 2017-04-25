@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration
  * JMS checker spec.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
-@ActiveProfiles(['client', 'jms', 'jms-client', 'checker', 'no-db'])
+@ActiveProfiles(['client', 'jms', 'file-client', 'checker', 'no-db'])
 @DirtiesContext
 class JmsSimpleCheckerISpec extends SimpleCheckerISpec {
 

@@ -17,7 +17,7 @@ import javax.jms.ConnectionFactory;
  */
 @Configuration
 @Profile("jms")
-public class JmsCommonConfig {
+public class JmsFileCommonConfig {
 
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
@@ -41,7 +41,8 @@ public class JmsCommonConfig {
     @Bean
     public JmsTemplate jmsTemplate(
             ConnectionFactory connectionFactory,
-            MessageConverter messageConverter) {
+            MessageConverter messageConverter
+    ) {
         JmsTemplate template = new JmsTemplate(connectionFactory);
         template.setReceiveTimeout(receiveTimeout);
         template.setMessageConverter(messageConverter);
