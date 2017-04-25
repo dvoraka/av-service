@@ -28,7 +28,7 @@ import spock.lang.Specification
  * Replication service spec.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
-@ActiveProfiles(['replication-test', 'client', 'amqp', 'amqp-client', 'no-db'])
+@ActiveProfiles(['replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
 class ReplicationServiceISpec extends Specification implements ReplicationHelper {

@@ -22,9 +22,6 @@ import org.springframework.context.annotation.PropertySource;
 
         // Message info service
         DatabaseConfig.class,
-        // AMQP
-        AmqpReplicationClientConfig.class,
-        TestAmqpReplicationClientConfig.class,
         // JMS
         JmsClient.class,
         JmsCommonConfig.class,
