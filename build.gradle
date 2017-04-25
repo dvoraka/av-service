@@ -2,7 +2,7 @@ plugins {
     // SonarQube
     id 'org.sonarqube' version '2.2.1'
     // Spring Boot and dependency management
-    id 'org.springframework.boot' version '1.5.2.RELEASE'
+    id 'org.springframework.boot' version '1.5.3.RELEASE'
 }
 
 description = 'Anti-virus and file network service'
@@ -97,7 +97,7 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.5.2.RELEASE')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.5.3.RELEASE')
         }
     }
 
