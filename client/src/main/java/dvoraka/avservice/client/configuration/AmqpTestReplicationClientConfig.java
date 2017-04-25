@@ -25,8 +25,8 @@ import org.springframework.context.annotation.Profile;
  * AMQP replication test client configuration for the import.
  */
 @Configuration
-@Profile("replication-test")
-public class TestAmqpReplicationClientConfig {
+@Profile("amqp")
+public class AmqpTestReplicationClientConfig {
 
     @Value("${avservice.amqp.host}")
     private String host;

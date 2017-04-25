@@ -19,6 +19,7 @@ import org.springframework.context.annotation.PropertySource;
         // new design
         FileClientConfig.class,
         ReplicationClientConfig.class,
+        TestReplicationClientConfig.class,
 
         // Message info service
         DatabaseConfig.class,
@@ -27,8 +28,6 @@ import org.springframework.context.annotation.PropertySource;
         JmsCommonConfig.class,
         // Checker
         CheckerConfig.class,
-        // Replication
-        TestReplicationClientConfig.class
 })
 @PropertySource("classpath:avservice.properties")
 public class ClientConfig {

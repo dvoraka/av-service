@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Profile;
  * AMQP client configuration for the import.
  */
 @Configuration
-@Profile("replication")
+@Profile("amqp")
 public class AmqpReplicationClientConfig {
 
     @Value("${avservice.amqp.host}")
