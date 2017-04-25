@@ -12,9 +12,9 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [JmsConfig.class])
-@ActiveProfiles(["client", "jms", "jms-client", "no-db"])
+@ActiveProfiles(['jms', 'no-db'])
 @DirtiesContext
-@Ignore("Maybe useless")
+@Ignore("broken")
 class JmsConfigISpec extends Specification {
 
     @Autowired
