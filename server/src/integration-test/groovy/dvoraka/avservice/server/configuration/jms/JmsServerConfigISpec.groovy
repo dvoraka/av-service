@@ -12,7 +12,7 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [ServerConfig.class])
-@ActiveProfiles(['core', 'check', 'server', 'jms', 'jms-server', 'no-db'])
+@ActiveProfiles(['core', 'check', 'server', 'jms', 'no-db'])
 @DirtiesContext
 class JmsServerConfigISpec extends Specification {
 

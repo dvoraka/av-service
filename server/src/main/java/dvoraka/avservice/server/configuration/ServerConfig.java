@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.client.configuration.ClientConfig;
-import dvoraka.avservice.server.configuration.amqp.AmqpConfig;
-import dvoraka.avservice.server.configuration.jms.JmsConfig;
+import dvoraka.avservice.configuration.CoreConfig;
+import dvoraka.avservice.server.configuration.amqp.AmqpServerConfig;
+import dvoraka.avservice.server.configuration.jms.JmsServerConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
@@ -15,9 +15,10 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:avservice.properties")
 @Profile("server")
 @Import({
-        ClientConfig.class,
-        AmqpConfig.class,
-        JmsConfig.class
+        AmqpServerConfig.class,
+        JmsServerConfig.class,
+
+        CoreConfig.class,
 })
 public class ServerConfig {
 }
