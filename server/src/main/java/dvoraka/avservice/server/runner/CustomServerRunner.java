@@ -20,7 +20,7 @@ public class CustomServerRunner extends AbstractServiceRunner {
 
     @Override
     public String[] profiles() {
-        return new String[]{"core", "server", "client", "amqp", "amqp-server", "no-db"};
+        return new String[]{"core", "check", "server", "amqp", "no-db"};
     }
 
     @Override

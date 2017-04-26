@@ -1,6 +1,5 @@
 package dvoraka.avservice.server.runner.amqp
 
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
