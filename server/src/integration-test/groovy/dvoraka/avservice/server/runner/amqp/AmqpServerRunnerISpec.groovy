@@ -6,7 +6,6 @@ import spock.lang.Specification
 /**
  * Test for server running.
  */
-@Ignore
 class AmqpServerRunnerISpec extends Specification {
 
     def "Run AMQP server runner"() {

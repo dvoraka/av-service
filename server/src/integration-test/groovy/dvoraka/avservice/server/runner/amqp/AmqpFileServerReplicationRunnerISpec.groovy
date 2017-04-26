@@ -6,7 +6,6 @@ import spock.lang.Specification
 /**
  * Test for server running.
  */
-@Ignore
 class AmqpFileServerReplicationRunnerISpec extends Specification {
 
     def "Run AMQP file server with replication runner"() {

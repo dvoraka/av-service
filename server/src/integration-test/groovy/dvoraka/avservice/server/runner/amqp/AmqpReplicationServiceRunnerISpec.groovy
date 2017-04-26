@@ -6,7 +6,6 @@ import spock.lang.Specification
 /**
  * Test for service runner.
  */
-@Ignore
 class AmqpReplicationServiceRunnerISpec extends Specification {
 
     def "Run AMQP replication service runner"() {
