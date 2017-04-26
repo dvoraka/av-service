@@ -52,6 +52,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
     }
 
     def setupSpec() {
+        AmqpReplicationServiceRunner.setTestRun(false)
         runner = new AmqpReplicationServiceRunner()
         runner.runAsync()
         sleep(6_000) // wait for server start
