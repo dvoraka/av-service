@@ -87,6 +87,15 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
             1 * responseClient.getResponseWait(_, _, _) >> Optional.empty()
     }
 
+    def "synchronize"() {
+        when:
+            lock.synchronize()
+
+        then:
+            1 * serviceClient.sendMessage(_)
+            1 * responseClient.getResponseWait(_, _) >> Optional.of(genSequenceResponse())
+    }
+
     def "on message with unicast message"() {
         when:
             lock.onMessage(createDiscoverReply(createDiscoverRequest(nodeId), nodeId))
@@ -141,6 +150,15 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
         ReplicationMessage lockReply = createLockSuccessReply(lockRequest, 'otherNode')
         ReplicationMessageList messageList = new ReplicationMessageList()
         messageList.add(lockReply)
+
+        return messageList
+    }
+
+    ReplicationMessageList genSequenceResponse() {
+        ReplicationMessage seqRequest = createSequenceRequest(nodeId)
+        ReplicationMessage seqReply = createSequenceReply(seqRequest, nodeId, 1)
+        ReplicationMessageList messageList = new ReplicationMessageList()
+        messageList.add(seqReply)
 
         return messageList
     }

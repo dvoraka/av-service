@@ -144,7 +144,10 @@ public class DefaultRemoteLock implements
         return false;
     }
 
-    private void synchronize() {
+    /**
+     * Synchronizes the lock with others.
+     */
+    public void synchronize() {
         initializeSequence();
     }
 
