@@ -3,7 +3,6 @@ package dvoraka.avservice.configuration;
 import dvoraka.avservice.avprogram.configuration.AvProgramConfig;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.storage.configuration.StorageConfig;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableMBeanExport;
@@ -31,12 +30,11 @@ import org.springframework.jmx.support.RegistrationPolicy;
 })
 public class CoreConfig {
 
-    @Value("${avservice.cpuCores:2}")
-    private Integer cpuCores;
-    @Value("${avservice.serviceId:default1}")
-    private String serviceId;
-
-
+    /**
+     * Special MBeanExporter bean for integration tests.
+     *
+     * @return MBeanExporter with a different registration strategy
+     */
     @Bean
     @Profile("itest")
     public MBeanExporter mBeanExporter() {
