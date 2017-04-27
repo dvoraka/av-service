@@ -1,7 +1,9 @@
 package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.client.service.ReplicationServiceClient
+import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
+import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.replication.ReplicationHelper
 import spock.lang.Specification
 import spock.lang.Subject
@@ -17,6 +19,9 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
     ReplicationServiceClient serviceClient
     ReplicationResponseClient responseClient
     String nodeId
+
+    String testFilename = 'testFilename'
+    String testOwner = 'testOwner'
 
 
     def setup() {
@@ -43,13 +48,34 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
             1 * responseClient.removeNoResponseMessageListener(_)
     }
 
-    def "lock file"() {
+    def "lock file unsuccessfully"() {
         when:
-            lock.lockForFile('test', 'test', 5)
+            boolean result = lock.lockForFile('test', 'test', 5)
 
         then:
             1 * serviceClient.sendMessage(_)
             1 * responseClient.getResponseWait(_, _, _) >> Optional.empty()
+            !result
+    }
+
+    def "lock file successfully"() {
+        when:
+            boolean result = lock.lockForFile('test', 'test', 1)
+
+        then:
+            1 * serviceClient.sendMessage(_)
+            1 * responseClient.getResponseWait(_, _, _) >> Optional.of(genLockResponse())
+            result
+    }
+
+    def "lock file and get lower lock count"() {
+        when:
+            boolean result = lock.lockForFile('test', 'test', 2)
+
+        then:
+            1 * serviceClient.sendMessage(_)
+            1 * responseClient.getResponseWait(_, _, _) >> Optional.of(genLockResponse())
+            !result
     }
 
     def "unlock file"() {
@@ -67,5 +93,15 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
         then:
             0 * _
+    }
+
+    ReplicationMessageList genLockResponse() {
+        ReplicationMessage lockRequest = createLockRequest(
+                testFilename, testOwner, nodeId, 1)
+        ReplicationMessage lockReply = createLockSuccessReply(lockRequest, 'otherNode')
+        ReplicationMessageList messageList = new ReplicationMessageList()
+        messageList.add(lockReply)
+
+        return messageList
     }
 }
