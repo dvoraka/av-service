@@ -109,7 +109,7 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createUnLockRequest(
+    default ReplicationMessage createUnlockRequest(
             String filename, String owner, String nodeId, long sequence) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)

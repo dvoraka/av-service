@@ -121,7 +121,7 @@ public class DefaultRemoteLock implements
     public boolean unlockForFile(String filename, String owner, int lockCount) {
 
         // send the unlock request
-        ReplicationMessage unlockRequest = createUnLockRequest(filename, owner, nodeId, 0);
+        ReplicationMessage unlockRequest = createUnlockRequest(filename, owner, nodeId, 0);
         serviceClient.sendMessage(unlockRequest);
 
         // get replies

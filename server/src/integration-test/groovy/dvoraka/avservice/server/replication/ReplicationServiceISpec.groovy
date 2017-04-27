@@ -263,7 +263,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getSequence() == request.getSequence()
 
         when: "try to unlock the locked file"
-            ReplicationMessage unlockRequest = createUnLockRequest(file, owner, nodeId, sequence)
+            ReplicationMessage unlockRequest = createUnlockRequest(file, owner, nodeId, sequence)
             client.sendMessage(unlockRequest)
             Optional<ReplicationMessageList> unlockMessages =
                     responseClient.getResponseWait(unlockRequest.getId(), responseTime)

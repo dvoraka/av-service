@@ -95,6 +95,46 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
             0 * _
     }
 
+    def "on message with unknown broadcast message"() {
+        when:
+            lock.onMessage(createExistsRequest(testOwner, testFilename, nodeId))
+
+        then:
+            0 * _
+    }
+
+    def "on message with sequence request"() {
+        when:
+            lock.onMessage(createSequenceRequest(nodeId))
+
+        then:
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message with lock request with wrong sequence"() {
+        when:
+            lock.onMessage(createLockRequest(testFilename, testOwner, nodeId, 1))
+
+        then:
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message with lock request with right sequence"() {
+        when:
+            lock.onMessage(createLockRequest(testFilename, testOwner, nodeId, 0))
+
+        then:
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message with unlock request"() {
+        when:
+            lock.onMessage(createUnlockRequest(testFilename, testOwner, nodeId, 1))
+
+        then:
+            1 * serviceClient.sendMessage(_)
+    }
+
     ReplicationMessageList genLockResponse() {
         ReplicationMessage lockRequest = createLockRequest(
                 testFilename, testOwner, nodeId, 1)
