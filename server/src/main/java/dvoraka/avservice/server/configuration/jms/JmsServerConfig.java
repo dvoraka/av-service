@@ -1,11 +1,8 @@
 package dvoraka.avservice.server.configuration.jms;
 
-import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.client.jms.JmsComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.server.AvServer;
-import dvoraka.avservice.server.BasicAvServer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,20 +33,6 @@ public class JmsServerConfig {
     @Value("${avservice.serviceId:default1}")
     private String serviceId;
 
-
-    @Bean
-    public AvServer fileServer(
-            ServerComponent fileServerComponent,
-            MessageProcessor messageProcessor,
-            MessageInfoService messageInfoService
-    ) {
-        return new BasicAvServer(
-                serviceId,
-                fileServerComponent,
-                messageProcessor,
-                messageInfoService
-        );
-    }
 
     @Bean
     public ServerComponent fileServerComponent(

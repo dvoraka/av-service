@@ -18,9 +18,10 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:avservice.properties")
 @Profile("jms2amqp")
 @Import({
-        DatabaseConfig.class,
         JmsBridgeInputConfig.class,
-        AmqpBridgeOutputConfig.class
+        AmqpBridgeOutputConfig.class,
+
+        DatabaseConfig.class,
 })
 public class JmsToAmqpConfig {
 

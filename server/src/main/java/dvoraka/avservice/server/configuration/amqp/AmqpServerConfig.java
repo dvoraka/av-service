@@ -1,13 +1,10 @@
 package dvoraka.avservice.server.configuration.amqp;
 
-import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.client.amqp.AmqpComponent;
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.common.amqp.AvMessageMapper;
 import dvoraka.avservice.db.service.MessageInfoService;
-import dvoraka.avservice.server.AvServer;
-import dvoraka.avservice.server.BasicAvServer;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -37,20 +34,6 @@ public class AmqpServerConfig {
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
 
-
-    @Bean
-    public AvServer fileServer(
-            ServerComponent fileServerComponent,
-            MessageProcessor messageProcessor,
-            MessageInfoService messageInfoService
-    ) {
-        return new BasicAvServer(
-                serviceId,
-                fileServerComponent,
-                messageProcessor,
-                messageInfoService
-        );
-    }
 
     @Bean
     public ServerComponent fileServerComponent(
