@@ -13,11 +13,11 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [ServerConfig.class])
 @DirtiesContext
-@ActiveProfiles(['core', 'check', 'server', 'amqp', 'no-db'])
-class AmqpServerConfigISpec extends Specification {
+@ActiveProfiles(['core', 'storage', 'server', 'amqp', 'no-db'])
+class AmqpFileServerConfigISpec extends Specification {
 
     @Autowired
-    AvServer avServer
+    AvServer fileServer
 
 
     def "test"() {

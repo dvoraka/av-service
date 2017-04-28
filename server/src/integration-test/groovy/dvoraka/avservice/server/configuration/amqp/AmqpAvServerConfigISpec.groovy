@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration.jms
+package dvoraka.avservice.server.configuration.amqp
 
 import dvoraka.avservice.server.AvServer
 import dvoraka.avservice.server.configuration.ServerConfig
@@ -12,12 +12,12 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [ServerConfig.class])
-@ActiveProfiles(['core', 'check', 'server', 'jms', 'no-db'])
 @DirtiesContext
-class JmsServerConfigISpec extends Specification {
+@ActiveProfiles(['core', 'check', 'server', 'amqp', 'no-db'])
+class AmqpAvServerConfigISpec extends Specification {
 
     @Autowired
-    AvServer avServer
+    AvServer fileServer
 
 
     def "test"() {
