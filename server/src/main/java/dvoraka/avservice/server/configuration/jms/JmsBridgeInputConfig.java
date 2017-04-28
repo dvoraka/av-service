@@ -25,9 +25,9 @@ public class JmsBridgeInputConfig {
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
 
-    @Value("${avservice.jms.checkDestination:check}")
-    private String checkDestination;
-    @Value("${avservice.jms.resultDestination:result}")
+    @Value("${avservice.jms.fileDestination}")
+    private String fileDestination;
+    @Value("${avservice.jms.resultDestination}")
     private String resultDestination;
 
     @Value("${avservice.jms.receiveTimeout:2000}")
@@ -62,7 +62,7 @@ public class JmsBridgeInputConfig {
     ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(inActiveMQConnFactory);
-        container.setDestinationName(checkDestination);
+        container.setDestinationName(fileDestination);
         container.setMessageListener(inMessageListener);
 
         return container;

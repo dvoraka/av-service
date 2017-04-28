@@ -25,13 +25,13 @@ public class JmsBridgeOutputConfig {
     @Value("${avservice.jms.brokerUrl}")
     private String brokerUrl;
 
+    @Value("${avservice.jms.fileDestination}")
+    private String fileDestination;
+    @Value("${avservice.jms.resultDestination}")
+    private String resultDestination;
+
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
-
-    @Value("${avservice.jms.resultDestination:result}")
-    private String resultDestination;
-    @Value("${avservice.jms.checkDestination:check}")
-    private String checkDestination;
 
     @Value("${avservice.serviceId:default1}")
     private String serviceId;
@@ -72,7 +72,7 @@ public class JmsBridgeOutputConfig {
             JmsTemplate outJmsTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new JmsComponent(checkDestination, serviceId, outJmsTemplate, messageInfoService);
+        return new JmsComponent(fileDestination, serviceId, outJmsTemplate, messageInfoService);
     }
 
     @Bean

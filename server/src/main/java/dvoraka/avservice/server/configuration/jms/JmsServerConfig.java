@@ -28,10 +28,10 @@ public class JmsServerConfig {
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
 
-    @Value("${avservice.jms.resultDestination:result}")
+    @Value("${avservice.jms.fileDestination}")
+    private String fileDestination;
+    @Value("${avservice.jms.resultDestination}")
     private String resultDestination;
-    @Value("${avservice.jms.checkDestination:check}")
-    private String checkDestination;
 
     @Value("${avservice.serviceId:default1}")
     private String serviceId;
@@ -92,7 +92,7 @@ public class JmsServerConfig {
     ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(serverConnectionFactory);
-        container.setDestinationName(checkDestination);
+        container.setDestinationName(fileDestination);
         container.setMessageListener(fileServerMessageListener);
 
         return container;

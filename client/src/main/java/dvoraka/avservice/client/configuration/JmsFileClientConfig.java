@@ -20,10 +20,10 @@ import javax.jms.MessageListener;
 @Profile("jms")
 public class JmsFileClientConfig {
 
+    @Value("${avservice.jms.fileDestination}")
+    private String fileDestination;
     @Value("${avservice.jms.resultDestination}")
     private String resultDestination;
-    @Value("${avservice.jms.checkDestination}")
-    private String checkDestination;
 
     @Value("${avservice.serviceId}")
     private String serviceId;
@@ -34,7 +34,7 @@ public class JmsFileClientConfig {
             JmsTemplate jmsTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new JmsComponent(checkDestination, serviceId, jmsTemplate, messageInfoService);
+        return new JmsComponent(fileDestination, serviceId, jmsTemplate, messageInfoService);
     }
 
     @Bean
