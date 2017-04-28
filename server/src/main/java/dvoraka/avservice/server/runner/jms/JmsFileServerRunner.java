@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner.amqp;
+package dvoraka.avservice.server.runner.jms;
 
 import dvoraka.avservice.common.runner.AbstractServiceRunner;
 import dvoraka.avservice.common.runner.ServiceRunner;
@@ -9,21 +9,18 @@ import dvoraka.avservice.server.configuration.ServerConfig;
 import java.io.IOException;
 
 /**
- * Amqp file server with replication runner.
+ * JMS server runner.
  */
-public class AmqpFileServerReplicationRunner extends AbstractServiceRunner {
+public class JmsFileServerRunner extends AbstractServiceRunner {
 
     public static void main(String[] args) throws IOException {
-        ServiceRunner runner = new AmqpFileServerReplicationRunner();
+        ServiceRunner runner = new JmsFileServerRunner();
         runner.run();
     }
 
     @Override
     public String[] profiles() {
-        return new String[]{
-                "core", "server", "replication", "client",
-                "amqp", "storage", "db"
-        };
+        return new String[]{"core", "storage", "server", "jms", "db"};
     }
 
     @Override
