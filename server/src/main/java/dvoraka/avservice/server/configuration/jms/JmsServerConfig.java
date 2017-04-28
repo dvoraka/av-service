@@ -6,12 +6,10 @@ import dvoraka.avservice.client.jms.JmsComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
@@ -21,14 +19,12 @@ import javax.jms.ConnectionFactory;
 import javax.jms.MessageListener;
 
 /**
- * JMS server configuration for import.
+ * JMS server configuration for the import.
  */
 @Configuration
 @Profile("jms")
 public class JmsServerConfig {
 
-    @Value("${avservice.jms.brokerUrl}")
-    private String brokerUrl;
     @Value("${avservice.jms.receiveTimeout:2000}")
     private long receiveTimeout;
 
@@ -42,44 +38,30 @@ public class JmsServerConfig {
 
 
     @Bean
-    public AvServer avServer(
-            ServerComponent serverComponent,
-            MessageProcessor checkMessageProcessor,
+    public AvServer fileServer(
+            ServerComponent fileServerComponent,
+            MessageProcessor messageProcessor,
             MessageInfoService messageInfoService
     ) {
         return new BasicAvServer(
                 serviceId,
-                serverComponent,
-                checkMessageProcessor,
+                fileServerComponent,
+                messageProcessor,
                 messageInfoService
         );
     }
 
     @Bean
-    public ServerComponent serverComponent(
-            JmsTemplate jmsTemplate,
+    public ServerComponent fileServerComponent(
+            JmsTemplate fileServerJmsTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new JmsComponent(resultDestination, serviceId, jmsTemplate, messageInfoService);
+        return new JmsComponent(
+                resultDestination, serviceId, fileServerJmsTemplate, messageInfoService);
     }
 
     @Bean
-    public ActiveMQConnectionFactory serverActiveMQConnectionFactory() {
-        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
-        factory.setUseAsyncSend(true);
-
-        return factory;
-    }
-
-    @Bean
-    public ConnectionFactory serverConnectionFactory(
-            ConnectionFactory serverActiveMQConnectionFactory
-    ) {
-        return new CachingConnectionFactory(serverActiveMQConnectionFactory);
-    }
-
-    @Bean
-    public MessageConverter serverMessageConverter() {
+    public MessageConverter fileServerMessageConverter() {
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         messageConverter.setTypeIdPropertyName("typeId");
 
@@ -89,29 +71,29 @@ public class JmsServerConfig {
     @Bean
     public JmsTemplate fileServerJmsTemplate(
             ConnectionFactory serverConnectionFactory,
-            MessageConverter serverMessageConverter
+            MessageConverter fileServerMessageConverter
     ) {
         JmsTemplate template = new JmsTemplate(serverConnectionFactory);
         template.setReceiveTimeout(receiveTimeout);
-        template.setMessageConverter(serverMessageConverter);
+        template.setMessageConverter(fileServerMessageConverter);
 
         return template;
     }
 
     @Bean
-    public MessageListener messageListener(ServerComponent serverComponent) {
-        return serverComponent;
+    public MessageListener fileServerMessageListener(ServerComponent fileServerComponent) {
+        return fileServerComponent;
     }
 
     @Bean
-    public SimpleMessageListenerContainer messageListenerContainer(
-            ActiveMQConnectionFactory serverActiveMQConnectionFactory,
-            MessageListener messageListener
+    public SimpleMessageListenerContainer fileServerMessageListenerContainer(
+            ConnectionFactory serverConnectionFactory,
+            MessageListener fileServerMessageListener
     ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(serverActiveMQConnectionFactory);
+        container.setConnectionFactory(serverConnectionFactory);
         container.setDestinationName(checkDestination);
-        container.setMessageListener(messageListener);
+        container.setMessageListener(fileServerMessageListener);
 
         return container;
     }

@@ -84,19 +84,19 @@ public class AmqpServerConfig {
     }
 
     @Bean
-    public MessageListener fileMessageListener(ServerComponent fileServerComponent) {
+    public MessageListener fileServerMessageListener(ServerComponent fileServerComponent) {
         return fileServerComponent;
     }
 
     @Bean
     public MessageListenerContainer fileServerMessageListenerContainer(
             ConnectionFactory serverConnectionFactory,
-            MessageListener fileMessageListener
+            MessageListener fileServerMessageListener
     ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(serverConnectionFactory);
         container.setQueueNames(fileQueue);
-        container.setMessageListener(fileMessageListener);
+        container.setMessageListener(fileServerMessageListener);
 
         return container;
     }

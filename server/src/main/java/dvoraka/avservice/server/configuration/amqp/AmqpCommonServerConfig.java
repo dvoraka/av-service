@@ -5,11 +5,13 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
  * AMQP common server configuration.
  */
 @Configuration
+@Profile("amqp")
 public class AmqpCommonServerConfig {
 
     @Value("${avservice.amqp.host}")
