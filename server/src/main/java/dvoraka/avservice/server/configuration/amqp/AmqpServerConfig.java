@@ -9,7 +9,6 @@ import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import org.springframework.amqp.core.MessageListener;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
@@ -26,16 +25,6 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("amqp")
 public class AmqpServerConfig {
-
-    @Value("${avservice.amqp.host}")
-    private String host;
-    @Value("${avservice.amqp.vhost}")
-    private String virtualHost;
-
-    @Value("${avservice.amqp.user}")
-    private String userName;
-    @Value("${avservice.amqp.pass}")
-    private String userPassword;
 
     @Value("${avservice.amqp.fileQueue}")
     private String fileQueue;
@@ -73,40 +62,36 @@ public class AmqpServerConfig {
     }
 
     @Bean
-    public ConnectionFactory serverConnectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
-        connectionFactory.setUsername(userName);
-        connectionFactory.setPassword(userPassword);
-        connectionFactory.setVirtualHost(virtualHost);
-
-        return connectionFactory;
-    }
-
-    @Bean
     public AvMessageMapper fileServerMessageMapper() {
         return new AvMessageMapper();
     }
 
     @Bean
-    public MessageConverter serverMessageConverter(AvMessageMapper fileServerMessageMapper) {
+    public MessageConverter fileServerMessageConverter(AvMessageMapper fileServerMessageMapper) {
         return new AvMessageConverter(fileServerMessageMapper);
     }
 
     @Bean
     public RabbitTemplate fileServerRabbitTemplate(
             ConnectionFactory serverConnectionFactory,
-            MessageConverter serverMessageConverter
+            MessageConverter fileServerMessageConverter
     ) {
         RabbitTemplate template = new RabbitTemplate(serverConnectionFactory);
         template.setReceiveTimeout(listeningTimeout);
-        template.setMessageConverter(serverMessageConverter);
+        template.setMessageConverter(fileServerMessageConverter);
 
         return template;
     }
 
     @Bean
-    public MessageListenerContainer fileMessageListenerContainer(
-            ConnectionFactory serverConnectionFactory, MessageListener fileMessageListener
+    public MessageListener fileMessageListener(ServerComponent fileServerComponent) {
+        return fileServerComponent;
+    }
+
+    @Bean
+    public MessageListenerContainer fileServerMessageListenerContainer(
+            ConnectionFactory serverConnectionFactory,
+            MessageListener fileMessageListener
     ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(serverConnectionFactory);
@@ -114,10 +99,5 @@ public class AmqpServerConfig {
         container.setMessageListener(fileMessageListener);
 
         return container;
-    }
-
-    @Bean
-    public MessageListener fileMessageListener(ServerComponent fileServerComponent) {
-        return fileServerComponent;
     }
 }
