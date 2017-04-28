@@ -7,6 +7,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
@@ -20,6 +21,7 @@ import javax.jms.MessageListener;
  * JMS bridge output configuration for import.
  */
 @Configuration
+@Profile("to-jms")
 public class JmsBridgeOutputConfig {
 
     @Value("${avservice.jms.brokerUrl}")
@@ -82,11 +84,11 @@ public class JmsBridgeOutputConfig {
 
     @Bean
     public SimpleMessageListenerContainer outMessageListenerContainer(
-            ActiveMQConnectionFactory outActiveMQConnectionFactory,
+            ConnectionFactory outConnectionFactory,
             MessageListener outMessageListener
     ) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(outActiveMQConnectionFactory);
+        container.setConnectionFactory(outConnectionFactory);
         container.setDestinationName(resultDestination);
         container.setMessageListener(outMessageListener);
 

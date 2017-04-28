@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration.amqp;
+package dvoraka.avservice.server.configuration.jms;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;

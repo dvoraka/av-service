@@ -17,11 +17,13 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
  * AMQP bridge output configuration for import.
  */
 @Configuration
+@Profile("to-amqp")
 public class AmqpBridgeOutputConfig {
 
     @Value("${avservice.amqp.host:localhost}")
@@ -70,13 +72,13 @@ public class AmqpBridgeOutputConfig {
     }
 
     @Bean
-    public AvMessageMapper avMessageMapper() {
+    public AvMessageMapper outMessageMapper() {
         return new AvMessageMapper();
     }
 
     @Bean
-    public MessageConverter outMessageConverter(AvMessageMapper messageMapper) {
-        return new AvMessageConverter(messageMapper);
+    public MessageConverter outMessageConverter(AvMessageMapper outMessageMapper) {
+        return new AvMessageConverter(outMessageMapper);
     }
 
     @Bean

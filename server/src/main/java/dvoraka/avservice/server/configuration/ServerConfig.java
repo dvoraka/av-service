@@ -8,7 +8,7 @@ import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.configuration.amqp.AmqpCommonServerConfig;
 import dvoraka.avservice.server.configuration.amqp.AmqpServerConfig;
-import dvoraka.avservice.server.configuration.amqp.JmsCommonServerConfig;
+import dvoraka.avservice.server.configuration.jms.JmsCommonServerConfig;
 import dvoraka.avservice.server.configuration.jms.JmsServerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

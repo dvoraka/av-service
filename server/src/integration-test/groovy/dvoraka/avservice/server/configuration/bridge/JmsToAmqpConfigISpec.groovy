@@ -1,6 +1,7 @@
 package dvoraka.avservice.server.configuration.bridge
 
 import dvoraka.avservice.server.ServerComponentBridge
+import dvoraka.avservice.server.configuration.BridgeConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
@@ -10,9 +11,9 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [JmsToAmqpConfig.class])
+@ContextConfiguration(classes = [BridgeConfig.class])
 @DirtiesContext
-@ActiveProfiles(["jms2amqp", "no-db"])
+@ActiveProfiles(['bridge', 'jms', 'to-amqp', 'no-db'])
 class JmsToAmqpConfigISpec extends Specification {
 
     @Autowired
