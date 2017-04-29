@@ -39,6 +39,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private final FileService fileService;
     private final ReplicationServiceClient serviceClient;
     private final ReplicationResponseClient responseClient;
+    private final RemoteLock remoteLock;
     private final String nodeId;
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
@@ -49,7 +50,6 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private static final int REPLICATION_COUNT = 3;
 
     //    private BlockingQueue<ReplicationMessage> commands;
-    private RemoteLock remoteLock;
 
     private Set<String> neighbours;
     private int replicationCount;
@@ -61,16 +61,17 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             FileService fileService,
             ReplicationServiceClient replicationServiceClient,
             ReplicationResponseClient replicationResponseClient,
+            RemoteLock remoteLock,
             String nodeId
     ) {
         this.fileService = requireNonNull(fileService);
         this.serviceClient = requireNonNull(replicationServiceClient);
         this.responseClient = requireNonNull(replicationResponseClient);
+        this.remoteLock = requireNonNull(remoteLock);
         this.nodeId = requireNonNull(nodeId);
 
 //        final int size = 10;
 //        commands = new ArrayBlockingQueue<>(size);
-        remoteLock = new DefaultRemoteLock(serviceClient, responseClient, nodeId);
 
         neighbours = new CopyOnWriteArraySet<>();
         //TODO

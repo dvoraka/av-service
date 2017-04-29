@@ -25,6 +25,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
     FileService fileService
     ReplicationServiceClient serviceClient
     ReplicationResponseClient responseClient
+    RemoteLock remoteLock
     String nodeId = 'testId'
 
 
@@ -32,8 +33,15 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
         fileService = Mock()
         serviceClient = Mock()
         responseClient = Mock()
+        remoteLock = Mock()
 
-        service = new DefaultReplicationService(fileService, serviceClient, responseClient, nodeId)
+        service = new DefaultReplicationService(
+                fileService, serviceClient, responseClient, remoteLock, nodeId)
+        service.start()
+    }
+
+    def cleanup() {
+        service.stop()
     }
 
     def "save"() {
