@@ -102,9 +102,9 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             ReplicationStatus result = service.getStatus(message)
 
         then:
-            1 * serviceClient.sendMessage(_)
+            (1.._) * serviceClient.sendMessage(_)
 
-            1 * responseClient.getResponseWait(_, _) >> replicationList(response)
+            (1.._) * responseClient.getResponseWait(_, _) >> replicationList(response)
 
         and: "not enough replicas"
             result == ReplicationStatus.FAILED
