@@ -18,7 +18,7 @@ Currently it is still a bit experimental feature.
 Possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage),
 Linux admin for better deployment and distribution, Server for testing
 
---
+---
 
  * [Release notes](#release-notes)
  * [Features](#features)
@@ -32,7 +32,7 @@ Linux admin for better deployment and distribution, Server for testing
  * [Legacy checker](#old-checker)
  * [Load tests](#load-tests)
 
---
+---
 
 ### Release notes
 Release [NOTES](RELEASE_NOTES.md)
@@ -280,7 +280,7 @@ or
 Checking... failed!
 ```
 
---
+---
 
 ### Old checker
 You can find old checker under **legacy-checker** release.
