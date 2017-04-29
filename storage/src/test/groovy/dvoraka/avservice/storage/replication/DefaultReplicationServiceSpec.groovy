@@ -9,14 +9,12 @@ import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.storage.service.FileService
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
 /**
  * Default replication service spec.
  */
-@Ignore
 class DefaultReplicationServiceSpec extends Specification implements ReplicationHelper {
 
     @Subject
@@ -61,7 +59,6 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
                 return Optional.ofNullable(null)
             } >> {
                 ReplicationMessage response = createSaveSuccess(saveMessage, nodeId)
-
                 return replicationList(response)
             }
     }
@@ -77,14 +74,18 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
         given:
             String filename = 'testF'
             String owner = 'testO'
+            ReplicationMessage request = createExistsRequest(filename, owner, nodeId)
+            ReplicationMessage response = createExistsReply(request, nodeId)
 
         when:
-            service.exists(filename, owner)
+            boolean result = service.exists(filename, owner)
 
         then:
             1 * fileService.exists(filename, owner)
             1 * serviceClient.sendMessage(_)
 
-            1 * responseClient.getResponseWait(_, _) >> createExistsRequest(filename, owner, nodeId)
+            1 * responseClient.getResponseWait(_, _) >> replicationList(response)
+
+            result
     }
 }
