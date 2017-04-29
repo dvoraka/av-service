@@ -99,13 +99,13 @@ msg/s | 91 | 91 | 92 | 91 | 90
 ### AMQP results for the old load test
 
 #### Nov 13, 2016
-run | messages/second
---- | ---
-1. | 533
-2. | 549
-3. | 561
-4. | 546
-5. | 551
+| run | messages/second
+| --- | ---
+| 1. | 533
+| 2. | 549
+| 3. | 561
+| 4. | 546
+| 5. | 551
 
 ### AMQP load test results for the old service written in Python (retested February 20, 2016):
 
