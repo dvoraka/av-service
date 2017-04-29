@@ -20,7 +20,7 @@ public class AmqpLoadTestRunner extends AbstractAppRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"client", "checker", "amqp", "amqp-client", "no-db"};
+        return new String[]{"client", "checker", "amqp", "file-client", "no-db"};
     }
 
     @Override
