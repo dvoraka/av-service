@@ -45,6 +45,17 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
+    default ReplicationMessage createOkStatusReply(ReplicationMessage message, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.STATUS)
+                .replicationStatus(ReplicationStatus.OK)
+                .fromId(nodeId)
+                .toId(message.getFromId())
+                .build();
+    }
+
     default ReplicationMessage createDiscoverRequest(String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)

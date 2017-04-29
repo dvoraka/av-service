@@ -270,15 +270,21 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
         serviceClient.sendMessage(createStatusRequest(message.getFilename(), message.getOwner()));
 
-        ReplicationMessageList responses = responseClient.getResponse(message.getId());
-        if (responses.stream()
-                .filter(msg -> msg.getReplicationStatus().equals(ReplicationStatus.OK))
-                .count() >= getReplicationCount()) {
+        Optional<ReplicationMessageList> responses = responseClient.getResponseWait(
+                message.getId(), MAX_RESPONSE_TIME);
 
+        long resultCount = responses
+                .map(ReplicationMessageList::stream)
+                .map(stream -> stream
+                        .filter(msg -> msg.getReplicationStatus().equals(ReplicationStatus.OK))
+                        .count())
+                .orElse(0L);
+
+        if (resultCount >= getReplicationCount()) {
             return ReplicationStatus.OK;
+        } else {
+            return ReplicationStatus.FAILED;
         }
-
-        return ReplicationStatus.FAILED;
     }
 
     public int getReplicationCount() {

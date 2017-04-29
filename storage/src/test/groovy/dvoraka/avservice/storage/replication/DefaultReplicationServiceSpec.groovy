@@ -7,6 +7,7 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
+import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.storage.service.FileService
 import spock.lang.Specification
@@ -24,7 +25,8 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
     ReplicationServiceClient serviceClient
     ReplicationResponseClient responseClient
     RemoteLock remoteLock
-    String nodeId = 'testId'
+    String nodeId = 'testID'
+    String otherNodeId = 'otherID'
 
 
     def setup() {
@@ -75,17 +77,36 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             String filename = 'testF'
             String owner = 'testO'
             ReplicationMessage request = createExistsRequest(filename, owner, nodeId)
-            ReplicationMessage response = createExistsReply(request, nodeId)
+            ReplicationMessage response = createExistsReply(request, otherNodeId)
 
         when:
             boolean result = service.exists(filename, owner)
 
         then:
             1 * fileService.exists(filename, owner)
+            (1.._) * serviceClient.sendMessage(_)
+
+            (1.._) * responseClient.getResponseWait(_, _) >> replicationList(response)
+
+            result
+    }
+
+    def "get status"() {
+        given:
+            FileMessage message = Utils.genFileMessage()
+            ReplicationMessage request = createStatusRequest(
+                    message.getFilename(), message.getOwner())
+            ReplicationMessage response = createOkStatusReply(request, otherNodeId)
+
+        when:
+            ReplicationStatus result = service.getStatus(message)
+
+        then:
             1 * serviceClient.sendMessage(_)
 
             1 * responseClient.getResponseWait(_, _) >> replicationList(response)
 
-            result
+        and: "not enough replicas"
+            result == ReplicationStatus.FAILED
     }
 }
