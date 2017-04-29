@@ -17,6 +17,8 @@ import org.springframework.context.annotation.PropertySource;
 
 /**
  * Bridge main configuration.
+ *
+ * @see ServerConfig
  */
 @Configuration
 @PropertySource("classpath:avservice.properties")
