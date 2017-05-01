@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration
  * AMQP checker spec.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
-@ActiveProfiles(['client', 'amqp', 'file-client', 'checker', 'no-db'])
+@ActiveProfiles(['itest', 'client', 'amqp', 'file-client', 'checker', 'no-db'])
 @DirtiesContext
 class AmqpSimpleCheckerISpec extends SimpleCheckerISpec {
 
