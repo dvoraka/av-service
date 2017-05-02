@@ -1,10 +1,11 @@
 # Performance notes
 
-The old computer is broken so we will test on the new one: i5 4.0 Ghz (4 cores) and SSD.
+The old computer is broken so we will test on the new one: i5 4.0 Ghz (4 cores) and SSD. Socket pooling is default and logging level WARN.
 
-All test until Feb 17, 2017 ran on:
+All test until Feb 17, 2017 ran on the old one:
+
 Based on PC3 (NB, i3 2.40 GHz (2 cores), SSD) and everything runs on localhost. Setting is
-4 threads for the message processor.
+4 threads for the message processor. Logging level INFO.
 
 ## Servers
 
@@ -21,8 +22,6 @@ JMS load test run command: `./gradlew runJmsLoadTest`
 
 Old load test run command: `./gradlew loadTest`
 
-Log level: INFO
-
 DB logging: no
 
 ### Other scenarios
@@ -38,6 +37,14 @@ DB logging: no
 First run is for a warm-up and is not counted.
 
 ### AMQP
+
+#### May 2, 2017
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 926 | 907 | 897 | 888 | 913
+
+Socket pooling is default.
 
 #### Feb 17, 2017
 With experimental ClamAV socket pooling.
