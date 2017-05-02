@@ -1,5 +1,8 @@
 # Performance notes
 
+The old computer is broken so we will test on the new one: i5 4.0 Ghz (4 cores) and SSD.
+
+All test until Feb 17, 2017 ran on:
 Based on PC3 (NB, i3 2.40 GHz (2 cores), SSD) and everything runs on localhost. Setting is
 4 threads for the message processor.
 
