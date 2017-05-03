@@ -36,7 +36,8 @@ public class CoreConfig {
      * @return MBeanExporter with a different registration strategy
      */
     @Bean
-    @Profile("itest")
+    //TODO: temporary solution for runners with integration testing
+//    @Profile("itest")
     public MBeanExporter mBeanExporter() {
         MBeanExporter exporter = new MBeanExporter();
         exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
