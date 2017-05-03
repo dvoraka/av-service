@@ -221,13 +221,7 @@ public class DefaultRemoteLock implements
                     break;
 
                 case LOCK:
-                    if (getSequence() == message.getSequence()) {
-                        incSequence();
-                        lockFile(message.getFilename(), message.getOwner());
-                        serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
-                    } else {
-                        serviceClient.sendMessage(createLockFailReply(message, nodeId));
-                    }
+                    lock(message);
                     break;
 
                 case UNLOCK:
@@ -239,6 +233,16 @@ public class DefaultRemoteLock implements
                     log.debug("Unhandled broadcast command: {}", message.getCommand());
                     break;
             }
+        }
+    }
+
+    private void lock(ReplicationMessage message) {
+        if (getSequence() == message.getSequence()) {
+            incSequence();
+            lockFile(message.getFilename(), message.getOwner());
+            serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
+        } else {
+            serviceClient.sendMessage(createLockFailReply(message, nodeId));
         }
     }
 }
