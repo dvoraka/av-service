@@ -1,18 +1,19 @@
-package dvoraka.avservice.user.service
+package dvoraka.avservice.user.configuration
 
-import dvoraka.avservice.user.configuration.UserConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.ldap.core.LdapTemplate
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 /**
- * LDAP service spec.
+ * Configuration test.
  */
 @ContextConfiguration(classes = [UserConfig.class])
-@ActiveProfiles('ldap')
-class LdapUserServiceISpec extends Specification {
+@ActiveProfiles(['ldap'])
+@DirtiesContext
+class LdapUserConfigISpec extends Specification {
 
     @Autowired
     LdapTemplate ldapTemplate
