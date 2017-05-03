@@ -105,7 +105,8 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createLockFailReply(ReplicationMessage message, String nodeId) {
+    default ReplicationMessage createLockFailReply(
+            ReplicationMessage message, long sequence, String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .correlationId(message.getId())
                 .type(MessageType.REPLICATION_SERVICE)
@@ -114,7 +115,7 @@ public interface ReplicationServiceHelper {
                 .replicationStatus(ReplicationStatus.FAILED)
                 .fromId(nodeId)
                 .toId(message.getFromId())
-                .sequence(message.getSequence())
+                .sequence(sequence)
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();

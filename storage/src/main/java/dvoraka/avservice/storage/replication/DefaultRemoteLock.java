@@ -242,7 +242,7 @@ public class DefaultRemoteLock implements
             lockFile(message.getFilename(), message.getOwner());
             serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
         } else {
-            serviceClient.sendMessage(createLockFailReply(message, nodeId));
+            serviceClient.sendMessage(createLockFailReply(message, getSequence(), nodeId));
         }
     }
 }

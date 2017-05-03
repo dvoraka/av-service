@@ -112,7 +112,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
         given:
             String file = 'replTestFile'
             String owner = 'replTestOwner'
-            ReplicationMessage request = createLockRequest(file, owner, nodeId, 99)
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, 0)
 
         when:
             client.sendMessage(request)
@@ -128,6 +128,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getType() == MessageType.REPLICATION_SERVICE
             response.getCommand() == Command.LOCK
             response.getRouting() == MessageRouting.UNICAST
+            response.getReplicationStatus() == ReplicationStatus.READY
             response.getFromId()
             response.getToId() == nodeId
             response.getSequence() == request.getSequence()
@@ -157,7 +158,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             sequenceResponse.getRouting() == MessageRouting.UNICAST
             sequenceResponse.getFromId()
             sequenceResponse.getToId() == nodeId
-            sequenceResponse.getSequence() == 0
+            sequenceResponse.getSequence()
 
         when: "try to lock file"
             sequence = sequenceResponse.getSequence()
@@ -210,7 +211,7 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getReplicationStatus() == ReplicationStatus.FAILED
             response.getFromId()
             response.getToId() == nodeId
-            response.getSequence() == request.getSequence()
+            response.getSequence()
     }
 
     def "lock and unlock file"() {
