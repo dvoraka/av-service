@@ -133,13 +133,11 @@ public class DefaultReplicationResponseClient implements
     public Optional<ReplicationMessageList> getResponseWait(String id, long waitTime, int size) {
         final long start = System.currentTimeMillis();
 
-        ReplicationMessageList result;
-        while (true) {
-            result = checkGetResponse(id, waitTime);
+        ReplicationMessageList result = null;
+        while (result == null
+                || result.stream().count() != size) {
 
-            if (result != null && result.stream().count() == size) {
-                break;
-            }
+            result = checkGetResponse(id, waitTime);
 
             if (!sleep(start, waitTime)) {
                 break;
