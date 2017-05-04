@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jmx.export.MBeanExporter;
-import org.springframework.jmx.support.RegistrationPolicy;
 
 /**
  * Client module main configuration.
@@ -34,20 +32,6 @@ public class ClientConfig {
     @Value("${avservice.perf.maxRate}")
     private long maxRate;
 
-
-    /**
-     * Special MBeanExporter bean for integration tests.
-     *
-     * @return MBeanExporter with a different registration strategy
-     */
-    @Bean
-    //TODO: temporary solution for runners with integration testing
-    public MBeanExporter mBeanExporter() {
-        MBeanExporter exporter = new MBeanExporter();
-        exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
-
-        return exporter;
-    }
 
     @Bean
     public PerformanceTestProperties testProperties() {

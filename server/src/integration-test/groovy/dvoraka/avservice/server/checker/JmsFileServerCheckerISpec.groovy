@@ -18,6 +18,6 @@ class JmsFileServerCheckerISpec extends SimpleCheckerISpec {
         JmsFileServerRunner.setTestRun(false)
         runner = new JmsFileServerRunner()
         runner.runAsync()
-        sleep(2000) // wait for server
+        sleep(2_000) // wait for server
     }
 }
