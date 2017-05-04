@@ -1,19 +1,20 @@
 package dvoraka.avservice.user.service
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * LDAP user service spec.
+ * Service spec.
  */
-class LdapUserServiceSpec extends Specification {
+class DummyUserServiceSpec extends Specification {
 
     @Subject
-    LdapUserService service
+    DummyUserService service
 
 
     def setup() {
-        service = new LdapUserService()
+        service = new DummyUserService()
     }
 
     def "use service"() {
@@ -21,6 +22,6 @@ class LdapUserServiceSpec extends Specification {
             service.loadUserByUsername('some username')
 
         then:
-            notThrown(Exception)
+            thrown(UsernameNotFoundException)
     }
 }
