@@ -1,11 +1,16 @@
 package dvoraka.avservice.common.data
 
 import spock.lang.Specification
+import spock.lang.Subject
 
 /**
  * Message spec.
  */
 class DefaultReplicationMessageSpec extends Specification {
+
+    @Subject
+    ReplicationMessage message
+
 
     def "build message"() {
         given:
@@ -19,9 +24,12 @@ class DefaultReplicationMessageSpec extends Specification {
             String testFromId = 'testFromId'
             String testToId = 'testToId'
             long testSequence = 999L
+            MessageRouting testRouting = MessageRouting.BROADCAST
+            ReplicationStatus testStatus = ReplicationStatus.READY
+            Command testCommand = Command.DISCOVER
 
         when:
-            ReplicationMessage message = new DefaultReplicationMessage.Builder(null)
+            message = new DefaultReplicationMessage.Builder(null)
                     .correlationId(testCorrId)
                     .type(testType)
 
@@ -32,6 +40,9 @@ class DefaultReplicationMessageSpec extends Specification {
                     .fromId(testFromId)
                     .toId(testToId)
                     .sequence(testSequence)
+                    .routing(testRouting)
+                    .replicationStatus(testStatus)
+                    .command(testCommand)
                     .build()
 
         then:
@@ -46,5 +57,29 @@ class DefaultReplicationMessageSpec extends Specification {
             message.getFromId() == testFromId
             message.getToId() == testToId
             message.getSequence() == testSequence
+            message.getRouting() == testRouting
+            message.getReplicationStatus() == testStatus
+            message.getCommand() == testCommand
+    }
+
+    def "build with ID"() {
+        given:
+            String testId = 'testID'
+
+        when:
+            message = new DefaultReplicationMessage.Builder(testId)
+                    .build()
+
+        then:
+            message.getId() == testId
+    }
+
+    def "to string"() {
+        when:
+            message = new DefaultReplicationMessage.Builder(null)
+                    .build()
+
+        then:
+            message.toString().endsWith('}')
     }
 }
