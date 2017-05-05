@@ -9,6 +9,7 @@ import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.replication.ReplicationHelper
+import dvoraka.avservice.storage.FileServiceException
 import dvoraka.avservice.storage.service.FileService
 import spock.lang.Specification
 import spock.lang.Subject
@@ -108,5 +109,31 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
 
         and: "not enough replicas"
             result == ReplicationStatus.FAILED
+    }
+
+    def "on message - save"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage saveRequest = createSaveMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            service.onMessage(saveRequest)
+
+        then:
+            1 * fileService.saveFile(saveRequest)
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message - failed save"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage saveRequest = createSaveMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            service.onMessage(saveRequest)
+
+        then:
+            1 * fileService.saveFile(saveRequest) >> { throw new FileServiceException() }
+            1 * serviceClient.sendMessage(_)
     }
 }
