@@ -1,3 +1,17 @@
+## v0.6-RC1 (May 5, 2017)
+ * Improved configuration for AV program
+ * Updated message mapper for file service messages
+ * Separated client module from server module
+ * Implemented remote file service
+ * Prepared replication prototype
+ * Redesigned configuration
+ * New max speed settings for performance test
+ * Improved socket pool
+ 
+#### modules
+ * New user module
+ * New client module
+
 ## v0.5.1 (Apr 18, 2017)
  * Library versions updated
 
