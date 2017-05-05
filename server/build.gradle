@@ -32,6 +32,15 @@ task runAmqpFileServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task runAmqpFileServerWithReplication(type: JavaExec) {
+    description = 'Run AMQP file server with replication'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.server.runner.amqp.AmqpFileServerReplicationRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 task runAmqpReplicationService(type: JavaExec) {
     description = 'Run AMQP replication service'
     group = "${taskGroupName}"
