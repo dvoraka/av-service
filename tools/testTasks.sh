@@ -7,7 +7,10 @@ TASKS="
     configureEnvironment
     runAmqpCheck
     runAmqpServer
+    #runAmqpFileServer
+    #runAmqpFileServerWithReplication
     runAmqpToJmsBridge
+    runAmqpReplicationService
     runCustomServer
     runJmsCheck
     runJmsServer
@@ -20,6 +23,11 @@ cd ${SRC_ROOT}
 
 for task in ${TASKS}
 do
+    if [[ ${task:0:1} == '#' ]]
+    then
+        continue
+    fi
+
     echo -n "Checking ${task}... "
     echo | ./gradlew -q ${task} > /dev/null 2>&1
     if [ $? != 0 ]
