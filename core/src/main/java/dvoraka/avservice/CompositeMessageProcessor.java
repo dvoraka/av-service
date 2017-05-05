@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -81,6 +83,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
         return statusStorage.getStatus(id);
     }
 
+    @PostConstruct
     @Override
     public void start() {
         processors.forEach(
@@ -88,6 +91,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
                         .addProcessedAVMessageListener(this));
     }
 
+    @PreDestroy
     @Override
     public void stop() {
         processors.forEach(

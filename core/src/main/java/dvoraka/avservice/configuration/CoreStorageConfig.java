@@ -95,8 +95,6 @@ public class CoreStorageConfig {
         processor.addProcessor(fileSaveUpdateConfig);
         processor.addProcessor(fileLoadDeleteConfig);
 
-        processor.start();
-
         return processor;
     }
 }

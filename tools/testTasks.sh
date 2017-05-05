@@ -7,8 +7,8 @@ TASKS="
     configureEnvironment
     runAmqpCheck
     runAmqpServer
-    #runAmqpFileServer
-    #runAmqpFileServerWithReplication
+    runAmqpFileServer
+    runAmqpFileServerWithReplication
     runAmqpToJmsBridge
     runAmqpReplicationService
     runCustomServer

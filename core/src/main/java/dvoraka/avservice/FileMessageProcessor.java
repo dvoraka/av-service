@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
@@ -130,11 +132,13 @@ public class FileMessageProcessor implements MessageProcessor {
         return statusStorage.getStatus(id);
     }
 
+    @PostConstruct
     @Override
     public void start() {
         // do nothing for now
     }
 
+    @PreDestroy
     @Override
     public void stop() {
         statusStorage.stop();

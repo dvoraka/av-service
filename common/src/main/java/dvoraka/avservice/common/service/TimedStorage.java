@@ -96,8 +96,15 @@ public class TimedStorage<T> implements ExecutorServiceHelper {
 
     @PreDestroy
     public void stop() {
+        if (!running) {
+            return;
+        }
+
+        log.info("Stopping storage...");
+
         running = false;
         final long timeout = 5;
         shutdownAndAwaitTermination(executorService, timeout, log);
+        log.info("Storage stopped.");
     }
 }
