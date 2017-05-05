@@ -47,22 +47,22 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
     def "save"() {
         given:
             FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
-            ReplicationMessage saveMessage = createSaveMessage(message, nodeId, null)
+
+            remoteLock.start()
 
         when:
             service.saveFile(message)
 
         then:
-            (1.._) * fileService.exists(message.getFilename(), message.getOwner()) >> false
+            2 * fileService.exists(message.getFilename(), message.getOwner()) >> false
+            2 * serviceClient.sendMessage(_)
 
-            (1.._) * serviceClient.sendMessage(_)
-
-            (1.._) * responseClient.getResponseWait(_, _) >> {
+            2 * responseClient.getResponseWait(_, _) >> {
                 return Optional.ofNullable(null)
-            } >> {
-                ReplicationMessage response = createSaveSuccess(saveMessage, nodeId)
-                return replicationList(response)
             }
+
+            1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), 0) >> true
+            1 * remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0)
     }
 
     Optional<ReplicationMessageList> replicationList(ReplicationMessage message) {
