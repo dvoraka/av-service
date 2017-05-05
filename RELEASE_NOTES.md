@@ -3,13 +3,16 @@
  * Updated message mapper for file service messages
  * Separated client module from server module
  * Implemented remote file service
- * Prepared replication prototype
- * Redesigned configuration
- * New max speed settings for performance test
+ * Prepared file service replication prototype
+ * Redesigned server configuration
+ * Redesigned client configuration
+ * New max speed settings for performance testing
  * Improved socket pool and set as default
  * Improved file service
  * New file server with replication runner
  * Redesigned AMQP queues
+ * New user service
+ * Improved technical debt
  
 #### modules
  * New user module
