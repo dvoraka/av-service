@@ -38,7 +38,6 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
 
         service = new DefaultReplicationService(
                 fileService, serviceClient, responseClient, remoteLock, nodeId)
-        service.start()
     }
 
     def cleanup() {
@@ -85,9 +84,9 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
 
         then:
             1 * fileService.exists(filename, owner)
-            (1.._) * serviceClient.sendMessage(_)
+            1 * serviceClient.sendMessage(_)
 
-            (1.._) * responseClient.getResponseWait(_, _) >> replicationList(response)
+            1 * responseClient.getResponseWait(_, _) >> replicationList(response)
 
             result
     }
@@ -103,12 +102,51 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             ReplicationStatus result = service.getStatus(message)
 
         then:
-            (1.._) * serviceClient.sendMessage(_)
+            1 * serviceClient.sendMessage(_)
 
-            (1.._) * responseClient.getResponseWait(_, _) >> replicationList(response)
+            1 * responseClient.getResponseWait(_, _) >> replicationList(response)
 
         and: "not enough replicas"
             result == ReplicationStatus.FAILED
+    }
+
+    def "on message - discover"() {
+        given:
+            ReplicationMessage discoverRequest = createDiscoverRequest(nodeId)
+
+        when:
+            service.onMessage(discoverRequest)
+
+        then:
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message - exists"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage existsRequest =
+                    createExistsRequest(fileMessage.getFilename(), fileMessage.getOwner(), nodeId)
+
+        when:
+            service.onMessage(existsRequest)
+
+        then:
+            1 * fileService.exists(existsRequest) >> true
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message - exists failed"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage existsRequest =
+                    createExistsRequest(fileMessage.getFilename(), fileMessage.getOwner(), nodeId)
+
+        when:
+            service.onMessage(existsRequest)
+
+        then:
+            1 * fileService.exists(existsRequest) >> false
+            0 * serviceClient._
     }
 
     def "on message - save"() {
@@ -124,7 +162,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             1 * serviceClient.sendMessage(_)
     }
 
-    def "on message - failed save"() {
+    def "on message - save failed"() {
         given:
             FileMessage fileMessage = Utils.genFileMessage()
             ReplicationMessage saveRequest = createSaveMessage(fileMessage, nodeId, otherNodeId)
