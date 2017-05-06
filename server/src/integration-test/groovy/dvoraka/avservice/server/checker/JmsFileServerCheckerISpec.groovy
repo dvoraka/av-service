@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration
  * JMS file server checker spec.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
-@ActiveProfiles(['itest', 'client', 'jms', 'file-client', 'checker', 'no-db'])
+@ActiveProfiles(['client', 'jms', 'file-client', 'checker', 'no-db'])
 @DirtiesContext
 class JmsFileServerCheckerISpec extends SimpleCheckerISpec {
 
