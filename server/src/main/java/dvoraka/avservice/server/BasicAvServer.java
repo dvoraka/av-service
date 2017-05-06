@@ -30,9 +30,9 @@ public class BasicAvServer implements AvServer {
     private final String serviceId;
     private final ProcessedAvMessageListener processedAvMessageListener;
 
-    private boolean started;
-    private boolean stopped = true;
-    private boolean running;
+    private volatile boolean started;
+    private volatile boolean stopped = true;
+    private volatile boolean running;
 
 
     @Autowired
