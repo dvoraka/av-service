@@ -104,19 +104,26 @@ client | enable client infrastructure | 0.7 |
 core | core functionality
 db | use SQL DB for message logging
 db-solr | use Solr for message logging
+file-client | enable file client | 0.7 |
 jms | enable JMS infrastructure
-jms2amqp | bridging JMS to AMQP
-jms-checker | JMS checker
-jms-rest | JMS infrastructure for REST | 0.5
-jms-server | JMS server
+jms2amqp | bridging JMS to AMQP | | 0.6
+jms-checker | JMS checker | | 0.6
+jms-rest | JMS infrastructure for REST | 0.5 | 0.6
+jms-server | JMS server | | 0.6
+ldap | enable LDAP infrastructure | 0.7 |
 no-db | disable message logging
+replication | enable replication infrastructure | 0.7 |
+replication-test | enable replication testing infrastructure | 0.7 |
 rest | enable REST
 rest-amqp | REST to AMQP | 0.5
 rest-jms | REST to JMS | 0.5
 rest-local | REST with direct connection | 0.5
+server | enable server infrastructure | 0.7 |
 stats | enable statistics | 0.5
 stats-solr | statistics in Solr | 0.5
 storage | enable file service | 0.6
+to-amqp | bridging to AMQP | 0.7 |
+to-jms | bridging to JMS | 0.7 |
 
 Here will be the best combinations for various usages soon.
 
