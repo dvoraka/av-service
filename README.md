@@ -1,4 +1,4 @@
-# Network anti-virus service
+# Network file service with anti-virus checking
 [![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
 [![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service/branch/master)
 [![Latest release](https://img.shields.io/badge/release-0.6-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.6)
@@ -48,8 +48,9 @@ Release [NOTES](RELEASE_NOTES.md)
  * Robust design
  
 ### Planned features
+ * Replication for file service (prototype is prepared)
  * Separate REST app for better scaling and load balancer
- * AMQP 1.0
+ * AMQP 1.0 support
 
 ### Used components
  * **ClamAV** - open source anti-virus engine
@@ -138,8 +139,8 @@ you need only:
     public static void main(String[] args) {
     
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles("amqp", "amqp-checker", "no-db");
-        context.register(AmqpConfig.class);
+        context.getEnvironment().setActiveProfiles("client", "amqp", "file-client", "checker", "no-db");
+        context.register(ClientConfig.class);
         context.refresh();
 
         Checker checker = context.getBean(Checker.class);
@@ -153,7 +154,8 @@ you need only:
 ```
 
 ### Installation
-You can use Docker to prepare necessary services for development.
+You can use Docker to prepare necessary services for development. Docker configurations are a good documentation for
+installing services without Docker.
 
 #### Docker
 Docker is recommended approach.
@@ -193,47 +195,29 @@ $ ./gradlew configureEnvironment
 ```
 And everything should be prepared for application running.
 
-### Manual installation (currently not recommended and updated)
-#### ClamAV
-#### Debian
-```
-# apt-get install clamav-daemon
-```
-Official [installation](http://www.clamav.net/documents/installing-clamav) for other systems.
-
-##### Configuration
-For Jessie it is better to use `dpkg-reconfigure clamav-daemon` and enable TCP socket there because of systemd integration. Don't use names (e.g., **localhost**) as the address.
-
-OR
-
-Manually change the configuration file `/etc/clamav/clamd.conf`:
-```
-TCPSocket 3310
-TCPAddr 127.0.0.1
-```
-This is for enabling TCP socket on a default port and localhost.
-
-#### RabbitMQ
-#### Debian
-```
-# apt-get install rabbitmq-server
-```
-##### Configuration
-You can use the script `tools/prepareRMQ.sh` to create the basic configuration. It creates a new virtual host called **antivirus** and adds permissions for **guest** user.
-
 ### Run service
 You can run all services easily with Gradle.
 
 #### AMQP
+Anti-virus checking server:
 ```
 $ ./gradlew runAmqpServer
 ```
+File server with anti-virus checking:
+```
+$ ./gradlew runAmqpFileServer
+```
 #### JMS
+Anti-virus checking server:
 ```
 $ ./gradlew runJmsServer
 ```
+File server with anti-virus checking:
+```
+$ ./gradlew runJmsFileServer
+```
 #### REST
-It is now a Spring Boot application. You can run it with Gradle or use an executable jar.
+It is a Spring Boot application. You can run it with Gradle or use an executable jar.
 
 **Gradle**
 ```
@@ -248,7 +232,7 @@ $ ./gradlew assemble
 And then the the jar is in `rest/build/libs/` directory called **avservice-rest-XXX.jar**.
 You can run it with:
 ```
-$ java -jar avservice-rest-0.5.jar 
+$ java -jar avservice-rest-0.7.jar 
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -256,7 +240,7 @@ $ java -jar avservice-rest-0.5.jar
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::            (v1.5.0.RC1)
+ :: Spring Boot ::            (v1.5.3.RELEASE)
 ```
 
 ### AMQP checker
