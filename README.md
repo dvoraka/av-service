@@ -89,14 +89,18 @@ Release [NOTES](RELEASE_NOTES.md)
 Application is configurable and it's possible to run many configurations. Here is a list
 with all profiles and descriptions.
 
-profile | description | from version
----|---|---
-amqp | enable AMQP infrastructure
-amqp2jms | bridging AMQP to JMS
-amqp-checker | AMQP checker
-amqp-file-server | AMQP file server | 0.6
-amqp-rest | AMQP infrastructure for REST | 0.5
-amqp-server | AMQP server
+profile | description | from version | to version
+---|---|---|---
+amqp | enable AMQP infrastructure | |
+amqp2jms | bridging AMQP to JMS | | 0.6
+amqp-checker | AMQP checker | | 0.6
+amqp-file-server | AMQP file server | 0.6 | 0.6
+amqp-rest | AMQP infrastructure for REST | 0.5 | 0.6
+amqp-server | AMQP server | | 0.6
+bridge | enable bridge | 0.7 |
+check | enable AV checking | 0.7 |
+checker | enable checker | 0.7 |
+client | enable client infrastructure | 0.7 |
 core | core functionality
 db | use SQL DB for message logging
 db-solr | use Solr for message logging
