@@ -25,6 +25,12 @@ public abstract class AbstractAppRunner implements AppRunner {
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles(profiles());
+
+        // improve Spring context with itest profile if system property exists
+        if (System.getProperty("itest") != null) {
+            context.getEnvironment().addActiveProfile("itest");
+        }
+
         context.register(configClasses());
         context.refresh();
 
