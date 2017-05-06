@@ -106,6 +106,7 @@ core | core functionality
 db | use SQL DB for message logging
 db-solr | use Solr for message logging
 file-client | enable file client | 0.7 |
+itest | profile for integration testing | 0.7 |
 jms | enable JMS infrastructure
 jms2amqp | bridging JMS to AMQP | | 0.6
 jms-checker | JMS checker | | 0.6
