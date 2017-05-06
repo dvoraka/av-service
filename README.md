@@ -16,7 +16,7 @@ Currently it is still a bit experimental feature.
 
 ### Contribution
 Possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage),
-Linux admin for better deployment and distribution, Server for testing
+Linux admin for better deployment and distribution, Wiki mage, Server for testing
 
 ---
 

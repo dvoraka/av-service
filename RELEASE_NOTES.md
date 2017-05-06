@@ -1,4 +1,4 @@
-## v0.7-RC1 (May 5, 2017)
+## v0.7-RC1 (May 6, 2017)
  * Improved configuration for AV program
  * Updated message mapper for file service messages
  * Separated client module from server module
