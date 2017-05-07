@@ -14,7 +14,8 @@ import dvoraka.avservice.common.data.ReplicationStatus;
 public interface ReplicationHelper extends ReplicationServiceHelper {
 
     default ReplicationMessage createSaveMessage(
-            FileMessage message, String nodeId, String neighbourId) {
+            FileMessage message, String nodeId, String neighbourId
+    ) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
@@ -57,23 +58,30 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createLoadMessage(FileMessage message, String neighbourId) {
+    default ReplicationMessage createLoadMessage(
+            FileMessage message, String nodeId, String neighbourId
+    ) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.LOAD)
                 .toId(neighbourId)
+                .fromId(nodeId)
+                .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();
     }
 
-    default ReplicationMessage createUpdateMessage(FileMessage message, String neighbourId) {
+    default ReplicationMessage createUpdateMessage(
+            FileMessage message, String nodeId, String neighbourId
+    ) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.UPDATE)
                 .toId(neighbourId)
+                .fromId(nodeId)
                 .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
@@ -81,7 +89,8 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     }
 
     default ReplicationMessage createDeleteMessage(
-            FileMessage message, String nodeId, String neighbourId) {
+            FileMessage message, String nodeId, String neighbourId
+    ) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)

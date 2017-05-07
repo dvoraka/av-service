@@ -173,7 +173,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         }
 
         if (exists(message)) {
-            serviceClient.sendMessage(createLoadMessage(message, "neighbour"));
+            serviceClient.sendMessage(createLoadMessage(message, nodeId, "neighbour"));
 
             Optional<ReplicationMessageList> replicationMessages = responseClient
                     .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
@@ -200,7 +200,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             fileService.updateFile(message);
         }
 
-        serviceClient.sendMessage(createUpdateMessage(message, "neighbour"));
+        serviceClient.sendMessage(createUpdateMessage(message, nodeId, "neighbour"));
 
 //        ReplicationMessageList replicationMessages = responseClient.getResponseWait(
 //                message.getId(), MAX_RESPONSE_TIME);

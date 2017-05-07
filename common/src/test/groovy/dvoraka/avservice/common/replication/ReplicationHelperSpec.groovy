@@ -6,6 +6,7 @@ import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
+import dvoraka.avservice.common.data.ReplicationStatus
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
@@ -38,16 +39,54 @@ class ReplicationHelperSpec extends Specification {
 
         then:
             checkBasics(result)
-            result.with {
-                getRouting() == MessageRouting.UNICAST
-                getCommand() == Command.SAVE
-                getToId() == otherId
-            }
+            result.getCommand() == Command.SAVE
+    }
+
+    def "save success"() {
+        when:
+            result = helper.createSaveSuccess(
+                    helper.createSaveMessage(fileMessage, otherId, testId), testId)
+
+        then:
+            checkBasics(result)
+            result.getCommand() == Command.SAVE
+            result.getReplicationStatus() == ReplicationStatus.OK
+    }
+
+    def "save failed"() {
+        when:
+            result = helper.createSaveFailed(
+                    helper.createSaveMessage(fileMessage, otherId, testId), testId)
+
+        then:
+            checkBasics(result)
+            result.getCommand() == Command.SAVE
+            result.getReplicationStatus() == ReplicationStatus.FAILED
+    }
+
+    def "load message"() {
+        when:
+            result = helper.createLoadMessage(fileMessage, testId, otherId)
+
+        then:
+            checkBasics(result)
+            result.getCommand() == Command.LOAD
+    }
+
+    def "update message"() {
+        when:
+            result = helper.createUpdateMessage(fileMessage, testId, otherId)
+
+        then:
+            checkBasics(result)
+            result.getCommand() == Command.UPDATE
     }
 
     void checkBasics(ReplicationMessage message) {
         assert message.getType() == MessageType.REPLICATION_COMMAND
+        assert message.getRouting() == MessageRouting.UNICAST
         assert message.getFromId() == testId
+        assert message.getToId() == otherId
         assert Arrays.equals(message.getData(), fileMessage.getData())
         assert message.getFilename() == fileMessage.getFilename()
         assert message.getOwner() == fileMessage.getOwner()
