@@ -16,15 +16,19 @@ public interface ExecutorServiceHelper {
             Logger logger
     ) {
         logger.info("Stopping executor service...");
+        final String okMessage = "Executor service stopping done.";
+
         executorService.shutdown();
         try {
             if (!executorService.awaitTermination(waitSeconds, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
                 if (!executorService.awaitTermination(waitSeconds, TimeUnit.SECONDS)) {
                     logger.warn("Thread pool termination problem!");
+                } else {
+                    logger.info(okMessage);
                 }
             } else {
-                logger.debug("Thread pool stopping done.");
+                logger.info(okMessage);
             }
         } catch (InterruptedException e) {
             logger.warn("Stopping interrupted!", e);
