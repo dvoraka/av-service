@@ -229,7 +229,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     }
 
     private void sendDeleteMessage(FileMessage message) {
-        serviceClient.sendMessage(createDeleteBroadcast(message, nodeId));
+        //TODO
     }
 
     private boolean lockFile(FileMessage message) {

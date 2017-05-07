@@ -82,6 +82,15 @@ class ReplicationHelperSpec extends Specification {
             result.getCommand() == Command.UPDATE
     }
 
+    def "delete message"() {
+        when:
+            result = helper.createDeleteMessage(fileMessage, testId, otherId)
+
+        then:
+            checkBasics(result)
+            result.getCommand() == Command.DELETE
+    }
+
     void checkBasics(ReplicationMessage message) {
         assert message.getType() == MessageType.REPLICATION_COMMAND
         assert message.getRouting() == MessageRouting.UNICAST

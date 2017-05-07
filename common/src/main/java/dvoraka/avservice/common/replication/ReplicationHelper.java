@@ -97,17 +97,7 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .command(Command.DELETE)
                 .toId(neighbourId)
                 .fromId(nodeId)
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
-    }
-
-    default ReplicationMessage createDeleteBroadcast(FileMessage message, String nodeId) {
-        return new DefaultReplicationMessage.Builder(null)
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.BROADCAST)
-                .command(Command.DELETE)
-                .fromId(nodeId)
+                .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();
