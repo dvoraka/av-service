@@ -10,6 +10,7 @@ import dvoraka.avservice.common.data.ReplicationStatus;
 /**
  * Replication helper for service commands.
  */
+//TODO: refactoring
 public interface ReplicationServiceHelper {
 
     default ReplicationMessage createExistsRequest(String filename, String owner, String nodeId) {

@@ -76,6 +76,16 @@ class ReplicationServiceHelperSpec extends Specification {
             result.getSequence() == testSequence
     }
 
+    def "unlock request"() {
+        when:
+            result = helper.createUnlockRequest(testFilename, testOwner, testId, testSequence)
+
+        then:
+            checkRequestBase(result)
+            result.getCommand() == Command.UNLOCK
+            result.getSequence() == testSequence
+    }
+
     def "sequence request"() {
         when:
             result = helper.createSequenceRequest(testId)
