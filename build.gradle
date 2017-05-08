@@ -172,10 +172,10 @@ allprojects {
     }
 
     test {
-        maxParallelForks = 1
+        maxParallelForks = 2
 
-        minHeapSize = '128m'
-        maxHeapSize = '128m'
+        minHeapSize = '256m'
+        maxHeapSize = '256m'
 
         testLogging {
             exceptionFormat = 'full'
