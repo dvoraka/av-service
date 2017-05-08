@@ -11,6 +11,7 @@ import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.storage.FileServiceException
 import dvoraka.avservice.storage.service.FileService
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -26,7 +27,10 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
     ReplicationServiceClient serviceClient
     ReplicationResponseClient responseClient
     RemoteLock remoteLock
+
+    @Shared
     String nodeId = 'testID'
+    @Shared
     String otherNodeId = 'otherID'
 
 

@@ -11,6 +11,7 @@ import dvoraka.avservice.common.data.ReplicationStatus;
 /**
  * Replication helper interface.
  */
+//TODO: refactoring
 public interface ReplicationHelper extends ReplicationServiceHelper {
 
     default ReplicationMessage createSaveMessage(

@@ -5,6 +5,7 @@ import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.replication.ReplicationHelper
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -18,16 +19,18 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
     ReplicationServiceClient serviceClient
     ReplicationResponseClient responseClient
-    String nodeId
 
+    @Shared
+    String nodeId = 'testNode'
+    @Shared
     String testFilename = 'testFilename'
+    @Shared
     String testOwner = 'testOwner'
 
 
     def setup() {
         serviceClient = Mock()
         responseClient = Mock()
-        nodeId = 'testNode'
 
         lock = new DefaultRemoteLock(serviceClient, responseClient, nodeId)
     }
