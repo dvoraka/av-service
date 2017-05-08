@@ -190,8 +190,8 @@ allprojects {
 
         systemProperty('itest', 'true')
 
-        minHeapSize = '128m'
-        maxHeapSize = '128m'
+        minHeapSize = '256m'
+        maxHeapSize = '256m'
 
         testLogging {
             // show events - "PASSED", "STARTED", "FAILED", "SKIPPED"
