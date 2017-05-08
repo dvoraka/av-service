@@ -26,6 +26,8 @@ class ReplicationServiceHelperSpec extends Specification {
     String testId = 'testID'
     @Shared
     String otherId = 'otherID'
+    @Shared
+    long testSequence = 999L
 
 
     def setup() {
@@ -56,6 +58,30 @@ class ReplicationServiceHelperSpec extends Specification {
 
         then:
             result.getCommand() == Command.DISCOVER
+
+            result.getType() == MessageType.REPLICATION_SERVICE
+            result.getRouting() == MessageRouting.BROADCAST
+
+            result.getFromId() == testId
+            result.getToId() == null
+    }
+
+    def "lock request"() {
+        when:
+            result = helper.createLockRequest(testFilename, testOwner, testId, testSequence)
+
+        then:
+            checkRequestBase(result)
+            result.getCommand() == Command.LOCK
+            result.getSequence() == testSequence
+    }
+
+    def "sequence request"() {
+        when:
+            result = helper.createSequenceRequest(testId)
+
+        then:
+            result.getCommand() == Command.SEQUENCE
 
             result.getType() == MessageType.REPLICATION_SERVICE
             result.getRouting() == MessageRouting.BROADCAST
