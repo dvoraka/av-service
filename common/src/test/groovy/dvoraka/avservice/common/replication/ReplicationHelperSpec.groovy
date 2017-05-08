@@ -38,7 +38,7 @@ class ReplicationHelperSpec extends Specification {
             result = helper.createSaveMessage(fileMessage, testId, otherId)
 
         then:
-            checkBasics(result)
+            checkBase(result)
             result.getCommand() == Command.SAVE
     }
 
@@ -48,7 +48,7 @@ class ReplicationHelperSpec extends Specification {
                     helper.createSaveMessage(fileMessage, otherId, testId), testId)
 
         then:
-            checkBasics(result)
+            checkBase(result)
             result.getCommand() == Command.SAVE
             result.getReplicationStatus() == ReplicationStatus.OK
     }
@@ -59,7 +59,7 @@ class ReplicationHelperSpec extends Specification {
                     helper.createSaveMessage(fileMessage, otherId, testId), testId)
 
         then:
-            checkBasics(result)
+            checkBase(result)
             result.getCommand() == Command.SAVE
             result.getReplicationStatus() == ReplicationStatus.FAILED
     }
@@ -69,7 +69,7 @@ class ReplicationHelperSpec extends Specification {
             result = helper.createLoadMessage(fileMessage, testId, otherId)
 
         then:
-            checkBasics(result)
+            checkBase(result)
             result.getCommand() == Command.LOAD
     }
 
@@ -78,7 +78,7 @@ class ReplicationHelperSpec extends Specification {
             result = helper.createUpdateMessage(fileMessage, testId, otherId)
 
         then:
-            checkBasics(result)
+            checkBase(result)
             result.getCommand() == Command.UPDATE
     }
 
@@ -87,11 +87,11 @@ class ReplicationHelperSpec extends Specification {
             result = helper.createDeleteMessage(fileMessage, testId, otherId)
 
         then:
-            checkBasics(result)
+            checkBase(result)
             result.getCommand() == Command.DELETE
     }
 
-    void checkBasics(ReplicationMessage message) {
+    void checkBase(ReplicationMessage message) {
         assert message.getType() == MessageType.REPLICATION_COMMAND
         assert message.getRouting() == MessageRouting.UNICAST
         assert message.getFromId() == testId

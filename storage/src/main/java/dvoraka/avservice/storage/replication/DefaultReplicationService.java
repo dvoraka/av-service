@@ -268,7 +268,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public ReplicationStatus getStatus(FileMessage message) {
         log.debug("Status: " + message);
 
-        serviceClient.sendMessage(createStatusRequest(message.getFilename(), message.getOwner()));
+        serviceClient.sendMessage(createStatusRequest(
+                message.getFilename(), message.getOwner(), nodeId));
 
         Optional<ReplicationMessageList> responses = responseClient.getResponseWait(
                 message.getId(), MAX_RESPONSE_TIME);

@@ -35,11 +35,12 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createStatusRequest(String filename, String owner) {
+    default ReplicationMessage createStatusRequest(String filename, String owner, String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)
                 .command(Command.STATUS)
+                .fromId(nodeId)
                 .filename(filename)
                 .owner(owner)
                 .build();

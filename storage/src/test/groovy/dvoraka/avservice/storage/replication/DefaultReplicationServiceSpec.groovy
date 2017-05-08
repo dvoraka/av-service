@@ -99,7 +99,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
         given:
             FileMessage message = Utils.genFileMessage()
             ReplicationMessage request = createStatusRequest(
-                    message.getFilename(), message.getOwner())
+                    message.getFilename(), message.getOwner(), "")
             ReplicationMessage response = createOkStatusReply(request, otherNodeId)
 
         when:
