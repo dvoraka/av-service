@@ -46,7 +46,8 @@ class ReplicationServiceHelperSpec extends Specification {
 
     def "exists reply"() {
         when:
-            ReplicationMessage request = helper.createExistsRequest(testFilename, testOwner, testId)
+            ReplicationMessage request = helper.createExistsRequest(
+                    testFilename, testOwner, testId)
             result = helper.createExistsReply(request, otherId)
 
         then:
@@ -66,7 +67,8 @@ class ReplicationServiceHelperSpec extends Specification {
 
     def "status OK reply"() {
         when:
-            ReplicationMessage request = helper.createStatusRequest(testFilename, testOwner, testId)
+            ReplicationMessage request = helper.createStatusRequest(
+                    testFilename, testOwner, testId)
             result = helper.createOkStatusReply(request, otherId)
 
         then:
@@ -112,13 +114,31 @@ class ReplicationServiceHelperSpec extends Specification {
 
     def "lock success reply"() {
         when:
-            ReplicationMessage request = helper.createLockRequest(testFilename, testOwner, testId, testSequence)
+            ReplicationMessage request = helper.createLockRequest(
+                    testFilename, testOwner, testId, testSequence)
             result = helper.createLockSuccessReply(request, otherId)
 
         then:
             checkReplyBase(result)
             result.getCommand() == Command.LOCK
             result.getReplicationStatus() == ReplicationStatus.READY
+
+            result.getFilename() == testFilename
+            result.getOwner() == testOwner
+    }
+
+    def "lock failed reply"() {
+        when:
+            ReplicationMessage request = helper.createLockRequest(
+                    testFilename, testOwner, testId, testSequence)
+            result = helper.createLockFailReply(request, testSequence, otherId)
+
+        then:
+            checkReplyBase(result)
+            result.getCommand() == Command.LOCK
+            result.getReplicationStatus() == ReplicationStatus.FAILED
+
+            result.getSequence() == testSequence
 
             result.getFilename() == testFilename
             result.getOwner() == testOwner
@@ -134,6 +154,21 @@ class ReplicationServiceHelperSpec extends Specification {
             result.getSequence() == testSequence
     }
 
+    def "unlock success reply"() {
+        when:
+            ReplicationMessage request = helper.createUnlockRequest(
+                    testFilename, testOwner, testId, testSequence)
+            result = helper.createUnlockSuccessReply(request, otherId)
+
+        then:
+            checkReplyBase(result)
+            result.getCommand() == Command.UNLOCK
+            result.getReplicationStatus() == ReplicationStatus.OK
+
+            result.getFilename() == testFilename
+            result.getOwner() == testOwner
+    }
+
     def "sequence request"() {
         when:
             result = helper.createSequenceRequest(testId)
@@ -146,6 +181,17 @@ class ReplicationServiceHelperSpec extends Specification {
 
             result.getFromId() == testId
             result.getToId() == null
+    }
+
+    def "sequence reply"() {
+        when:
+            ReplicationMessage request = helper.createSequenceRequest(testId)
+            result = helper.createSequenceReply(request, otherId, testSequence)
+
+        then:
+            checkReplyBase(result)
+            result.getCommand() == Command.SEQUENCE
+            result.getSequence() == testSequence
     }
 
     void checkRequestBase(ReplicationMessage message) {
