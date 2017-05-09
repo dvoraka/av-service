@@ -9,9 +9,10 @@ description = 'Project for anti-virus service'
 
 // Temporary overrides for BOMs
 ext['spring.version'] = '5.0.0.RC1'
-ext['spring-data-releasetrain.version'] = 'Kay-M1'
+ext['spring-data-releasetrain.version'] = 'Kay-M3'
 ext['spring-amqp.version'] = '2.0.0.M4'
 ext['jackson.version'] = '2.9.0.pr3'
+ext['solr.version'] = '6.5.1'
 ext['spock.version'] = '1.1-groovy-2.4'
 ext['log4j2.version'] = '2.7'
 

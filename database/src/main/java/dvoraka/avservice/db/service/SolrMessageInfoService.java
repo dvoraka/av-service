@@ -55,7 +55,7 @@ public class SolrMessageInfoService implements MessageInfoService {
 
     private void flushCache() {
         if (!documents.isEmpty()) {
-            messageInfoRepository.save(documents);
+            messageInfoRepository.saveAll(documents);
             documents.clear();
         }
     }

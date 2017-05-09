@@ -75,7 +75,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.save(message, AvMessageSource.TEST, testService)
 
         then:
-            1 * messageRepository.save(_ as Iterable)
+            1 * messageRepository.saveAll(_ as Iterable)
     }
 
     def "load info"() {
@@ -129,13 +129,13 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.save(Utils.genNormalMessage(), AvMessageSource.TEST, testService)
 
         then:
-            0 * messageRepository.save(_ as MessageInfoDocument)
+            0 * messageRepository.save(_)
 
         when:
             messageService.stop()
 
         then:
-            1 * messageRepository.save(_ as Iterable)
+            1 * messageRepository.saveAll(_ as Iterable)
     }
 
     def "test stop without batching"() {
@@ -149,7 +149,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.stop()
 
         then:
-            0 * messageRepository.save(_ as Iterable)
+            0 * messageRepository.saveAll(_)
     }
 
     MessageInfoDocument createTestDoc(String uuid) {
