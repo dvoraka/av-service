@@ -4,6 +4,7 @@ import dvoraka.avservice.common.data.Command
 import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
+import dvoraka.avservice.common.data.ReplicationStatus
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
@@ -43,6 +44,17 @@ class ReplicationServiceHelperSpec extends Specification {
             result.getCommand() == Command.EXISTS
     }
 
+    def "exists reply"() {
+        when:
+            ReplicationMessage request = helper.createExistsRequest(testFilename, testOwner, testId)
+            result = helper.createExistsReply(request, otherId)
+
+        then:
+            checkReplyBase(result)
+            result.getCommand() == Command.EXISTS
+            result.getReplicationStatus() == ReplicationStatus.OK
+    }
+
     def "status request"() {
         when:
             result = helper.createStatusRequest(testFilename, testOwner, testId)
@@ -50,6 +62,17 @@ class ReplicationServiceHelperSpec extends Specification {
         then:
             checkRequestBase(result)
             result.getCommand() == Command.STATUS
+    }
+
+    def "status OK reply"() {
+        when:
+            ReplicationMessage request = helper.createStatusRequest(testFilename, testOwner, testId)
+            result = helper.createOkStatusReply(request, otherId)
+
+        then:
+            checkReplyBase(result)
+            result.getCommand() == Command.STATUS
+            result.getReplicationStatus() == ReplicationStatus.OK
     }
 
     def "discover request"() {
@@ -66,6 +89,17 @@ class ReplicationServiceHelperSpec extends Specification {
             result.getToId() == null
     }
 
+    def "discover reply"() {
+        when:
+            ReplicationMessage request = helper.createDiscoverRequest(testId)
+            result = helper.createDiscoverReply(request, otherId)
+
+        then:
+            checkReplyBase(result)
+            result.getCommand() == Command.DISCOVER
+            result.getReplicationStatus() == ReplicationStatus.READY
+    }
+
     def "lock request"() {
         when:
             result = helper.createLockRequest(testFilename, testOwner, testId, testSequence)
@@ -74,6 +108,20 @@ class ReplicationServiceHelperSpec extends Specification {
             checkRequestBase(result)
             result.getCommand() == Command.LOCK
             result.getSequence() == testSequence
+    }
+
+    def "lock success reply"() {
+        when:
+            ReplicationMessage request = helper.createLockRequest(testFilename, testOwner, testId, testSequence)
+            result = helper.createLockSuccessReply(request, otherId)
+
+        then:
+            checkReplyBase(result)
+            result.getCommand() == Command.LOCK
+            result.getReplicationStatus() == ReplicationStatus.READY
+
+            result.getFilename() == testFilename
+            result.getOwner() == testOwner
     }
 
     def "unlock request"() {
@@ -109,5 +157,13 @@ class ReplicationServiceHelperSpec extends Specification {
 
         assert message.getFilename() == testFilename
         assert message.getOwner() == testOwner
+    }
+
+    void checkReplyBase(ReplicationMessage message) {
+        assert message.getType() == MessageType.REPLICATION_SERVICE
+        assert message.getRouting() == MessageRouting.UNICAST
+
+        assert message.getFromId() == otherId
+        assert message.getToId() == testId
     }
 }
