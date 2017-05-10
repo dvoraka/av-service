@@ -21,7 +21,8 @@ class DefaultPerformanceTesterSpec extends Specification {
     def setup() {
         checker = Stub()
         props = new DefaultPerformanceTestProperties.Builder()
-                .msgCount(1)
+                .msgCount(2)
+                .maxRate(10)
                 .build()
 
         tester = new PerformanceTester(checker, props)
@@ -38,6 +39,21 @@ class DefaultPerformanceTesterSpec extends Specification {
 
         then:
             !tester.isRunning()
+    }
+
+    def "test without problems"() {
+        given:
+            props = new DefaultPerformanceTestProperties.Builder()
+                    .msgCount(2)
+                    .maxRate(0)
+                    .build()
+            tester = new PerformanceTester(checker, props)
+
+        when:
+            tester.start()
+
+        then:
+            notThrown(Exception)
     }
 
     def "test with message receiving problem"() {
