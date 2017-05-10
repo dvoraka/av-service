@@ -11,9 +11,9 @@ import spock.lang.Specification
  * Configuration test.
  */
 @ContextConfiguration(classes = [CoreConfig.class])
-@ActiveProfiles(['itest', 'core', 'check', 'no-db'])
+@ActiveProfiles(['core', 'storage', 'no-db'])
 @DirtiesContext
-class CoreConfigISpec extends Specification {
+class CoreStorageConfigISpec extends Specification {
 
     @Autowired
     MessageProcessor messageProcessor
