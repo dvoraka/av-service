@@ -1,6 +1,6 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.MessageProcessor;
+import dvoraka.avservice.core.MessageProcessor;
 import dvoraka.avservice.rest.service.LocalRestService;
 import dvoraka.avservice.rest.service.RestService;
 import org.springframework.context.annotation.Bean;

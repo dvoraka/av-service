@@ -1,8 +1,8 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.core.configuration;
 
-import dvoraka.avservice.AvCheckMessageProcessor;
-import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.avprogram.service.AvService;
+import dvoraka.avservice.core.AvCheckMessageProcessor;
+import dvoraka.avservice.core.MessageProcessor;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

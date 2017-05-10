@@ -1,14 +1,14 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.core.configuration;
 
-import dvoraka.avservice.AvCheckMessageProcessor;
-import dvoraka.avservice.CompositeMessageProcessor;
-import dvoraka.avservice.FileMessageProcessor;
-import dvoraka.avservice.InputConditions;
-import dvoraka.avservice.MessageProcessor;
-import dvoraka.avservice.ProcessorConfiguration;
 import dvoraka.avservice.avprogram.service.AvService;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.core.AvCheckMessageProcessor;
+import dvoraka.avservice.core.CompositeMessageProcessor;
+import dvoraka.avservice.core.FileMessageProcessor;
+import dvoraka.avservice.core.InputConditions;
+import dvoraka.avservice.core.MessageProcessor;
+import dvoraka.avservice.core.ProcessorConfiguration;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.storage.service.FileService;
 import org.springframework.beans.factory.annotation.Value;

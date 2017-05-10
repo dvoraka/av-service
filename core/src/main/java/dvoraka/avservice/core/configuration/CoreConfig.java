@@ -1,4 +1,4 @@
-package dvoraka.avservice.configuration;
+package dvoraka.avservice.core.configuration;
 
 import dvoraka.avservice.avprogram.configuration.AvProgramConfig;
 import dvoraka.avservice.db.configuration.DatabaseConfig;

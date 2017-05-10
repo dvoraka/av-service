@@ -1,4 +1,4 @@
-package dvoraka.avservice;
+package dvoraka.avservice.core;
 
 import dvoraka.avservice.avprogram.service.AvService;
 import dvoraka.avservice.common.AvMessageListener;

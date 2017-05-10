@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.MessageProcessor;
 import dvoraka.avservice.client.ServerComponent;
-import dvoraka.avservice.configuration.CoreConfig;
+import dvoraka.avservice.core.MessageProcessor;
+import dvoraka.avservice.core.configuration.CoreConfig;
 import dvoraka.avservice.db.service.MessageInfoService;
 import dvoraka.avservice.server.AvServer;
 import dvoraka.avservice.server.BasicAvServer;

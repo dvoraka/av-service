@@ -1,6 +1,6 @@
 package dvoraka.avservice.rest.configuration;
 
-import dvoraka.avservice.configuration.CoreConfig;
+import dvoraka.avservice.core.configuration.CoreConfig;
 import dvoraka.avservice.rest.controller.CheckController;
 import dvoraka.avservice.rest.controller.FileController;
 import dvoraka.avservice.rest.controller.MainController;

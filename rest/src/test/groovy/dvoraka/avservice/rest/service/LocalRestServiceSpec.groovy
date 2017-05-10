@@ -1,10 +1,10 @@
 package dvoraka.avservice.rest.service
 
-import dvoraka.avservice.MessageProcessor
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
+import dvoraka.avservice.core.MessageProcessor
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.util.concurrent.PollingConditions
