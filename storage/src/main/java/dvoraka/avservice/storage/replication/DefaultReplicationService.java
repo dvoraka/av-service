@@ -168,7 +168,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public FileMessage loadFile(FileMessage message) throws FileServiceException {
         log.debug("Load: " + message);
 
-        if (fileService.exists(message.getFilename(), message.getOwner())) {
+        if (localCopyExists(message.getFilename(), message.getOwner())) {
             return fileService.loadFile(message);
         }
 
@@ -249,7 +249,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public boolean exists(String filename, String owner) {
         log.debug("Exists: {}, {}", filename, owner);
 
-        if (fileService.exists(filename, owner)) {
+        if (localCopyExists(filename, owner)) {
             return true;
         }
 
@@ -290,6 +290,10 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     public int getReplicationCount() {
         return replicationCount;
+    }
+
+    private boolean localCopyExists(String filename, String owner) {
+        return fileService.exists(filename, owner);
     }
 
     @Override

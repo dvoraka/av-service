@@ -10,6 +10,7 @@ import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.storage.ExistingFileException
+import dvoraka.avservice.storage.FileNotFoundException
 import dvoraka.avservice.storage.FileServiceException
 import dvoraka.avservice.storage.service.FileService
 import spock.lang.Shared
@@ -101,11 +102,33 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             thrown(ExistingFileException)
     }
 
-    Optional<ReplicationMessageList> replicationList(ReplicationMessage message) {
-        ReplicationMessageList messages = new ReplicationMessageList()
-        messages.add(message)
+    def "load with existing local file"() {
+        given:
+            FileMessage message = Utils.genFileMessage(MessageType.FILE_LOAD)
 
-        return Optional.of(messages)
+        when:
+            service.loadFile(message)
+
+        then:
+            1 * fileService.exists(message.getFilename(), message.getOwner()) >> true
+    }
+
+    def "load without existing file"() {
+        given:
+            FileMessage message = Utils.genFileMessage(MessageType.FILE_LOAD)
+
+        when:
+            service.loadFile(message)
+
+        then:
+            2 * fileService.exists(message.getFilename(), message.getOwner()) >> false
+
+            1 * serviceClient.sendMessage(_)
+            1 * responseClient.getResponseWait(_, _) >> {
+                return Optional.ofNullable(null)
+            }
+
+            thrown(FileNotFoundException)
     }
 
     def "exists"() {
@@ -209,5 +232,12 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
         then:
             1 * fileService.saveFile(saveRequest) >> { throw new FileServiceException() }
             1 * serviceClient.sendMessage(_)
+    }
+
+    Optional<ReplicationMessageList> replicationList(ReplicationMessage message) {
+        ReplicationMessageList messages = new ReplicationMessageList()
+        messages.add(message)
+
+        return Optional.of(messages)
     }
 }
