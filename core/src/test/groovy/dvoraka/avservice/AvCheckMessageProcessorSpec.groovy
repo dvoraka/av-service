@@ -6,8 +6,10 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
+import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.exception.ScanException
 import dvoraka.avservice.db.service.MessageInfoService
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.util.concurrent.PollingConditions
@@ -24,6 +26,7 @@ class AvCheckMessageProcessorSpec extends Specification {
     MessageInfoService infoService
 
     PollingConditions conditions
+    @Shared
     String serviceId = 'TEST'
 
 
@@ -118,6 +121,32 @@ class AvCheckMessageProcessorSpec extends Specification {
 
         then:
             notThrown(ScanException)
+    }
+
+    def "send message with empty data"() {
+        given:
+            AvMessage message = new DefaultAvMessage.Builder('testId')
+                    .type(MessageType.REQUEST)
+                    .build()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            notThrown(ScanException)
+            0 * avService._
+    }
+
+    def "send message with bad message type"() {
+        given:
+            AvMessage message = Utils.genDeleteMessage()
+
+        when:
+            processor.sendMessage(message)
+
+        then:
+            0 * avService._
+            0 * infoService._
     }
 
     // still fuzzy timing
