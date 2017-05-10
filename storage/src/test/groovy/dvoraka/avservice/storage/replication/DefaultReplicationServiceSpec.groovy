@@ -9,6 +9,7 @@ import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.replication.ReplicationHelper
+import dvoraka.avservice.storage.ExistingFileException
 import dvoraka.avservice.storage.FileServiceException
 import dvoraka.avservice.storage.service.FileService
 import spock.lang.Shared
@@ -48,6 +49,25 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
         service.stop()
     }
 
+    def "start"() {
+        when:
+            service.start()
+            sleep(50)
+
+        then:
+            1 * responseClient.addNoResponseMessageListener(_)
+            1 * remoteLock.start()
+    }
+
+    def "stop"() {
+        when:
+            service.stop()
+
+        then:
+            1 * responseClient.removeNoResponseMessageListener(_)
+            1 * remoteLock.stop()
+    }
+
     def "save"() {
         given:
             FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
@@ -67,6 +87,18 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
 
             1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), 0) >> true
             1 * remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0)
+    }
+
+    def "save with existing local file"() {
+        given:
+            FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
+            fileService.exists(message.getFilename(), message.getOwner()) >> true
+
+        when:
+            service.saveFile(message)
+
+        then:
+            thrown(ExistingFileException)
     }
 
     Optional<ReplicationMessageList> replicationList(ReplicationMessage message) {
