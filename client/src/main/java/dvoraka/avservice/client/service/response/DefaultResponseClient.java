@@ -102,6 +102,10 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
     @Override
     public AvMessage getResponse(String id) {
+        if (!isStarted()) {
+            throw new IllegalStateException("Client is not started!");
+        }
+
         return messageCache.get(id);
     }
 
