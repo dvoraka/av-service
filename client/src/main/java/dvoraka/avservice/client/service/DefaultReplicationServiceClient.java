@@ -20,6 +20,8 @@ public class DefaultReplicationServiceClient implements ReplicationServiceClient
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationServiceClient.class);
 
+    private static final String WRONG_ID = "Wrong from node ID in the message!";
+
 
     @Autowired
     public DefaultReplicationServiceClient(
@@ -35,8 +37,8 @@ public class DefaultReplicationServiceClient implements ReplicationServiceClient
         log.debug("Send: " + message);
 
         if (!nodeId.equals(message.getFromId())) {
-            log.warn("Wrong from node ID in the message!");
-            return;
+            log.warn(WRONG_ID);
+            throw new IllegalArgumentException(WRONG_ID);
         }
 
         replicationComponent.sendMessage(message);
