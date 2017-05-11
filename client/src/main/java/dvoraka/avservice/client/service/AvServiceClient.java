@@ -12,6 +12,7 @@ public interface AvServiceClient {
      * Checks a file from the message.
      *
      * @param message the AV message
+     * @see dvoraka.avservice.common.data.MessageType#FILE_CHECK
      */
     void checkMessage(AvMessage message);
 }
