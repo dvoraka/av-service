@@ -68,9 +68,9 @@ public class DefaultReplicationResponseClient implements
         }
 
         log.info("Start.");
-        setStarted(true);
         initializeCache();
         replicationComponent.addReplicationMessageListener(this);
+        setStarted(true);
     }
 
     @PreDestroy

@@ -54,9 +54,9 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
         }
 
         log.info("Start.");
-        setStarted(true);
         initializeCache();
         serverComponent.addAvMessageListener(this);
+        setStarted(true);
     }
 
     @PreDestroy
