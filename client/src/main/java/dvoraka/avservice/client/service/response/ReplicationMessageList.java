@@ -26,4 +26,8 @@ public class ReplicationMessageList {
     public Stream<ReplicationMessage> stream() {
         return messages.stream();
     }
+
+    public int size() {
+        return messages.size();
+    }
 }
