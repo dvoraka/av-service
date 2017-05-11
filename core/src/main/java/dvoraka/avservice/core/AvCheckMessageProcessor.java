@@ -121,7 +121,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
 
         //TODO: filter should probably be outside
         // filter out messages
-        if (!(message.getType() == MessageType.REQUEST
+        if (!(message.getType() == MessageType.FILE_CHECK
                 || message.getType() == MessageType.FILE_SAVE
                 || message.getType() == MessageType.FILE_UPDATE)) {
 

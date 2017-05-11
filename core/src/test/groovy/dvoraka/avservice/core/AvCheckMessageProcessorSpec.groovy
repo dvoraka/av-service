@@ -126,7 +126,7 @@ class AvCheckMessageProcessorSpec extends Specification {
     def "send message with empty data"() {
         given:
             AvMessage message = new DefaultAvMessage.Builder('testId')
-                    .type(MessageType.REQUEST)
+                    .type(MessageType.FILE_CHECK)
                     .build()
 
         when:

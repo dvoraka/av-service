@@ -55,7 +55,7 @@ class AvMessageMapperSpec extends Specification {
             // appId
             props.setAppId(testAppId)
             // type
-            props.setType(MessageType.REQUEST.toString())
+            props.setType(MessageType.FILE_CHECK.toString())
 
             // HEADERS
             // virusInfo
@@ -72,7 +72,7 @@ class AvMessageMapperSpec extends Specification {
 
         expect:
             avMessage.getId() == testId
-            avMessage.getType() == MessageType.REQUEST
+            avMessage.getType() == MessageType.FILE_CHECK
 
             avMessage.getVirusInfo() == testVirusInfo
 
@@ -119,7 +119,7 @@ class AvMessageMapperSpec extends Specification {
             MessageProperties props = new MessageProperties()
 
             // PROPERTIES
-            props.setType(MessageType.REQUEST.toString())
+            props.setType(MessageType.FILE_CHECK.toString())
             // HEADERS
             // BODY
 
@@ -138,7 +138,7 @@ class AvMessageMapperSpec extends Specification {
 
             // PROPERTIES
             props.setMessageId(testId)
-            props.setType(MessageType.REQUEST.toString())
+            props.setType(MessageType.FILE_CHECK.toString())
             // HEADERS
             // BODY
 
@@ -157,7 +157,7 @@ class AvMessageMapperSpec extends Specification {
 
             // PROPERTIES
             props.setMessageId(testId)
-            props.setType(MessageType.REQUEST.toString())
+            props.setType(MessageType.FILE_CHECK.toString())
             props.setCorrelationId(testCorrId)
             // HEADERS
             // BODY
@@ -195,7 +195,7 @@ class AvMessageMapperSpec extends Specification {
             AvMessage avMessage = new DefaultAvMessage.Builder(testId)
                     .correlationId(testCorrId)
                     .data(new byte[dataSize])
-                    .type(MessageType.REQUEST)
+                    .type(MessageType.FILE_CHECK)
                     .virusInfo(testVirusInfo)
                     .build()
 
@@ -213,7 +213,7 @@ class AvMessageMapperSpec extends Specification {
             // correlation ID
             props.getCorrelationId() == testCorrId
             // type
-            props.getType() == MessageType.REQUEST.toString()
+            props.getType() == MessageType.FILE_CHECK.toString()
 
             // HEADERS
             // virusInfo

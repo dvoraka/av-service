@@ -5,11 +5,11 @@ package dvoraka.avservice.common.data;
  */
 public enum MessageType {
     /**
-     * Normal request for a file check.
+     * Check a file for viruses.
      */
-    REQUEST,
+    FILE_CHECK,
     /**
-     * Normal response with check results.
+     * Check response with check results.
      */
     RESPONSE,
     /**

@@ -23,7 +23,7 @@ class DefaultAvMessageSpec extends Specification {
             DefaultAvMessage message = new DefaultAvMessage.Builder(testString)
                     .correlationId(testString)
                     .data(testString.getBytes(StandardCharsets.UTF_8))
-                    .type(MessageType.REQUEST)
+                    .type(MessageType.FILE_CHECK)
                     .virusInfo(testString)
                     .build()
 
@@ -31,7 +31,7 @@ class DefaultAvMessageSpec extends Specification {
             message.getId() == testString
             message.getCorrelationId() == testString
             Arrays.equals(message.getData(), testString.getBytes(StandardCharsets.UTF_8))
-            message.getType() == MessageType.REQUEST
+            message.getType() == MessageType.FILE_CHECK
             message.getVirusInfo() == testString
     }
 

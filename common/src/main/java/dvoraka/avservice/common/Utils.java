@@ -48,7 +48,7 @@ public final class Utils {
         return new DefaultAvMessage.Builder(genUuidString())
                 .correlationId(TEST_CORR_ID)
                 .data(new byte[dataSize])
-                .type(MessageType.REQUEST)
+                .type(MessageType.FILE_CHECK)
                 .build();
     }
 
@@ -56,7 +56,7 @@ public final class Utils {
         return new DefaultAvMessage.Builder(genUuidString())
                 .correlationId(TEST_CORR_ID)
                 .data(EICAR.getBytes(StandardCharsets.UTF_8))
-                .type(MessageType.REQUEST)
+                .type(MessageType.FILE_CHECK)
                 .build();
     }
 

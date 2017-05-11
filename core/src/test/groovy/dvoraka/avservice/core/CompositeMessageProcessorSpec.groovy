@@ -45,7 +45,7 @@ class CompositeMessageProcessorSpec extends Specification {
 
         List<InputConditions> checkConditions =
                 new InputConditions.Builder()
-                        .originalType(MessageType.REQUEST)
+                        .originalType(MessageType.FILE_CHECK)
                         .originalType(MessageType.FILE_SAVE)
                         .originalType(MessageType.FILE_UPDATE)
                         .build().toList()
