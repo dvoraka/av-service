@@ -1,4 +1,4 @@
-## v0.7
+## v0.7 (May 12, 2017)
 The new version mostly brings improved file service and a replication prototype.
 It is not completely done and will need a tuning. Next version should stabilize new functionality.
 For the pure AV service it could be a good idea to use the still maintained version 0.5.
@@ -6,6 +6,9 @@ For the pure AV service it could be a good idea to use the still maintained vers
 The server module was redesigned and there are two modules now. Server is mostly for a server
 infrastructure. Sending and receiving messages is possible with the client module only.
 Next thing is that the client offers a new layer for an easier usage.
+
+ * Improved tests
+ * Improved and fixed implementation
 
 ## v0.7-RC1 (May 6, 2017)
  * Improved configuration for AV program
