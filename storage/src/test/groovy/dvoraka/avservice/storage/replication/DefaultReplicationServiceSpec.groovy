@@ -60,6 +60,20 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             1 * remoteLock.start()
     }
 
+    def "start with discovery response"() {
+        when:
+            service.start()
+            sleep(50)
+
+        then:
+            1 * responseClient.addNoResponseMessageListener(_)
+            1 * remoteLock.start()
+
+            1 * responseClient.getResponseWait(_, _) >> replicationList(
+                    createDiscoverReply(
+                            createDiscoverRequest(nodeId), otherNodeId))
+    }
+
     def "stop"() {
         when:
             service.stop()
