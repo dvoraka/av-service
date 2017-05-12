@@ -74,6 +74,22 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .build();
     }
 
+    default ReplicationMessage createLoadReply(
+            FileMessage message, String toNodeId, String fromNodeId
+    ) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.LOAD)
+                .toId(fromNodeId)
+                .fromId(toNodeId)
+                .data(message.getData())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
     default ReplicationMessage createUpdateMessage(
             FileMessage message, String nodeId, String neighbourId
     ) {

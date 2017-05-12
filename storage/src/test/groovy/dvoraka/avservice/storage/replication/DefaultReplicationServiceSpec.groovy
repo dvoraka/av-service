@@ -127,6 +127,27 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             1 * fileService.exists(message.getFilename(), message.getOwner()) >> true
     }
 
+    def "load without existing local file"() {
+        given:
+            FileMessage message = Utils.genFileMessage(MessageType.FILE_LOAD)
+
+        when:
+            service.loadFile(message)
+
+        then:
+            2 * fileService.exists(message.getFilename(), message.getOwner()) >> false
+            1 * responseClient.getResponseWait(_, _) >> replicationList(
+                    createExistsReply(
+                            createExistsRequest(message.getFilename(), message.getOwner(), nodeId),
+                            otherNodeId
+                    )
+            )
+
+            1 * responseClient.getResponseWait(_, _) >> replicationList(
+                    createLoadReply(Mock(FileMessage), otherNodeId, nodeId)
+            )
+    }
+
     def "load without existing file"() {
         given:
             FileMessage message = Utils.genFileMessage(MessageType.FILE_LOAD)
