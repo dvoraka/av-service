@@ -24,7 +24,7 @@ class ReplicationHelperSpec extends Specification {
     @Shared
     FileMessage fileMessage = Utils.genFileMessage()
     @Shared
-    String testId = 'testID'
+    String nodeId = 'testID'
     @Shared
     String otherId = 'otherID'
 
@@ -35,7 +35,7 @@ class ReplicationHelperSpec extends Specification {
 
     def "save message"() {
         when:
-            result = helper.createSaveMessage(fileMessage, testId, otherId)
+            result = helper.createSaveMessage(fileMessage, nodeId, otherId)
 
         then:
             checkBase(result)
@@ -45,7 +45,7 @@ class ReplicationHelperSpec extends Specification {
     def "save success"() {
         when:
             result = helper.createSaveSuccess(
-                    helper.createSaveMessage(fileMessage, otherId, testId), testId)
+                    helper.createSaveMessage(fileMessage, otherId, nodeId), nodeId)
 
         then:
             checkBase(result)
@@ -56,7 +56,7 @@ class ReplicationHelperSpec extends Specification {
     def "save failed"() {
         when:
             result = helper.createSaveFailed(
-                    helper.createSaveMessage(fileMessage, otherId, testId), testId)
+                    helper.createSaveMessage(fileMessage, otherId, nodeId), nodeId)
 
         then:
             checkBase(result)
@@ -66,7 +66,17 @@ class ReplicationHelperSpec extends Specification {
 
     def "load message"() {
         when:
-            result = helper.createLoadMessage(fileMessage, testId, otherId)
+            result = helper.createLoadMessage(fileMessage, nodeId, otherId)
+
+        then:
+            checkBase(result)
+            result.getCommand() == Command.LOAD
+    }
+
+    def "load reply"() {
+        when:
+            result = helper.createLoadReply(
+                    helper.createLoadMessage(fileMessage, nodeId, otherId), nodeId, otherId)
 
         then:
             checkBase(result)
@@ -75,7 +85,7 @@ class ReplicationHelperSpec extends Specification {
 
     def "update message"() {
         when:
-            result = helper.createUpdateMessage(fileMessage, testId, otherId)
+            result = helper.createUpdateMessage(fileMessage, nodeId, otherId)
 
         then:
             checkBase(result)
@@ -84,7 +94,7 @@ class ReplicationHelperSpec extends Specification {
 
     def "delete message"() {
         when:
-            result = helper.createDeleteMessage(fileMessage, testId, otherId)
+            result = helper.createDeleteMessage(fileMessage, nodeId, otherId)
 
         then:
             checkBase(result)
@@ -94,7 +104,7 @@ class ReplicationHelperSpec extends Specification {
     void checkBase(ReplicationMessage message) {
         assert message.getType() == MessageType.REPLICATION_COMMAND
         assert message.getRouting() == MessageRouting.UNICAST
-        assert message.getFromId() == testId
+        assert message.getFromId() == nodeId
         assert message.getToId() == otherId
         assert Arrays.equals(message.getData(), fileMessage.getData())
         assert message.getFilename() == fileMessage.getFilename()
