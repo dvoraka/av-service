@@ -13,10 +13,12 @@ then completely rewritten and the old code was removed.
 
 From version 0.6 it is mostly a file service with an AV checking.
 Currently it is still a bit experimental feature.
+So if you need the AV checking only you can use the maintained 0.5 version.
 
 ### Contribution
 Possibilities: Quality assurance (QA), Front-end for REST services (statistics and file storage),
-Linux admin for better deployment and distribution, Wiki mage, Server for testing
+Linux admin for better deployment and distribution, Wiki mage, Server for testing, or we
+can find something else for you
 
 ---
 
@@ -155,8 +157,8 @@ you need only:
 ```
 
 ### Installation
-You can use Docker to prepare necessary services for development. Docker configurations are a good documentation for
-installing services without Docker.
+You can use Docker to prepare necessary services for the development.
+Docker configurations are a good documentation for installing services without Docker.
 
 #### Docker
 Docker is recommended approach.
