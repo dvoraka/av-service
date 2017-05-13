@@ -13,7 +13,18 @@ public abstract class AbstractAppRunner implements AppRunner {
     @SuppressWarnings("checkstyle:VisibilityModifier")
     protected Logger log = LogManager.getLogger(this.getClass().getName());
 
-    private boolean running;
+    /**
+     * A system property name for enabling the integration testing profile.
+     */
+    private static final String ITEST_PROPERTY = "itest";
+    /**
+     * An integration testing profile name.
+     */
+    private static final String ITEST_PROFILE = ITEST_PROPERTY;
+    /**
+     * A running status of the runner.
+     */
+    private volatile boolean running;
 
 
     /**
@@ -27,8 +38,8 @@ public abstract class AbstractAppRunner implements AppRunner {
         context.getEnvironment().setActiveProfiles(profiles());
 
         // improve Spring context with itest profile if system property exists
-        if (System.getProperty("itest") != null) {
-            context.getEnvironment().addActiveProfile("itest");
+        if (System.getProperty(ITEST_PROPERTY) != null) {
+            context.getEnvironment().addActiveProfile(ITEST_PROFILE);
         }
 
         context.register(configClasses());
