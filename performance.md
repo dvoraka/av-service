@@ -24,7 +24,7 @@ Old load test run command: `./gradlew loadTest`
 
 DB logging: no
 
-### Other scenarios
+### Other scenarios (tested on the old computer)
  * **1 million** messages with AMQP server. It didn't show any memory leaks.
  * Result: **557** msgs/s
  * **1 million** messages with JMS server. It didn't show any memory leaks.
@@ -38,7 +38,16 @@ First run is for a warm-up and is not counted.
 
 ### AMQP
 
+#### May 14, 2017
+With a new BufferedPerformanceTester class.
+
+run | 1. | 2. | 3. | 4. | 5.
+---|---|---|---|---|---
+msg/s | 1628 | 1545 | 1663 | 1607 | 1552
+
 #### May 2, 2017
+With the new computer.
+
 run | 1. | 2. | 3. | 4. | 5.
 ---|---|---|---|---|---
 msg/s | 926 | 907 | 897 | 888 | 913
