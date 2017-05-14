@@ -83,7 +83,8 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
             try {
                 buffer.put(message);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.warn("Interrupted.", e);
+                Thread.currentThread().interrupt();
             }
 
             avServiceClient.checkMessage(message);
@@ -112,9 +113,9 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
     //TODO: add max timeout
     private void getMessages(BlockingQueue<AvMessage> buffer) {
         try {
-            AvMessage message1 = buffer.take();
-            if (responseClient.getResponse(message1.getId()) == null) {
-                buffer.put(message1);
+            AvMessage message = buffer.take();
+            if (responseClient.getResponse(message.getId()) == null) {
+                buffer.put(message);
             }
         } catch (InterruptedException e) {
             log.warn("Interrupted.", e);
