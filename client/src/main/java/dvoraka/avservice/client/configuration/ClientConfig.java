@@ -29,6 +29,8 @@ public class ClientConfig {
 
     @Value("${avservice.perf.msgCount}")
     private long msgCount;
+    @Value("${avservice.perf.sendOnly}")
+    private boolean sendOnly;
     @Value("${avservice.perf.maxRate}")
     private long maxRate;
 
@@ -37,6 +39,7 @@ public class ClientConfig {
     public PerformanceTestProperties testProperties() {
         return new DefaultPerformanceTestProperties.Builder()
                 .msgCount(msgCount)
+                .sendOnly(sendOnly)
                 .maxRate(maxRate)
                 .build();
     }
