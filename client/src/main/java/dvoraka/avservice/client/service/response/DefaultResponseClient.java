@@ -80,7 +80,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
     }
 
     private CacheConfiguration<String, AvMessage> getCacheConfiguration() {
-        final long heapEntries = 10;
+        final long heapEntries = 20_000;
 
         return CacheConfigurationBuilder
                 .newCacheConfigurationBuilder(
