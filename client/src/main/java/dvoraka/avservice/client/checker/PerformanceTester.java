@@ -4,6 +4,7 @@ import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
 import dvoraka.avservice.common.service.ApplicationManagement;
+import dvoraka.avservice.common.testing.PerformanceTest;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,7 @@ import static java.util.Objects.requireNonNull;
  * Class for performance testing.
  */
 @Component
-public class PerformanceTester implements ApplicationManagement {
+public class PerformanceTester implements PerformanceTest, ApplicationManagement {
 
     private final Checker checker;
     private final PerformanceTestProperties testProperties;
@@ -27,6 +28,9 @@ public class PerformanceTester implements ApplicationManagement {
     private static final float MS_PER_SECOND = 1000f;
 
     private volatile boolean running;
+    private volatile boolean passed;
+
+    private float result;
 
 
     @Autowired
@@ -71,11 +75,15 @@ public class PerformanceTester implements ApplicationManagement {
         System.out.println("Load test end.");
 
         float durationSeconds = duration / MS_PER_SECOND;
+        setResult(loops / durationSeconds);
+
         System.out.println("\nDuration: " + durationSeconds + " s");
-        System.out.println("Messages: " + loops / durationSeconds + "/s");
+        System.out.println("Messages: " + result + "/s");
 
         if (!perfect) {
             System.out.println("\nSome messages were lost.");
+        } else {
+            passed = true;
         }
 
         running = false;
@@ -103,5 +111,34 @@ public class PerformanceTester implements ApplicationManagement {
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public void run() {
+        start();
+    }
+
+    @Override
+    public boolean isDone() {
+        return !running;
+    }
+
+    @Override
+    public boolean passed() {
+        return passed;
+    }
+
+    private void setResult(float result) {
+        this.result = result;
+    }
+
+    /**
+     * Returns messages per second.
+     *
+     * @return messages/second
+     */
+    @Override
+    public long getResult() {
+        return (long) result;
     }
 }
