@@ -73,6 +73,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
     public void start() {
         running = true;
         final long loops = testProperties.getMsgCount();
+        System.out.println("Load test start for " + loops + " messages...");
 
         final int bufferSize = 6;
         BlockingQueue<AvMessage> buffer = new ArrayBlockingQueue<>(bufferSize);

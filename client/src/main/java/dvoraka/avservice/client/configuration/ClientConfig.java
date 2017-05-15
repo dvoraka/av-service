@@ -20,6 +20,8 @@ import org.springframework.context.annotation.PropertySource;
         ReplicationClientConfig.class,
         TestReplicationClientConfig.class,
         CheckerConfig.class,
+        // new performance testing configuration
+        PerformanceTestConfig.class,
 
         // Message info service
         DatabaseConfig.class,
