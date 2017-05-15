@@ -8,7 +8,7 @@
         <destination>localhost:7000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
-    <root level="info">
+    <root level="warn">
         <appender-ref ref="TCP"/>
         <!--<appender-ref ref="STDOUT"/>-->
     </root>
