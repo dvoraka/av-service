@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.validation.Validator;
 
@@ -30,7 +29,7 @@ import javax.validation.Validator;
         CoreConfig.class,
         StatsConfig.class
 })
-public class SpringWebConfig extends WebMvcConfigurerAdapter {
+public class SpringWebConfig {
 
     @Bean
     public MainController mainController(RestService avRestService) {
