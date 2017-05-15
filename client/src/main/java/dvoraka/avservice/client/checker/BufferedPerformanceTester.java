@@ -1,6 +1,5 @@
 package dvoraka.avservice.client.checker;
 
-import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.Utils;
@@ -11,17 +10,17 @@ import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Objects.requireNonNull;
 
 
 /**
- * Buffered tester for a performance testing.
+ * Buffered tester prototype for a performance testing.
  */
 @Component
 public class BufferedPerformanceTester implements PerformanceTest, ApplicationManagement {
@@ -33,30 +32,15 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
     private static final Logger log = LogManager.getLogger(BufferedPerformanceTester.class);
 
     private static final float MS_PER_SECOND = 1000f;
+    private static final int TIMEOUT = 1_000;
 
     private volatile boolean running;
     private volatile boolean passed;
 
+    private int timeout = TIMEOUT;
+
     private float result;
 
-
-    public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment()
-                .setActiveProfiles("client", "amqp", "file-client", "no-db");
-
-        context.register(ClientConfig.class);
-        context.refresh();
-
-        PerformanceTest test = new BufferedPerformanceTester(
-                context.getBean(AvServiceClient.class),
-                context.getBean(ResponseClient.class),
-                context.getBean(PerformanceTestProperties.class));
-
-        test.run();
-
-        context.close();
-    }
 
     @Autowired
     public BufferedPerformanceTester(
@@ -82,7 +66,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
         for (int loop = 0; loop <= loops; loop++) {
             AvMessage message = Utils.genInfectedMessage();
             try {
-                buffer.put(message);
+                buffer.offer(message, getTimeout(), TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
                 log.warn("Interrupted.", e);
                 Thread.currentThread().interrupt();
@@ -90,13 +74,17 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
 
             avServiceClient.checkMessage(message);
 
-            while (buffer.size() >= bufferSize) {
-                getMessages(buffer);
+            long start2 = System.currentTimeMillis();
+            while (buffer.size() >= bufferSize
+                    && (System.currentTimeMillis() - start2) < getTimeout()) {
+                getMessage(buffer);
             }
         }
 
-        while (buffer.size() > 0) {
-            getMessages(buffer);
+        long start3 = System.currentTimeMillis();
+        while (buffer.size() > 0
+                && (System.currentTimeMillis() - start3) < getTimeout()) {
+            getMessage(buffer);
         }
 
         long duration = System.currentTimeMillis() - start;
@@ -111,8 +99,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
         running = false;
     }
 
-    //TODO: add max timeout
-    private void getMessages(BlockingQueue<AvMessage> buffer) {
+    private void getMessage(BlockingQueue<AvMessage> buffer) {
         try {
             AvMessage message = buffer.take();
             if (responseClient.getResponse(message.getId()) == null) {
@@ -156,5 +143,13 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
     @Override
     public long getResult() {
         return (long) result;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }
