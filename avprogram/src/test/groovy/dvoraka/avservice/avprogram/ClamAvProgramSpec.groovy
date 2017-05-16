@@ -7,8 +7,9 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * ClamAV program test.
+ * ClamAV program spec.
  */
+//TODO: update
 class ClamAvProgramSpec extends Specification {
 
     @Subject
@@ -17,6 +18,26 @@ class ClamAvProgramSpec extends Specification {
 
     def setup() {
         avProgram = new ClamAvProgram()
+    }
+
+    def "parse response"() {
+        expect:
+            avProgram.parseResponse(input) == result
+
+        where:
+            input                   | result
+            ''                      | ''
+            'string'                | ''
+            ':'                     | ''
+            'abc :def'              | ''
+            ': '                    | ''
+            ' :  '                  | ' '
+            'abc: def'              | 'def'
+            'abc:def'               | ''
+            'abc: def: ghi'         | 'def: ghi'
+            '1: stream: OK'         | 'stream: OK'
+            '123: stream: OK'       | 'stream: OK'
+            '123456789: stream: OK' | 'stream: OK'
     }
 
     def "scan stream (empty array)"() {
