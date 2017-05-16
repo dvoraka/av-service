@@ -93,6 +93,10 @@ public class SocketPool implements SocketFactory {
         return socketFactory;
     }
 
+    public int getSize() {
+        return socketWrappers.size();
+    }
+
     @Override
     public Socket createSocket(String host, int port) {
         log.debug("Creating socket, host: {}, port: {}", host, port);

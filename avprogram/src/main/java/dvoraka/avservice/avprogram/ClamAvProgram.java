@@ -98,40 +98,38 @@ public class ClamAvProgram implements AvProgram {
      * @throws ScanException if scan fails
      * @see ClamAvProgram#scanBytesWithInfo(byte[])
      */
-    private String scanBytesPooling(byte[] bytes, int attempt) throws ScanException {
+    private String scanBytesPooling(byte[] bytes) throws ScanException {
         requireNonNull(bytes);
 
-        final int maxAttempts = 5;
+        final int maxAttempts = socketPool.getSize() + 1;
+        for (int i = 0; i < maxAttempts; i++) {
 
-        SocketPool.SocketWrapper socket = socketPool.getSocket();
-        OutputStream outStream = socket.getOutputStream();
-        BufferedReader in = socket.getBufferedReader();
+            SocketPool.SocketWrapper socket = socketPool.getSocket();
+            OutputStream outStream = socket.getOutputStream();
+            BufferedReader in = socket.getBufferedReader();
 
-        String response;
-        try {
-            sendBytes(bytes, outStream);
+            String response;
+            try {
+                sendBytes(bytes, outStream);
 
-            // read and transform check result
-            final int offset = 3;
-            response = in.readLine();
-            if (response != null && response.length() >= offset) {
-                response = response.substring(offset);
+                // read and transform check result
+                final int offset = 3;
+                response = in.readLine();
+                if (response != null && response.length() >= offset) {
+                    response = response.substring(offset);
+                }
+
+                return response;
+
+            } catch (IOException e) {
+                log.info(ERROR_MSG, e);
+                socket.fix();
+            } finally {
+                socketPool.returnSocket(socket);
             }
-        } catch (IOException e) {
-            log.warn(ERROR_MSG, e);
-            socket.fix();
-
-            if (attempt >= maxAttempts) {
-                throw new ScanException(ERROR_MSG, e);
-            }
-
-            return scanBytesPooling(bytes, attempt + 1);
-
-        } finally {
-            socketPool.returnSocket(socket);
         }
 
-        return response;
+        throw new ScanException(ERROR_MSG);
     }
 
     /**
@@ -160,7 +158,7 @@ public class ClamAvProgram implements AvProgram {
     @Override
     public String scanBytesWithInfo(byte[] bytes) throws ScanException {
         if (socketPooling) {
-            return scanBytesPooling(bytes, 1);
+            return scanBytesPooling(bytes);
         } else {
             return scanBytesNormal(bytes);
         }
@@ -201,7 +199,7 @@ public class ClamAvProgram implements AvProgram {
                 return response;
             } else {
                 log.warn("Response reading problem!");
-                throw new ScanException("Scanning problem.");
+                throw new ScanException(ERROR_MSG);
             }
         } catch (IOException e) {
             log.warn(ERROR_MSG, e);
