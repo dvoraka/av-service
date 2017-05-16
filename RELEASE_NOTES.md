@@ -1,3 +1,6 @@
+## v0.7.1 (May 16, 2017)
+ * Fixed ClamAV program socket pool usage
+
 ## v0.7 (May 12, 2017)
 The new version mostly brings an improved file service and a replication prototype.
 It is not completely done and will need a tuning and better network testing.
