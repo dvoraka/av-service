@@ -21,6 +21,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
 
@@ -52,6 +54,8 @@ public class ClamAvProgram implements AvProgram {
     private final SocketPool socketPool;
     private final boolean socketPooling;
 
+    private final Pattern responsePattern;
+
 
     public ClamAvProgram() {
         this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_ARRAY_SIZE, false);
@@ -70,6 +74,8 @@ public class ClamAvProgram implements AvProgram {
         final int socketCount = 5;
         socketPool = new SocketPool(socketCount, socketHost, socketPort, null);
         this.socketPooling = socketPooling;
+
+        responsePattern = Pattern.compile(".+?: (.+)");
     }
 
     @Override
@@ -108,18 +114,12 @@ public class ClamAvProgram implements AvProgram {
             OutputStream outStream = socket.getOutputStream();
             BufferedReader in = socket.getBufferedReader();
 
-            String response;
             try {
                 sendBytes(bytes, outStream);
 
-                // read and transform check result
-                final int offset = 3;
-                response = in.readLine();
-                if (response != null && response.length() >= offset) {
-                    response = response.substring(offset);
-                }
+                String response = in.readLine();
 
-                return response;
+                return parseResponse(response);
 
             } catch (IOException e) {
                 log.info(ERROR_MSG, e);
@@ -130,6 +130,16 @@ public class ClamAvProgram implements AvProgram {
         }
 
         throw new ScanException(ERROR_MSG);
+    }
+
+    public String parseResponse(String response) {
+        Matcher matcher = responsePattern.matcher(response);
+        if (matcher.matches()) {
+
+            return matcher.group(1);
+        }
+
+        return "";
     }
 
     /**
