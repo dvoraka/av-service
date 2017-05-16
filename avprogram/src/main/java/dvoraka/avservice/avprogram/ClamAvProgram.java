@@ -116,7 +116,6 @@ public class ClamAvProgram implements AvProgram {
 
             try {
                 sendBytes(bytes, outStream);
-
                 String response = in.readLine();
 
                 return parseResponse(response);
