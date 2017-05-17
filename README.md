@@ -1,7 +1,7 @@
 # Network file service with anti-virus checking
 [![Build Status](https://travis-ci.org/dvoraka/av-service.svg?branch=master)](https://travis-ci.org/dvoraka/av-service)
 [![codecov.io](https://codecov.io/github/dvoraka/av-service/coverage.svg)](https://codecov.io/github/dvoraka/av-service/branch/master)
-[![Latest release](https://img.shields.io/badge/release-0.7-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.7)
+[![Latest release](https://img.shields.io/badge/release-0.7.2-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.7.2)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2e3856220448493482f6de90a0d84ee0)](https://www.codacy.com/app/dvoraka/av-service?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dvoraka/av-service&amp;utm_campaign=Badge_Grade)
 [![Open Hub](https://www.openhub.net/p/av-service/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/av-service/)
 
