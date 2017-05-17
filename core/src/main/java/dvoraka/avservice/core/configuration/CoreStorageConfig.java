@@ -43,7 +43,7 @@ public class CoreStorageConfig {
     public MessageProcessor checkMessageProcessor(
             AvService avService,
             MessageInfoService messageInfoService,
-            Predicate<AvMessage> checkInputFilter
+            Predicate<AvMessage> avCheckInputFilter
     ) {
         MessageProcessor messageProcessor = new AvCheckMessageProcessor(
                 cpuCores,
@@ -51,7 +51,7 @@ public class CoreStorageConfig {
                 avService,
                 messageInfoService
         );
-        messageProcessor.setInputFilter(checkInputFilter);
+        messageProcessor.setInputFilter(avCheckInputFilter);
 
         return messageProcessor;
     }

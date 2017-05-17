@@ -29,7 +29,7 @@ public class CoreCheckConfig {
     public MessageProcessor messageProcessor(
             AvService avService,
             MessageInfoService messageInfoService,
-            Predicate<AvMessage> checkInputFilter
+            Predicate<AvMessage> avCheckInputFilter
     ) {
         MessageProcessor checkProcessor = new AvCheckMessageProcessor(
                 cpuCores,
@@ -37,7 +37,7 @@ public class CoreCheckConfig {
                 avService,
                 messageInfoService
         );
-        checkProcessor.setInputFilter(checkInputFilter);
+        checkProcessor.setInputFilter(avCheckInputFilter);
 
         return checkProcessor;
     }

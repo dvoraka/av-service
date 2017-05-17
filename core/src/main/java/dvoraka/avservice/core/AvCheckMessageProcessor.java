@@ -122,6 +122,8 @@ public class AvCheckMessageProcessor implements MessageProcessor {
         receivedMsgCount.getAndIncrement();
 
         if (inputFilter != null && checkCondition(inputFilter.negate(), message)) {
+            log.debug("Filtering out: {}", message);
+
             return;
         }
 

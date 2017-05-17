@@ -54,6 +54,7 @@ public interface MessageProcessor extends AvMessageHelper, ExecutorServiceHelper
 
     /**
      * Filters out unwanted messages. The default (null) is pass everything to the processor.
+     * If you specify a filter, only matched messages are eligible for the processing.
      *
      * @param filter the filter
      */

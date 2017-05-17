@@ -34,8 +34,13 @@ import java.util.function.Predicate;
 })
 public class CoreConfig {
 
+    /**
+     * Input filter configuration for an AV check message processor.
+     *
+     * @return the input filter
+     */
     @Bean
-    public Predicate<AvMessage> checkInputFilter() {
+    public Predicate<AvMessage> avCheckInputFilter() {
         return (message) -> message.getType() == MessageType.FILE_CHECK
                 || message.getType() == MessageType.FILE_SAVE
                 || message.getType() == MessageType.FILE_UPDATE;
