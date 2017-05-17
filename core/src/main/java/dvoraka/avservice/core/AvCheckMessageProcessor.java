@@ -6,7 +6,6 @@ import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.MessageStatus;
-import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.exception.ScanException;
 import dvoraka.avservice.common.service.BasicMessageStatusStorage;
 import dvoraka.avservice.common.service.MessageStatusStorage;
@@ -26,6 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
@@ -51,6 +51,8 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     private final AtomicLong processedMsgCount = new AtomicLong();
 
     private final Set<AvMessageListener> avMessageListeners;
+
+    private Predicate<AvMessage> inputFilter;
 
     private final ExecutorService executorService;
 
@@ -119,12 +121,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     public void sendMessage(AvMessage message) {
         receivedMsgCount.getAndIncrement();
 
-        //TODO: filter should probably be outside
-        // filter out messages
-        if (!(message.getType() == MessageType.FILE_CHECK
-                || message.getType() == MessageType.FILE_SAVE
-                || message.getType() == MessageType.FILE_UPDATE)) {
-
+        if (inputFilter != null && checkCondition(inputFilter.negate(), message)) {
             return;
         }
 
@@ -185,6 +182,11 @@ public class AvCheckMessageProcessor implements MessageProcessor {
     @Override
     public void removeProcessedAVMessageListener(AvMessageListener listener) {
         avMessageListeners.remove(listener);
+    }
+
+    @Override
+    public void setInputFilter(Predicate<AvMessage> filter) {
+        inputFilter = filter;
     }
 
     /**

@@ -3,6 +3,7 @@ package dvoraka.avservice.common;
 import dvoraka.avservice.common.data.AvMessage;
 
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -40,6 +41,18 @@ public interface AvMessageHelper {
      */
     default AvMessage prepareErrorResponse(AvMessage message, String errorMessage) {
         return message.createErrorResponse(errorMessage);
+    }
+
+    /**
+     * Checks a condition.
+     *
+     * @param predicate the predicate
+     * @param item      the item to check
+     * @param <T>
+     * @return the result
+     */
+    default <T> boolean checkCondition(Predicate<T> predicate, T item) {
+        return predicate.test(item);
     }
 
     /**

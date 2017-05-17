@@ -2,6 +2,7 @@ package dvoraka.avservice.core.configuration;
 
 import dvoraka.avservice.avprogram.service.AvService;
 import dvoraka.avservice.common.Utils;
+import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.core.AvCheckMessageProcessor;
 import dvoraka.avservice.core.CompositeMessageProcessor;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Core storage configuration for import.
@@ -40,13 +42,18 @@ public class CoreStorageConfig {
     @Bean
     public MessageProcessor checkMessageProcessor(
             AvService avService,
-            MessageInfoService messageInfoService
+            MessageInfoService messageInfoService,
+            Predicate<AvMessage> checkInputFilter
     ) {
-        return new AvCheckMessageProcessor(
+        MessageProcessor messageProcessor = new AvCheckMessageProcessor(
                 cpuCores,
                 serviceId,
                 avService,
-                messageInfoService);
+                messageInfoService
+        );
+        messageProcessor.setInputFilter(checkInputFilter);
+
+        return messageProcessor;
     }
 
     @Bean

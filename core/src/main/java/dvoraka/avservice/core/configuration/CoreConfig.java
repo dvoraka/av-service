@@ -1,6 +1,8 @@
 package dvoraka.avservice.core.configuration;
 
 import dvoraka.avservice.avprogram.configuration.AvProgramConfig;
+import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.storage.configuration.StorageConfig;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.jmx.support.RegistrationPolicy;
+
+import java.util.function.Predicate;
 
 /**
  * Core module main configuration.
@@ -29,6 +33,13 @@ import org.springframework.jmx.support.RegistrationPolicy;
         StorageConfig.class
 })
 public class CoreConfig {
+
+    @Bean
+    public Predicate<AvMessage> checkInputFilter() {
+        return (message) -> message.getType() == MessageType.FILE_CHECK
+                || message.getType() == MessageType.FILE_SAVE
+                || message.getType() == MessageType.FILE_UPDATE;
+    }
 
     /**
      * Special MBeanExporter bean for integration tests.

@@ -14,6 +14,8 @@ import spock.lang.Specification
 import spock.lang.Subject
 import spock.util.concurrent.PollingConditions
 
+import java.util.function.Predicate
+
 /**
  * Default processor spec.
  */
@@ -27,6 +29,15 @@ class AvCheckMessageProcessorSpec extends Specification {
 
     PollingConditions conditions
     @Shared
+    Predicate<AvMessage> inputFilter = new Predicate<AvMessage>() {
+        @Override
+        boolean test(AvMessage message) {
+            return (message.getType() == MessageType.FILE_CHECK
+                    || message.getType() == MessageType.FILE_SAVE
+                    || message.getType() == MessageType.FILE_UPDATE)
+        }
+    }
+    @Shared
     String serviceId = 'TEST'
 
 
@@ -35,6 +46,7 @@ class AvCheckMessageProcessorSpec extends Specification {
         infoService = Mock()
 
         processor = new AvCheckMessageProcessor(2, serviceId, avService, infoService)
+        processor.setInputFilter(inputFilter)
         processor.start()
 
         conditions = new PollingConditions(timeout: 4)

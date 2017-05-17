@@ -16,6 +16,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 /**
  * Processor for composition of processors.
@@ -48,17 +49,18 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
         statusStorage.started(message.getId());
 
         AvMessage lastResult = message;
-        for (ProcessorConfiguration processor : processors) {
+        for (ProcessorConfiguration configuration : processors) {
 
-            if (!(checkConditions(processor.getInputConditions().stream(), message, lastResult))) {
-                log.debug("Input conditions failed for processor: " + processor);
+            if (!(checkConditions(
+                    configuration.getInputConditions().stream(), message, lastResult))) {
+                log.debug("Input conditions failed for processor: " + configuration);
                 continue;
             }
 
             // process message in a new thread
-            final AvMessage data = processor.isUseOriginalMessage() ? message : lastResult;
+            final AvMessage data = configuration.isUseOriginalMessage() ? message : lastResult;
             setActualMessage(data);
-            new Thread(() -> processor.getProcessor().sendMessage(data))
+            new Thread(() -> configuration.getProcessor().sendMessage(data))
                     .start();
 
             // wait for result
@@ -108,6 +110,11 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
     @Override
     public void removeProcessedAVMessageListener(AvMessageListener listener) {
         listeners.remove(listener);
+    }
+
+    @Override
+    public void setInputFilter(Predicate<AvMessage> filter) {
+        //TODO
     }
 
     public void addProcessor(ProcessorConfiguration configuration) {

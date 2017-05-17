@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
@@ -152,5 +153,10 @@ public class FileMessageProcessor implements MessageProcessor {
     @Override
     public void removeProcessedAVMessageListener(AvMessageListener listener) {
         listeners.remove(listener);
+    }
+
+    @Override
+    public void setInputFilter(Predicate<AvMessage> filter) {
+        //TODO
     }
 }

@@ -6,6 +6,8 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.service.ExecutorServiceHelper;
 
+import java.util.function.Predicate;
+
 /**
  * Abstraction for message processing.
  */
@@ -19,7 +21,7 @@ public interface MessageProcessor extends AvMessageHelper, ExecutorServiceHelper
     void sendMessage(AvMessage message);
 
     /**
-     * Returns the message status with the given ID.
+     * Returns a message status with a given ID.
      *
      * @param id the message ID
      * @return the status
@@ -49,4 +51,11 @@ public interface MessageProcessor extends AvMessageHelper, ExecutorServiceHelper
      * @param listener the listener
      */
     void removeProcessedAVMessageListener(AvMessageListener listener);
+
+    /**
+     * Filters out unwanted messages. The default (null) is pass everything to the processor.
+     *
+     * @param filter the filter
+     */
+    void setInputFilter(Predicate<AvMessage> filter);
 }
