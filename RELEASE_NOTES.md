@@ -1,3 +1,6 @@
+## v0.7.2 (May 17, 2017)
+ * Fixed ClamAV program scan method response parsing
+
 ## v0.7.1 (May 16, 2017)
  * Fixed ClamAV program socket pool usage
 
