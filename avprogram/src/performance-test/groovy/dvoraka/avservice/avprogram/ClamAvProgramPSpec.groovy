@@ -83,6 +83,20 @@ class ClamAvProgramPSpec extends Specification {
             notThrown(Exception)
     }
 
+    def "scan bytes new - check response"() {
+        when:
+            int count = 1_000_000
+            long start = System.currentTimeMillis()
+            count.times {
+                assert programWithPooling.scanBytesWithInfo(
+                        eicarString.getBytes()) == 'stream: Eicar-Test-Signature FOUND'
+            }
+            println(System.currentTimeMillis() - start)
+
+        then:
+            notThrown(Exception)
+    }
+
     @Unroll
     def "threading performance: #threadCount threads"() {
         given:
