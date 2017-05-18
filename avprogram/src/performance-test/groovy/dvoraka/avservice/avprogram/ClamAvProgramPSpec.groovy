@@ -128,4 +128,16 @@ class ClamAvProgramPSpec extends Specification {
         where:
             threadCount << [1, 2, 4, 6, 8, 10]
     }
+
+    @Unroll
+    def "stream length test: #size bytes"() {
+        setup:
+            byte[] bytes = new byte[size];
+
+        expect:
+            !programWithPooling.scanBytes(bytes)
+
+        where:
+            size << [100, 1000, 10_000, 100_000, 1000_000, 10_000_000]
+    }
 }

@@ -5,23 +5,21 @@ import dvoraka.avservice.common.Utils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.lang.Unroll
 
 /**
- * AvProgram test.
+ * AvProgram spec.
  */
 @ContextConfiguration(classes = [AvProgramConfig.class])
 @ActiveProfiles(['core'])
 class AvProgramISpec extends Specification {
 
-    @Shared
-    String eicarString = Utils.EICAR
-
     @Autowired
     AvProgram avProgram
+
+    @Shared
+    String eicarString = Utils.EICAR
 
 
     def setup() {
@@ -78,22 +76,5 @@ class AvProgramISpec extends Specification {
 
         then:
             shouldBeTrue
-    }
-
-    @Ignore
-    @Unroll
-    def "stream length test: #size bytes"() {
-        setup:
-            byte[] bytes = new byte[size];
-
-        expect:
-            !avProgram.scanBytes(bytes)
-
-        where:
-            size << [100, 1000, 10_000, 100_000, 1000_000, 10_000_000]
-    }
-
-    def "parallel scan"() {
-
     }
 }
