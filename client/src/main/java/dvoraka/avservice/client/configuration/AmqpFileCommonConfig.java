@@ -1,8 +1,11 @@
 package dvoraka.avservice.client.configuration;
 
+import dvoraka.avservice.client.QueueCleaner;
+import dvoraka.avservice.client.amqp.AmqpQueueCleaner;
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.common.amqp.AvMessageMapper;
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -69,5 +72,10 @@ public class AmqpFileCommonConfig {
         template.setMessageConverter(messageConverter);
 
         return template;
+    }
+
+    @Bean
+    public QueueCleaner queueCleaner(AmqpTemplate rabbitTemplate) {
+        return new AmqpQueueCleaner(rabbitTemplate);
     }
 }
