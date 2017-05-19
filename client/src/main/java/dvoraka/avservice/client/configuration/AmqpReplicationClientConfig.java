@@ -1,8 +1,11 @@
 package dvoraka.avservice.client.configuration;
 
+import dvoraka.avservice.client.QueueCleaner;
 import dvoraka.avservice.client.ReplicationComponent;
+import dvoraka.avservice.client.amqp.AmqpQueueCleaner;
 import dvoraka.avservice.client.amqp.AmqpReplicationComponent;
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
@@ -117,5 +120,10 @@ public class AmqpReplicationClientConfig {
     @Bean
     public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
+    }
+
+    @Bean
+    public QueueCleaner queueCleaner(AmqpTemplate replicationRabbitTemplate) {
+        return new AmqpQueueCleaner(replicationRabbitTemplate);
     }
 }
