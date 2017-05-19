@@ -1,7 +1,6 @@
 package dvoraka.avservice.client
 
 import dvoraka.avservice.common.Utils
-import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import spock.lang.Ignore
@@ -17,8 +16,6 @@ class QueueCleanerISpec extends Specification {
 
     @Autowired
     ServerComponent serverComponent
-    @Autowired
-    AmqpTemplate amqpTemplate
 
     @Value('${avservice.amqp.fileQueue}')
     String queueName
@@ -34,6 +31,15 @@ class QueueCleanerISpec extends Specification {
             queueCleaner.clean(queueName)
 
         then:
-            amqpTemplate.receive(queueName) == null
+            receive(queueName) == null
+    }
+
+    /**
+     * Receives messages from a queue/destination.
+     *
+     * @param queueName the queue/destination name
+     */
+    def receive(String queueName) {
+        // you need to override it
     }
 }

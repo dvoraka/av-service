@@ -1,24 +1,24 @@
-package dvoraka.avservice.client.amqp
+package dvoraka.avservice.client.jms
 
 import dvoraka.avservice.client.QueueCleanerISpec
 import dvoraka.avservice.client.configuration.ClientConfig
-import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.PropertySource
+import org.springframework.jms.core.JmsTemplate
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration(classes = [ClientConfig.class])
 @PropertySource("classpath:avservice.properties")
-@ActiveProfiles(['client', 'file-client', 'amqp', 'no-db'])
-class AmqpQueueCleanerISpec extends QueueCleanerISpec {
+@ActiveProfiles(['client', 'file-client', 'jms', 'no-db'])
+class JmsQueueCleanerISpec extends QueueCleanerISpec {
 
     @Autowired
-    AmqpTemplate amqpTemplate
+    JmsTemplate jmsTemplate
 
 
     @Override
     def receive(String queueName) {
-        return amqpTemplate.receive(queueName)
+        return jmsTemplate.receive(queueName)
     }
 }

@@ -1,5 +1,7 @@
 package dvoraka.avservice.client.configuration;
 
+import dvoraka.avservice.client.QueueCleaner;
+import dvoraka.avservice.client.jms.JmsQueueCleaner;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -56,5 +58,10 @@ public class JmsFileCommonConfig {
         messageConverter.setTypeIdPropertyName("typeId");
 
         return messageConverter;
+    }
+
+    @Bean
+    public QueueCleaner queueCleaner(JmsTemplate jmsTemplate) {
+        return new JmsQueueCleaner(jmsTemplate);
     }
 }
