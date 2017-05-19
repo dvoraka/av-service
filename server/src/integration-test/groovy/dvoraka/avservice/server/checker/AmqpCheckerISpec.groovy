@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['client', 'amqp', 'file-client', 'checker', 'no-db'])
 @DirtiesContext
-class AmqpSimpleCheckerISpec extends SimpleCheckerISpec {
+class AmqpCheckerISpec extends CheckerISpec {
 
     def setupSpec() {
         AmqpServerRunner.setTestRun(false)

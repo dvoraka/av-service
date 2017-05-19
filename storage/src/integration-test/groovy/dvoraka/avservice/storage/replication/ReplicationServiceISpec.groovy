@@ -13,10 +13,10 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'replication', 'client', 'amqp', 'amqp-client', 'db'])
-class DefaultReplicationServiceISpec extends Specification {
+class ReplicationServiceISpec extends Specification {
 
     @Autowired
-    DefaultReplicationService service
+    ReplicationService service
 
 
     def "test"() {
@@ -24,7 +24,7 @@ class DefaultReplicationServiceISpec extends Specification {
             true
     }
 
-    @Ignore
+    @Ignore('WIP')
     def "save file"() {
         expect:
             service.saveFile(Utils.genSaveMessage())

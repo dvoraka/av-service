@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['client', 'jms', 'file-client', 'checker', 'no-db'])
 @DirtiesContext
-class JmsSimpleCheckerISpec extends SimpleCheckerISpec {
+class JmsCheckerISpec extends CheckerISpec {
 
     def setupSpec() {
         JmsServerRunner.setTestRun(false)

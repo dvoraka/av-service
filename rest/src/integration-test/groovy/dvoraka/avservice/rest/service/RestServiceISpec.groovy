@@ -19,12 +19,11 @@ import org.springframework.http.ResponseEntity
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Ignore
 import spock.lang.Specification
-import spock.lang.Stepwise
 
 /**
  * REST testing.
  */
-@Ignore('base test')
+@Ignore('base class')
 class RestServiceISpec extends Specification {
 
     @Autowired

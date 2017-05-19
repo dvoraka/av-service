@@ -11,10 +11,10 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 /**
- * Simple checker spec base.
+ * Checker spec base.
  */
-@Ignore
-class SimpleCheckerISpec extends Specification {
+@Ignore('base class')
+class CheckerISpec extends Specification {
 
     @Autowired
     Checker checker

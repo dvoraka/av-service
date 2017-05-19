@@ -14,7 +14,7 @@ import java.util.stream.Stream
 /**
  * Message info service spec.
  */
-@Ignore
+@Ignore('base class')
 class MessageInfoServiceISpec extends Specification {
 
     @Autowired
