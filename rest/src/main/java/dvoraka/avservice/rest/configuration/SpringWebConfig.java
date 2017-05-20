@@ -26,6 +26,7 @@ import javax.validation.Validator;
 @Profile("rest")
 @Import({
         RestConfig.class,
+
         CoreConfig.class,
         StatsConfig.class
 })

@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class LocalRestService implements RestService, AvMessageListener {
 
-    private final MessageProcessor checkAndFileProcessor;
+    private final MessageProcessor messageProcessor;
 
     private static final Logger log = LogManager.getLogger(LocalRestService.class);
 
@@ -38,8 +38,8 @@ public class LocalRestService implements RestService, AvMessageListener {
 
 
     @Autowired
-    public LocalRestService(MessageProcessor checkAndFileProcessor) {
-        this.checkAndFileProcessor = requireNonNull(checkAndFileProcessor);
+    public LocalRestService(MessageProcessor messageProcessor) {
+        this.messageProcessor = requireNonNull(messageProcessor);
 
         cacheManager = buildManager(cacheConfiguration());
         messageCache = cacheManager.getCache("restCache", String.class, AvMessage.class);
@@ -66,32 +66,32 @@ public class LocalRestService implements RestService, AvMessageListener {
 
     @Override
     public MessageStatus messageStatus(String id) {
-        return checkAndFileProcessor.messageStatus(id);
+        return messageProcessor.messageStatus(id);
     }
 
     @Override
     public void checkMessage(AvMessage message) {
-        checkAndFileProcessor.sendMessage(message);
+        messageProcessor.sendMessage(message);
     }
 
     @Override
     public void saveFile(AvMessage message) {
-        checkAndFileProcessor.sendMessage(message);
+        messageProcessor.sendMessage(message);
     }
 
     @Override
     public void loadFile(AvMessage message) {
-        checkAndFileProcessor.sendMessage(message);
+        messageProcessor.sendMessage(message);
     }
 
     @Override
     public void updateFile(AvMessage message) {
-        checkAndFileProcessor.sendMessage(message);
+        messageProcessor.sendMessage(message);
     }
 
     @Override
     public void deleteFile(AvMessage message) {
-        checkAndFileProcessor.sendMessage(message);
+        messageProcessor.sendMessage(message);
     }
 
     @Override
@@ -103,14 +103,14 @@ public class LocalRestService implements RestService, AvMessageListener {
     @Override
     public void start() {
         log.debug("Starting cache updating...");
-        checkAndFileProcessor.addProcessedAVMessageListener(this);
+        messageProcessor.addProcessedAVMessageListener(this);
     }
 
     @Override
     @PreDestroy
     public void stop() {
         cacheManager.close();
-        checkAndFileProcessor.stop();
+        messageProcessor.stop();
     }
 
     @Override

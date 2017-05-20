@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * REST superset configuration for import.
+ * REST configuration for import.
  */
 @Configuration
 @Import({
@@ -13,10 +13,9 @@ import org.springframework.context.annotation.Import;
         RestLocalConfig.class,
         // AMQP
         RestAmqpConfig.class,
-//        AmqpConfig.class,
         // JMS
         RestJmsConfig.class,
-//        JmsConfig.class,
+
         ClientConfig.class
 })
 public class RestConfig {
