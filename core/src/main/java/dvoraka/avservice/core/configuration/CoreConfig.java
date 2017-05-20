@@ -24,9 +24,9 @@ import java.util.function.Predicate;
 @EnableMBeanExport
 @Profile("core")
 @Import({
-        CoreCheckConfig.class,
-        CoreStorageConfig.class,
-        CoreStorageReplicationConfig.class,
+        CheckCoreConfig.class,
+        StorageCoreConfig.class,
+        StorageReplicationCoreConfig.class,
 
         AvProgramConfig.class,
         DatabaseConfig.class,

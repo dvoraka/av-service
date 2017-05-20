@@ -25,7 +25,7 @@ import java.util.function.Predicate;
  */
 @Configuration
 @Profile("storage")
-public class CoreStorageConfig {
+public class StorageCoreConfig {
 
     @Value("${avservice.cpuCores:2}")
     private Integer cpuCores;

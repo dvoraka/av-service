@@ -13,7 +13,7 @@ import spock.lang.Specification
 @ContextConfiguration(classes = [CoreConfig.class])
 @ActiveProfiles(['core', 'storage', 'replication', 'amqp', 'client', 'no-db'])
 @DirtiesContext
-class CoreStorageReplicationConfigISpec extends Specification {
+class StorageReplicationCoreConfigISpec extends Specification {
 
     @Autowired
     MessageProcessor messageProcessor

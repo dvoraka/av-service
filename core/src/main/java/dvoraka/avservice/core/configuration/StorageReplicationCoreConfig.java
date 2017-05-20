@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("replication")
-public class CoreStorageReplicationConfig {
+public class StorageReplicationCoreConfig {
 
     @Bean
     public MessageProcessor fileMessageProcessor(FileService replicationService) {

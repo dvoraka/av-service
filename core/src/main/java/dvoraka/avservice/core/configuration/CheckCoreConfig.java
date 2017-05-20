@@ -17,7 +17,7 @@ import java.util.function.Predicate;
  */
 @Configuration
 @Profile("check")
-public class CoreCheckConfig {
+public class CheckCoreConfig {
 
     @Value("${avservice.cpuCores:2}")
     private Integer cpuCores;
