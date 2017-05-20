@@ -9,12 +9,9 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({
-        RestSecurityConfig.class,
-        RestLocalConfig.class,
-        // AMQP
-        RestAmqpConfig.class,
-        // JMS
-        RestJmsConfig.class,
+        SecurityRestConfig.class,
+        LocalRestConfig.class,
+        RemoteRestConfig.class,
 
         ClientConfig.class
 })

@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityRestConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override

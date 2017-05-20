@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * REST local configuration.
+ * Local REST configuration for the import.
  */
 @Configuration
 @Profile("rest-local")
-public class RestLocalConfig {
+public class LocalRestConfig {
 
     @Bean
     public RestService avRestService(MessageProcessor messageProcessor) {
