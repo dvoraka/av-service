@@ -1,7 +1,7 @@
 package dvoraka.avservice.common.service;
 
 /**
- * Hashing service for creating hashes from data.
+ * Hashing service for creating string hashes from data.
  */
 public interface HashingService {
 
