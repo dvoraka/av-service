@@ -1,6 +1,7 @@
 package dvoraka.avservice.rest.configuration;
 
 import dvoraka.avservice.core.configuration.CoreConfig;
+import dvoraka.avservice.rest.RestAspect;
 import dvoraka.avservice.rest.controller.CheckController;
 import dvoraka.avservice.rest.controller.FileController;
 import dvoraka.avservice.rest.controller.MainController;
@@ -8,8 +9,10 @@ import dvoraka.avservice.rest.controller.StatsController;
 import dvoraka.avservice.rest.service.RestService;
 import dvoraka.avservice.stats.StatsService;
 import dvoraka.avservice.stats.configuration.StatsConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -23,14 +26,21 @@ import javax.validation.Validator;
  */
 @EnableWebMvc
 @Configuration
+@EnableAspectJAutoProxy
 @Profile("rest")
 @Import({
         RestConfig.class,
 
         CoreConfig.class,
-        StatsConfig.class
+        StatsConfig.class,
+
+        RestAspect.class
 })
 public class SpringWebConfig {
+
+    @Value("${avservice.serviceId}")
+    private String serviceId;
+
 
     @Bean
     public MainController mainController(RestService avRestService) {
@@ -64,5 +74,10 @@ public class SpringWebConfig {
         processor.setValidator(validator);
 
         return processor;
+    }
+
+    @Bean
+    public String getServiceId() {
+        return serviceId;
     }
 }

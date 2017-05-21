@@ -11,6 +11,7 @@ public enum AvMessageSource {
     JMS_COMPONENT,
     JMS_COMPONENT_IN,
     JMS_COMPONENT_OUT,
+    REST_ENDPOINT,
     SERVER,
     PROCESSOR,
     TEST
