@@ -26,14 +26,14 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class AmqpComponent implements ServerComponent {
 
+    private final String responseExchange;
+    private final String serviceId;
     private final RabbitTemplate rabbitTemplate;
     private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(AmqpComponent.class);
     public static final String ROUTING_KEY = "ROUTINGKEY";
 
-    private final String responseExchange;
-    private final String serviceId;
     private final List<AvMessageListener> listeners;
     private final MessageConverter messageConverter;
 
@@ -101,5 +101,10 @@ public class AmqpComponent implements ServerComponent {
 
     public int listenersCount() {
         return listeners.size();
+    }
+
+    @Override
+    public String getServiceId() {
+        return serviceId;
     }
 }

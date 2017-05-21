@@ -10,4 +10,6 @@ public interface ServerComponent extends
         AvMessageSender,
         AvMessageHelper,
         MessageListenerAdapter {
+
+    String getServiceId();
 }

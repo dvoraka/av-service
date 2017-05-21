@@ -101,4 +101,9 @@ public class JmsComponent implements ServerComponent {
     public int listenersCount() {
         return listeners.size();
     }
+
+    @Override
+    public String getServiceId() {
+        return serviceId;
+    }
 }

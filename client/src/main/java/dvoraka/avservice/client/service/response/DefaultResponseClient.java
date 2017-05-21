@@ -3,6 +3,8 @@ package dvoraka.avservice.client.service.response;
 import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;
@@ -29,11 +31,14 @@ import static java.util.Objects.requireNonNull;
 public class DefaultResponseClient implements ResponseClient, AvMessageListener {
 
     private final ServerComponent serverComponent;
+    private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(DefaultResponseClient.class);
 
     private static final String CACHE_NAME = "messageCache";
     public static final int CACHE_TIMEOUT = 60 * 1_000; // one minute
+
+    private final String serviceId;
 
     private CacheManager cacheManager;
     private Cache<String, AvMessage> messageCache;
@@ -42,8 +47,13 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
 
     @Autowired
-    public DefaultResponseClient(ServerComponent serverComponent) {
+    public DefaultResponseClient(
+            ServerComponent serverComponent,
+            MessageInfoService messageInfoService
+    ) {
         this.serverComponent = requireNonNull(serverComponent);
+        this.messageInfoService = requireNonNull(messageInfoService);
+        serviceId = requireNonNull(serverComponent.getServiceId());
     }
 
     @PostConstruct
@@ -113,5 +123,6 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
     public void onAvMessage(AvMessage response) {
         log.debug("On message: {}", response);
         messageCache.put(response.getCorrelationId(), response);
+        messageInfoService.save(response, AvMessageSource.RESPONSE_CACHE, serviceId);
     }
 }

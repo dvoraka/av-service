@@ -3,6 +3,8 @@ package dvoraka.avservice.client.service.response
 import dvoraka.avservice.client.ServerComponent
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.db.service.MessageInfoService
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -15,11 +17,18 @@ class DefaultResponseClientSpec extends Specification {
     DefaultResponseClient client
 
     ServerComponent serverComponent
+    MessageInfoService messageInfoService
+
+    @Shared
+    String serviceId = 'testID'
 
 
     def setup() {
         serverComponent = Mock()
-        client = new DefaultResponseClient(serverComponent)
+        serverComponent.getServiceId() >> serviceId
+        messageInfoService = Mock()
+
+        client = new DefaultResponseClient(serverComponent, messageInfoService)
     }
 
     def "start and stop"() {

@@ -7,6 +7,7 @@ import dvoraka.avservice.client.service.DefaultFileServiceClient;
 import dvoraka.avservice.client.service.FileServiceClient;
 import dvoraka.avservice.client.service.response.DefaultResponseClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
+import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -38,7 +39,10 @@ public class FileClientConfig {
     }
 
     @Bean
-    public ResponseClient responseClient(ServerComponent serverComponent) {
-        return new DefaultResponseClient(serverComponent);
+    public ResponseClient responseClient(
+            ServerComponent serverComponent,
+            MessageInfoService messageInfoService
+    ) {
+        return new DefaultResponseClient(serverComponent, messageInfoService);
     }
 }

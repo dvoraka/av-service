@@ -35,7 +35,6 @@ public class Md5HashingService implements HashingService {
         b64encoder = Base64.getEncoder();
     }
 
-
     @Override
     public String arrayHash(byte[] data) {
         return b64encoder.encodeToString(digest.digest(data));
