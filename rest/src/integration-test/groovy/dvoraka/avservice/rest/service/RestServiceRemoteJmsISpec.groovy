@@ -2,34 +2,34 @@ package dvoraka.avservice.rest.service
 
 import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.rest.Application
-import dvoraka.avservice.server.runner.amqp.AmqpFileServerRunner
+import dvoraka.avservice.server.runner.jms.JmsFileServerRunner
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import spock.lang.Shared
 
 /**
- * REST with a remote AMQP connection and file storage.
+ * REST with a remote JMS connection and file storage.
  */
 @SpringBootTest(
         classes = [
                 Application.class
         ],
         properties = [
-                'spring.profiles.active=client,rest,rest-amqp,amqp,file-client,storage,db',
+                'spring.profiles.active=client,rest,rest-jms,jms,file-client,storage,db',
                 'server.contextPath=/av-service',
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @DirtiesContext
-class RestServiceRemoteAmqpISpec extends RestServiceISpec {
+class RestServiceRemoteJmsISpec extends RestServiceISpec {
 
     @Shared
     ServiceRunner runner
 
 
     def setupSpec() {
-        AmqpFileServerRunner.setTestRun(false)
-        runner = new AmqpFileServerRunner()
+        JmsFileServerRunner.setTestRun(false)
+        runner = new JmsFileServerRunner()
         runner.runAsync()
         sleep(4_000) // wait for server
     }

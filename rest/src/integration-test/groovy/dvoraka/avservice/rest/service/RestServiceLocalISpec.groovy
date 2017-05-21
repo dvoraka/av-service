@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 
 /**
- * REST with local connections.
+ * REST with a local connection and file storage.
  */
 @SpringBootTest(
         classes = [
