@@ -83,8 +83,6 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void start() {
         log.info("Starting service...");
         responseClient.addNoResponseMessageListener(this);
-        //TODO: lock is started by the container
-//        executorService.schedule(remoteLock::start, 0L, TimeUnit.MILLISECONDS);
         executorService.scheduleWithFixedDelay(
                 this::discoverNeighbours, 0L, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }
