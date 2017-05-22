@@ -8,8 +8,8 @@ import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.common.replication.ReplicationHelper;
-import dvoraka.avservice.common.service.CachingService;
-import dvoraka.avservice.common.service.DefaultCachingService;
+import dvoraka.avservice.common.service.HashingService;
+import dvoraka.avservice.common.service.Md5HashingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class DefaultRemoteLock implements
     private final AtomicLong sequence;
     private final Set<String> lockedFiles;
 
-    private final CachingService cachingService;
+    private final HashingService hashingService;
 
 
     @Autowired
@@ -56,8 +56,7 @@ public class DefaultRemoteLock implements
         sequence = new AtomicLong();
         lockedFiles = new HashSet<>();
 
-        // TODO:
-        cachingService = new DefaultCachingService();
+        hashingService = new Md5HashingService();
     }
 
     @PostConstruct
@@ -200,7 +199,7 @@ public class DefaultRemoteLock implements
     private String hash(String filename, String owner) {
         byte[] bytes = (filename + owner).getBytes(StandardCharsets.UTF_8);
 
-        return cachingService.arrayDigest(bytes);
+        return hashingService.arrayHash(bytes);
     }
 
     @Override
