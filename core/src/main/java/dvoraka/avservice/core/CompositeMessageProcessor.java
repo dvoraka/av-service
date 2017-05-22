@@ -34,6 +34,8 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
     private final BlockingQueue<AvMessage> queue;
     private final MessageStatusStorage statusStorage;
 
+    private Predicate<AvMessage> inputFilter;
+
     private volatile AvMessage actualMessage;
 
 
@@ -46,6 +48,12 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
     @Override
     public void sendMessage(AvMessage message) {
+        if (inputFilter != null && checkCondition(inputFilter.negate(), message)) {
+            log.debug("Filtering out: {}", message);
+
+            return;
+        }
+
         statusStorage.started(message.getId());
 
         AvMessage lastResult = message;
@@ -114,7 +122,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
 
     @Override
     public void setInputFilter(Predicate<AvMessage> filter) {
-        //TODO
+        inputFilter = filter;
     }
 
     public void addProcessor(ProcessorConfiguration configuration) {
