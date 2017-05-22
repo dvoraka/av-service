@@ -57,7 +57,6 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
 
         then:
             1 * responseClient.addNoResponseMessageListener(_)
-            1 * remoteLock.start()
     }
 
     def "start with discovery response"() {
@@ -67,7 +66,6 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
 
         then:
             1 * responseClient.addNoResponseMessageListener(_)
-            1 * remoteLock.start()
 
             1 * responseClient.getResponseWait(_, _) >> replicationList(
                     createDiscoverReply(

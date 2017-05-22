@@ -105,14 +105,14 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getRouting() == MessageRouting.UNICAST
             response.getFromId()
             response.getToId() == nodeId
-            response.getSequence() == 0
+            response.getSequence() == 1
     }
 
     def "lock request"() {
         given:
             String file = 'replTestFile'
             String owner = 'replTestOwner'
-            ReplicationMessage request = createLockRequest(file, owner, nodeId, 0)
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, 1)
 
         when:
             client.sendMessage(request)

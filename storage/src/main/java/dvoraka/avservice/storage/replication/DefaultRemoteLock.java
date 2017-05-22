@@ -13,6 +13,8 @@ import dvoraka.avservice.common.service.Md5HashingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -62,10 +64,14 @@ public class DefaultRemoteLock implements
     @PostConstruct
     @Override
     public void start() {
-        log.info("Start.");
+        log.info("Start ({}). {}", nodeId, this);
         responseClient.addNoResponseMessageListener(this);
-        //TODO: it is too early to synchronize and with every lock request is sync possible
-//        new Thread(this::synchronize).start();
+    }
+
+    @EventListener
+    public void handleContextRefresh(ContextRefreshedEvent event) {
+        log.debug("Context refreshed event received.");
+        synchronize();
     }
 
     @Override

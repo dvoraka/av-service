@@ -67,7 +67,7 @@ public class DefaultReplicationResponseClient implements
             return;
         }
 
-        log.info("Start.");
+        log.info("Start ({}).", nodeId);
         initializeCache();
         replicationComponent.addReplicationMessageListener(this);
         setStarted(true);
@@ -80,7 +80,7 @@ public class DefaultReplicationResponseClient implements
             return;
         }
 
-        log.info("Stop.");
+        log.info("Stop ({}).", nodeId);
         setStarted(false);
         replicationComponent.removeReplicationMessageListener(this);
         cacheManager.close();
