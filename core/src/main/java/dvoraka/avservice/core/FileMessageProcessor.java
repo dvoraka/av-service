@@ -44,6 +44,8 @@ public class FileMessageProcessor implements MessageProcessor {
     private final Set<AvMessageListener> listeners;
     private final Map<MessageType, Consumer<AvMessage>> processMap;
 
+    private Predicate<AvMessage> inputFilter;
+
 
     @Autowired
     public FileMessageProcessor(FileService fileService) {
@@ -66,6 +68,12 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public void sendMessage(AvMessage message) {
+        if (inputFilter != null && checkCondition(inputFilter.negate(), message)) {
+            log.debug("Filtering out: {}", message);
+
+            return;
+        }
+
         log.debug("Receive message: " + message);
         statusStorage.started(message.getId());
         processMap.getOrDefault(message.getType(), this::unknown)
@@ -157,6 +165,6 @@ public class FileMessageProcessor implements MessageProcessor {
 
     @Override
     public void setInputFilter(Predicate<AvMessage> filter) {
-        //TODO
+        inputFilter = filter;
     }
 }
