@@ -11,8 +11,7 @@ import org.springframework.context.annotation.Profile;
 /**
  * Remote REST configuration for the import.
  */
-//TODO: merge profiles to 'rest-remote'
-@Profile({"rest-remote", "rest-amqp"})
+@Profile("rest-remote")
 public class RemoteRestConfig {
 
     @Bean

@@ -15,7 +15,7 @@ import spock.lang.Shared
                 Application.class
         ],
         properties = [
-                'spring.profiles.active=client,rest,rest-amqp,amqp,file-client,storage,db',
+                'spring.profiles.active=client,rest,rest-remote,amqp,file-client,storage,db',
                 'server.contextPath=/av-service',
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT

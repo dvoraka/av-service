@@ -12,7 +12,7 @@ import spock.lang.Specification
  * Configuration spec.
  */
 @ContextConfiguration(classes = SpringWebConfig.class)
-@ActiveProfiles(['rest', 'rest-amqp', 'amqp', 'client', 'file-client', 'db'])
+@ActiveProfiles(['rest', 'rest-remote', 'amqp', 'client', 'file-client', 'db'])
 @WebAppConfiguration
 @DirtiesContext
 class RestAmqpConfigISpec extends Specification {
