@@ -15,10 +15,10 @@ import java.util.Base64;
 @Service
 public class Md5HashingService implements HashingService {
 
+    private static final Logger log = LogManager.getLogger(Md5HashingService.class);
+
     private final Base64.Encoder b64encoder;
     private MessageDigest digest;
-
-    private static final Logger log = LogManager.getLogger(Md5HashingService.class);
 
 
     public Md5HashingService() {
