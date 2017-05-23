@@ -9,7 +9,6 @@ import spock.lang.Subject
 /**
  * ClamAV program spec.
  */
-//TODO: update
 class ClamAvProgramSpec extends Specification {
 
     @Subject
@@ -40,7 +39,7 @@ class ClamAvProgramSpec extends Specification {
             '123456789: stream: OK' | 'stream: OK'
     }
 
-    def "scan stream (empty array)"() {
+    def "scan bytes (empty array)"() {
         given:
             ClamAvProgram program = Spy()
             program.scanBytesWithInfo(_) >> ClamAvProgram.CLEAN_STREAM_RESPONSE
@@ -52,7 +51,7 @@ class ClamAvProgramSpec extends Specification {
             !result
     }
 
-    def "scan stream (empty array) with false check"() {
+    def "scan bytes (empty array) with false check"() {
         given:
             ClamAvProgram program = Spy()
             program.scanBytesWithInfo(_) >> "VIRUS"
@@ -64,7 +63,7 @@ class ClamAvProgramSpec extends Specification {
             result
     }
 
-    def "scan stream with an exception"() {
+    def "scan bytes with exception"() {
         given:
             ClamAvProgram program = Spy()
             program.scanBytesWithInfo(_) >> {
@@ -78,7 +77,7 @@ class ClamAvProgramSpec extends Specification {
             thrown(ScanException)
     }
 
-    def "scan stream with with info with IO exception"() {
+    def "scan bytes with info with IO exception"() {
         given:
             ClamAvProgram program = Spy()
             program.createSocket() >> {
@@ -90,6 +89,11 @@ class ClamAvProgramSpec extends Specification {
 
         then:
             thrown(ScanException)
+    }
+
+    def "get no virus response string"() {
+        expect:
+            avProgram.getNoVirusResponse() == avProgram.CLEAN_STREAM_RESPONSE
     }
 
     def "is running"() {
