@@ -32,6 +32,8 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class ClamAvProgram implements AvProgram {
 
+    private CachingService cachingService;
+
     private static final Logger log = LogManager.getLogger(ClamAvProgram.class);
 
     public static final String DEFAULT_HOST = "localhost";
@@ -44,7 +46,6 @@ public class ClamAvProgram implements AvProgram {
     private static final int CHUNK_LENGTH_BYTE_SIZE = 4;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-    private CachingService cachingService;
     private volatile boolean caching;
 
     private final String socketHost;

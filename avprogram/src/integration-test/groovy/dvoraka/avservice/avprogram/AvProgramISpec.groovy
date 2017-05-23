@@ -2,6 +2,7 @@ package dvoraka.avservice.avprogram
 
 import dvoraka.avservice.avprogram.configuration.AvProgramConfig
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.service.CachingService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -17,6 +18,9 @@ class AvProgramISpec extends Specification {
 
     @Autowired
     AvProgram avProgram
+
+    @Autowired
+    CachingService cachingService
 
     @Shared
     String eicarString = Utils.EICAR
@@ -46,9 +50,13 @@ class AvProgramISpec extends Specification {
             !shouldBeFalse
     }
 
-    // TODO: disable when no caching service is loaded
     def "scan normal bytes with caching enabled"() {
         setup:
+            // skip test when caching service is not available
+            if (cachingService == null) {
+                return
+            }
+
             byte[] bytes = "No virus here".getBytes("UTF-8")
             avProgram.setCaching(true)
 
