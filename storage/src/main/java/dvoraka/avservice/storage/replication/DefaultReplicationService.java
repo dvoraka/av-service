@@ -139,9 +139,27 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     neighbourCount())) {
 
                 if (!exists(message)) {
+                    log.debug("Saving locally...");
                     fileService.saveFile(message);
+
+                    log.debug("Saving remotely...");
                     sendSaveMessage(message);
-                    //TODO: wait for response
+
+                    log.debug("Checking save status...");
+                    Optional<ReplicationMessageList> responses = responseClient
+                            .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
+                    ReplicationMessageList messages = responses
+                            .orElseGet(ReplicationMessageList::new);
+
+                    long successCount = messages.stream()
+                            .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                            .count();
+
+                    if (successCount != getReplicationCount() - 1) {
+                        // rollback transaction
+
+                        throw new FileServiceException();
+                    }
                 } else {
                     throw new ExistingFileException();
                 }
@@ -289,6 +307,10 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     public int getReplicationCount() {
         return replicationCount;
+    }
+
+    public void setReplicationCount(int replicationCount) {
+        this.replicationCount = replicationCount;
     }
 
     private boolean localCopyExists(String filename, String owner) {

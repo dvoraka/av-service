@@ -83,9 +83,8 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
 
     def "save"() {
         given:
+            service.setReplicationCount(1)
             FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
-
-            remoteLock.start()
 
         when:
             service.saveFile(message)
@@ -94,7 +93,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             2 * fileService.exists(message.getFilename(), message.getOwner()) >> false
             2 * serviceClient.sendMessage(_)
 
-            2 * responseClient.getResponseWait(_, _) >> {
+            3 * responseClient.getResponseWait(_, _) >> {
                 return Optional.ofNullable(null)
             }
 
