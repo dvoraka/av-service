@@ -23,10 +23,12 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Stepwise
 
 /**
  * Replication service spec.
  */
+@Stepwise
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')

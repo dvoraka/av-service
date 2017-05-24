@@ -37,6 +37,7 @@ public class DefaultRemoteLock implements
 
     private static final Logger log = LogManager.getLogger(DefaultRemoteLock.class);
 
+    private static final String UNLOCKING_FAILED = "Unlocking failed.";
     private static final int MAX_RESPONSE_TIME = 1_000; // one second
 
     private final AtomicLong sequence;
@@ -111,12 +112,20 @@ public class DefaultRemoteLock implements
 
                 return true;
             } else {
-                unlockFile(filename, owner);
+                try {
+                    unlockFile(filename, owner);
+                } catch (FileNotLockedException e) {
+                    log.warn(UNLOCKING_FAILED, e);
+                }
 
                 return false;
             }
         } else {
-            unlockFile(filename, owner);
+            try {
+                unlockFile(filename, owner);
+            } catch (FileNotLockedException e) {
+                log.warn(UNLOCKING_FAILED, e);
+            }
 
             return false;
         }
@@ -140,7 +149,11 @@ public class DefaultRemoteLock implements
                     .count();
 
             if (lockCount == successUnlocks) {
-                unlockFile(filename, owner);
+                try {
+                    unlockFile(filename, owner);
+                } catch (FileNotLockedException e) {
+                    log.warn(UNLOCKING_FAILED, e);
+                }
 
                 return true;
             }
@@ -197,9 +210,12 @@ public class DefaultRemoteLock implements
         lockedFiles.add(hash(filename, owner));
     }
 
-    private void unlockFile(String filename, String owner) {
+    private void unlockFile(String filename, String owner) throws FileNotLockedException {
         log.debug("Unlocking: {}, {}", filename, owner);
-        lockedFiles.remove(hash(filename, owner));
+
+        if (!lockedFiles.remove(hash(filename, owner))) {
+            throw new FileNotLockedException();
+        }
     }
 
     private String hash(String filename, String owner) {
@@ -230,8 +246,13 @@ public class DefaultRemoteLock implements
                     break;
 
                 case UNLOCK:
-                    unlockFile(message.getFilename(), message.getOwner());
-                    serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
+                    try {
+                        unlockFile(message.getFilename(), message.getOwner());
+                        serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
+                    } catch (FileNotLockedException e) {
+                        log.warn("Unlocking failed.", e);
+                        serviceClient.sendMessage(createUnlockFailReply(message, nodeId));
+                    }
                     break;
 
                 default:

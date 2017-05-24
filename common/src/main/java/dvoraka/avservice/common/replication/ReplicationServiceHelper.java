@@ -151,6 +151,21 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
+    default ReplicationMessage createUnlockFailReply(
+            ReplicationMessage message, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.UNLOCK)
+                .replicationStatus(ReplicationStatus.FAILED)
+                .fromId(nodeId)
+                .toId(message.getFromId())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
     default ReplicationMessage createSequenceRequest(String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)

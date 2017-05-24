@@ -96,7 +96,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     }
 
     private void discoverNeighbours() {
-        log.debug("Discovering neighbours...");
+        log.debug("Discovering neighbours ({})...", nodeId);
 
         ReplicationMessage message = createDiscoverRequest(nodeId);
         serviceClient.sendMessage(message);
@@ -126,7 +126,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public void saveFile(FileMessage message) throws FileServiceException {
-        log.debug("Save: " + message);
+        log.debug("Save ({}): {}", nodeId, message);
 
         if (exists(message)) {
             throw new ExistingFileException();

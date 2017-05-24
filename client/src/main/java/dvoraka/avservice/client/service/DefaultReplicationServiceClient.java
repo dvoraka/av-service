@@ -34,7 +34,7 @@ public class DefaultReplicationServiceClient implements ReplicationServiceClient
 
     @Override
     public void sendMessage(ReplicationMessage message) {
-        log.debug("Send: " + message);
+        log.debug("Send ({}): {}", nodeId, message);
 
         if (!nodeId.equals(message.getFromId())) {
             log.warn(WRONG_ID);
