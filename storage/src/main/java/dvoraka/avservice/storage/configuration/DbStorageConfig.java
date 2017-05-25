@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("db")
-public class StorageDbConfig {
+public class DbStorageConfig {
 
     @Bean
     public FileService dbFileService(DbFileRepository dbFileRepository) {

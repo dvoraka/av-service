@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("no-db")
-public class StorageDummyConfig {
+public class DummyStorageConfig {
 
     @Bean
     public FileService fileService() {

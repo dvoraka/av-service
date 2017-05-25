@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Import({
+        DummyStorageConfig.class,
+        DbStorageConfig.class,
         ReplicationConfig.class,
 
         DatabaseConfig.class,
-        ClientConfig.class,
-        StorageDummyConfig.class,
-        StorageDbConfig.class
+        ClientConfig.class
 })
 @Profile("storage")
 public class StorageConfig {

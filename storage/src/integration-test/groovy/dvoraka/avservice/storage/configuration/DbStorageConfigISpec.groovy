@@ -11,7 +11,7 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'db'])
-class StorageDbConfigISpec extends Specification {
+class DbStorageConfigISpec extends Specification {
 
     @Autowired
     FileService service
