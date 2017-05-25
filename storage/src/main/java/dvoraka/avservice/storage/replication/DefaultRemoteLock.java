@@ -251,7 +251,7 @@ public class DefaultRemoteLock implements
                         serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
                     } catch (FileNotLockedException e) {
                         log.warn("Unlocking failed.", e);
-                        serviceClient.sendMessage(createUnlockFailReply(message, nodeId));
+                        serviceClient.sendMessage(createUnlockFailedReply(message, nodeId));
                     }
                     break;
 
@@ -268,7 +268,7 @@ public class DefaultRemoteLock implements
             lockFile(message.getFilename(), message.getOwner());
             serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
         } else {
-            serviceClient.sendMessage(createLockFailReply(message, getSequence(), nodeId));
+            serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
         }
     }
 }

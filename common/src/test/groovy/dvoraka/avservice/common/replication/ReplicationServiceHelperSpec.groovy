@@ -131,7 +131,7 @@ class ReplicationServiceHelperSpec extends Specification {
         when:
             ReplicationMessage request = helper.createLockRequest(
                     testFilename, testOwner, testId, testSequence)
-            result = helper.createLockFailReply(request, testSequence, otherId)
+            result = helper.createLockFailedReply(request, testSequence, otherId)
 
         then:
             checkReplyBase(result)
@@ -164,6 +164,21 @@ class ReplicationServiceHelperSpec extends Specification {
             checkReplyBase(result)
             result.getCommand() == Command.UNLOCK
             result.getReplicationStatus() == ReplicationStatus.OK
+
+            result.getFilename() == testFilename
+            result.getOwner() == testOwner
+    }
+
+    def "unlock failed reply"() {
+        when:
+            ReplicationMessage request = helper.createUnlockRequest(
+                    testFilename, testOwner, testId, testSequence)
+            result = helper.createUnlockFailedReply(request, otherId)
+
+        then:
+            checkReplyBase(result)
+            result.getCommand() == Command.UNLOCK
+            result.getReplicationStatus() == ReplicationStatus.FAILED
 
             result.getFilename() == testFilename
             result.getOwner() == testOwner

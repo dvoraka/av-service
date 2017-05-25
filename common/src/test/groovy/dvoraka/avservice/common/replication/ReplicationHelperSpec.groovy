@@ -73,9 +73,19 @@ class ReplicationHelperSpec extends Specification {
             result.getCommand() == Command.LOAD
     }
 
-    def "load reply"() {
+    def "load success"() {
         when:
             result = helper.createLoadSuccess(
+                    helper.createLoadMessage(fileMessage, mainId, otherId), otherId, mainId)
+
+        then:
+            checkBase(result)
+            result.getCommand() == Command.LOAD
+    }
+
+    def "load failed"() {
+        when:
+            result = helper.createLoadFailed(
                     helper.createLoadMessage(fileMessage, mainId, otherId), otherId, mainId)
 
         then:

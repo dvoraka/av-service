@@ -102,6 +102,7 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .replicationStatus(ReplicationStatus.FAILED)
                 .toId(toNodeId)
                 .fromId(fromNodeId)
+                .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();

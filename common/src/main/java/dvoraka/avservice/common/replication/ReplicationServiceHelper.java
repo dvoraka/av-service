@@ -107,7 +107,7 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createLockFailReply(
+    default ReplicationMessage createLockFailedReply(
             ReplicationMessage message, long sequence, String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .correlationId(message.getId())
@@ -151,7 +151,7 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createUnlockFailReply(
+    default ReplicationMessage createUnlockFailedReply(
             ReplicationMessage message, String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .correlationId(message.getId())
