@@ -346,5 +346,17 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 serviceClient.sendMessage(createSaveFailed(message, nodeId));
             }
         }
+
+        // handle load
+        if (message.getRouting() == MessageRouting.UNICAST
+                && message.getCommand() == Command.LOAD) {
+            try {
+                FileMessage fileMessage = fileService.loadFile(message);
+                serviceClient.sendMessage(createLoadReply(
+                        fileMessage, nodeId, message.getFromId()));
+            } catch (FileServiceException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

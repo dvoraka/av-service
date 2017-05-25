@@ -334,6 +334,53 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             fileService.deleteFile(saveMessage)
     }
 
+    def "load file"() {
+        given:
+            FileMessage saveMessage = Utils.genSaveMessage()
+            ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
+            ReplicationMessage loadRequest = createLoadMessage(saveMessage, nodeId, otherNodeId)
+
+        expect: "file not exists"
+            !fileService.exists(saveMessage)
+
+        when: "save generated file"
+            client.sendMessage(saveRequest)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(saveRequest.getId(), responseTime)
+
+        then: "response should be OK and file exist"
+            messages.isPresent()
+            fileService.exists(saveMessage)
+
+        when:
+            client.sendMessage(loadRequest)
+            messages = responseClient.getResponseWait(loadRequest.getId(), responseTime)
+
+        then: "we should get one load response"
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        when:
+            ReplicationMessage loadMessage = messages.get().stream().findFirst().get()
+
+        then:
+            loadMessage.getType() == MessageType.REPLICATION_COMMAND
+            loadMessage.getCommand() == Command.LOAD
+            loadMessage.getRouting() == MessageRouting.UNICAST
+            loadMessage.getReplicationStatus() == ReplicationStatus.OK
+            loadMessage.getFromId()
+            loadMessage.getToId() == nodeId
+
+        and:
+            loadMessage.getFilename() == saveMessage.getFilename()
+            loadMessage.getOwner() == saveMessage.getOwner()
+            Arrays.equals(loadMessage.getData(), saveMessage.getData())
+
+        cleanup:
+            // we use a save message which will be probably prohibited in the future
+            fileService.deleteFile(saveMessage)
+    }
+
     @Ignore('WIP')
     def "delete file"() {
         given:

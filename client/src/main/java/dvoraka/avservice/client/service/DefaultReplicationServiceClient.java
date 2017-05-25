@@ -38,7 +38,7 @@ public class DefaultReplicationServiceClient implements ReplicationServiceClient
 
         if (!nodeId.equals(message.getFromId())) {
             log.warn(WRONG_ID);
-            throw new IllegalArgumentException(WRONG_ID);
+            return;
         }
 
         replicationComponent.sendMessage(message);

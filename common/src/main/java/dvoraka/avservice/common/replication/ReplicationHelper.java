@@ -78,10 +78,11 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
             FileMessage message, String toNodeId, String fromNodeId
     ) {
         return new DefaultReplicationMessage.Builder(null)
-                .correlationId(message.getId())
+                .correlationId(message.getCorrelationId())
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.LOAD)
+                .replicationStatus(ReplicationStatus.OK)
                 .toId(fromNodeId)
                 .fromId(toNodeId)
                 .data(message.getData())

@@ -43,6 +43,5 @@ class DefaultReplicationServiceClientSpec extends Specification implements Repli
 
         then:
             0 * replicationComponent.sendMessage(message)
-            thrown(IllegalArgumentException)
     }
 }
