@@ -1,6 +1,5 @@
 package dvoraka.avservice.server.replication
 
-import dvoraka.avservice.client.configuration.ClientConfig
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
@@ -14,6 +13,8 @@ import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.server.runner.amqp.AmqpReplicationServiceRunner
+import dvoraka.avservice.storage.configuration.StorageConfig
+import dvoraka.avservice.storage.service.FileService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
@@ -27,10 +28,15 @@ import spock.lang.Stepwise
 
 /**
  * Replication service spec.
+ * <p>
+ * It uses low-level clients for simulating a service node. A real service node runs on
+ * the replication network and is started automatically before the testing. A testing file
+ * service uses the same storage as the service node so it is possible to check files after
+ * processing directly through the file service.
  */
 @Stepwise
-@ContextConfiguration(classes = [ClientConfig.class])
-@ActiveProfiles(['replication-test', 'client', 'amqp', 'no-db'])
+@ContextConfiguration(classes = [StorageConfig.class])
+@ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'db'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
 class ReplicationServiceISpec extends Specification implements ReplicationHelper {
@@ -39,13 +45,16 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
     ReplicationServiceClient client
     @Autowired
     ReplicationResponseClient responseClient
+    @Autowired
+    FileService fileService
 
     @Value('${avservice.storage.replication.testNodeId}')
     String nodeId
 
+    @Shared
     long responseTime = 2_000
+    @Shared
     String otherNodeId = 'node1'
-
     @Shared
     ServiceRunner runner
 
