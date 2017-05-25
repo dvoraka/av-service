@@ -141,7 +141,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             )
 
             1 * responseClient.getResponseWait(_, _) >> replicationList(
-                    createLoadReply(Mock(FileMessage), otherNodeId, nodeId)
+                    createLoadSuccess(Mock(FileMessage), otherNodeId, nodeId)
             )
     }
 

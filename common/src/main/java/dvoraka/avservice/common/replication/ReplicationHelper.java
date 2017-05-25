@@ -74,7 +74,7 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createLoadReply(
+    default ReplicationMessage createLoadSuccess(
             FileMessage message, String toNodeId, String fromNodeId
     ) {
         return new DefaultReplicationMessage.Builder(null)
@@ -83,9 +83,25 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .routing(MessageRouting.UNICAST)
                 .command(Command.LOAD)
                 .replicationStatus(ReplicationStatus.OK)
-                .toId(fromNodeId)
-                .fromId(toNodeId)
+                .toId(toNodeId)
+                .fromId(fromNodeId)
                 .data(message.getData())
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
+    default ReplicationMessage createLoadFailed(
+            FileMessage message, String toNodeId, String fromNodeId
+    ) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getCorrelationId())
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.LOAD)
+                .replicationStatus(ReplicationStatus.FAILED)
+                .toId(toNodeId)
+                .fromId(fromNodeId)
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();

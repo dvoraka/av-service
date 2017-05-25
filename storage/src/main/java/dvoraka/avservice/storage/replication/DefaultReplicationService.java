@@ -342,7 +342,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 fileService.saveFile(message);
                 serviceClient.sendMessage(createSaveSuccess(message, nodeId));
             } catch (FileServiceException e) {
-                log.warn("Saving failed ({}): ", nodeId, e);
+                log.warn("Saving failed (" + nodeId + ")", e);
                 serviceClient.sendMessage(createSaveFailed(message, nodeId));
             }
         }
@@ -352,10 +352,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 && message.getCommand() == Command.LOAD) {
             try {
                 FileMessage fileMessage = fileService.loadFile(message);
-                serviceClient.sendMessage(createLoadReply(
-                        fileMessage, nodeId, message.getFromId()));
+                serviceClient.sendMessage(
+                        createLoadSuccess(fileMessage, message.getFromId(), nodeId));
             } catch (FileServiceException e) {
-                e.printStackTrace();
+                log.warn("Loading failed (" + nodeId + ")", e);
+                serviceClient.sendMessage(
+                        createLoadFailed(message, message.getFromId(), nodeId));
             }
         }
     }
