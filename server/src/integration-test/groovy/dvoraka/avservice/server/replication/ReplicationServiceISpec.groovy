@@ -300,8 +300,11 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
 
     def "save file"() {
         given:
-            FileMessage fileMessage = Utils.genFileMessage()
-            ReplicationMessage saveRequest = createSaveMessage(fileMessage, nodeId, otherNodeId)
+            FileMessage saveMessage = Utils.genSaveMessage()
+            ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
+
+        expect: "file not exists"
+            !fileService.exists(saveMessage)
 
         when:
             client.sendMessage(saveRequest)
@@ -322,6 +325,13 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             saveStatus.getReplicationStatus() == ReplicationStatus.OK
             saveStatus.getFromId()
             saveStatus.getToId() == nodeId
+
+        and: "file should be stored"
+            fileService.exists(saveMessage)
+
+        cleanup:
+            // we use a save message which will be probably prohibited in the future
+            fileService.deleteFile(saveMessage)
     }
 
     @Ignore('WIP')
