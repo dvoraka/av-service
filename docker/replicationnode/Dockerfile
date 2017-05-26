@@ -5,7 +5,7 @@
 FROM debian:stretch
 MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
-ARG VERSION=0.7-RC1
+ARG VERSION=0.7.2
 
 ENV USER_HOME /home/user
 ENV PROJECT_ROOT av-service
@@ -23,13 +23,13 @@ WORKDIR $USER_HOME
 
 RUN git clone https://github.com/dvoraka/av-service.git
 
-COPY conf/avservice.properties ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
-COPY conf/logback.xml ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
-
 WORKDIR ${USER_HOME}/${PROJECT_ROOT}
 
 RUN git checkout v"${VERSION}" \
     && ./gradlew compileJava
+
+COPY conf/avservice.properties ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
+COPY conf/logback.xml ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
 
 
 CMD ["./gradlew", "-q", "runAmqpReplicationService"]
