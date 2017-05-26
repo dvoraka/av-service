@@ -1,0 +1,15 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="TCP" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:7000</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+    <root level="debug">
+        <appender-ref ref="TCP"/>
+        <!--<appender-ref ref="STDOUT"/>-->
+    </root>
+</configuration>
