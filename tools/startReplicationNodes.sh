@@ -17,7 +17,7 @@ else
 fi
 
 start=500
-end=$(($start + count - 1))
+end=$((start + count - 1))
 
 
 echo 'Starting nodes:'
