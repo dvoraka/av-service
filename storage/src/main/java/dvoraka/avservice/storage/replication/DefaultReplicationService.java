@@ -290,11 +290,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public boolean exists(String filename, String owner) {
         log.debug("Exists: {}, {}", filename, owner);
 
-        if (localCopyExists(filename, owner)) {
-            return true;
-        }
-
-        return !whoHas(filename, owner).isEmpty();
+        return localCopyExists(filename, owner) || !whoHas(filename, owner).isEmpty();
     }
 
     /**

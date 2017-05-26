@@ -187,6 +187,24 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             result
     }
 
+    def "who has"() {
+        given:
+            String filename = 'testF'
+            String owner = 'testO'
+            ReplicationMessage request = createExistsRequest(filename, owner, nodeId)
+            ReplicationMessage response = createExistsReply(request, otherNodeId)
+
+        when:
+            Set<String> ids = service.whoHas(filename, owner)
+
+        then:
+            1 * serviceClient.sendMessage(_)
+
+            1 * responseClient.getResponseWait(_, _) >> replicationList(response)
+
+            ids.size() == 1
+    }
+
     def "get status"() {
         given:
             FileMessage message = Utils.genFileMessage()
