@@ -183,23 +183,47 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public FileMessage loadFile(FileMessage message) throws FileServiceException {
-        log.debug("Load: " + message);
+        log.debug("Load ({}): {}", nodeId, message);
 
-        if (localCopyExists(message.getFilename(), message.getOwner())) {
-            return fileService.loadFile(message);
+        if (!exists(message)) {
+            throw new FileNotFoundException();
         }
 
-        if (exists(message)) {
-            serviceClient.sendMessage(createLoadMessage(message, nodeId, "neighbour"));
+        try {
+            if (remoteLock.lockForFile(
+                    message.getFilename(),
+                    message.getOwner(),
+                    neighbourCount())) {
 
-            Optional<ReplicationMessageList> replicationMessages = responseClient
-                    .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
-            ReplicationMessageList messages = replicationMessages
-                    .orElseGet(ReplicationMessageList::new);
+                if (localCopyExists(message.getFilename(), message.getOwner())) {
+                    return fileService.loadFile(message);
+                }
 
-            return messages.stream()
-                    .findFirst()
-                    .orElseThrow(FileNotFoundException::new);
+                if (exists(message)) {
+                    //TODO: who has call
+                    String neighbourId = neighbours.stream()
+                            .findAny()
+                            .orElseThrow(FileNotFoundException::new);
+                    serviceClient.sendMessage(createLoadMessage(message, nodeId, neighbourId));
+
+                    Optional<ReplicationMessageList> replicationMessages = responseClient
+                            .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
+                    ReplicationMessageList messages = replicationMessages
+                            .orElseGet(ReplicationMessageList::new);
+
+                    return messages.stream()
+                            .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                            .findFirst()
+                            .orElseThrow(FileNotFoundException::new);
+                }
+
+                throw new FileNotFoundException();
+            }
+        } catch (InterruptedException e) {
+            log.warn("Locking interrupted!", e);
+            Thread.currentThread().interrupt();
+        } finally {
+            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
         }
 
         throw new FileNotFoundException();

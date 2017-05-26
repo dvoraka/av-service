@@ -13,6 +13,7 @@ import dvoraka.avservice.storage.ExistingFileException
 import dvoraka.avservice.storage.FileNotFoundException
 import dvoraka.avservice.storage.FileServiceException
 import dvoraka.avservice.storage.service.FileService
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
@@ -121,9 +122,13 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             service.loadFile(message)
 
         then:
-            1 * fileService.exists(message.getFilename(), message.getOwner()) >> true
+            2 * fileService.exists(message.getFilename(), message.getOwner()) >> true
+
+            1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), _) >> true
+            1 * fileService.loadFile(_)
     }
 
+    @Ignore('WIP')
     def "load without existing local file"() {
         given:
             FileMessage message = Utils.genFileMessage(MessageType.FILE_LOAD)
@@ -153,7 +158,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             service.loadFile(message)
 
         then:
-            2 * fileService.exists(message.getFilename(), message.getOwner()) >> false
+            1 * fileService.exists(message.getFilename(), message.getOwner()) >> false
 
             1 * serviceClient.sendMessage(_)
             1 * responseClient.getResponseWait(_, _) >> {
