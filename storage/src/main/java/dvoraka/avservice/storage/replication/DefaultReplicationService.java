@@ -116,8 +116,9 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 .map(ReplicationMessage::getFromId)
                 .collect(Collectors.toSet());
 
-        neighbours.retainAll(newNeighbours);
-        log.debug("Discovered: " + newNeighbours.size());
+        neighbours.clear();
+        neighbours.addAll(newNeighbours);
+        log.debug("Discovered ({}): {}", nodeId, newNeighbours.size());
     }
 
     public int neighbourCount() {
@@ -160,6 +161,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
                         throw new FileServiceException();
                     }
+
+                    log.debug("Save success.");
                 } else {
                     throw new ExistingFileException();
                 }
