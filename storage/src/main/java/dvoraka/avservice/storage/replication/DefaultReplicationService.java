@@ -105,7 +105,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
 
         if (!responses.isPresent()) {
-            log.debug("Discovered: 0");
+            log.debug("Discovered ({}): 0", nodeId);
 
             return;
         }
@@ -118,7 +118,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
         neighbours.clear();
         neighbours.addAll(newNeighbours);
-        log.debug("Discovered ({}): {}", nodeId, newNeighbours.size());
+        log.debug("Discovered ({}): {}", nodeId, neighbourCount());
     }
 
     public int neighbourCount() {
