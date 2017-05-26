@@ -200,8 +200,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 }
 
                 if (exists(message)) {
-                    //TODO: who has call
-                    String neighbourId = neighbours.stream()
+                    String neighbourId = whoHas(message.getFilename(), message.getOwner())
+                            .stream()
                             .findAny()
                             .orElseThrow(FileNotFoundException::new);
                     serviceClient.sendMessage(createLoadMessage(message, nodeId, neighbourId));
@@ -294,6 +294,17 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             return true;
         }
 
+        return !whoHas(filename, owner).isEmpty();
+    }
+
+    /**
+     * Returns a set of neighbour IDs with a given file.
+     *
+     * @param filename the filename
+     * @param owner    the owner
+     * @return the set of IDs
+     */
+    public Set<String> whoHas(String filename, String owner) {
         ReplicationMessage query = createExistsRequest(filename, owner, nodeId);
         serviceClient.sendMessage(query);
 
@@ -302,7 +313,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         ReplicationMessageList messages = response.orElseGet(ReplicationMessageList::new);
 
         return messages.stream()
-                .anyMatch(message -> message.getReplicationStatus() == ReplicationStatus.OK);
+                .map(ReplicationMessage::getFromId)
+                .collect(Collectors.toSet());
     }
 
     @Override
