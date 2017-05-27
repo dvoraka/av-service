@@ -23,9 +23,21 @@ end=$((start + count - 1))
 echo 'Starting nodes:'
 for i in $(seq ${start} ${end})
 do
-    echo -n " * node${i}... "
-    docker run --network=host -d -e "AVSERVICE_STORAGE_REPLICATION_NODEID=node${i}" \
+    node_name=node${i}
+    echo -n " * ${node_name}... "
+    docker run \
+        --network=host \
+        -d \
+        --rm \
+        -e "AVSERVICE_STORAGE_REPLICATION_NODEID=${node_name}" \
+        --name ${node_name} \
         ${IMAGE} 2>&1 > /dev/null
+
+    if [ $? -ne 0 ]
+    then
+        exit 1
+    fi
+
     echo 'OK'
 
     sleep 3
