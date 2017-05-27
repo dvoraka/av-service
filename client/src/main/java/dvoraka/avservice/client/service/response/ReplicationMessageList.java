@@ -15,7 +15,6 @@ public class ReplicationMessageList {
 
 
     public ReplicationMessageList() {
-        //TODO
         messages = new CopyOnWriteArrayList<>();
     }
 
