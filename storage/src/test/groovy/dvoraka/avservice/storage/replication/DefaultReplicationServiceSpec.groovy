@@ -248,7 +248,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             service.onMessage(existsRequest)
 
         then:
-            1 * fileService.exists(existsRequest) >> true
+            1 * fileService.exists(existsRequest.getFilename(), existsRequest.getOwner()) >> true
             1 * serviceClient.sendMessage(_)
     }
 
@@ -262,7 +262,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             service.onMessage(existsRequest)
 
         then:
-            1 * fileService.exists(existsRequest) >> false
+            1 * fileService.exists(existsRequest.getFilename(), existsRequest.getOwner()) >> false
             0 * serviceClient._
     }
 

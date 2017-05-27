@@ -183,6 +183,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         neighbours.stream()
                 .map(id -> createSaveMessage(message, nodeId, id))
                 .limit(getReplicationCount() - 1L)
+                .peek(msg -> log.debug("Sending save message to {}", msg.getToId()))
                 .forEach(serviceClient::sendMessage);
     }
 
@@ -241,6 +242,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 .findAny()
                 .orElseThrow(FileNotFoundException::new);
 
+        log.debug("Loading from {}", neighbourId);
         serviceClient.sendMessage(createLoadMessage(message, nodeId, neighbourId));
     }
 
@@ -378,7 +380,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         // handle exists
         if (message.getRouting() == MessageRouting.BROADCAST
                 && message.getCommand() == Command.EXISTS
-                && fileService.exists(message)) {
+                && localCopyExists(message.getFilename(), message.getOwner())) {
             serviceClient.sendMessage(createExistsReply(message, nodeId));
         }
 

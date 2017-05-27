@@ -2,6 +2,7 @@ package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.client.QueueCleaner
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -46,5 +47,17 @@ class ReplicationServiceISpec extends Specification {
     def "save file"() {
         expect:
             service.saveFile(Utils.genSaveMessage())
+    }
+
+    @Ignore("manual testing")
+    def "save and load file"() {
+        given:
+            FileMessage message = Utils.genSaveMessage()
+
+        when:
+            service.saveFile(message)
+
+        then:
+            service.exists(message)
     }
 }
