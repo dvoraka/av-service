@@ -74,7 +74,6 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 //        commands = new ArrayBlockingQueue<>(size);
 
         neighbours = new CopyOnWriteArraySet<>();
-        //TODO
         replicationCount = REPLICATION_COUNT;
         executorService = Executors.newSingleThreadScheduledExecutor();
     }

@@ -11,9 +11,8 @@ import org.springframework.stereotype.Component;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Default implementation for the remote file service.
+ * Default implementation for a remote file service.
  */
-//TODO: add type checking
 @Component
 public class DefaultFileServiceClient implements FileServiceClient {
 
