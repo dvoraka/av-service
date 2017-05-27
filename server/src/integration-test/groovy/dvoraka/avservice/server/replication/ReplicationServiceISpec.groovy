@@ -334,6 +334,63 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             fileService.deleteFile(saveMessage)
     }
 
+    def "exists"() {
+        given:
+            FileMessage saveMessage = Utils.genSaveMessage()
+            ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
+            ReplicationMessage existsRequest = createExistsRequest(
+                    saveMessage.getFilename(), saveMessage.getOwner(), nodeId)
+
+        expect: "file not exists"
+            !fileService.exists(saveMessage)
+
+        when:
+            client.sendMessage(saveRequest)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(saveRequest.getId(), responseTime)
+
+        then: "we should get one file response"
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        when:
+            ReplicationMessage saveStatus = messages.get().stream().findFirst().get()
+
+        then:
+            saveStatus.getType() == MessageType.REPLICATION_COMMAND
+            saveStatus.getCommand() == Command.SAVE
+            saveStatus.getRouting() == MessageRouting.UNICAST
+            saveStatus.getReplicationStatus() == ReplicationStatus.OK
+            saveStatus.getFromId() == otherNodeId
+            saveStatus.getToId() == nodeId
+
+        and: "file should be stored"
+            fileService.exists(saveMessage)
+
+        when:
+            client.sendMessage(existsRequest)
+            messages = responseClient.getResponseWait(existsRequest.getId(), responseTime)
+
+        then:
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        when:
+            ReplicationMessage existsStatus = messages.get().stream().findFirst().get()
+
+        then:
+            existsStatus.getType() == MessageType.REPLICATION_SERVICE
+            existsStatus.getCommand() == Command.EXISTS
+            existsStatus.getRouting() == MessageRouting.UNICAST
+            existsStatus.getReplicationStatus() == ReplicationStatus.OK
+            existsStatus.getFromId() == otherNodeId
+            existsStatus.getToId() == nodeId
+
+        cleanup:
+            // we use a save message which will be probably prohibited in the future
+            fileService.deleteFile(saveMessage)
+    }
+
     def "load file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()

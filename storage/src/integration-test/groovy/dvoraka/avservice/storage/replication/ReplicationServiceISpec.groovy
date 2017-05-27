@@ -53,6 +53,7 @@ class ReplicationServiceISpec extends Specification {
     def "save and load file"() {
         given:
             FileMessage message = Utils.genSaveMessage()
+            service.setReplicationCount(2)
 
         when:
             service.saveFile(message)

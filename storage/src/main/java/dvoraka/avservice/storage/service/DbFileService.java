@@ -99,6 +99,7 @@ public class DbFileService implements FileService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean exists(String filename, String owner) {
         return repository.findByFilenameAndOwner(filename, owner)
                 .isPresent();

@@ -201,7 +201,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     message.getOwner(),
                     neighbourCount())) {
 
-                if (localCopyExists(message.getFilename(), message.getOwner())) {
+                if (localCopyExists(message)) {
                     log.debug("Loading locally...");
 
                     return fileService.loadFile(message);
@@ -362,6 +362,10 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         this.replicationCount = replicationCount;
     }
 
+    private boolean localCopyExists(FileMessage message) {
+        return localCopyExists(message.getFilename(), message.getOwner());
+    }
+
     private boolean localCopyExists(String filename, String owner) {
         return fileService.exists(filename, owner);
     }
@@ -380,7 +384,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         // handle exists
         if (message.getRouting() == MessageRouting.BROADCAST
                 && message.getCommand() == Command.EXISTS
-                && localCopyExists(message.getFilename(), message.getOwner())) {
+                && localCopyExists(message)) {
             serviceClient.sendMessage(createExistsReply(message, nodeId));
         }
 

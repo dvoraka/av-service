@@ -15,4 +15,6 @@ public interface ReplicationService extends
         ReplicationMessageListener {
 
     ReplicationStatus getStatus(FileMessage message);
+
+    void setReplicationCount(int count);
 }
