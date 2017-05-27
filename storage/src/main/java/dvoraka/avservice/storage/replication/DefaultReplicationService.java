@@ -201,15 +201,15 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     neighbourCount())) {
 
                 if (localCopyExists(message.getFilename(), message.getOwner())) {
+                    log.debug("Loading locally...");
+
                     return fileService.loadFile(message);
                 }
 
                 if (exists(message)) {
-                    String neighbourId = whoHas(message.getFilename(), message.getOwner())
-                            .stream()
-                            .findAny()
-                            .orElseThrow(FileNotFoundException::new);
-                    serviceClient.sendMessage(createLoadMessage(message, nodeId, neighbourId));
+                    log.debug("Loading remotely...");
+
+                    sendLoadMessage(message);
 
                     Optional<ReplicationMessageList> replicationMessages = responseClient
                             .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
@@ -222,6 +222,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                             .orElseThrow(FileNotFoundException::new);
                 }
 
+                log.debug("Loading failed.");
                 throw new FileNotFoundException();
             }
         } catch (InterruptedException e) {
@@ -232,6 +233,15 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         }
 
         throw new FileNotFoundException();
+    }
+
+    private void sendLoadMessage(FileMessage message) throws FileNotFoundException {
+        String neighbourId = whoHas(message.getFilename(), message.getOwner())
+                .stream()
+                .findAny()
+                .orElseThrow(FileNotFoundException::new);
+
+        serviceClient.sendMessage(createLoadMessage(message, nodeId, neighbourId));
     }
 
     @Override
