@@ -48,7 +48,7 @@ public interface AvMessageHelper {
      *
      * @param predicate the predicate
      * @param item      the item to check
-     * @param <T>
+     * @param <T>       the type of the item
      * @return the result
      */
     default <T> boolean checkCondition(Predicate<T> predicate, T item) {
