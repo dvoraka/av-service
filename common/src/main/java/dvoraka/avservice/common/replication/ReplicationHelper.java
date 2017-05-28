@@ -38,7 +38,6 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .replicationStatus(ReplicationStatus.OK)
                 .toId(message.getFromId())
                 .fromId(nodeId)
-                .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();
@@ -53,7 +52,6 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .replicationStatus(ReplicationStatus.FAILED)
                 .toId(message.getFromId())
                 .fromId(nodeId)
-                .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();
@@ -68,7 +66,6 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .command(Command.LOAD)
                 .toId(neighbourId)
                 .fromId(nodeId)
-                .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();
@@ -102,7 +99,6 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .replicationStatus(ReplicationStatus.FAILED)
                 .toId(toNodeId)
                 .fromId(fromNodeId)
-                .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();
@@ -132,7 +128,6 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .command(Command.DELETE)
                 .toId(neighbourId)
                 .fromId(nodeId)
-                .data(message.getData())
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();

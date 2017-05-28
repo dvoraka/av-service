@@ -39,6 +39,7 @@ class ReplicationHelperSpec extends Specification {
 
         then:
             checkBase(result)
+            Arrays.equals(result.getData(), fileMessage.getData())
             result.getCommand() == Command.SAVE
     }
 
@@ -49,6 +50,7 @@ class ReplicationHelperSpec extends Specification {
 
         then:
             checkBase(result)
+            result.getData() == new byte[0]
             result.getCommand() == Command.SAVE
             result.getReplicationStatus() == ReplicationStatus.OK
     }
@@ -60,6 +62,7 @@ class ReplicationHelperSpec extends Specification {
 
         then:
             checkBase(result)
+            result.getData() == new byte[0]
             result.getCommand() == Command.SAVE
             result.getReplicationStatus() == ReplicationStatus.FAILED
     }
@@ -70,16 +73,17 @@ class ReplicationHelperSpec extends Specification {
 
         then:
             checkBase(result)
+            result.getData() == new byte[0]
             result.getCommand() == Command.LOAD
     }
 
     def "load success"() {
         when:
-            result = helper.createLoadSuccess(
-                    helper.createLoadMessage(fileMessage, mainId, otherId), otherId, mainId)
+            result = helper.createLoadSuccess(fileMessage, otherId, mainId)
 
         then:
             checkBase(result)
+            Arrays.equals(result.getData(), fileMessage.getData())
             result.getCommand() == Command.LOAD
     }
 
@@ -90,6 +94,7 @@ class ReplicationHelperSpec extends Specification {
 
         then:
             checkBase(result)
+            result.getData() == new byte[0]
             result.getCommand() == Command.LOAD
     }
 
@@ -99,6 +104,7 @@ class ReplicationHelperSpec extends Specification {
 
         then:
             checkBase(result)
+            Arrays.equals(result.getData(), fileMessage.getData())
             result.getCommand() == Command.UPDATE
     }
 
@@ -108,6 +114,7 @@ class ReplicationHelperSpec extends Specification {
 
         then:
             checkBase(result)
+            result.getData() == new byte[0]
             result.getCommand() == Command.DELETE
     }
 
@@ -116,7 +123,6 @@ class ReplicationHelperSpec extends Specification {
         assert message.getRouting() == MessageRouting.UNICAST
         assert message.getFromId() == mainId
         assert message.getToId() == otherId
-        assert Arrays.equals(message.getData(), fileMessage.getData())
         assert message.getFilename() == fileMessage.getFilename()
         assert message.getOwner() == fileMessage.getOwner()
     }
