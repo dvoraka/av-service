@@ -372,6 +372,14 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public void onMessage(ReplicationMessage message) {
+        try {
+            handleOnMessage(message);
+        } catch (Exception e) {
+            log.error("On message (" + nodeId + ") failed!", e);
+        }
+    }
+
+    private void handleOnMessage(ReplicationMessage message) {
         // broadcast and unicast messages from the replication network
         log.debug("On message ({}): {}", nodeId, message);
 
