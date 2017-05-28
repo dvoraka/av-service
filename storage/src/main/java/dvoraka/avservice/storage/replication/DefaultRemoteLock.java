@@ -156,6 +156,8 @@ public class DefaultRemoteLock implements
                 }
 
                 return true;
+            } else {
+                log.warn(UNLOCKING_FAILED);
             }
         }
 

@@ -132,11 +132,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             throw new ExistingFileException();
         }
 
+        int neighbours = neighbourCount();
         try {
             if (remoteLock.lockForFile(
                     message.getFilename(),
                     message.getOwner(),
-                    neighbourCount())) {
+                    neighbours)) {
 
                 if (!exists(message)) {
                     log.debug("Saving locally...");
@@ -175,7 +176,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             log.warn("Locking interrupted!", e);
             Thread.currentThread().interrupt();
         } finally {
-            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
+            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), neighbours);
         }
     }
 
@@ -195,11 +196,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             throw new FileNotFoundException();
         }
 
+        int neighbours = neighbourCount();
         try {
             if (remoteLock.lockForFile(
                     message.getFilename(),
                     message.getOwner(),
-                    neighbourCount())) {
+                    neighbours)) {
 
                 if (localCopyExists(message)) {
                     log.debug("Loading locally...");
@@ -230,7 +232,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
             log.warn("Locking interrupted!", e);
             Thread.currentThread().interrupt();
         } finally {
-            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
+            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), neighbours);
         }
 
         throw new FileNotFoundException();
