@@ -10,6 +10,7 @@ import dvoraka.avservice.storage.FileNotFoundException;
 import dvoraka.avservice.storage.FileServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,10 +41,11 @@ public class DbFileService implements FileService {
     public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Saving: " + message);
 
-        if (exists(message)) {
-            throw new ExistingFileException();
-        } else {
+        try {
             repository.save(buildFile(message));
+        } catch (ConstraintViolationException e) {
+            log.warn("Saving problem.", e);
+            throw new ExistingFileException();
         }
     }
 
