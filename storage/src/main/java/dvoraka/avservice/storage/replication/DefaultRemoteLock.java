@@ -109,6 +109,7 @@ public class DefaultRemoteLock implements
                     .count();
 
             if (lockCount == successLocks) {
+                incSequence(); // simple use case with an one file at a time
 
                 return true;
             } else {
@@ -135,7 +136,8 @@ public class DefaultRemoteLock implements
     public boolean unlockForFile(String filename, String owner, int lockCount) {
 
         // send the unlock request
-        ReplicationMessage unlockRequest = createUnlockRequest(filename, owner, nodeId, 0);
+        ReplicationMessage unlockRequest = createUnlockRequest(
+                filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(unlockRequest);
 
         // get replies
