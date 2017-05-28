@@ -244,7 +244,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 .findAny()
                 .orElseThrow(FileNotFoundException::new);
 
-        log.debug("Loading from {}", neighbourId);
+        log.debug("Loading from {}...", neighbourId);
         serviceClient.sendMessage(createLoadMessage(message, nodeId, neighbourId));
     }
 

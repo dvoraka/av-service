@@ -60,5 +60,13 @@ class ReplicationServiceISpec extends Specification {
 
         then:
             service.exists(message)
+
+        when:
+            FileMessage loaded = service.loadFile(message)
+
+        then:
+            loaded.getFilename() == message.getFilename()
+            loaded.getOwner() == message.getOwner()
+            Arrays.equals(loaded.getData(), message.getData())
     }
 }

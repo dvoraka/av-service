@@ -109,7 +109,7 @@ public class DefaultRemoteLock implements
                     .count();
 
             if (lockCount == successLocks) {
-                incSequence(); // simple use case with an one file at a time
+                incSequence(); // simple use case with one file at a time
 
                 return true;
             } else {
