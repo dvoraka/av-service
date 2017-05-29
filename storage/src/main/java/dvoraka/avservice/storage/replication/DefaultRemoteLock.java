@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Default remote lock implementation.
@@ -42,6 +44,7 @@ public class DefaultRemoteLock implements
 
     private final AtomicLong sequence;
     private final Set<String> lockedFiles;
+    private final Lock lockingLock;
 
     private final HashingService hashingService;
 
@@ -58,6 +61,7 @@ public class DefaultRemoteLock implements
 
         sequence = new AtomicLong();
         lockedFiles = new HashSet<>();
+        lockingLock = new ReentrantLock();
 
         hashingService = new Md5HashingService();
     }
@@ -94,6 +98,10 @@ public class DefaultRemoteLock implements
             lockFile(filename, owner);
         }
 
+        log.debug("Locking...");
+        lockingLock.lock();
+        log.debug("Locked.");
+
         // send the lock request
         ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(lockRequest);
@@ -109,27 +117,41 @@ public class DefaultRemoteLock implements
                     .count();
 
             if (lockCount == successLocks) {
-                incSequence(); // simple use case with one file at a time
+                incSequence();
+
+                log.info("Locking success.");
+                lockingLock.unlock();
+                log.debug("Unlocked.");
 
                 return true;
             } else {
+                lockingLock.unlock();
+                log.debug("Unlocked.");
+
                 try {
-                    unlockFile(filename, owner);
+                    synchronized (lockedFiles) {
+                        unlockFile(filename, owner);
+                    }
                 } catch (FileNotLockedException e) {
                     log.warn(UNLOCKING_FAILED, e);
                 }
 
                 return false;
             }
-        } else {
-            try {
-                unlockFile(filename, owner);
-            } catch (FileNotLockedException e) {
-                log.warn(UNLOCKING_FAILED, e);
-            }
-
-            return false;
         }
+
+        lockingLock.unlock();
+        log.debug("Unlocked.");
+
+        try {
+            synchronized (lockedFiles) {
+                unlockFile(filename, owner);
+            }
+        } catch (FileNotLockedException e) {
+            log.warn(UNLOCKING_FAILED, e);
+        }
+
+        return false;
     }
 
     @Override
