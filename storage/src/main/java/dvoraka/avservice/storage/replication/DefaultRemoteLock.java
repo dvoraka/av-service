@@ -89,24 +89,19 @@ public class DefaultRemoteLock implements
     public boolean lockForFile(String filename, String owner, int lockCount)
             throws InterruptedException {
 
-        synchronized (lockedFiles) {
-            // check if the file is already locked
-            if (isFileLocked(filename, owner)) {
-                return false;
-            }
-            // lock the local file
-            lockFile(filename, owner);
+        // lock local file if possible
+        if (!lockFile(filename, owner)) {
+
+            return false;
         }
 
         log.debug("Locking...");
         lockingLock.lock();
         log.debug("Locked.");
 
-        // send the lock request
         ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(lockRequest);
 
-        // get replies
         Optional<ReplicationMessageList> lockReplies =
                 responseClient.getResponseWait(lockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
 
@@ -119,7 +114,7 @@ public class DefaultRemoteLock implements
             if (lockCount == successLocks) {
                 incSequence();
 
-                log.info("Locking success.");
+                log.info("Remote locking success.");
                 lockingLock.unlock();
                 log.debug("Unlocked.");
 
@@ -129,9 +124,7 @@ public class DefaultRemoteLock implements
                 log.debug("Unlocked.");
 
                 try {
-                    synchronized (lockedFiles) {
-                        unlockFile(filename, owner);
-                    }
+                    unlockFile(filename, owner);
                 } catch (FileNotLockedException e) {
                     log.warn(UNLOCKING_FAILED, e);
                 }
@@ -144,9 +137,7 @@ public class DefaultRemoteLock implements
         log.debug("Unlocked.");
 
         try {
-            synchronized (lockedFiles) {
-                unlockFile(filename, owner);
-            }
+            unlockFile(filename, owner);
         } catch (FileNotLockedException e) {
             log.warn(UNLOCKING_FAILED, e);
         }
@@ -231,16 +222,28 @@ public class DefaultRemoteLock implements
         return lockedFiles.contains(hash(filename, owner));
     }
 
-    private void lockFile(String filename, String owner) {
+    private boolean lockFile(String filename, String owner) {
         log.debug("Locking: {}, {}", filename, owner);
-        lockedFiles.add(hash(filename, owner));
+
+        synchronized (lockedFiles) {
+            if (isFileLocked(filename, owner)) {
+
+                return false;
+            } else {
+                lockedFiles.add(hash(filename, owner));
+
+                return true;
+            }
+        }
     }
 
     private void unlockFile(String filename, String owner) throws FileNotLockedException {
         log.debug("Unlocking: {}, {}", filename, owner);
 
-        if (!lockedFiles.remove(hash(filename, owner))) {
-            throw new FileNotLockedException();
+        synchronized (lockedFiles) {
+            if (!lockedFiles.remove(hash(filename, owner))) {
+                throw new FileNotLockedException();
+            }
         }
     }
 
@@ -291,22 +294,12 @@ public class DefaultRemoteLock implements
     private void lock(ReplicationMessage message) {
         if (getSequence() == message.getSequence() && lockingLock.tryLock()) {
 
-            boolean locked;
-            synchronized (lockedFiles) {
-                if (!isFileLocked(message.getFilename(), message.getOwner())) {
-                    lockFile(message.getFilename(), message.getOwner());
-                    incSequence();
-                    lockingLock.unlock();
-                    locked = true;
-                } else {
-                    lockingLock.unlock();
-                    locked = false;
-                }
-            }
-
-            if (locked) {
+            if (lockFile(message.getFilename(), message.getOwner())) {
+                incSequence();
+                lockingLock.unlock();
                 serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
             } else {
+                lockingLock.unlock();
                 serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
             }
         } else {
