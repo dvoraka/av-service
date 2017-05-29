@@ -16,7 +16,8 @@ import spock.lang.Specification
  * AMQP replication service spec.
  *
  * Complete test is in the server module. This could be for some testing without a server
- * infrastructure.
+ * infrastructure. You can run real node with a Docker script in the tools directory called
+ * <b>startReplicationNodes.sh</b> with argument 1 for starting one remote node.
  */
 @ContextConfiguration(classes = [StorageConfig.class])
 @PropertySource("classpath:avservice.properties")
@@ -46,6 +47,7 @@ class ReplicationServiceISpec extends Specification {
     @Ignore("manual testing")
     def "save file"() {
         expect:
+            service.setReplicationCount(2)
             service.saveFile(Utils.genSaveMessage())
     }
 

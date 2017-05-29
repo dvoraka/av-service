@@ -12,6 +12,7 @@ import dvoraka.avservice.common.replication.ReplicationHelper;
 import dvoraka.avservice.storage.ExistingFileException;
 import dvoraka.avservice.storage.FileNotFoundException;
 import dvoraka.avservice.storage.FileServiceException;
+import dvoraka.avservice.storage.LockCountNotMatch;
 import dvoraka.avservice.storage.service.FileService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -162,7 +163,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     if (successCount != getReplicationCount() - 1) {
                         // rollback transaction
 
-                        throw new FileServiceException();
+                        throw new LockCountNotMatch();
                     }
 
                     log.debug("Save success.");
