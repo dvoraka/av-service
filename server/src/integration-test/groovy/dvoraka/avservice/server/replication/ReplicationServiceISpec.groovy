@@ -56,6 +56,11 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
     @Shared
     String otherNodeId = 'node1'
     @Shared
+    String file = 'replTestFile'
+    @Shared
+    String owner = 'replTestOwner'
+
+    @Shared
     ServiceRunner runner
 
 
@@ -121,8 +126,6 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
 
     def "lock request"() {
         given:
-            String file = 'replTestFile'
-            String owner = 'replTestOwner'
             ReplicationMessage request = createLockRequest(file, owner, nodeId, 1)
 
         when:
@@ -143,14 +146,15 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getFromId()
             response.getToId() == nodeId
             response.getSequence() == request.getSequence()
+
+        cleanup:
+            unlockTestFile()
     }
 
     def "lock file"() {
         given:
-            String file = 'replTestFile'
-            String owner = 'replTestOwner'
             ReplicationMessage sequenceRequest = createSequenceRequest(nodeId)
-            long sequence
+            long sequence = 0 // Spock needs initialization
 
         when: "get actual sequence"
             client.sendMessage(sequenceRequest)
@@ -193,12 +197,13 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             response.getFromId()
             response.getToId() == nodeId
             response.getSequence() == request.getSequence()
+
+        cleanup:
+            unlockTestFile()
     }
 
     def "lock file with bad sequence"() {
         given:
-            String file = 'replTestFile'
-            String owner = 'replTestOwner'
             ReplicationMessage sequenceRequest = createSequenceRequest(nodeId)
             long sequence = 99
 
@@ -227,8 +232,6 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
 
     def "lock and unlock file"() {
         given:
-            String file = 'replTestFile'
-            String owner = 'replTestOwner'
             ReplicationMessage sequenceRequest = createSequenceRequest(nodeId)
             long sequence
 
@@ -463,5 +466,11 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             deleteStatus.getReplicationStatus() == ReplicationStatus.OK
             deleteStatus.getFromId()
             deleteStatus.getToId() == nodeId
+    }
+
+    void unlockTestFile() {
+        // sequence is not checked now
+        ReplicationMessage unlockRequest = createUnlockRequest(file, owner, nodeId, 0)
+        client.sendMessage(unlockRequest)
     }
 }
