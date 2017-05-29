@@ -289,9 +289,15 @@ public class DefaultRemoteLock implements
     }
 
     private void lock(ReplicationMessage message) {
-        if (getSequence() == message.getSequence()) {
+        if (getSequence() == message.getSequence() && lockingLock.tryLock()) {
+
             incSequence();
-            lockFile(message.getFilename(), message.getOwner());
+            lockingLock.unlock();
+
+            synchronized (lockedFiles) {
+                lockFile(message.getFilename(), message.getOwner());
+            }
+
             serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
         } else {
             serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
