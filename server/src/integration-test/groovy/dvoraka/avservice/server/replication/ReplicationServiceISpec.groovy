@@ -36,7 +36,7 @@ import spock.lang.Stepwise
  */
 @Stepwise
 @ContextConfiguration(classes = [StorageConfig.class])
-@ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'db'])
+@ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'db-mem'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
 class ReplicationServiceISpec extends Specification implements ReplicationHelper {

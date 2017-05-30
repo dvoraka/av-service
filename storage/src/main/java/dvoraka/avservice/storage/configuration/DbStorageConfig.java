@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
  * Storage DB configuration for import.
  */
 @Configuration
-@Profile("db")
+@Profile({"db", "db-mem"})
 public class DbStorageConfig {
 
     @Bean

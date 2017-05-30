@@ -18,7 +18,7 @@ public class AmqpReplicationServiceRunner extends AbstractServiceRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"storage", "replication", "client", "amqp", "db"};
+        return new String[]{"storage", "replication", "client", "amqp", "db-mem"};
     }
 
     @Override
