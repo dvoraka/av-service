@@ -38,12 +38,14 @@ class ReplicationServiceISpec extends Specification {
      * Replication node count on a network.
      */
     @Shared
-    int replicationNodes = 1
+    int replicationNodes = 3
 
 
     def setup() {
         // the local node is a node too
         service.setReplicationCount(replicationNodes + 1)
+        // wait for initialization
+        sleep(2_000)
     }
 
     def cleanup() {
