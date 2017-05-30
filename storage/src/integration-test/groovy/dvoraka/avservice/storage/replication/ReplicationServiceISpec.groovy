@@ -10,6 +10,7 @@ import org.springframework.context.annotation.PropertySource
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
+import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -33,6 +34,17 @@ class ReplicationServiceISpec extends Specification {
     @Value('${avservice.amqp.replicationQueue}')
     String queueName
 
+    /**
+     * Replication node count on a network.
+     */
+    @Shared
+    int replicationNodes = 1
+
+
+    def setup() {
+        // the local node is a node too
+        service.setReplicationCount(replicationNodes + 1)
+    }
 
     def cleanup() {
         // clean the replication queue
@@ -47,15 +59,25 @@ class ReplicationServiceISpec extends Specification {
     @Ignore("manual testing")
     def "save file"() {
         expect:
-            service.setReplicationCount(2)
             service.saveFile(Utils.genSaveMessage())
+    }
+
+    @Ignore("manual testing")
+    def "save file and check"() {
+        given:
+            FileMessage saveMessage = Utils.genSaveMessage()
+
+        when:
+            service.saveFile(saveMessage)
+
+        then:
+            service.exists(saveMessage)
     }
 
     @Ignore("manual testing")
     def "save and load file"() {
         given:
             FileMessage message = Utils.genSaveMessage()
-            service.setReplicationCount(2)
 
         when:
             service.saveFile(message)
