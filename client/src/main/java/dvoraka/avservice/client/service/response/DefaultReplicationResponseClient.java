@@ -130,6 +130,20 @@ public class DefaultReplicationResponseClient implements
     }
 
     @Override
+    public Optional<ReplicationMessageList> getResponseWait(
+            String id, long minWaitTime, long maxWaitTime) {
+
+        try {
+            Thread.sleep(minWaitTime);
+        } catch (InterruptedException e) {
+            log.warn("Sleeping interrupted!", e);
+            Thread.currentThread().interrupt();
+        }
+
+        return Optional.ofNullable(checkGetResponse(id, maxWaitTime - minWaitTime));
+    }
+
+    @Override
     public Optional<ReplicationMessageList> getResponseWait(String id, long waitTime, int size) {
         final long start = System.currentTimeMillis();
 

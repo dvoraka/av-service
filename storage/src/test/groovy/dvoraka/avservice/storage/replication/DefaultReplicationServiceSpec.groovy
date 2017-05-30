@@ -68,7 +68,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
         then:
             1 * responseClient.addNoResponseMessageListener(_)
 
-            1 * responseClient.getResponseWait(_, _) >> replicationList(
+            1 * responseClient.getResponseWait(_, _, _) >> replicationList(
                     createDiscoverReply(
                             createDiscoverRequest(nodeId), otherNodeId))
     }

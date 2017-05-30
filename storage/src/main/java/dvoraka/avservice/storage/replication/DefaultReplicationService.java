@@ -105,7 +105,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         serviceClient.sendMessage(message);
 
         Optional<ReplicationMessageList> responses = responseClient
-                .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
+                .getResponseWait(message.getId(), MAX_RESPONSE_TIME, MAX_RESPONSE_TIME);
 
         if (!responses.isPresent()) {
             log.debug("Discovered ({}): 0", nodeId);

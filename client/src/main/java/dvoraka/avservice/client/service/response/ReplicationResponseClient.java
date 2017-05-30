@@ -17,7 +17,9 @@ public interface ReplicationResponseClient {
      */
     ReplicationMessageList getResponse(String id);
 
-    Optional<ReplicationMessageList> getResponseWait(String id, long waitTime);
+    Optional<ReplicationMessageList> getResponseWait(String id, long maxWaitTime);
+
+    Optional<ReplicationMessageList> getResponseWait(String id, long minWaitTime, long maxWaitTime);
 
     Optional<ReplicationMessageList> getResponseWait(String id, long waitTime, int size);
 
