@@ -45,7 +45,10 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
-    private static final int MAX_RESPONSE_TIME = 1_000; // one second
+    /**
+     * Max waiting time for a response from the network in ms.
+     */
+    private static final int MAX_RESPONSE_TIME = 400;
     private static final int DISCOVER_DELAY = 20_000;
     private static final int TERM_TIME = 10;
     private static final int REPLICATION_COUNT = 3;
@@ -129,7 +132,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Save ({}): {}", nodeId, message);
 
-        if (exists(message)) {
+        if (localCopyExists(message)) {
             throw new ExistingFileException();
         }
 
