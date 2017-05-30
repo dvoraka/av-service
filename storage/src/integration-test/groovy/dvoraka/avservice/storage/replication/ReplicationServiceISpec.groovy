@@ -75,6 +75,17 @@ class ReplicationServiceISpec extends Specification {
     }
 
     @Ignore("manual testing")
+    def "save many files"() {
+        when:
+            100.times {
+                service.saveFile(Utils.genSaveMessage())
+            }
+
+        then:
+            notThrown(Exception)
+    }
+
+    @Ignore("manual testing")
     def "save and load file"() {
         given:
             FileMessage message = Utils.genSaveMessage()
