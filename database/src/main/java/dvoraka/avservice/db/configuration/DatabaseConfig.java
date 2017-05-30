@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Import;
 @Import({
         // DB
         DbConfig.class,
+        // In-memory DB,
+        DbMemConfig.class,
         // No DB - dummy
         NoDbConfig.class,
         // Solr

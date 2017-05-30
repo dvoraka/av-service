@@ -145,6 +145,9 @@ allprojects {
         compile group: 'javax.el', name: 'javax.el-api'
         compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
 
+        // H2 DB
+        compile group: 'com.h2database', name: 'h2'
+
         //
         // Testing
         //
