@@ -1,7 +1,9 @@
 package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
+import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -97,6 +99,11 @@ class ReplicationServiceISpec extends Specification {
     def "save and load file"() {
         given:
             FileMessage message = Utils.genSaveMessage()
+            FileMessage loadMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .type(MessageType.FILE_LOAD)
+                    .filename(message.getFilename())
+                    .owner(message.getOwner())
+                    .build();
 
         when:
             service.saveFile(message)
@@ -105,7 +112,7 @@ class ReplicationServiceISpec extends Specification {
             service.exists(message)
 
         when:
-            FileMessage loaded = service.loadFile(message)
+            FileMessage loaded = service.loadFile(loadMessage)
 
         then:
             loaded.getFilename() == message.getFilename()

@@ -5,6 +5,7 @@ import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.Command
+import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.MessageType
@@ -397,8 +398,14 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
     def "load file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
+            FileMessage loadMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .type(MessageType.FILE_LOAD)
+                    .filename(saveMessage.getFilename())
+                    .owner(saveMessage.getOwner())
+                    .build();
+
             ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
-            ReplicationMessage loadRequest = createLoadMessage(saveMessage, nodeId, otherNodeId)
+            ReplicationMessage loadRequest = createLoadMessage(loadMessage, nodeId, otherNodeId)
 
         expect: "file not exists"
             !fileService.exists(saveMessage)
@@ -421,20 +428,20 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
             messages.get().stream().count() == 1
 
         when:
-            ReplicationMessage loadMessage = messages.get().stream().findFirst().get()
+            ReplicationMessage loadReponse = messages.get().stream().findFirst().get()
 
         then:
-            loadMessage.getType() == MessageType.REPLICATION_COMMAND
-            loadMessage.getCommand() == Command.LOAD
-            loadMessage.getRouting() == MessageRouting.UNICAST
-            loadMessage.getReplicationStatus() == ReplicationStatus.OK
-            loadMessage.getFromId()
-            loadMessage.getToId() == nodeId
+            loadReponse.getType() == MessageType.REPLICATION_COMMAND
+            loadReponse.getCommand() == Command.LOAD
+            loadReponse.getRouting() == MessageRouting.UNICAST
+            loadReponse.getReplicationStatus() == ReplicationStatus.OK
+            loadReponse.getFromId()
+            loadReponse.getToId() == nodeId
 
         and:
-            loadMessage.getFilename() == saveMessage.getFilename()
-            loadMessage.getOwner() == saveMessage.getOwner()
-            Arrays.equals(loadMessage.getData(), saveMessage.getData())
+            loadReponse.getFilename() == saveMessage.getFilename()
+            loadReponse.getOwner() == saveMessage.getOwner()
+            Arrays.equals(loadReponse.getData(), saveMessage.getData())
 
         cleanup:
             // we use a save message which will be probably prohibited in the future

@@ -60,7 +60,7 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     default ReplicationMessage createLoadMessage(
             FileMessage message, String nodeId, String neighbourId
     ) {
-        return new DefaultReplicationMessage.Builder(null)
+        return new DefaultReplicationMessage.Builder(message.getId())
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.LOAD)
