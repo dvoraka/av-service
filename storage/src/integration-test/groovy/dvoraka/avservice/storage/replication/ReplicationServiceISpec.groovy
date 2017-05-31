@@ -88,6 +88,28 @@ class ReplicationServiceISpec extends Specification {
     }
 
     @Ignore("manual testing")
+    def "save many files and check"() {
+        given:
+            List<FileMessage> fileMessages = new ArrayList<>()
+            int loops = 100
+
+        when:
+            loops.times {
+                FileMessage message = Utils.genSaveMessage()
+                fileMessages.add(message)
+                service.saveFile(message)
+            }
+
+        then:
+            notThrown(Exception)
+
+        expect:
+            fileMessages.forEach() {
+                assert service.exists(it)
+            }
+    }
+
+    @Ignore("manual testing")
     def "save and load file"() {
         given:
             FileMessage message = Utils.genSaveMessage()

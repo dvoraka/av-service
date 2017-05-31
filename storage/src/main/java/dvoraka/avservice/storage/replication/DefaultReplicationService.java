@@ -109,7 +109,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 .getResponseWait(message.getId(), MAX_RESPONSE_TIME, MAX_RESPONSE_TIME);
 
         if (!responses.isPresent()) {
-            log.debug("Discovered ({}): 0", nodeId);
+            log.debug("Discovered ({}): none", nodeId);
 
             return;
         }

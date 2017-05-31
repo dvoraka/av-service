@@ -96,7 +96,7 @@ public class DefaultRemoteLock implements
             return false;
         }
 
-        log.debug("Locking...");
+        log.debug("Locking {} nodes ({})...", lockCount, nodeId);
         lockingLock.lock();
         log.debug("Locked.");
 
