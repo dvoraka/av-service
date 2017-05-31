@@ -4,6 +4,7 @@ import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.ReplicationMessageListener;
+import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
@@ -257,6 +258,11 @@ public class DefaultRemoteLock implements
     public void onMessage(ReplicationMessage message) {
         // filter out unicasts
         if (message.getRouting() == MessageRouting.UNICAST) {
+            return;
+        }
+
+        // filter out discover messages
+        if (message.getCommand() == Command.DISCOVER) {
             return;
         }
 
