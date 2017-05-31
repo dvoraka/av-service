@@ -261,8 +261,8 @@ public class DefaultRemoteLock implements
             return;
         }
 
-        // filter out discover messages
-        if (message.getCommand() == Command.DISCOVER) {
+        // filter out discover and exists messages
+        if (message.getCommand() == Command.DISCOVER || message.getCommand() == Command.EXISTS) {
             return;
         }
 
