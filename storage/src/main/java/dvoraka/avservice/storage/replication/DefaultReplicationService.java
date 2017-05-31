@@ -9,6 +9,7 @@ import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.common.replication.ReplicationHelper;
+import dvoraka.avservice.storage.CannotAcquireLockException;
 import dvoraka.avservice.storage.ExistingFileException;
 import dvoraka.avservice.storage.FileNotFoundException;
 import dvoraka.avservice.storage.FileServiceException;
@@ -175,6 +176,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 }
             } else {
                 log.warn("Save lock problem for: {}", message);
+                throw new CannotAcquireLockException();
             }
         } catch (InterruptedException e) {
             log.warn("Locking interrupted!", e);
