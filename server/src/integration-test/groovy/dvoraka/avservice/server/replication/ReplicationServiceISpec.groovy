@@ -3,9 +3,9 @@ package dvoraka.avservice.server.replication
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
+import dvoraka.avservice.common.FileServiceHelper
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.Command
-import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.MessageType
@@ -40,7 +40,8 @@ import spock.lang.Stepwise
 @ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'db-mem'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
-class ReplicationServiceISpec extends Specification implements ReplicationHelper {
+class ReplicationServiceISpec extends Specification
+        implements ReplicationHelper, FileServiceHelper {
 
     @Autowired
     ReplicationServiceClient client
@@ -398,11 +399,8 @@ class ReplicationServiceISpec extends Specification implements ReplicationHelper
     def "load file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
-            FileMessage loadMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .type(MessageType.FILE_LOAD)
-                    .filename(saveMessage.getFilename())
-                    .owner(saveMessage.getOwner())
-                    .build();
+            FileMessage loadMessage = fileLoadMessage(
+                    saveMessage.getFilename(), saveMessage.getOwner())
 
             ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
             ReplicationMessage loadRequest = createLoadMessage(loadMessage, nodeId, otherNodeId)
