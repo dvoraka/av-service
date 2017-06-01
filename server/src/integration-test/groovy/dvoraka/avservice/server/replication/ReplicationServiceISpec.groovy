@@ -449,13 +449,42 @@ class ReplicationServiceISpec extends Specification
     @Ignore('WIP')
     def "delete file"() {
         given:
-            FileMessage fileMessage = Utils.genFileMessage()
-            ReplicationMessage deleteRequest = createDeleteMessage(fileMessage, nodeId, otherNodeId)
+            FileMessage saveMessage = Utils.genSaveMessage()
+            ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
+
+            FileMessage delteMessage = fileDeleteMessage(
+                    saveMessage.getFilename(), saveMessage.getOwner())
+            ReplicationMessage deleteRequest = createDeleteMessage(delteMessage, nodeId, otherNodeId)
+
+        expect: "file not exists"
+            !fileService.exists(saveMessage)
+
+        when:
+            client.sendMessage(saveRequest)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(saveRequest.getId(), responseTime)
+
+        then: "we should get one file response"
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        when:
+            ReplicationMessage saveStatus = messages.get().stream().findFirst().get()
+
+        then:
+            saveStatus.getType() == MessageType.REPLICATION_COMMAND
+            saveStatus.getCommand() == Command.SAVE
+            saveStatus.getRouting() == MessageRouting.UNICAST
+            saveStatus.getReplicationStatus() == ReplicationStatus.OK
+            saveStatus.getFromId()
+            saveStatus.getToId() == nodeId
+
+        and: "file should be stored"
+            fileService.exists(saveMessage)
 
         when:
             client.sendMessage(deleteRequest)
-            Optional<ReplicationMessageList> messages =
-                    responseClient.getResponseWait(deleteRequest.getId(), responseTime)
+            messages = responseClient.getResponseWait(deleteRequest.getId(), responseTime)
 
         then: "we should get one file response"
             messages.isPresent()
@@ -471,6 +500,10 @@ class ReplicationServiceISpec extends Specification
             deleteStatus.getReplicationStatus() == ReplicationStatus.OK
             deleteStatus.getFromId()
             deleteStatus.getToId() == nodeId
+
+        cleanup:
+            fileService.deleteFile(
+                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
     }
 
     void unlockTestFile() {

@@ -429,5 +429,17 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                         createLoadFailed(message, message.getFromId(), nodeId));
             }
         }
+
+        // handle delete
+        if (message.getRouting() == MessageRouting.UNICAST
+                && message.getCommand() == Command.DELETE) {
+            try {
+                fileService.deleteFile(message);
+//                serviceClient.sendMessage();
+            } catch (FileServiceException e) {
+                log.warn("Deleting failed (" + nodeId + ")", e);
+//                serviceClient.sendMessage();
+            }
+        }
     }
 }
