@@ -198,10 +198,6 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public FileMessage loadFile(FileMessage message) throws FileServiceException {
         log.debug("Load ({}): {}", nodeId, message);
 
-        if (!exists(message)) {
-            throw new FileNotFoundException();
-        }
-
         int neighbours = neighbourCount();
         try {
             if (remoteLock.lockForFile(
@@ -227,12 +223,16 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
                     return messages.stream()
                             .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                            .peek(m -> log.debug("Load success."))
                             .findFirst()
                             .orElseThrow(FileNotFoundException::new);
                 }
 
                 log.debug("Loading failed.");
                 throw new FileNotFoundException();
+            } else {
+                log.warn("Load lock problem for: {}", message);
+                throw new CannotAcquireLockException();
             }
         } catch (InterruptedException e) {
             log.warn("Locking interrupted!", e);

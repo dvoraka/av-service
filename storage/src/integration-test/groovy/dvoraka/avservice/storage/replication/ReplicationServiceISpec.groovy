@@ -1,9 +1,8 @@
 package dvoraka.avservice.storage.replication
 
+import dvoraka.avservice.common.FileServiceHelper
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
-import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -22,7 +21,7 @@ import spock.lang.Specification
 @Ignore
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'replication', 'client', 'amqp', 'no-db'])
-class ReplicationServiceISpec extends Specification {
+class ReplicationServiceISpec extends Specification implements FileServiceHelper {
 
     @Autowired
     ReplicationService service
@@ -99,11 +98,7 @@ class ReplicationServiceISpec extends Specification {
     def "save and load file"() {
         given:
             FileMessage message = Utils.genSaveMessage()
-            FileMessage loadMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .type(MessageType.FILE_LOAD)
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
-                    .build();
+            FileMessage loadMessage = fileLoadMessage(message.getFilename(), message.getOwner())
 
         when:
             service.saveFile(message)
@@ -118,5 +113,26 @@ class ReplicationServiceISpec extends Specification {
             loaded.getFilename() == message.getFilename()
             loaded.getOwner() == message.getOwner()
             Arrays.equals(loaded.getData(), message.getData())
+    }
+
+    def "save many files and load"() {
+        given:
+            List<FileMessage> fileMessages = new ArrayList<>()
+            int loops = 100
+
+        when:
+            loops.times {
+                FileMessage message = Utils.genSaveMessage()
+                fileMessages.add(message)
+                service.saveFile(message)
+            }
+
+        then:
+            notThrown(Exception)
+
+        expect:
+            fileMessages.forEach() {
+                assert service.loadFile(it)
+            }
     }
 }

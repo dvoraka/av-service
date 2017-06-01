@@ -125,10 +125,12 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             service.loadFile(message)
 
         then:
-            2 * fileService.exists(message.getFilename(), message.getOwner()) >> true
+            1 * fileService.exists(message.getFilename(), message.getOwner()) >> true
 
             1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), _) >> true
             1 * fileService.loadFile(_)
+
+            1 * remoteLock.unlockForFile(message.getFilename(), message.getOwner(), _)
     }
 
     @Ignore('WIP')
@@ -161,12 +163,16 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             service.loadFile(message)
 
         then:
-            1 * fileService.exists(message.getFilename(), message.getOwner()) >> false
+            2 * fileService.exists(message.getFilename(), message.getOwner()) >> false
+
+            1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), _) >> true
 
             1 * serviceClient.sendMessage(_)
             1 * responseClient.getResponseWait(_, _) >> {
                 return Optional.ofNullable(null)
             }
+
+            1 * remoteLock.unlockForFile(message.getFilename(), message.getOwner(), _)
 
             thrown(FileNotFoundException)
     }
