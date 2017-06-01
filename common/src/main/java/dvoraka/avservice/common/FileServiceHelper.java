@@ -20,4 +20,8 @@ public interface FileServiceHelper {
     default FileMessage fileLoadMessage(String filename, String owner) {
         return fileMessage(MessageType.FILE_LOAD, filename, owner);
     }
+
+    default FileMessage fileDeleteMessage(String filename, String owner) {
+        return fileMessage(MessageType.FILE_DELETE, filename, owner);
+    }
 }

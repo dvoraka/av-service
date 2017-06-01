@@ -335,8 +335,8 @@ class ReplicationServiceISpec extends Specification
             fileService.exists(saveMessage)
 
         cleanup:
-            // we use a save message which will be probably prohibited in the future
-            fileService.deleteFile(saveMessage)
+            fileService.deleteFile(
+                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
     }
 
     def "exists"() {
@@ -392,8 +392,8 @@ class ReplicationServiceISpec extends Specification
             existsStatus.getToId() == nodeId
 
         cleanup:
-            // we use a save message which will be probably prohibited in the future
-            fileService.deleteFile(saveMessage)
+            fileService.deleteFile(
+                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
     }
 
     def "load file"() {
@@ -442,8 +442,8 @@ class ReplicationServiceISpec extends Specification
             Arrays.equals(loadReponse.getData(), saveMessage.getData())
 
         cleanup:
-            // we use a save message which will be probably prohibited in the future
-            fileService.deleteFile(saveMessage)
+            fileService.deleteFile(
+                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
     }
 
     @Ignore('WIP')
