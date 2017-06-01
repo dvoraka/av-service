@@ -22,7 +22,6 @@ import org.springframework.context.annotation.PropertySource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
@@ -446,15 +445,15 @@ class ReplicationServiceISpec extends Specification
                     fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
     }
 
-    @Ignore('WIP')
     def "delete file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
             ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
 
-            FileMessage delteMessage = fileDeleteMessage(
+            FileMessage deleteMessage = fileDeleteMessage(
                     saveMessage.getFilename(), saveMessage.getOwner())
-            ReplicationMessage deleteRequest = createDeleteMessage(delteMessage, nodeId, otherNodeId)
+            ReplicationMessage deleteRequest = createDeleteMessage(
+                    deleteMessage, nodeId, otherNodeId)
 
         expect: "file not exists"
             !fileService.exists(saveMessage)
@@ -476,7 +475,7 @@ class ReplicationServiceISpec extends Specification
             saveStatus.getCommand() == Command.SAVE
             saveStatus.getRouting() == MessageRouting.UNICAST
             saveStatus.getReplicationStatus() == ReplicationStatus.OK
-            saveStatus.getFromId()
+            saveStatus.getFromId() == otherNodeId
             saveStatus.getToId() == nodeId
 
         and: "file should be stored"
@@ -498,7 +497,7 @@ class ReplicationServiceISpec extends Specification
             deleteStatus.getCommand() == Command.DELETE
             deleteStatus.getRouting() == MessageRouting.UNICAST
             deleteStatus.getReplicationStatus() == ReplicationStatus.OK
-            deleteStatus.getFromId()
+            deleteStatus.getFromId() == otherNodeId
             deleteStatus.getToId() == nodeId
 
         cleanup:

@@ -12,6 +12,7 @@ import dvoraka.avservice.common.data.ReplicationStatus;
  * Replication helper interface.
  */
 //TODO: refactoring
+//TODO: fix node name variables
 public interface ReplicationHelper extends ReplicationServiceHelper {
 
     default ReplicationMessage createSaveMessage(
@@ -120,14 +121,30 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     }
 
     default ReplicationMessage createDeleteMessage(
-            FileMessage message, String nodeId, String neighbourId
+            FileMessage message, String fromNodeId, String toNodeId
     ) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.DELETE)
-                .toId(neighbourId)
-                .fromId(nodeId)
+                .toId(toNodeId)
+                .fromId(fromNodeId)
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
+
+    default ReplicationMessage createDeleteSuccess(
+            FileMessage message, String fromNodeId, String toNodeId
+    ) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.DELETE)
+                .replicationStatus(ReplicationStatus.OK)
+                .toId(toNodeId)
+                .fromId(fromNodeId)
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();

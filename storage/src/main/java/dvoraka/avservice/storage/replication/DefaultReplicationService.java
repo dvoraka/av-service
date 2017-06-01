@@ -435,7 +435,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 && message.getCommand() == Command.DELETE) {
             try {
                 fileService.deleteFile(message);
-//                serviceClient.sendMessage();
+                serviceClient.sendMessage(
+                        createDeleteSuccess(message, nodeId, message.getFromId()));
             } catch (FileServiceException e) {
                 log.warn("Deleting failed (" + nodeId + ")", e);
 //                serviceClient.sendMessage();
