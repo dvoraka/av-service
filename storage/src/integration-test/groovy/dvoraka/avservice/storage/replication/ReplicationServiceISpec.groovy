@@ -135,4 +135,22 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
                 assert service.loadFile(it)
             }
     }
+
+    def "save file and load many times"() {
+        given:
+            FileMessage message = Utils.genSaveMessage()
+            FileMessage loadMessage = fileLoadMessage(message.getFilename(), message.getOwner())
+            int loops = 100
+
+        when:
+            service.saveFile(message)
+
+        then:
+            service.exists(message)
+
+        expect:
+            loops.times {
+                assert service.loadFile(loadMessage)
+            }
+    }
 }
