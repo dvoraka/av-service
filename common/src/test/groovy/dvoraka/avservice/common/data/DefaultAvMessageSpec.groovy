@@ -97,7 +97,7 @@ class DefaultAvMessageSpec extends Specification {
             DefaultAvMessage message = new DefaultAvMessage.Builder(testId).build()
 
         expect:
-            message.toString().startsWith("DefaultAvMessage{")
+            message.toString().startsWith("DefaultAvMessage {")
             message.toString().endsWith("}")
     }
 
