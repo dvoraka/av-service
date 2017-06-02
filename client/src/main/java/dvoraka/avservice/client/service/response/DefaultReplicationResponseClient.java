@@ -71,6 +71,7 @@ public class DefaultReplicationResponseClient implements
         initializeCache();
         replicationComponent.addReplicationMessageListener(this);
         setStarted(true);
+        log.info("Started. ({})", nodeId);
     }
 
     @PreDestroy

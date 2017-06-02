@@ -85,10 +85,11 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @PostConstruct
     public void start() {
-        log.info("Starting service...");
+        log.info("Starting service ({})...", nodeId);
         responseClient.addNoResponseMessageListener(this);
+        final int delayTime = 300;
         executorService.scheduleWithFixedDelay(
-                this::discoverNeighbours, 0L, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
+                this::discoverNeighbours, delayTime, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }
 
     @PreDestroy
