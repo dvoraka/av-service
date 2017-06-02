@@ -152,10 +152,19 @@ public final class DefaultAvMessage implements AvMessage {
     @Override
     @SuppressWarnings("checkstyle:OperatorWrap")
     public String toString() {
-        return "DefaultAvMessage{" +
+
+        final int maxDataLength = 20;
+        byte[] strData;
+        if (data != null && data.length > maxDataLength) {
+            strData = "AAAAA".getBytes(StandardCharsets.UTF_8);
+        } else {
+            strData = data;
+        }
+
+        return "DefaultAvMessage {" +
                 "id='" + id + '\'' +
                 ", correlationId='" + correlationId + '\'' +
-                ", data=" + Arrays.toString(data) +
+                ", data=" + Arrays.toString(strData) +
                 ", type=" + type +
                 ", virusInfo='" + virusInfo + '\'' +
                 ", filename='" + filename + '\'' +

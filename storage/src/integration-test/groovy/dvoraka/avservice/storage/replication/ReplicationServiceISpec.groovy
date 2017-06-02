@@ -2,6 +2,7 @@ package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.common.FileServiceHelper
 import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
@@ -152,5 +153,24 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
             loops.times {
                 assert service.loadFile(loadMessage)
             }
+    }
+
+    def "save 100 MB file"() {
+        given:
+            int size = 1000 * 1000
+            byte[] data = new byte[size]
+
+            FileMessage fileMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .data(data)
+                    .filename("testF")
+                    .owner("testO")
+                    .build()
+
+        when:
+            println 'built'
+            service.saveFile(fileMessage)
+
+        then:
+            notThrown(Exception)
     }
 }
