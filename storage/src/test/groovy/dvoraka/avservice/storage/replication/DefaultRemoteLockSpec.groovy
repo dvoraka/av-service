@@ -57,7 +57,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
         then:
             1 * serviceClient.sendMessage(_)
-            1 * responseClient.getResponseWait(_, _, _) >> Optional.empty()
+            1 * responseClient.getResponseWaitSize(_, _, _) >> Optional.empty()
             !result
     }
 
@@ -67,7 +67,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
         then:
             1 * serviceClient.sendMessage(_)
-            1 * responseClient.getResponseWait(_, _, _) >> Optional.of(genLockResponse())
+            1 * responseClient.getResponseWaitSize(_, _, _) >> Optional.of(genLockResponse())
             result
     }
 
@@ -77,7 +77,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
         then:
             1 * serviceClient.sendMessage(_)
-            1 * responseClient.getResponseWait(_, _, _) >> Optional.of(genLockResponse())
+            1 * responseClient.getResponseWaitSize(_, _, _) >> Optional.of(genLockResponse())
             !result
     }
 
@@ -87,7 +87,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
         then:
             1 * serviceClient.sendMessage(_)
-            1 * responseClient.getResponseWait(_, _, _) >> Optional.empty()
+            1 * responseClient.getResponseWaitSize(_, _, _) >> Optional.empty()
     }
 
     def "synchronize"() {

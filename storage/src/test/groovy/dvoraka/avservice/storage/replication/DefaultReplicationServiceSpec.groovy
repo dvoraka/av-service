@@ -97,7 +97,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             1 * responseClient.getResponseWait(_, _) >> {
                 return Optional.ofNullable(null)
             }
-            1 * responseClient.getResponseWait(_, _, _) >> {
+            1 * responseClient.getResponseWaitSize(_, _, _) >> {
                 return Optional.ofNullable(null)
             }
 

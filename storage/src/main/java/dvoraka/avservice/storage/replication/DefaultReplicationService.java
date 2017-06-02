@@ -153,7 +153,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
                     log.debug("Checking save status...");
                     Optional<ReplicationMessageList> responses = responseClient
-                            .getResponseWait(
+                            .getResponseWaitSize(
                                     message.getId(),
                                     MAX_RESPONSE_TIME,
                                     getReplicationCount() - 1);

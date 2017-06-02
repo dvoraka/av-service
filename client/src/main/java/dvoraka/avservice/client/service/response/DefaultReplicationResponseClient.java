@@ -144,16 +144,17 @@ public class DefaultReplicationResponseClient implements
     }
 
     @Override
-    public Optional<ReplicationMessageList> getResponseWait(String id, long waitTime, int size) {
+    public Optional<ReplicationMessageList> getResponseWaitSize(
+            String id, long maxWaitTime, int size) {
         final long start = System.currentTimeMillis();
 
         ReplicationMessageList result = null;
         while (result == null
                 || result.stream().count() != size) {
 
-            result = checkGetResponse(id, waitTime);
+            result = checkGetResponse(id, maxWaitTime);
 
-            if (!sleep(start, waitTime)) {
+            if (!sleep(start, maxWaitTime)) {
                 break;
             }
         }

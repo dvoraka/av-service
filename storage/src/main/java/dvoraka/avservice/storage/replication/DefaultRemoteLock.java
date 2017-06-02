@@ -104,7 +104,8 @@ public class DefaultRemoteLock implements
         serviceClient.sendMessage(lockRequest);
 
         Optional<ReplicationMessageList> lockReplies =
-                responseClient.getResponseWait(lockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
+                responseClient.getResponseWaitSize(
+                        lockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
 
         // count success locks
         if (lockReplies.isPresent()) {
@@ -156,7 +157,8 @@ public class DefaultRemoteLock implements
 
         // get replies
         Optional<ReplicationMessageList> unlockReplies =
-                responseClient.getResponseWait(unlockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
+                responseClient.getResponseWaitSize(
+                        unlockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
 
         // count success unlocks
         if (unlockReplies.isPresent()) {
