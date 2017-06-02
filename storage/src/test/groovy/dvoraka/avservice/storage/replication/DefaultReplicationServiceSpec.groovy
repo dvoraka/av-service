@@ -94,10 +94,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             2 * fileService.exists(message.getFilename(), message.getOwner()) >> false
             1 * serviceClient.sendMessage(_)
 
-            1 * responseClient.getResponseWait(_, _) >> {
-                return Optional.ofNullable(null)
-            }
-            1 * responseClient.getResponseWaitSize(_, _, _) >> {
+            2 * responseClient.getResponseWaitSize(_, _, _) >> {
                 return Optional.ofNullable(null)
             }
 
@@ -168,7 +165,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), _) >> true
 
             1 * serviceClient.sendMessage(_)
-            1 * responseClient.getResponseWait(_, _) >> {
+            1 * responseClient.getResponseWaitSize(_, _, _) >> {
                 return Optional.ofNullable(null)
             }
 
@@ -191,7 +188,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             1 * fileService.exists(filename, owner)
             1 * serviceClient.sendMessage(_)
 
-            1 * responseClient.getResponseWait(_, _) >> replicationList(response)
+            1 * responseClient.getResponseWaitSize(_, _, _) >> replicationList(response)
 
             result
     }
@@ -209,7 +206,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
         then:
             1 * serviceClient.sendMessage(_)
 
-            1 * responseClient.getResponseWait(_, _) >> replicationList(response)
+            1 * responseClient.getResponseWaitSize(_, _, _) >> replicationList(response)
 
             ids.size() == 1
     }
@@ -269,7 +266,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
 
         then:
             1 * fileService.exists(existsRequest.getFilename(), existsRequest.getOwner()) >> false
-            0 * serviceClient._
+            1 * serviceClient.sendMessage(_)
     }
 
     def "on message - save"() {

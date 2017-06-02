@@ -36,6 +36,18 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
+    default ReplicationMessage createNonExistsReply(ReplicationMessage message, String nodeId) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.EXISTS)
+                .replicationStatus(ReplicationStatus.FAILED)
+                .fromId(nodeId)
+                .toId(message.getFromId())
+                .build();
+    }
+
     default ReplicationMessage createStatusRequest(String filename, String owner, String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)

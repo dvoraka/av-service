@@ -331,10 +331,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         serviceClient.sendMessage(query);
 
         Optional<ReplicationMessageList> response;
-        response = responseClient.getResponseWait(query.getId(), MAX_RESPONSE_TIME);
+        response = responseClient.getResponseWaitSize(
+                query.getId(), MAX_RESPONSE_TIME, neighbourCount());
         ReplicationMessageList messages = response.orElseGet(ReplicationMessageList::new);
 
         return messages.stream()
+                .filter(message -> message.getReplicationStatus() == ReplicationStatus.OK)
                 .map(ReplicationMessage::getFromId)
                 .collect(Collectors.toSet());
     }
@@ -400,9 +402,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
         // handle exists
         if (message.getRouting() == MessageRouting.BROADCAST
-                && message.getCommand() == Command.EXISTS
-                && localCopyExists(message)) {
-            serviceClient.sendMessage(createExistsReply(message, nodeId));
+                && message.getCommand() == Command.EXISTS) {
+            if (localCopyExists(message)) {
+                serviceClient.sendMessage(createExistsReply(message, nodeId));
+            } else {
+                serviceClient.sendMessage(createNonExistsReply(message, nodeId));
+            }
         }
 
         // handle save
