@@ -10,6 +10,7 @@ import dvoraka.avservice.storage.FileNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * File service spec.
@@ -26,6 +27,26 @@ class FileServiceISpec extends Specification {
     def "save file"() {
         expect:
             service.saveFile(Utils.genFileMessage())
+    }
+
+    @Unroll
+    def "save file with #size bytes"() {
+        given:
+            FileMessage message = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .filename('TestF')
+                    .owner(testingOwner)
+                    .data(new byte[size])
+                    .build()
+
+        when:
+            service.saveFile(message)
+            service.deleteFile(message)
+
+        then:
+            notThrown(Exception)
+
+        where:
+            size << [10, 1 * 1000, 1000 * 1000]
     }
 
     def "save same file twice"() {

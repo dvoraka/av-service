@@ -4,6 +4,7 @@ import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.storage.ExistingFileException;
 import dvoraka.avservice.storage.FileNotFoundException;
 import dvoraka.avservice.storage.FileServiceException;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * File service synchronous interface.
@@ -62,6 +63,7 @@ public interface FileService {
      * @return <tt>true</tt> if exists
      * @see FileService#exists(String, String)
      */
+    @Transactional(readOnly = true)
     default boolean exists(FileMessage message) {
         return exists(message.getFilename(), message.getOwner());
     }
