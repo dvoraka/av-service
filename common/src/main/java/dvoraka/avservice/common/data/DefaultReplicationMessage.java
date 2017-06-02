@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -109,11 +110,20 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
     @Override
     @SuppressWarnings("checkstyle:OperatorWrap")
     public String toString() {
-        return "DefaultReplicationMessage{" +
+
+        final int maxDataLength = 20;
+        byte[] strData;
+        if (data != null && data.length > maxDataLength) {
+            strData = "AAAAA".getBytes(StandardCharsets.UTF_8);
+        } else {
+            strData = data;
+        }
+
+        return "DefaultReplicationMessage {" +
                 "id='" + id + '\'' +
                 ", correlationId='" + correlationId + '\'' +
                 ", type=" + type +
-                ", data=" + Arrays.toString(data) +
+                ", data=" + Arrays.toString(strData) +
                 ", filename='" + filename + '\'' +
                 ", owner='" + owner + '\'' +
                 ", fromId='" + fromId + '\'' +
