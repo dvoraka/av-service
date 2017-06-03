@@ -19,7 +19,7 @@ import spock.lang.Specification
  * infrastructure. You can run real node with a Docker script in the tools directory called
  * <b>startReplicationNodes.sh</b> with argument 1 for starting one remote node.
  */
-@Ignore
+@Ignore("manual testing")
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'replication', 'client', 'amqp', 'no-db'])
 class ReplicationServiceISpec extends Specification implements FileServiceHelper {
@@ -155,9 +155,9 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
             }
     }
 
-    def "save 100 MB file"() {
+    def "save 10 MB file"() {
         given:
-            int size = 1000 * 1000
+            int size = 1000 * 1000 * 10
             byte[] data = new byte[size]
 
             FileMessage fileMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
@@ -167,10 +167,13 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
                     .build()
 
         when:
-            println 'built'
             service.saveFile(fileMessage)
 
         then:
             notThrown(Exception)
+            service.exists(fileMessage)
+
+        cleanup:
+            service.deleteFile(fileMessage)
     }
 }

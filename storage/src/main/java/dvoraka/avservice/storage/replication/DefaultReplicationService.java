@@ -134,6 +134,10 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Save ({}): {}", nodeId, message);
 
+        final int sizeTimeRatio = 10_000;
+        final int maxSaveTime = message.getData().length / sizeTimeRatio;
+        log.debug("Setting max save time to: {}", maxSaveTime);
+
         if (localCopyExists(message)) {
             throw new ExistingFileException();
         }
@@ -156,7 +160,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     Optional<ReplicationMessageList> responses = responseClient
                             .getResponseWaitSize(
                                     message.getId(),
-                                    MAX_RESPONSE_TIME,
+                                    MAX_RESPONSE_TIME + maxSaveTime,
                                     getReplicationCount() - 1);
                     ReplicationMessageList messages = responses
                             .orElseGet(ReplicationMessageList::new);
@@ -280,23 +284,37 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void deleteFile(FileMessage message) throws FileServiceException {
         log.debug("Delete: " + message);
 
-        if (!exists(message)) {
-            return;
-        }
+        int neighbours = neighbourCount();
+        try {
+            if (remoteLock.lockForFile(
+                    message.getFilename(),
+                    message.getOwner(),
+                    neighbours)) {
 
-        if (lockFile(message) && exists(message)) {
-            fileService.deleteFile(message);
-            sendDeleteMessage(message);
-            //TODO: wait for response
-        } else {
-            log.warn("Delete problem for: {}", message);
-        }
+                if (exists(message)) {
 
-        remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
+                    if (localCopyExists(message)) {
+                        log.debug("Deleting local copy...");
+                        fileService.deleteFile(message);
+                    }
+
+                    sendDeleteMessage(message);
+                } else {
+                    throw new FileNotFoundException();
+                }
+            }
+        } catch (InterruptedException e) {
+            log.warn("Delete problem.", e);
+        } finally {
+            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
+        }
     }
 
     private void sendDeleteMessage(FileMessage message) {
-        //TODO
+        Set<String> nodes = whoHas(message.getFilename(), message.getOwner());
+        nodes.stream()
+                .map(id -> createDeleteMessage(message, nodeId, id))
+                .forEach(serviceClient::sendMessage);
     }
 
     private boolean lockFile(FileMessage message) {
