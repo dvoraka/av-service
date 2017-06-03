@@ -30,4 +30,4 @@ COPY conf/avservice.properties ${USER_HOME}/${PROJECT_ROOT}/common/src/main/reso
 COPY conf/logback.xml ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
 
 
-CMD ["./gradlew", "-q", "runAmqpReplicationService"]
+CMD ["./gradlew", "-q", "--no-daemon", "runAmqpReplicationService"]
