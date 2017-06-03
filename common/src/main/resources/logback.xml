@@ -8,7 +8,10 @@
         <destination>localhost:7000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
-    <root level="warn">
+
+    <logger name="org.springframework" level="WARN"/>
+
+    <root level="WARN">
         <appender-ref ref="TCP"/>
         <!--<appender-ref ref="STDOUT"/>-->
     </root>
