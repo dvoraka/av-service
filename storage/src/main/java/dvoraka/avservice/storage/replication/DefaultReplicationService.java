@@ -60,6 +60,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     private int replicationCount;
     private ScheduledExecutorService executorService;
 
+    private final String idString;
+
 
     @Autowired
     public DefaultReplicationService(
@@ -81,6 +83,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         neighbours = new CopyOnWriteArraySet<>();
         replicationCount = REPLICATION_COUNT;
         executorService = Executors.newSingleThreadScheduledExecutor();
+
+        idString = "(" + nodeId + ")";
     }
 
     @PostConstruct
@@ -193,9 +197,9 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     private void sendSaveMessage(FileMessage message) {
         neighbours.stream()
-                .map(id -> createSaveMessage(message, nodeId, id))
+                .map(neighbourId -> createSaveMessage(message, nodeId, neighbourId))
                 .limit(getReplicationCount() - 1L)
-                .peek(msg -> log.debug("Sending save message to {}", msg.getToId()))
+                .peek(msg -> log.debug("Sending save message to {}...", msg.getToId()))
                 .forEach(serviceClient::sendMessage);
     }
 
@@ -255,13 +259,13 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 .findAny()
                 .orElseThrow(FileNotFoundException::new);
 
-        log.debug("Loading from {}...", neighbourId);
+        log.debug("Loading from {} {}...", neighbourId, idString);
         serviceClient.sendMessage(createLoadMessage(message, nodeId, neighbourId));
     }
 
     @Override
     public void updateFile(FileMessage message) throws FileServiceException {
-        log.debug("Update: " + message);
+        log.debug("Update {}: {}", idString, message);
 
         if (!exists(message)) {
             throw new FileNotFoundException();
@@ -282,7 +286,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public void deleteFile(FileMessage message) throws FileServiceException {
-        log.debug("Delete: " + message);
+        log.debug("Delete {}: {}", idString, message);
 
         int neighbours = neighbourCount();
         try {
@@ -292,16 +296,32 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     neighbours)) {
 
                 if (exists(message)) {
-
                     if (localCopyExists(message)) {
-                        log.debug("Deleting local copy...");
+                        log.debug("Deleting local copy {}...", idString);
                         fileService.deleteFile(message);
                     }
 
-                    sendDeleteMessage(message);
+                    Set<String> nodes = sendDeleteMessage(message);
+
+                    Optional<ReplicationMessageList> responses =
+                            responseClient.getResponseWait(message.getId(), MAX_RESPONSE_TIME);
+
+                    long successCount = responses.orElseGet(ReplicationMessageList::new)
+                            .stream()
+                            .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                            .count();
+
+                    if (nodes.size() == successCount) {
+                        log.debug("Delete success {}.", idString);
+                    } else {
+                        log.debug("Delete failed {}.", idString);
+                    }
                 } else {
                     throw new FileNotFoundException();
                 }
+            } else {
+                log.warn("Delete lock problem for {}: {}", idString, message);
+                throw new CannotAcquireLockException();
             }
         } catch (InterruptedException e) {
             log.warn("Delete problem.", e);
@@ -310,11 +330,15 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         }
     }
 
-    private void sendDeleteMessage(FileMessage message) {
+    private Set<String> sendDeleteMessage(FileMessage message) {
         Set<String> nodes = whoHas(message.getFilename(), message.getOwner());
         nodes.stream()
                 .map(id -> createDeleteMessage(message, nodeId, id))
+                .peek(msg -> log.debug(
+                        "Sending delete message to {} {}...", msg.getToId(), idString))
                 .forEach(serviceClient::sendMessage);
+
+        return nodes;
     }
 
     private boolean lockFile(FileMessage message) {
