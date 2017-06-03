@@ -9,7 +9,9 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
-    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework" level="WARN" additivity="false"/>
+
+    <logger name="org.ehcache" level="WARN" additivity="false"/>
 
     <root level="WARN">
         <appender-ref ref="TCP"/>

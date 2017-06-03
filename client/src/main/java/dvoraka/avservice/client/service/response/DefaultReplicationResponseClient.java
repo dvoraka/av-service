@@ -67,11 +67,11 @@ public class DefaultReplicationResponseClient implements
             return;
         }
 
-        log.info("Start ({}).", nodeId);
+        log.info("Starting ({})...", nodeId);
         initializeCache();
         replicationComponent.addReplicationMessageListener(this);
         setStarted(true);
-        log.info("Started. ({})", nodeId);
+        log.info("Started ({}).", nodeId);
     }
 
     @PreDestroy
