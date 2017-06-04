@@ -45,7 +45,7 @@ task runAmqpReplicationService(type: JavaExec) {
     description = 'Run AMQP replication service'
     group = "${taskGroupName}"
 
-    maxHeapSize = '128m'
+    maxHeapSize = '192m'
 
     main = 'dvoraka.avservice.server.runner.amqp.AmqpReplicationServiceRunner'
     standardInput = System.in
