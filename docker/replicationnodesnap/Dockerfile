@@ -1,5 +1,6 @@
 #
-# Docker configuration for the testing replication node.
+# Docker configuration for a testing replication node.
+#
 # Latest snapshot version.
 #
 
@@ -28,6 +29,7 @@ RUN ./gradlew compileJava
 
 COPY conf/avservice.properties ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
 COPY conf/logback.xml ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
+COPY conf/gradle.properties ${USER_HOME}/${PROJECT_ROOT}/
 
 
-CMD ["./gradlew", "-q", "--no-daemon", "runAmqpReplicationService"]
+CMD ["./gradlew", "-q", "runAmqpReplicationService"]
