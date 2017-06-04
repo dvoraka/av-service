@@ -138,7 +138,9 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Save ({}): {}", nodeId, message);
 
-        final int sizeTimeRatio = 10_000;
+        // depends on an efficiency of the sending algorithm and
+        // it still must be different for "bigger" (~10 MB+) files
+        final int sizeTimeRatio = 2_000;
         final int maxSaveTime = message.getData().length / sizeTimeRatio;
         log.debug("Setting max save time to: {}", maxSaveTime);
 
