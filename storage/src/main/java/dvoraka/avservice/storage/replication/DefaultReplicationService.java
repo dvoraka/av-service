@@ -269,21 +269,9 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
     public void updateFile(FileMessage message) throws FileServiceException {
         log.debug("Update {}: {}", idString, message);
 
-        if (!exists(message)) {
-            throw new FileNotFoundException();
-        }
+        deleteFile(message);
 
-        if (fileService.exists(message)) {
-            fileService.updateFile(message);
-        }
-
-        serviceClient.sendMessage(createUpdateMessage(message, nodeId, "neighbour"));
-
-//        ReplicationMessageList replicationMessages = responseClient.getResponseWait(
-//                message.getId(), MAX_RESPONSE_TIME);
-//        if (replicationMessages != null) {
-//
-//        }
+        saveFile(message);
     }
 
     @Override
