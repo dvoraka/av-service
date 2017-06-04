@@ -8,8 +8,14 @@
         <destination>localhost:7000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
+
+    <logger name="dvoraka.avservice" level="DEBUG" additivity="false"/>
+
+    <logger name="org.springframework" level="WARN" additivity="false"/>
+
+    <logger name="org.ehcache" level="WARN" additivity="false"/>
+
     <root level="debug">
         <appender-ref ref="TCP"/>
-        <!--<appender-ref ref="STDOUT"/>-->
     </root>
 </configuration>
