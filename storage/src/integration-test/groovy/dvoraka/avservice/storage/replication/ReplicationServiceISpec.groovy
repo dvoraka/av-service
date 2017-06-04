@@ -155,6 +155,28 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
             }
     }
 
+    def "save 1 MB file"() {
+        given:
+            int size = 1000 * 1000
+            byte[] data = new byte[size]
+
+            FileMessage fileMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
+                    .data(data)
+                    .filename("testF")
+                    .owner("testO")
+                    .build()
+
+        when:
+            service.saveFile(fileMessage)
+
+        then:
+            notThrown(Exception)
+            service.exists(fileMessage)
+
+        cleanup:
+            service.deleteFile(fileMessage)
+    }
+
     def "save 10 MB file"() {
         given:
             int size = 1000 * 1000 * 10
