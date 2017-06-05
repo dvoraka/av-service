@@ -216,4 +216,33 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         then:
             !service.exists(saveMessage)
     }
+
+    def "save and update file"() {
+        given:
+            FileMessage saveMessage = Utils.genSaveMessage()
+            byte[] data = new byte[3]
+            FileMessage updateMessage = fileUpdateMessage(
+                    saveMessage.getFilename(), saveMessage.getOwner(), data)
+
+        when:
+            service.saveFile(saveMessage)
+
+        then:
+            service.exists(saveMessage)
+
+        when:
+            service.updateFile(updateMessage)
+
+        then:
+            service.exists(updateMessage)
+
+        when:
+            FileMessage loaded = service.loadFile(fileLoadMessage(
+                    saveMessage.getFilename(), saveMessage.getOwner()))
+
+        then:
+            loaded.getFilename() == saveMessage.getFilename()
+            loaded.getOwner() == saveMessage.getOwner()
+            Arrays.equals(loaded.getData(), updateMessage.getData())
+    }
 }

@@ -171,11 +171,16 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                             .orElseGet(ReplicationMessageList::new);
 
                     long successCount = messages.stream()
+                            .filter(msg -> msg.getCommand() == Command.SAVE)
                             .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
                             .count();
 
                     if (successCount != getReplicationCount() - 1) {
                         // rollback transaction
+                        log.debug("Expected {}, got {} {}",
+                                getReplicationCount() - 1,
+                                successCount,
+                                idString);
 
                         throw new LockCountNotMatchException();
                     }
@@ -316,7 +321,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         } catch (InterruptedException e) {
             log.warn("Delete problem.", e);
         } finally {
-            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);
+            remoteLock.unlockForFile(
+                    message.getFilename(), message.getOwner(), neighbours);
         }
     }
 
