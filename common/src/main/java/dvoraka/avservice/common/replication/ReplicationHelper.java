@@ -123,7 +123,7 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     default ReplicationMessage createDeleteMessage(
             FileMessage message, String fromNodeId, String toNodeId
     ) {
-        return new DefaultReplicationMessage.Builder(null)
+        return new DefaultReplicationMessage.Builder(message.getId())
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.DELETE)

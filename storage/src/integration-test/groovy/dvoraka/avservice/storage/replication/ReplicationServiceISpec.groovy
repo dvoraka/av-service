@@ -198,4 +198,22 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         cleanup:
             service.deleteFile(fileMessage)
     }
+
+    def "save and delete file"() {
+        given:
+            FileMessage saveMessage = Utils.genSaveMessage()
+
+        when:
+            service.saveFile(saveMessage)
+
+        then:
+            service.exists(saveMessage)
+
+        when:
+            service.deleteFile(
+                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
+
+        then:
+            !service.exists(saveMessage)
+    }
 }

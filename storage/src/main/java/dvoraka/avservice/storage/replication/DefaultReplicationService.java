@@ -98,7 +98,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @PreDestroy
     public void stop() {
-        log.info("Stopping service...");
+        log.info("Stopping service {}...", idString);
         responseClient.removeNoResponseMessageListener(this);
         remoteLock.stop();
         shutdownAndAwaitTermination(executorService, TERM_TIME, log);
@@ -223,7 +223,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                 }
 
                 if (exists(message)) {
-                    log.debug("Loading remotely...");
+                    log.debug("Loading remotely {}...", idString);
 
                     sendLoadMessage(message);
 
@@ -234,15 +234,15 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
                     return messages.stream()
                             .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
-                            .peek(m -> log.debug("Load success."))
+                            .peek(m -> log.debug("Load success {}.", idString))
                             .findFirst()
                             .orElseThrow(FileNotFoundException::new);
                 }
 
-                log.debug("Loading failed.");
+                log.debug("Loading failed {}.", idString);
                 throw new FileNotFoundException();
             } else {
-                log.warn("Load lock problem for: {}", message);
+                log.warn("Load lock problem for {}: {}", idString, message);
                 throw new CannotAcquireLockException();
             }
         } catch (InterruptedException e) {
@@ -285,29 +285,29 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     message.getOwner(),
                     neighbours)) {
 
-                if (exists(message)) {
-                    if (localCopyExists(message)) {
-                        log.debug("Deleting local copy {}...", idString);
-                        fileService.deleteFile(message);
-                    }
+                if (localCopyExists(message)) {
+                    log.debug("Deleting local copy {}...", idString);
+                    fileService.deleteFile(message);
+                }
 
-                    Set<String> nodes = sendDeleteMessage(message);
-
-                    Optional<ReplicationMessageList> responses =
-                            responseClient.getResponseWait(message.getId(), MAX_RESPONSE_TIME);
-
-                    long successCount = responses.orElseGet(ReplicationMessageList::new)
-                            .stream()
-                            .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
-                            .count();
-
-                    if (nodes.size() == successCount) {
-                        log.debug("Delete success {}.", idString);
-                    } else {
-                        log.debug("Delete failed {}.", idString);
-                    }
-                } else {
+                Set<String> nodes = sendDeleteMessage(message);
+                if (nodes.isEmpty()) {
                     throw new FileNotFoundException();
+                }
+
+                Optional<ReplicationMessageList> responses =
+                        responseClient.getResponseWaitSize(
+                                message.getId(), MAX_RESPONSE_TIME, nodes.size());
+
+                long successCount = responses.orElseGet(ReplicationMessageList::new)
+                        .stream()
+                        .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                        .count();
+
+                if (nodes.size() == successCount) {
+                    log.debug("Delete success {}.", idString);
+                } else {
+                    log.debug("Delete failed {}.", idString);
                 }
             } else {
                 log.warn("Delete lock problem for {}: {}", idString, message);
