@@ -136,13 +136,13 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public void saveFile(FileMessage message) throws FileServiceException {
-        log.debug("Save ({}): {}", nodeId, message);
+        log.debug("Save {}: {}", idString, message);
 
         // depends on an efficiency of the sending algorithm and
         // it still must be different for "bigger" (~10 MB+) files
         final int sizeTimeRatio = 2_000;
         final int maxSaveTime = message.getData().length / sizeTimeRatio;
-        log.debug("Setting max save time to: {}", maxSaveTime);
+        log.debug("Setting max save time to {} {}", maxSaveTime, idString);
 
         if (localCopyExists(message)) {
             throw new ExistingFileException();
@@ -156,13 +156,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                     neighbours)) {
 
                 if (!exists(message)) {
-                    log.debug("Saving locally...");
+                    log.debug("Saving locally {}...", idString);
                     fileService.saveFile(message);
 
-                    log.debug("Saving remotely...");
+                    log.debug("Saving remotely {}...", idString);
                     sendSaveMessage(message);
 
-                    log.debug("Checking save status...");
                     Optional<ReplicationMessageList> responses = responseClient
                             .getResponseWaitSize(
                                     message.getId(),
@@ -181,12 +180,12 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
                         throw new LockCountNotMatchException();
                     }
 
-                    log.debug("Save success.");
+                    log.debug("Save success {}.", idString);
                 } else {
                     throw new ExistingFileException();
                 }
             } else {
-                log.warn("Save lock problem for: {}", message);
+                log.warn("Save lock problem for {}: {}", idString, message);
                 throw new CannotAcquireLockException();
             }
         } catch (InterruptedException e) {
@@ -201,7 +200,8 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         neighbours.stream()
                 .map(neighbourId -> createSaveMessage(message, nodeId, neighbourId))
                 .limit(getReplicationCount() - 1L)
-                .peek(msg -> log.debug("Sending save message to {}...", msg.getToId()))
+                .peek(msg -> log.debug(
+                        "Sending save message to {} {}...", msg.getToId(), idString))
                 .forEach(serviceClient::sendMessage);
     }
 
@@ -346,7 +346,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
 
     @Override
     public boolean exists(String filename, String owner) {
-        log.debug("Exists: {}, {}", filename, owner);
+        log.debug("Exists {}: {}, {}", idString, filename, owner);
 
         return localCopyExists(filename, owner) || !whoHas(filename, owner).isEmpty();
     }
