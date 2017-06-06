@@ -26,11 +26,13 @@ public class AvProgramConfig {
     private int port;
     @Value("${avservice.avprogram.maxScanSize}")
     private int maxArraySize;
+    @Value("${avservice.avprogram.socketPoolSize}")
+    private int socketPoolSize;
 
 
     @Bean
     public AvProgram avProgram() {
-        AvProgram avProgram = new ClamAvProgram(host, port, maxArraySize, true);
+        AvProgram avProgram = new ClamAvProgram(host, port, maxArraySize, socketPoolSize);
         avProgram.setCaching(false);
 
         return avProgram;

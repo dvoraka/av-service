@@ -36,9 +36,9 @@ public class ClamAvProgram implements AvProgram {
 
     private static final Logger log = LogManager.getLogger(ClamAvProgram.class);
 
-    public static final String DEFAULT_HOST = "localhost";
-    public static final int DEFAULT_PORT = 3310;
-    public static final int DEFAULT_MAX_ARRAY_SIZE = 10_000;
+    public static final String HOST = "localhost";
+    public static final int PORT = 3310;
+    public static final int MAX_ARRAY_SIZE = 10_000;
 
     private static final String ERROR_MSG = "Scanning problem!";
 
@@ -58,23 +58,40 @@ public class ClamAvProgram implements AvProgram {
     private final Pattern responsePattern;
 
 
+    /**
+     * Instantiate a ClamAV program wrapper with default values. Socket pooling is disabled.
+     */
     public ClamAvProgram() {
-        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_MAX_ARRAY_SIZE, false);
+        this(HOST, PORT, MAX_ARRAY_SIZE, 0);
     }
 
+    /**
+     * Instantiate a ClamAV program wrapper.
+     *
+     * @param socketHost     the host where ClamAV runs
+     * @param socketPort     the port where ClamAV listens
+     * @param maxArraySize   the maximum size of a scanning array
+     * @param socketPoolSize the socket pool size, 0 means no pooling
+     */
     public ClamAvProgram(
             String socketHost,
             int socketPort,
             long maxArraySize,
-            boolean socketPooling
+            int socketPoolSize
     ) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
         this.maxArraySize = maxArraySize;
 
-        final int socketCount = 5;
-        socketPool = new SocketPool(socketCount, socketHost, socketPort, null);
-        this.socketPooling = socketPooling;
+        if (socketPoolSize < 0) {
+            throw new IllegalArgumentException("Pool size must not be negative.");
+        }
+        socketPooling = socketPoolSize != 0;
+        if (socketPooling) {
+            socketPool = new SocketPool(socketPoolSize, socketHost, socketPort, null);
+        } else {
+            socketPool = null;
+        }
 
         responsePattern = Pattern.compile(".+?: (.+)");
     }
@@ -342,6 +359,10 @@ public class ClamAvProgram implements AvProgram {
     @Override
     public long getMaxArraySize() {
         return maxArraySize;
+    }
+
+    public boolean isSocketPooling() {
+        return socketPooling;
     }
 
     @Autowired(required = false)

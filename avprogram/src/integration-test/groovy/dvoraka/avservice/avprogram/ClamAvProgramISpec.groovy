@@ -25,10 +25,10 @@ class ClamAvProgramISpec extends Specification {
     def setup() {
         program = new ClamAvProgram()
         programWithPooling = new ClamAvProgram(
-                ClamAvProgram.DEFAULT_HOST,
-                ClamAvProgram.DEFAULT_PORT,
-                ClamAvProgram.DEFAULT_MAX_ARRAY_SIZE,
-                true
+                ClamAvProgram.HOST,
+                ClamAvProgram.PORT,
+                ClamAvProgram.MAX_ARRAY_SIZE,
+                6
         )
         cachingService = new DefaultCachingService()
 

@@ -20,9 +20,9 @@ class ClamAvProgramPSpec extends Specification {
     def setup() {
         program = new ClamAvProgram()
         programWithPooling = new ClamAvProgram(
-                ClamAvProgram.DEFAULT_HOST,
-                ClamAvProgram.DEFAULT_PORT,
-                ClamAvProgram.DEFAULT_MAX_ARRAY_SIZE,
+                ClamAvProgram.HOST,
+                ClamAvProgram.PORT,
+                ClamAvProgram.MAX_ARRAY_SIZE,
                 true
         )
     }
