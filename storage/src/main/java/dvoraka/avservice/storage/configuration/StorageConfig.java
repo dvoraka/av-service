@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Profile;
         DummyStorageConfig.class,
         DbStorageConfig.class,
         ReplicationConfig.class,
+//        AopConfiguration.class,
 
         DatabaseConfig.class,
         ClientConfig.class
