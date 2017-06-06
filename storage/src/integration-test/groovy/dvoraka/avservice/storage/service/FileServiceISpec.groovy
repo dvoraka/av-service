@@ -1,5 +1,6 @@
 package dvoraka.avservice.storage.service
 
+import dvoraka.avservice.common.FileServiceHelper
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
@@ -15,12 +16,14 @@ import spock.lang.Unroll
 /**
  * File service spec.
  */
+//TODO: replace builders
 @Ignore
-class FileServiceISpec extends Specification {
+class FileServiceISpec extends Specification implements FileServiceHelper {
 
     @Autowired
     FileService service
 
+    String testingFile = 'testing file'
     String testingOwner = 'testing user'
 
 
@@ -32,11 +35,7 @@ class FileServiceISpec extends Specification {
     @Unroll
     def "save file with #size bytes"() {
         given:
-            FileMessage message = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename('TestF')
-                    .owner(testingOwner)
-                    .data(new byte[size])
-                    .build()
+            FileMessage message = fileSaveMessage(testingFile, testingOwner, new byte[size])
 
         when:
             service.saveFile(message)

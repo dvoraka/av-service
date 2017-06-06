@@ -278,7 +278,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             service.onMessage(saveRequest)
 
         then:
-            1 * fileService.saveFile(saveRequest)
+            1 * fileService.saveFile(_)
             1 * serviceClient.sendMessage(_)
     }
 
@@ -291,7 +291,7 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
             service.onMessage(saveRequest)
 
         then:
-            1 * fileService.saveFile(saveRequest) >> { throw new FileServiceException() }
+            1 * fileService.saveFile(_) >> { throw new FileServiceException() }
             1 * serviceClient.sendMessage(_)
     }
 

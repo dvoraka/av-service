@@ -3,6 +3,7 @@ package dvoraka.avservice.storage.replication;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
+import dvoraka.avservice.common.FileServiceHelper;
 import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageRouting;
@@ -36,7 +37,8 @@ import static java.util.Objects.requireNonNull;
  * Default replication service implementation.
  */
 @Service
-public class DefaultReplicationService implements ReplicationService, ReplicationHelper {
+public class DefaultReplicationService implements
+        ReplicationService, ReplicationHelper, FileServiceHelper {
 
     private final FileService fileService;
     private final ReplicationServiceClient serviceClient;
@@ -452,7 +454,7 @@ public class DefaultReplicationService implements ReplicationService, Replicatio
         if (message.getRouting() == MessageRouting.UNICAST
                 && message.getCommand() == Command.SAVE) {
             try {
-                fileService.saveFile(message);
+                fileService.saveFile(message.fileMessage());
                 serviceClient.sendMessage(createSaveSuccess(message, nodeId));
             } catch (FileServiceException e) {
                 log.warn("Saving failed (" + nodeId + ")", e);

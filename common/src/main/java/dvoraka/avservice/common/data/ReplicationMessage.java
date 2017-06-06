@@ -16,4 +16,11 @@ public interface ReplicationMessage extends FileMessage {
     ReplicationStatus getReplicationStatus();
 
     Command getCommand();
+
+    /**
+     * Returns a file message.
+     *
+     * @return the message
+     */
+    FileMessage fileMessage();
 }

@@ -3,6 +3,7 @@ package dvoraka.avservice.common.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import dvoraka.avservice.common.FileServiceHelper;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.util.UUID;
  * Default replication message implementation.
  */
 @JsonDeserialize(builder = DefaultReplicationMessage.Builder.class)
-public final class DefaultReplicationMessage implements ReplicationMessage {
+public final class DefaultReplicationMessage implements ReplicationMessage, FileServiceHelper {
 
     private final String id;
     private final String correlationId;
@@ -105,6 +106,21 @@ public final class DefaultReplicationMessage implements ReplicationMessage {
     @Override
     public Command getCommand() {
         return command;
+    }
+
+    @Override
+    public FileMessage fileMessage() {
+        if (getType() != MessageType.REPLICATION_COMMAND) {
+            return null;
+        }
+
+        switch (getCommand()) {
+            case SAVE:
+                return fileSaveMessage(getFilename(), getOwner(), getData());
+
+            default:
+                return null;
+        }
     }
 
     @Override
