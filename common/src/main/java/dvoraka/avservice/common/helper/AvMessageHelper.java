@@ -1,5 +1,6 @@
-package dvoraka.avservice.common;
+package dvoraka.avservice.common.helper;
 
+import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 
 import java.util.function.BiPredicate;
@@ -22,7 +23,7 @@ public interface AvMessageHelper {
     }
 
     /**
-     * Prepares a response with an info.
+     * Prepares a check response with an info.
      *
      * @param message   the origin message
      * @param virusInfo the info
@@ -33,7 +34,7 @@ public interface AvMessageHelper {
     }
 
     /**
-     * Prepares an error response with an error info.
+     * Prepares an error check response with an error info.
      *
      * @param message      the origin message
      * @param errorMessage the error info
@@ -61,12 +62,13 @@ public interface AvMessageHelper {
      * @param conditions   the stream of conditions
      * @param originalData the original data
      * @param actualData   the actual data
+     * @param <T>          the type of condition items
      * @return the result
      */
-    default boolean checkConditions(
-            Stream<? extends BiPredicate<AvMessage, AvMessage>> conditions,
-            AvMessage originalData,
-            AvMessage actualData
+    default <T> boolean checkConditions(
+            Stream<? extends BiPredicate<T, T>> conditions,
+            T originalData,
+            T actualData
     ) {
         return conditions.allMatch(condition -> condition.test(originalData, actualData));
     }

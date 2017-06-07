@@ -1,6 +1,7 @@
 package dvoraka.avservice.common
 
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.helper.AvMessageHelper
 import spock.lang.Specification
 import spock.lang.Subject
 

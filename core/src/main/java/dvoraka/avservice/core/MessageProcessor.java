@@ -1,9 +1,9 @@
 package dvoraka.avservice.core;
 
-import dvoraka.avservice.common.AvMessageHelper;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.common.service.ExecutorServiceHelper;
 
 import java.util.function.Predicate;

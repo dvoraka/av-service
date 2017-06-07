@@ -1,6 +1,6 @@
 package dvoraka.avservice.client;
 
-import dvoraka.avservice.common.AvMessageHelper;
+import dvoraka.avservice.common.helper.AvMessageHelper;
 
 /**
  * Server component.
