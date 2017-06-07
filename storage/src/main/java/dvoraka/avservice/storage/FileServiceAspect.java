@@ -21,8 +21,16 @@ public class FileServiceAspect {
 
 
     @Before("execution(public void dvoraka.avservice.storage..save*(..)) && args(message)")
-    public void logMessageInfo(FileMessage message) {
+    public void checkSaveType(FileMessage message) {
         if (message.getType() != MessageType.FILE_SAVE) {
+            log.warn(BAD_TYPE);
+            throw new IllegalArgumentException(BAD_TYPE);
+        }
+    }
+
+    @Before("execution(public void dvoraka.avservice.storage..load*(..)) && args(message)")
+    public void checkLoadType(FileMessage message) {
+        if (message.getType() != MessageType.FILE_LOAD) {
             log.warn(BAD_TYPE);
             throw new IllegalArgumentException(BAD_TYPE);
         }
