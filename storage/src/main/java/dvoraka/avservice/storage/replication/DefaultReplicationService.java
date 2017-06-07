@@ -276,9 +276,9 @@ public class DefaultReplicationService implements
     public void updateFile(FileMessage message) throws FileServiceException {
         log.debug("Update {}: {}", idString, message);
 
-        deleteFile(message);
+        deleteFile(fileDeleteMessage(message));
 
-        saveFile(message);
+        saveFile(fileSaveMessage(message));
     }
 
     @Override

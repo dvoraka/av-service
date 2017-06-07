@@ -1,7 +1,6 @@
 package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.storage.configuration.StorageConfig
@@ -159,44 +158,34 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         given:
             int size = 1000 * 1000
             byte[] data = new byte[size]
-
-            FileMessage fileMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .data(data)
-                    .filename("testF")
-                    .owner("testO")
-                    .build()
+            FileMessage saveMessage = getTestSaveMessage(data)
 
         when:
-            service.saveFile(fileMessage)
+            service.saveFile(saveMessage)
 
         then:
             notThrown(Exception)
-            service.exists(fileMessage)
+            service.exists(saveMessage)
 
         cleanup:
-            service.deleteFile(fileMessage)
+            service.deleteFile(fileDeleteMessage(saveMessage))
     }
 
     def "save 10 MB file"() {
         given:
             int size = 1000 * 1000 * 10
             byte[] data = new byte[size]
-
-            FileMessage fileMessage = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .data(data)
-                    .filename("testF")
-                    .owner("testO")
-                    .build()
+            FileMessage saveMessage = getTestSaveMessage(data)
 
         when:
-            service.saveFile(fileMessage)
+            service.saveFile(saveMessage)
 
         then:
             notThrown(Exception)
-            service.exists(fileMessage)
+            service.exists(saveMessage)
 
         cleanup:
-            service.deleteFile(fileMessage)
+            service.deleteFile(fileDeleteMessage(saveMessage))
     }
 
     def "save and delete file"() {
@@ -221,8 +210,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
             byte[] data = new byte[3]
-            FileMessage updateMessage = fileUpdateMessage(
-                    saveMessage.getFilename(), saveMessage.getOwner(), data)
+            FileMessage updateMessage = fileUpdateMessage(saveMessage, data)
 
         when:
             service.saveFile(saveMessage)
@@ -237,12 +225,15 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
             service.exists(updateMessage)
 
         when:
-            FileMessage loaded = service.loadFile(fileLoadMessage(
-                    saveMessage.getFilename(), saveMessage.getOwner()))
+            FileMessage loaded = service.loadFile(fileLoadMessage(saveMessage))
 
         then:
             loaded.getFilename() == saveMessage.getFilename()
             loaded.getOwner() == saveMessage.getOwner()
             Arrays.equals(loaded.getData(), updateMessage.getData())
+    }
+
+    FileMessage getTestSaveMessage(byte[] data) {
+        return fileSaveMessage('testF', 'testO', data)
     }
 }
