@@ -62,27 +62,24 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
     def "save and load file"() {
         given:
-            AvMessage message = Utils.genFileMessage(testingOwner)
-            AvMessage request = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
-                    .type(MessageType.FILE_LOAD)
-                    .build()
+            FileMessage saveMessage = Utils.genFileMessage(testingOwner)
+            FileMessage loadMessage = fileLoadMessage(saveMessage.getFilename(), saveMessage.getOwner())
 
         when:
-            service.saveFile(message)
+            service.saveFile(saveMessage)
 
         then:
-            service.exists(message.getFilename(), message.getOwner())
+            service.exists(saveMessage.getFilename(), saveMessage.getOwner())
 
         when:
-            FileMessage response = service.loadFile(request)
+            FileMessage response = service.loadFile(loadMessage)
 
         then:
-            message.getOwner() == response.getOwner()
-            message.getFilename() == response.getFilename()
+            saveMessage.getOwner() == response.getOwner()
+            saveMessage.getFilename() == response.getFilename()
+            Arrays.equals(saveMessage.getData(), response.getData())
 
-            request.getId() == response.getCorrelationId()
+            loadMessage.getId() == response.getCorrelationId()
     }
 
     def "save and delete file"() {
