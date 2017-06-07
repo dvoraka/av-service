@@ -13,5 +13,5 @@ import org.springframework.context.annotation.Import;
 @Import({
         FileServiceAspect.class
 })
-public class AopConfiguration {
+public class AopStorageConfig {
 }
