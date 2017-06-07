@@ -20,7 +20,7 @@ public class FileServiceAspect {
     private static final String BAD_TYPE = "Bad message type!";
 
 
-    @Before("execution(public void dvoraka.avservice.storage..save*(..)) && args(message)")
+    @Before("execution(public void dvoraka.avservice.storage..saveFile(..)) && args(message)")
     public void checkSaveType(FileMessage message) {
         if (message.getType() != MessageType.FILE_SAVE) {
             log.warn(BAD_TYPE);
@@ -28,9 +28,17 @@ public class FileServiceAspect {
         }
     }
 
-    @Before("execution(public void dvoraka.avservice.storage..load*(..)) && args(message)")
+    @Before("execution(public void dvoraka.avservice.storage..loadFile(..)) && args(message)")
     public void checkLoadType(FileMessage message) {
         if (message.getType() != MessageType.FILE_LOAD) {
+            log.warn(BAD_TYPE);
+            throw new IllegalArgumentException(BAD_TYPE);
+        }
+    }
+
+    @Before("execution(public void dvoraka.avservice.storage..updateFile(..)) && args(message)")
+    public void checkUpdateType(FileMessage message) {
+        if (message.getType() != MessageType.FILE_UPDATE) {
             log.warn(BAD_TYPE);
             throw new IllegalArgumentException(BAD_TYPE);
         }
