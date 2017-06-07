@@ -27,6 +27,10 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
     String testingOwner = 'testing user'
 
 
+    def cleanup() {
+        service.deleteFile(fileDeleteMessage(testingFile, testingOwner))
+    }
+
     def "save file"() {
         expect:
             service.saveFile(Utils.genFileMessage())
@@ -36,10 +40,11 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
     def "save file with #size bytes"() {
         given:
             FileMessage saveMessage = fileSaveMessage(testingFile, testingOwner, new byte[size])
+            FileMessage deleteMessage = fileDeleteMessage(saveMessage)
 
         when:
             service.saveFile(saveMessage)
-            service.deleteFile(saveMessage)
+            service.deleteFile(deleteMessage)
 
         then:
             notThrown(Exception)

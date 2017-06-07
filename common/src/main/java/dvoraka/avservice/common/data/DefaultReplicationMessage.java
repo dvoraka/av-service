@@ -116,7 +116,10 @@ public final class DefaultReplicationMessage implements ReplicationMessage, File
 
         switch (getCommand()) {
             case SAVE:
-                return fileSaveMessage(getFilename(), getOwner(), getData());
+                return fileSaveMessage(this);
+
+            case DELETE:
+                return fileDeleteMessage(this);
 
             default:
                 return null;

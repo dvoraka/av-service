@@ -480,7 +480,7 @@ public class DefaultReplicationService implements
         if (message.getRouting() == MessageRouting.UNICAST
                 && message.getCommand() == Command.DELETE) {
             try {
-                fileService.deleteFile(message);
+                fileService.deleteFile(message.fileMessage());
                 serviceClient.sendMessage(
                         createDeleteSuccess(message, nodeId, message.getFromId()));
             } catch (FileServiceException e) {

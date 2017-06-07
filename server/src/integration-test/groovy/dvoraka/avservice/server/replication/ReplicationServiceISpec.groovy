@@ -450,8 +450,7 @@ class ReplicationServiceISpec extends Specification
             FileMessage saveMessage = Utils.genSaveMessage()
             ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
 
-            FileMessage deleteMessage = fileDeleteMessage(
-                    saveMessage.getFilename(), saveMessage.getOwner())
+            FileMessage deleteMessage = fileDeleteMessage(saveMessage)
             ReplicationMessage deleteRequest = createDeleteMessage(
                     deleteMessage, nodeId, otherNodeId)
 
@@ -501,8 +500,7 @@ class ReplicationServiceISpec extends Specification
             deleteStatus.getToId() == nodeId
 
         cleanup:
-            fileService.deleteFile(
-                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
+            fileService.deleteFile(deleteMessage)
     }
 
     void unlockTestFile() {

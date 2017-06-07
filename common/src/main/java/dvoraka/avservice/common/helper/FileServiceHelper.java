@@ -28,6 +28,10 @@ public interface FileServiceHelper extends UuidHelper {
         return fileDataMessage(MessageType.FILE_SAVE, filename, owner, data);
     }
 
+    default FileMessage fileSaveMessage(FileMessage message) {
+        return fileSaveMessage(message.getFilename(), message.getOwner(), message.getData());
+    }
+
     default FileMessage fileLoadMessage(String filename, String owner) {
         return fileMessage(MessageType.FILE_LOAD, filename, owner);
     }

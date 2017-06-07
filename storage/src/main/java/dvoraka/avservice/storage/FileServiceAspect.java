@@ -43,4 +43,12 @@ public class FileServiceAspect {
             throw new IllegalArgumentException(BAD_TYPE);
         }
     }
+
+    @Before("execution(public void dvoraka.avservice.storage..deleteFile(..)) && args(message)")
+    public void checkDeleteType(FileMessage message) {
+        if (message.getType() != MessageType.FILE_DELETE) {
+            log.warn(BAD_TYPE);
+            throw new IllegalArgumentException(BAD_TYPE);
+        }
+    }
 }
