@@ -3,7 +3,6 @@ package dvoraka.avservice.server.replication
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
-import dvoraka.avservice.common.FileServiceHelper
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.Command
 import dvoraka.avservice.common.data.FileMessage
@@ -11,6 +10,7 @@ import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
+import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.server.runner.amqp.AmqpReplicationServiceRunner

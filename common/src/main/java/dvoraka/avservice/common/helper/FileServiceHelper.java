@@ -1,4 +1,4 @@
-package dvoraka.avservice.common;
+package dvoraka.avservice.common.helper;
 
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.FileMessage;
@@ -7,10 +7,10 @@ import dvoraka.avservice.common.data.MessageType;
 /**
  * Helper for file service data structures.
  */
-public interface FileServiceHelper {
+public interface FileServiceHelper extends UuidHelper {
 
     default FileMessage fileMessage(MessageType type, String filename, String owner) {
-        return new DefaultAvMessage.Builder(Utils.genUuidString())
+        return new DefaultAvMessage.Builder(genUuidStr())
                 .type(type)
                 .filename(filename)
                 .owner(owner)
@@ -20,7 +20,7 @@ public interface FileServiceHelper {
     default FileMessage fileDataMessage(
             MessageType type, String filename, String owner, byte[] data
     ) {
-        return new DefaultAvMessage.Builder(Utils.genUuidString())
+        return new DefaultAvMessage.Builder(genUuidStr())
                 .type(type)
                 .filename(filename)
                 .owner(owner)
