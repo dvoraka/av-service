@@ -334,8 +334,7 @@ class ReplicationServiceISpec extends Specification
             fileService.exists(saveMessage)
 
         cleanup:
-            fileService.deleteFile(
-                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
+            fileService.deleteFile(fileDeleteMessage(saveMessage))
     }
 
     def "exists"() {
@@ -391,15 +390,13 @@ class ReplicationServiceISpec extends Specification
             existsStatus.getToId() == nodeId
 
         cleanup:
-            fileService.deleteFile(
-                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
+            fileService.deleteFile(fileDeleteMessage(saveMessage))
     }
 
     def "load file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
-            FileMessage loadMessage = fileLoadMessage(
-                    saveMessage.getFilename(), saveMessage.getOwner())
+            FileMessage loadMessage = fileLoadMessage(saveMessage)
 
             ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
             ReplicationMessage loadRequest = createLoadMessage(loadMessage, nodeId, otherNodeId)
@@ -441,8 +438,7 @@ class ReplicationServiceISpec extends Specification
             Arrays.equals(loadReponse.getData(), saveMessage.getData())
 
         cleanup:
-            fileService.deleteFile(
-                    fileDeleteMessage(saveMessage.getFilename(), saveMessage.getOwner()))
+            fileService.deleteFile(fileDeleteMessage(saveMessage))
     }
 
     def "delete file"() {
