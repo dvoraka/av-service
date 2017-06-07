@@ -1,4 +1,6 @@
-package dvoraka.avservice.storage;
+package dvoraka.avservice.storage.replication.exception;
+
+import dvoraka.avservice.storage.exception.FileServiceException;
 
 /**
  * Exception for signaling wrong lock count match.

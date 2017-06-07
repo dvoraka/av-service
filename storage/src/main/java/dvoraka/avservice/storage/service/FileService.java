@@ -1,9 +1,9 @@
 package dvoraka.avservice.storage.service;
 
 import dvoraka.avservice.common.data.FileMessage;
-import dvoraka.avservice.storage.ExistingFileException;
-import dvoraka.avservice.storage.FileNotFoundException;
-import dvoraka.avservice.storage.FileServiceException;
+import dvoraka.avservice.storage.exception.ExistingFileException;
+import dvoraka.avservice.storage.exception.FileNotFoundException;
+import dvoraka.avservice.storage.exception.FileServiceException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

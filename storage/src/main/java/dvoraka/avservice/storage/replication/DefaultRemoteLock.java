@@ -11,6 +11,7 @@ import dvoraka.avservice.common.data.ReplicationStatus;
 import dvoraka.avservice.common.replication.ReplicationHelper;
 import dvoraka.avservice.common.service.HashingService;
 import dvoraka.avservice.common.service.Md5HashingService;
+import dvoraka.avservice.storage.replication.exception.FileNotLockedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

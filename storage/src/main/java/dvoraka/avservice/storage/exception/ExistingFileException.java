@@ -1,4 +1,4 @@
-package dvoraka.avservice.storage;
+package dvoraka.avservice.storage.exception;
 
 /**
  * Exception for an already existing file.

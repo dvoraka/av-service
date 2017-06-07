@@ -4,8 +4,8 @@ import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.helper.FileServiceHelper
-import dvoraka.avservice.storage.ExistingFileException
-import dvoraka.avservice.storage.FileNotFoundException
+import dvoraka.avservice.storage.exception.ExistingFileException
+import dvoraka.avservice.storage.exception.FileNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
 import spock.lang.Shared

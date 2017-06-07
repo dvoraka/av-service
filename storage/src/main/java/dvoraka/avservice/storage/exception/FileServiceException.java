@@ -1,4 +1,4 @@
-package dvoraka.avservice.storage;
+package dvoraka.avservice.storage.exception;
 
 /**
  * Base file service exception.

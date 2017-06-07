@@ -1,4 +1,4 @@
-package dvoraka.avservice.storage.replication;
+package dvoraka.avservice.storage.replication.exception;
 
 /**
  * Base replication exception.
