@@ -1,8 +1,6 @@
 package dvoraka.avservice.storage.service
 
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.data.AvMessage
-import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.helper.FileServiceHelper
@@ -10,20 +8,22 @@ import dvoraka.avservice.storage.ExistingFileException
 import dvoraka.avservice.storage.FileNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
  * File service spec.
  */
-//TODO: replace builders
 @Ignore
 class FileServiceISpec extends Specification implements FileServiceHelper {
 
     @Autowired
     FileService service
 
+    @Shared
     String testingFile = 'testing file'
+    @Shared
     String testingOwner = 'testing user'
 
 
@@ -35,11 +35,11 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
     @Unroll
     def "save file with #size bytes"() {
         given:
-            FileMessage message = fileSaveMessage(testingFile, testingOwner, new byte[size])
+            FileMessage saveMessage = fileSaveMessage(testingFile, testingOwner, new byte[size])
 
         when:
-            service.saveFile(message)
-            service.deleteFile(message)
+            service.saveFile(saveMessage)
+            service.deleteFile(saveMessage)
 
         then:
             notThrown(Exception)
@@ -50,11 +50,11 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
     def "save same file twice"() {
         given:
-            FileMessage message = Utils.genFileMessage()
+            FileMessage saveMessage = Utils.genFileMessage()
 
         when:
-            service.saveFile(message)
-            service.saveFile(message)
+            service.saveFile(saveMessage)
+            service.saveFile(saveMessage)
 
         then:
             thrown(ExistingFileException)
@@ -86,8 +86,7 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
         given:
             FileMessage saveMessage = Utils.genFileMessage(testingOwner)
             FileMessage loadMessage = fileLoadMessage(saveMessage)
-            FileMessage deleteMessage = fileDeleteMessage(
-                    saveMessage.getFilename(), saveMessage.getOwner())
+            FileMessage deleteMessage = fileDeleteMessage(saveMessage)
 
         when:
             service.saveFile(saveMessage)
@@ -129,10 +128,10 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
         when:
             service.updateFile(updateMessage)
-            FileMessage updatedFile = service.loadFile(loadMessage)
+            FileMessage updatedMessage = service.loadFile(loadMessage)
 
         then:
-            Arrays.equals(updatedFile.getData(), newData)
+            Arrays.equals(updatedMessage.getData(), newData)
     }
 
     def "load non-existent file"() {
@@ -159,17 +158,13 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
     def "delete non-existent file"() {
         given:
-            AvMessage message = Utils.genFileMessage(testingOwner)
-            AvMessage deleteRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
-                    .type(MessageType.FILE_DELETE)
-                    .build()
+            FileMessage saveMessage = Utils.genFileMessage(testingOwner)
+            FileMessage deleteRequest = fileDeleteMessage(saveMessage)
 
         when:
             service.deleteFile(deleteRequest)
 
         then:
-            !service.exists(message)
+            !service.exists(saveMessage)
     }
 }

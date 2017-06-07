@@ -47,4 +47,8 @@ public interface FileServiceHelper extends UuidHelper {
     default FileMessage fileDeleteMessage(String filename, String owner) {
         return fileMessage(MessageType.FILE_DELETE, filename, owner);
     }
+
+    default FileMessage fileDeleteMessage(FileMessage message) {
+        return fileDeleteMessage(message.getFilename(), message.getOwner());
+    }
 }
