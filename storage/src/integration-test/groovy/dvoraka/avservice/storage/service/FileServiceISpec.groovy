@@ -63,7 +63,7 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
     def "save and load file"() {
         given:
             FileMessage saveMessage = Utils.genFileMessage(testingOwner)
-            FileMessage loadMessage = fileLoadMessage(saveMessage.getFilename(), saveMessage.getOwner())
+            FileMessage loadMessage = fileLoadMessage(saveMessage)
 
         when:
             service.saveFile(saveMessage)
@@ -84,34 +84,25 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
     def "save and delete file"() {
         given:
-            AvMessage message = Utils.genFileMessage(testingOwner)
-
-            AvMessage loadRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
-                    .type(MessageType.FILE_LOAD)
-                    .build()
-
-            AvMessage deleteRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
-                    .type(MessageType.FILE_DELETE)
-                    .build()
+            FileMessage saveMessage = Utils.genFileMessage(testingOwner)
+            FileMessage loadMessage = fileLoadMessage(saveMessage)
+            FileMessage deleteMessage = fileDeleteMessage(
+                    saveMessage.getFilename(), saveMessage.getOwner())
 
         when:
-            service.saveFile(message)
+            service.saveFile(saveMessage)
 
         then:
-            service.exists(message)
+            service.exists(saveMessage)
 
         when:
-            service.deleteFile(deleteRequest)
+            service.deleteFile(deleteMessage)
 
         then:
-            !service.exists(message)
+            !service.exists(saveMessage)
 
         when:
-            FileMessage notFound = service.loadFile(loadRequest)
+            FileMessage notFound = service.loadFile(loadMessage)
 
         then:
             notFound.getType() == MessageType.FILE_NOT_FOUND
@@ -119,37 +110,32 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
     def "save and update file"() {
         given:
-            AvMessage message = Utils.genFileMessage(testingOwner)
-
-            AvMessage loadRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
-                    .type(MessageType.FILE_LOAD)
-                    .build()
+            FileMessage saveMessage = Utils.genFileMessage(testingOwner)
+            FileMessage loadMessage = fileLoadMessage(saveMessage)
 
             byte[] newData = new byte[3]
             AvMessage updateRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
+                    .filename(saveMessage.getFilename())
+                    .owner(saveMessage.getOwner())
                     .data(newData)
                     .type(MessageType.FILE_UPDATE)
                     .build()
 
         when:
-            service.saveFile(message)
+            service.saveFile(saveMessage)
 
         then:
-            service.exists(message)
+            service.exists(saveMessage)
 
         when:
-            FileMessage response = service.loadFile(loadRequest)
+            FileMessage response = service.loadFile(loadMessage)
 
         then:
             !Arrays.equals(response.getData(), newData)
 
         when:
             service.updateFile(updateRequest)
-            FileMessage updatedFile = service.loadFile(loadRequest)
+            FileMessage updatedFile = service.loadFile(loadMessage)
 
         then:
             Arrays.equals(updatedFile.getData(), newData)
