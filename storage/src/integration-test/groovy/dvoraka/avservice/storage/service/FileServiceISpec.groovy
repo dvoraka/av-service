@@ -112,14 +112,8 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
         given:
             FileMessage saveMessage = Utils.genFileMessage(testingOwner)
             FileMessage loadMessage = fileLoadMessage(saveMessage)
-
             byte[] newData = new byte[3]
-            AvMessage updateRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(saveMessage.getFilename())
-                    .owner(saveMessage.getOwner())
-                    .data(newData)
-                    .type(MessageType.FILE_UPDATE)
-                    .build()
+            FileMessage updateMessage = fileUpdateMessage(saveMessage, newData)
 
         when:
             service.saveFile(saveMessage)
@@ -134,7 +128,7 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
             !Arrays.equals(response.getData(), newData)
 
         when:
-            service.updateFile(updateRequest)
+            service.updateFile(updateMessage)
             FileMessage updatedFile = service.loadFile(loadMessage)
 
         then:
@@ -143,28 +137,18 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
     def "load non-existent file"() {
         given:
-            AvMessage message = Utils.genFileMessage(testingOwner)
-            AvMessage loadRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
-                    .type(MessageType.FILE_LOAD)
-                    .build()
+            FileMessage saveMessage = Utils.genFileMessage(testingOwner)
+            FileMessage loadMessage = fileLoadMessage(saveMessage)
 
         expect:
-            service.loadFile(loadRequest).getType() == MessageType.FILE_NOT_FOUND
+            service.loadFile(loadMessage).getType() == MessageType.FILE_NOT_FOUND
     }
 
     def "update non-existent file"() {
         given:
-            AvMessage message = Utils.genFileMessage(testingOwner)
-
+            FileMessage message = Utils.genFileMessage(testingOwner)
             byte[] newData = new byte[3]
-            AvMessage updateRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .filename(message.getFilename())
-                    .owner(message.getOwner())
-                    .data(newData)
-                    .type(MessageType.FILE_UPDATE)
-                    .build()
+            FileMessage updateRequest = fileUpdateMessage(message, newData)
 
         when:
             service.updateFile(updateRequest)
