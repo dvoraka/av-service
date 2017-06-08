@@ -3,6 +3,7 @@ package dvoraka.avservice.server.configuration;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -97,8 +98,8 @@ public class EnvironmentConfiguratorConfig {
     }
 
     @Bean
-    public FanoutExchange replicationExchange() {
-        return new FanoutExchange(replicationExchange);
+    public DirectExchange replicationExchange() {
+        return new DirectExchange(replicationExchange);
     }
 
     @Bean
@@ -116,9 +117,10 @@ public class EnvironmentConfiguratorConfig {
     }
 
     @Bean
-    public Binding bindingReplication(Queue replicationQueue, FanoutExchange replicationExchange) {
+    public Binding bindingReplication(Queue replicationQueue, DirectExchange replicationExchange) {
         return BindingBuilder
                 .bind(replicationQueue)
-                .to(replicationExchange);
+                .to(replicationExchange)
+                .with("broadcast");
     }
 }
