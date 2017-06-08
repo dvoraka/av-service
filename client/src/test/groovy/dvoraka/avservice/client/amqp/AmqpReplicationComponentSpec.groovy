@@ -37,7 +37,7 @@ class AmqpReplicationComponentSpec extends Specification implements
         rabbitTemplate = Mock()
         rabbitTemplate.getMessageConverter() >> converter
 
-        component = new AmqpReplicationComponent(rabbitTemplate, nodeId)
+        component = new AmqpReplicationComponent(rabbitTemplate, nodeId, 'broadcast')
     }
 
     def "on message"() {

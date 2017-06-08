@@ -41,6 +41,8 @@ public class AmqpReplicationClientConfig {
 
     @Value("${avservice.amqp.replicationExchange}")
     private String replicationExchange;
+    @Value("${avservice.amqp.broadcastKey}")
+    private String broadcastKey;
 
     @Value("${avservice.amqp.listeningTimeout:4000}")
     private long listeningTimeout;
@@ -54,7 +56,7 @@ public class AmqpReplicationClientConfig {
 
     @Bean
     public ReplicationComponent replicationComponent(RabbitTemplate replicationRabbitTemplate) {
-        return new AmqpReplicationComponent(replicationRabbitTemplate, nodeId);
+        return new AmqpReplicationComponent(replicationRabbitTemplate, nodeId, broadcastKey);
     }
 
     @Bean
@@ -91,7 +93,7 @@ public class AmqpReplicationClientConfig {
                 fullQueueName,
                 Binding.DestinationType.QUEUE,
                 replicationExchange,
-                "broadcast",
+                broadcastKey,
                 null);
     }
 

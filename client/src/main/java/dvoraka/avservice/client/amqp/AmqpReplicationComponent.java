@@ -26,6 +26,7 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
     private final RabbitTemplate rabbitTemplate;
     private final String nodeId;
+    private final String broadcastKey;
 
     private static final Logger log = LogManager.getLogger(AmqpReplicationComponent.class);
 
@@ -34,9 +35,11 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
 
     @Autowired
-    public AmqpReplicationComponent(RabbitTemplate rabbitTemplate, String nodeId) {
+    public AmqpReplicationComponent(
+            RabbitTemplate rabbitTemplate, String nodeId, String broadcastKey) {
         this.rabbitTemplate = requireNonNull(rabbitTemplate);
         this.nodeId = requireNonNull(nodeId);
+        this.broadcastKey = requireNonNull(broadcastKey);
 
         messageConverter = requireNonNull(rabbitTemplate.getMessageConverter());
         listeners = new CopyOnWriteArraySet<>();
@@ -63,7 +66,7 @@ public class AmqpReplicationComponent implements ReplicationComponent {
     public void sendMessage(ReplicationMessage message) {
         log.debug("Send ({}): {}", nodeId, message);
         if (message.getRouting() == MessageRouting.BROADCAST) {
-            rabbitTemplate.convertAndSend("broadcast", message);
+            rabbitTemplate.convertAndSend(broadcastKey, message);
         } else {
             rabbitTemplate.convertAndSend(message.getToId(), message);
         }

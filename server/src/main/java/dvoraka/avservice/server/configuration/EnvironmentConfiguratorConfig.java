@@ -47,6 +47,9 @@ public class EnvironmentConfiguratorConfig {
     @Value("${avservice.amqp.replicationExchange}")
     private String replicationExchange;
 
+    @Value("${avservice.amqp.broadcastKey}")
+    private String broadcastKey;
+
 
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -121,6 +124,6 @@ public class EnvironmentConfiguratorConfig {
         return BindingBuilder
                 .bind(replicationQueue)
                 .to(replicationExchange)
-                .with("broadcast");
+                .with(broadcastKey);
     }
 }
