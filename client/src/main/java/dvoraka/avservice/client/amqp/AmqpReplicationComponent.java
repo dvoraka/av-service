@@ -2,6 +2,7 @@ package dvoraka.avservice.client.amqp;
 
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.common.ReplicationMessageListener;
+import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,7 +62,11 @@ public class AmqpReplicationComponent implements ReplicationComponent {
     @Override
     public void sendMessage(ReplicationMessage message) {
         log.debug("Send ({}): {}", nodeId, message);
-        rabbitTemplate.convertAndSend("broadcast", message);
+        if (message.getRouting() == MessageRouting.BROADCAST) {
+            rabbitTemplate.convertAndSend("broadcast", message);
+        } else {
+            rabbitTemplate.convertAndSend(message.getToId(), message);
+        }
     }
 
     @Override

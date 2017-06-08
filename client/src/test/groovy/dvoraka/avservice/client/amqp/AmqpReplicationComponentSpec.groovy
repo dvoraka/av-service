@@ -3,24 +3,31 @@ package dvoraka.avservice.client.amqp
 import dvoraka.avservice.common.ReplicationMessageListener
 import dvoraka.avservice.common.data.DefaultReplicationMessage
 import dvoraka.avservice.common.data.ReplicationMessage
+import dvoraka.avservice.common.helper.FileServiceHelper
+import dvoraka.avservice.common.replication.ReplicationHelper
+import dvoraka.avservice.common.replication.ReplicationServiceHelper
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.support.converter.MessageConversionException
 import org.springframework.amqp.support.converter.MessageConverter
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
 /**
  * AmqpReplicationComponent spec.
  */
-class AmqpReplicationComponentSpec extends Specification {
+class AmqpReplicationComponentSpec extends Specification implements
+        ReplicationHelper, ReplicationServiceHelper, FileServiceHelper {
 
     @Subject
     AmqpReplicationComponent component
 
     RabbitTemplate rabbitTemplate
     MessageConverter converter
+
+    @Shared
     String nodeId = 'testId'
 
 
@@ -86,7 +93,17 @@ class AmqpReplicationComponentSpec extends Specification {
 
     def "send message"() {
         when:
-            component.sendMessage(null)
+            component.sendMessage(createDiscoverRequest(nodeId))
+
+        then:
+            1 * rabbitTemplate._
+        when:
+            component.sendMessage(createSaveSuccess(
+                    createSaveMessage(
+                            fileSaveMessage('test', 'test', null),
+                            nodeId,
+                            'test'),
+                    nodeId))
 
         then:
             1 * rabbitTemplate._
