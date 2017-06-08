@@ -61,7 +61,7 @@ public class AmqpReplicationComponent implements ReplicationComponent {
     @Override
     public void sendMessage(ReplicationMessage message) {
         log.debug("Send ({}): {}", nodeId, message);
-        rabbitTemplate.convertAndSend(message);
+        rabbitTemplate.convertAndSend("broadcast", message);
     }
 
     @Override

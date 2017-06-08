@@ -7,7 +7,6 @@ import dvoraka.avservice.client.amqp.AmqpReplicationComponent;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -84,11 +83,6 @@ public class AmqpReplicationClientConfig {
     @Bean
     public Queue replicationQueue() {
         return new Queue(fullQueueName, false, true, true);
-    }
-
-    @Bean
-    public DirectExchange replicationExchange() {
-        return new DirectExchange(replicationExchange);
     }
 
     @Bean
