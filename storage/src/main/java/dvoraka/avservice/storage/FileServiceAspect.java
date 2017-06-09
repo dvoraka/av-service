@@ -2,8 +2,11 @@ package dvoraka.avservice.storage;
 
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.storage.exception.FileServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -28,7 +31,7 @@ public class FileServiceAspect {
         }
     }
 
-    @Before("execution(public void dvoraka.avservice.storage..loadFile(..)) && args(message)")
+    @Before("execution(public * dvoraka.avservice.storage..loadFile(..)) && args(message)")
     public void checkLoadType(FileMessage message) {
         if (message.getType() != MessageType.FILE_LOAD) {
             log.warn(BAD_TYPE);
@@ -50,5 +53,27 @@ public class FileServiceAspect {
             log.warn(BAD_TYPE);
             throw new IllegalArgumentException(BAD_TYPE);
         }
+    }
+
+    @Around("execution(public * dvoraka.avservice.storage..*File(..)) && args(message)")
+    public Object logInfo(ProceedingJoinPoint pjp, FileMessage message)
+            throws FileServiceException {
+
+        long start = System.currentTimeMillis();
+        String methodName = pjp.getSignature().getName();
+
+        Object result = null;
+        try {
+            result = pjp.proceed();
+        } catch (FileServiceException e) {
+            throw e;
+        } catch (Throwable throwable) {
+            log.warn("Method failed!", throwable);
+        }
+
+        long duration = System.currentTimeMillis() - start;
+        log.debug("Method: {}, time: {} ms, result: {}", methodName, duration, result);
+
+        return result;
     }
 }

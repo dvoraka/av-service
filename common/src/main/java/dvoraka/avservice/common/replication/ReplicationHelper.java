@@ -73,15 +73,15 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     }
 
     default ReplicationMessage createLoadSuccess(
-            FileMessage message, String toNodeId, String fromNodeId
+            FileMessage message, ReplicationMessage request, String fromNodeId
     ) {
         return new DefaultReplicationMessage.Builder(null)
-                .correlationId(message.getCorrelationId())
+                .correlationId(request.getId())
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(Command.LOAD)
                 .replicationStatus(ReplicationStatus.OK)
-                .toId(toNodeId)
+                .toId(request.getFromId())
                 .fromId(fromNodeId)
                 .data(message.getData())
                 .filename(message.getFilename())

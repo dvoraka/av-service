@@ -79,7 +79,10 @@ class ReplicationHelperSpec extends Specification {
 
     def "load success"() {
         when:
-            result = helper.createLoadSuccess(fileMessage, otherId, mainId)
+            result = helper.createLoadSuccess(
+                    fileMessage,
+                    helper.createLoadMessage(Mock(FileMessage), otherId, mainId),
+                    mainId)
 
         then:
             checkBase(result)

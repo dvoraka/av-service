@@ -466,9 +466,9 @@ public class DefaultReplicationService implements
         if (message.getRouting() == MessageRouting.UNICAST
                 && message.getCommand() == Command.LOAD) {
             try {
-                FileMessage fileMessage = fileService.loadFile(message);
+                FileMessage fileMessage = fileService.loadFile(message.fileMessage());
                 serviceClient.sendMessage(
-                        createLoadSuccess(fileMessage, message.getFromId(), nodeId));
+                        createLoadSuccess(fileMessage, message, nodeId));
             } catch (FileServiceException e) {
                 log.warn("Loading failed (" + nodeId + ")", e);
                 serviceClient.sendMessage(
