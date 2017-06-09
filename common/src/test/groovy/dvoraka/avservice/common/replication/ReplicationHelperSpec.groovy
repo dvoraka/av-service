@@ -93,7 +93,7 @@ class ReplicationHelperSpec extends Specification {
     def "load failed"() {
         when:
             result = helper.createLoadFailed(
-                    helper.createLoadMessage(fileMessage, mainId, otherId), otherId, mainId)
+                    helper.createLoadMessage(fileMessage, mainId, otherId), mainId, otherId)
 
         then:
             checkBase(result)

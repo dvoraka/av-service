@@ -472,7 +472,7 @@ public class DefaultReplicationService implements
             } catch (FileServiceException e) {
                 log.warn("Loading failed (" + nodeId + ")", e);
                 serviceClient.sendMessage(
-                        createLoadFailed(message, message.getFromId(), nodeId));
+                        createLoadFailed(message, nodeId, message.getFromId()));
             }
         }
 
