@@ -118,6 +118,12 @@ public final class DefaultReplicationMessage implements ReplicationMessage, File
             case SAVE:
                 return fileSaveMessage(this);
 
+            case LOAD:
+                return fileLoadMessage(this);
+
+            case UPDATE:
+                return fileUpdateMessage(this);
+
             case DELETE:
                 return fileDeleteMessage(this);
 
