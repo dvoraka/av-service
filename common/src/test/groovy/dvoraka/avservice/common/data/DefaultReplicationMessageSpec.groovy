@@ -1,15 +1,29 @@
 package dvoraka.avservice.common.data
 
+import dvoraka.avservice.common.helper.FileServiceHelper
+import dvoraka.avservice.common.replication.ReplicationHelper
+import dvoraka.avservice.common.replication.ReplicationServiceHelper
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
 /**
  * Message spec.
  */
-class DefaultReplicationMessageSpec extends Specification {
+class DefaultReplicationMessageSpec extends Specification
+        implements ReplicationServiceHelper, ReplicationHelper, FileServiceHelper {
 
     @Subject
     ReplicationMessage message
+
+    @Shared
+    String testFilename = 'testFilename'
+    @Shared
+    String testOwner = 'testOwner'
+    @Shared
+    String testFromId = 'testFromId'
+    @Shared
+    String testToId = 'testToId'
 
 
     def "build message"() {
@@ -18,11 +32,7 @@ class DefaultReplicationMessageSpec extends Specification {
             MessageType testType = MessageType.REPLICATION_SERVICE
 
             byte[] testData = new byte[10]
-            String testFilename = 'testFilename'
-            String testOwner = 'testOwner'
 
-            String testFromId = 'testFromId'
-            String testToId = 'testToId'
             long testSequence = 999L
             MessageRouting testRouting = MessageRouting.BROADCAST
             ReplicationStatus testStatus = ReplicationStatus.READY
@@ -81,5 +91,22 @@ class DefaultReplicationMessageSpec extends Specification {
 
         then:
             message.toString().endsWith('}')
+    }
+
+    def "file message"() {
+        given:
+            ReplicationMessage exists = createExistsRequest(testFilename, testOwner, testFromId)
+            ReplicationMessage loadMessage = createLoadMessage(
+                    fileLoadMessage(testFilename, testOwner), testFromId, testToId)
+
+        expect:
+            exists.fileMessage() == null
+
+        when:
+            FileMessage transformed = loadMessage.fileMessage()
+
+        then:
+            transformed.getFilename() == loadMessage.getFilename()
+            transformed.getOwner() == loadMessage.getOwner()
     }
 }

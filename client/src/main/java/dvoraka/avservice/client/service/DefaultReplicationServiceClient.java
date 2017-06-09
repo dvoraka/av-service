@@ -20,7 +20,7 @@ public class DefaultReplicationServiceClient implements ReplicationServiceClient
 
     private static final Logger log = LogManager.getLogger(DefaultReplicationServiceClient.class);
 
-    private static final String WRONG_ID = "Wrong from node ID in the message!";
+    private static final String WRONG_ID = "Wrong from node ID field in the message!";
 
 
     @Autowired
