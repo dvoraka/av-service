@@ -4,6 +4,8 @@ import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.client.amqp.AmqpReplicationComponent;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -84,23 +86,19 @@ public class AmqpTestReplicationClientConfig {
     }
 
     @Bean
-    public Binding bindReplicationBroadcast() {
-        return new Binding(
-                fullQueueName,
-                Binding.DestinationType.QUEUE,
-                replicationExchange,
-                broadcastKey,
-                null);
+    public Binding bindReplicationBroadcast(Queue replicationQueue) {
+        return BindingBuilder
+                .bind(replicationQueue)
+                .to(new DirectExchange(replicationExchange))
+                .with(broadcastKey);
     }
 
     @Bean
-    public Binding bindReplicationUnicast() {
-        return new Binding(
-                fullQueueName,
-                Binding.DestinationType.QUEUE,
-                replicationExchange,
-                testNodeId,
-                null);
+    public Binding bindReplicationUnicast(Queue replicationQueue) {
+        return BindingBuilder
+                .bind(replicationQueue)
+                .to(new DirectExchange(replicationExchange))
+                .with(testNodeId);
     }
 
     @Bean
