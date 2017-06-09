@@ -20,7 +20,7 @@ import spock.lang.Specification
  */
 @Ignore("manual testing")
 @ContextConfiguration(classes = [StorageConfig.class])
-@ActiveProfiles(['storage', 'replication', 'client', 'amqp', 'no-db'])
+@ActiveProfiles(['storage', 'storage-check', 'replication', 'client', 'amqp', 'no-db'])
 class ReplicationServiceISpec extends Specification implements FileServiceHelper {
 
     @Autowired

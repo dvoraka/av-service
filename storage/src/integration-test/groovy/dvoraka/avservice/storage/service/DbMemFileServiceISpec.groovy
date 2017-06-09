@@ -8,6 +8,6 @@ import org.springframework.test.context.ContextConfiguration
  * In-memory DB file service spec.
  */
 @ContextConfiguration(classes = [StorageConfig.class])
-@ActiveProfiles(['storage', 'db-mem'])
+@ActiveProfiles(['storage', 'storage-check', 'db-mem'])
 class DbMemFileServiceISpec extends FileServiceISpec {
 }

@@ -65,7 +65,7 @@ public class FileServiceAspect {
         Object result = null;
         try {
             result = pjp.proceed();
-        } catch (FileServiceException e) {
+        } catch (FileServiceException | RuntimeException e) {
             throw e;
         } catch (Throwable throwable) {
             log.warn("Method failed!", throwable);
