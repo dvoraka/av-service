@@ -438,15 +438,11 @@ public class DefaultReplicationService implements
 
             switch (message.getCommand()) {
                 case DISCOVER:
-                    serviceClient.sendMessage(createDiscoverReply(message, nodeId));
+                    handleDiscover(message);
                     break;
 
                 case EXISTS:
-                    if (localCopyExists(message)) {
-                        serviceClient.sendMessage(createExistsReply(message, nodeId));
-                    } else {
-                        serviceClient.sendMessage(createNonExistsReply(message, nodeId));
-                    }
+                    handleExists(message);
                     break;
 
                 default:
@@ -455,40 +451,64 @@ public class DefaultReplicationService implements
 
             switch (message.getCommand()) {
                 case SAVE:
-                    try {
-                        fileService.saveFile(message.fileMessage());
-                        serviceClient.sendMessage(createSaveSuccess(message, nodeId));
-                    } catch (FileServiceException e) {
-                        log.warn("Saving failed " + idString, e);
-                        serviceClient.sendMessage(createSaveFailed(message, nodeId));
-                    }
+                    handleSave(message);
                     break;
 
                 case LOAD:
-                    try {
-                        FileMessage fileMessage = fileService.loadFile(message.fileMessage());
-                        serviceClient.sendMessage(
-                                createLoadSuccess(fileMessage, message, nodeId));
-                    } catch (FileServiceException e) {
-                        log.warn("Loading failed " + idString, e);
-                        serviceClient.sendMessage(
-                                createLoadFailed(message, nodeId, message.getFromId()));
-                    }
+                    handleLoad(message);
                     break;
 
                 case DELETE:
-                    try {
-                        fileService.deleteFile(message.fileMessage());
-                        serviceClient.sendMessage(
-                                createDeleteSuccess(message, nodeId, message.getFromId()));
-                    } catch (FileServiceException e) {
-                        log.warn("Deleting failed " + idString, e);
-//                      serviceClient.sendMessage();
-                    }
+                    handleDelete(message);
                     break;
 
                 default:
             }
+        }
+    }
+
+    private void handleDiscover(ReplicationMessage message) {
+        serviceClient.sendMessage(createDiscoverReply(message, nodeId));
+    }
+
+    private void handleExists(ReplicationMessage message) {
+        if (localCopyExists(message)) {
+            serviceClient.sendMessage(createExistsReply(message, nodeId));
+        } else {
+            serviceClient.sendMessage(createNonExistsReply(message, nodeId));
+        }
+    }
+
+    private void handleSave(ReplicationMessage message) {
+        try {
+            fileService.saveFile(message.fileMessage());
+            serviceClient.sendMessage(createSaveSuccess(message, nodeId));
+        } catch (FileServiceException e) {
+            log.warn("Saving failed " + idString, e);
+            serviceClient.sendMessage(createSaveFailed(message, nodeId));
+        }
+    }
+
+    private void handleLoad(ReplicationMessage message) {
+        try {
+            FileMessage fileMessage = fileService.loadFile(message.fileMessage());
+            serviceClient.sendMessage(
+                    createLoadSuccess(fileMessage, message, nodeId));
+        } catch (FileServiceException e) {
+            log.warn("Loading failed " + idString, e);
+            serviceClient.sendMessage(
+                    createLoadFailed(message, nodeId, message.getFromId()));
+        }
+    }
+
+    private void handleDelete(ReplicationMessage message) {
+        try {
+            fileService.deleteFile(message.fileMessage());
+            serviceClient.sendMessage(
+                    createDeleteSuccess(message, nodeId, message.getFromId()));
+        } catch (FileServiceException e) {
+            log.warn("Deleting failed " + idString, e);
+//                      serviceClient.sendMessage();
         }
     }
 }
