@@ -426,66 +426,68 @@ public class DefaultReplicationService implements
         try {
             handleOnMessage(message);
         } catch (Exception e) {
-            log.error("On message (" + nodeId + ") failed!", e);
+            log.error("On message " + idString + " failed!", e);
         }
     }
 
     private void handleOnMessage(ReplicationMessage message) {
         // broadcast and unicast messages from the replication network
-        log.debug("On message ({}): {}", nodeId, message);
+        log.debug("On message {}: {}", idString, message);
 
-        // handle discover
-        if (message.getRouting() == MessageRouting.BROADCAST
-                && message.getCommand() == Command.DISCOVER) {
-            serviceClient.sendMessage(createDiscoverReply(message, nodeId));
-        }
+        if (message.getRouting() == MessageRouting.BROADCAST) {
 
-        // handle exists
-        if (message.getRouting() == MessageRouting.BROADCAST
-                && message.getCommand() == Command.EXISTS) {
-            if (localCopyExists(message)) {
-                serviceClient.sendMessage(createExistsReply(message, nodeId));
-            } else {
-                serviceClient.sendMessage(createNonExistsReply(message, nodeId));
+            switch (message.getCommand()) {
+                case DISCOVER:
+                    serviceClient.sendMessage(createDiscoverReply(message, nodeId));
+                    break;
+
+                case EXISTS:
+                    if (localCopyExists(message)) {
+                        serviceClient.sendMessage(createExistsReply(message, nodeId));
+                    } else {
+                        serviceClient.sendMessage(createNonExistsReply(message, nodeId));
+                    }
+                    break;
+
+                default:
             }
-        }
+        } else {
 
-        // handle save
-        if (message.getRouting() == MessageRouting.UNICAST
-                && message.getCommand() == Command.SAVE) {
-            try {
-                fileService.saveFile(message.fileMessage());
-                serviceClient.sendMessage(createSaveSuccess(message, nodeId));
-            } catch (FileServiceException e) {
-                log.warn("Saving failed (" + nodeId + ")", e);
-                serviceClient.sendMessage(createSaveFailed(message, nodeId));
-            }
-        }
+            switch (message.getCommand()) {
+                case SAVE:
+                    try {
+                        fileService.saveFile(message.fileMessage());
+                        serviceClient.sendMessage(createSaveSuccess(message, nodeId));
+                    } catch (FileServiceException e) {
+                        log.warn("Saving failed " + idString, e);
+                        serviceClient.sendMessage(createSaveFailed(message, nodeId));
+                    }
+                    break;
 
-        // handle load
-        if (message.getRouting() == MessageRouting.UNICAST
-                && message.getCommand() == Command.LOAD) {
-            try {
-                FileMessage fileMessage = fileService.loadFile(message.fileMessage());
-                serviceClient.sendMessage(
-                        createLoadSuccess(fileMessage, message, nodeId));
-            } catch (FileServiceException e) {
-                log.warn("Loading failed (" + nodeId + ")", e);
-                serviceClient.sendMessage(
-                        createLoadFailed(message, nodeId, message.getFromId()));
-            }
-        }
+                case LOAD:
+                    try {
+                        FileMessage fileMessage = fileService.loadFile(message.fileMessage());
+                        serviceClient.sendMessage(
+                                createLoadSuccess(fileMessage, message, nodeId));
+                    } catch (FileServiceException e) {
+                        log.warn("Loading failed " + idString, e);
+                        serviceClient.sendMessage(
+                                createLoadFailed(message, nodeId, message.getFromId()));
+                    }
+                    break;
 
-        // handle delete
-        if (message.getRouting() == MessageRouting.UNICAST
-                && message.getCommand() == Command.DELETE) {
-            try {
-                fileService.deleteFile(message.fileMessage());
-                serviceClient.sendMessage(
-                        createDeleteSuccess(message, nodeId, message.getFromId()));
-            } catch (FileServiceException e) {
-                log.warn("Deleting failed (" + nodeId + ")", e);
-//                serviceClient.sendMessage();
+                case DELETE:
+                    try {
+                        fileService.deleteFile(message.fileMessage());
+                        serviceClient.sendMessage(
+                                createDeleteSuccess(message, nodeId, message.getFromId()));
+                    } catch (FileServiceException e) {
+                        log.warn("Deleting failed " + idString, e);
+//                      serviceClient.sendMessage();
+                    }
+                    break;
+
+                default:
             }
         }
     }

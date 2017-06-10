@@ -8,6 +8,7 @@ import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
+import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.storage.exception.ExistingFileException
 import dvoraka.avservice.storage.exception.FileNotFoundException
@@ -21,7 +22,8 @@ import spock.lang.Subject
 /**
  * Default replication service spec.
  */
-class DefaultReplicationServiceSpec extends Specification implements ReplicationHelper {
+class DefaultReplicationServiceSpec extends Specification
+        implements ReplicationHelper, FileServiceHelper {
 
     @Subject
     DefaultReplicationService service
@@ -35,6 +37,10 @@ class DefaultReplicationServiceSpec extends Specification implements Replication
     String nodeId = 'testID'
     @Shared
     String otherNodeId = 'otherID'
+    @Shared
+    String filename = 'testFilename'
+    @Shared
+    String owner = 'testOwner'
 
 
     def setup() {
