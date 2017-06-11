@@ -161,7 +161,9 @@ public class DefaultReplicationService implements
                             message.getId(),
                             maxSaveTime,
                             remoteReplicationCount());
-                    if (successCount != remoteReplicationCount()) {
+                    if (successCount == remoteReplicationCount()) {
+                        log.debug("Save success {}.", idString);
+                    } else {
                         log.debug("Expected {}, got {} {}",
                                 remoteReplicationCount(),
                                 successCount,
@@ -173,8 +175,6 @@ public class DefaultReplicationService implements
                         sendDeleteMessage(deleteMessage);
 
                         throw new LockCountNotMatchException();
-                    } else {
-                        log.debug("Save success {}.", idString);
                     }
                 }
             } finally {
@@ -213,12 +213,8 @@ public class DefaultReplicationService implements
         log.debug("Load ({}): {}", nodeId, message);
 
         int neighbours = neighbourCount();
-        try {
-            if (remoteLock.lockForFile(
-                    message.getFilename(),
-                    message.getOwner(),
-                    neighbours)) {
-
+        if (lockFile(message, neighbours)) {
+            try {
                 if (localCopyExists(message)) {
                     log.debug("Loading locally...");
 
@@ -240,22 +236,17 @@ public class DefaultReplicationService implements
                             .peek(m -> log.debug("Load success {}.", idString))
                             .findFirst()
                             .orElseThrow(FileNotFoundException::new);
+                } else {
+                    log.debug("Loading failed {}.", idString);
+                    throw new FileNotFoundException();
                 }
-
-                log.debug("Loading failed {}.", idString);
-                throw new FileNotFoundException();
-            } else {
-                log.warn("Load lock problem for {}: {}", idString, message);
-                throw new CannotAcquireLockException();
+            } finally {
+                unlockFile(message, neighbours);
             }
-        } catch (InterruptedException e) {
-            log.warn("Locking interrupted!", e);
-            Thread.currentThread().interrupt();
-        } finally {
-            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), neighbours);
+        } else {
+            log.warn("Load lock problem for {}: {}", idString, message);
+            throw new CannotAcquireLockException();
         }
-
-        throw new FileNotFoundException();
     }
 
     private void sendLoadMessage(FileMessage message) throws FileNotFoundException {
