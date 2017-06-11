@@ -351,15 +351,13 @@ public class DefaultReplicationService implements
      * @return the set of IDs
      */
     public Set<String> whoHas(String filename, String owner) {
-        ReplicationMessage query = createExistsRequest(filename, owner, nodeId);
-        serviceClient.sendMessage(query);
+        ReplicationMessage request = createExistsRequest(filename, owner, nodeId);
+        serviceClient.sendMessage(request);
 
-        Optional<ReplicationMessageList> response;
-        response = responseClient.getResponseWaitSize(
-                query.getId(), MAX_RESPONSE_TIME, neighbourCount());
-        ReplicationMessageList messages = response.orElseGet(ReplicationMessageList::new);
-
-        return messages.stream()
+        return responseClient.getResponseWaitSize(
+                request.getId(), MAX_RESPONSE_TIME, neighbourCount())
+                .orElseGet(ReplicationMessageList::new)
+                .stream()
                 .filter(message -> message.getReplicationStatus() == ReplicationStatus.OK)
                 .map(ReplicationMessage::getFromId)
                 .collect(Collectors.toSet());
@@ -369,20 +367,18 @@ public class DefaultReplicationService implements
     public ReplicationStatus getStatus(FileMessage message) {
         log.debug("Status: " + message);
 
-        serviceClient.sendMessage(createStatusRequest(
-                message.getFilename(), message.getOwner(), nodeId));
+        ReplicationMessage request = createStatusRequest(
+                message.getFilename(), message.getOwner(), nodeId);
+        serviceClient.sendMessage(request);
 
-        Optional<ReplicationMessageList> responses = responseClient.getResponseWait(
-                message.getId(), MAX_RESPONSE_TIME);
+        long resultCount = responseClient.getResponseWaitSize(
+                message.getId(), MAX_RESPONSE_TIME, neighbourCount())
+                .orElseGet(ReplicationMessageList::new)
+                .stream()
+                .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                .count();
 
-        long resultCount = responses
-                .map(ReplicationMessageList::stream)
-                .map(stream -> stream
-                        .filter(msg -> msg.getReplicationStatus().equals(ReplicationStatus.OK))
-                        .count())
-                .orElse(0L);
-
-        if (resultCount >= getReplicationCount()) {
+        if (resultCount >= remoteReplicationCount()) {
             return ReplicationStatus.OK;
         } else {
             return ReplicationStatus.FAILED;
