@@ -3,7 +3,6 @@ package dvoraka.avservice.storage.replication;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
-import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.ReplicationMessage;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
@@ -107,24 +105,21 @@ public class DefaultReplicationService implements
         ReplicationMessage message = createDiscoverRequest(nodeId);
         serviceClient.sendMessage(message);
 
-        Optional<ReplicationMessageList> responses = responseClient
-                .getResponseWait(message.getId(), MAX_RESPONSE_TIME, MAX_RESPONSE_TIME);
-
-        if (!responses.isPresent()) {
-            log.debug("Discovered ({}): none", nodeId);
-
-            return;
-        }
-
-        Set<String> newNeighbours = responses.orElseGet(ReplicationMessageList::new)
+        Set<String> newNeighbours = responseClient
+                .getResponseWait(message.getId(), MAX_RESPONSE_TIME, MAX_RESPONSE_TIME)
+                .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.READY)
                 .map(ReplicationMessage::getFromId)
                 .collect(Collectors.toSet());
 
-        neighbours.clear();
-        neighbours.addAll(newNeighbours);
-        log.debug("Discovered ({}): {}", nodeId, neighbourCount());
+        if (newNeighbours.isEmpty()) {
+            log.debug("Discovered ({}): none", nodeId);
+        } else {
+            neighbours.clear();
+            neighbours.addAll(newNeighbours);
+            log.debug("Discovered ({}): {}", nodeId, neighbourCount());
+        }
     }
 
     public int neighbourCount() {
@@ -203,7 +198,6 @@ public class DefaultReplicationService implements
         ).orElseGet(ReplicationMessageList::new);
 
         return messages.stream()
-                .filter(msg -> msg.getCommand() == Command.SAVE)
                 .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
                 .count();
     }
