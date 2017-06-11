@@ -367,18 +367,10 @@ public class DefaultReplicationService implements
     public ReplicationStatus getStatus(FileMessage message) {
         log.debug("Status: " + message);
 
-        ReplicationMessage request = createStatusRequest(
-                message.getFilename(), message.getOwner(), nodeId);
-        serviceClient.sendMessage(request);
+        final int localCopyCount = localCopyExists(message) ? 1 : 0;
+        final int remoteCopyCount = whoHas(message.getFilename(), message.getOwner()).size();
 
-        long resultCount = responseClient.getResponseWaitSize(
-                message.getId(), MAX_RESPONSE_TIME, neighbourCount())
-                .orElseGet(ReplicationMessageList::new)
-                .stream()
-                .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
-                .count();
-
-        if (resultCount >= remoteReplicationCount()) {
+        if ((localCopyCount + remoteCopyCount) >= getReplicationCount()) {
             return ReplicationStatus.OK;
         } else {
             return ReplicationStatus.FAILED;
