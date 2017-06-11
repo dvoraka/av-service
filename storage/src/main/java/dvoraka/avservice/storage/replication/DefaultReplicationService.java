@@ -56,8 +56,6 @@ public class DefaultReplicationService implements
     private static final int TERM_TIME = 10;
     private static final int REPLICATION_COUNT = 3;
 
-    //    private BlockingQueue<ReplicationMessage> commands;
-
     private Set<String> neighbours;
     private int replicationCount;
     private ScheduledExecutorService executorService;
@@ -78,9 +76,6 @@ public class DefaultReplicationService implements
         this.responseClient = requireNonNull(replicationResponseClient);
         this.remoteLock = requireNonNull(remoteLock);
         this.nodeId = requireNonNull(nodeId);
-
-//        final int size = 10;
-//        commands = new ArrayBlockingQueue<>(size);
 
         neighbours = new CopyOnWriteArraySet<>();
         replicationCount = REPLICATION_COUNT;
@@ -121,8 +116,8 @@ public class DefaultReplicationService implements
             return;
         }
 
-        ReplicationMessageList messages = responses.orElseGet(ReplicationMessageList::new);
-        Set<String> newNeighbours = messages.stream()
+        Set<String> newNeighbours = responses.orElseGet(ReplicationMessageList::new)
+                .stream()
                 .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.READY)
                 .map(ReplicationMessage::getFromId)
                 .collect(Collectors.toSet());
@@ -151,56 +146,47 @@ public class DefaultReplicationService implements
         }
 
         int neighbours = neighbourCount();
-        try {
-            if (remoteLock.lockForFile(
-                    message.getFilename(),
-                    message.getOwner(),
-                    neighbours)) {
+        if (lockFile(message, neighbours)) {
 
-                if (!exists(message)) {
-                    log.debug("Saving locally {}...", idString);
-                    fileService.saveFile(message);
+            if (!exists(message)) {
+                log.debug("Saving locally {}...", idString);
+                fileService.saveFile(message);
 
-                    log.debug("Saving remotely {}...", idString);
-                    sendSaveMessage(message);
+                log.debug("Saving remotely {}...", idString);
+                sendSaveMessage(message);
 
-                    Optional<ReplicationMessageList> responses = responseClient
-                            .getResponseWaitSize(
-                                    message.getId(),
-                                    MAX_RESPONSE_TIME + maxSaveTime,
-                                    getReplicationCount() - 1);
-                    ReplicationMessageList messages = responses
-                            .orElseGet(ReplicationMessageList::new);
+                ReplicationMessageList messages = responseClient.getResponseWaitSize(
+                        message.getId(),
+                        MAX_RESPONSE_TIME + maxSaveTime,
+                        getReplicationCount() - 1)
+                        .orElseGet(ReplicationMessageList::new);
 
-                    long successCount = messages.stream()
-                            .filter(msg -> msg.getCommand() == Command.SAVE)
-                            .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
-                            .count();
+                long successCount = messages.stream()
+                        .filter(msg -> msg.getCommand() == Command.SAVE)
+                        .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                        .count();
 
-                    if (successCount != getReplicationCount() - 1) {
-                        // rollback transaction
-                        log.debug("Expected {}, got {} {}",
-                                getReplicationCount() - 1,
-                                successCount,
-                                idString);
+                if (successCount != getReplicationCount() - 1) {
+                    //TODO: rollback transaction
 
-                        throw new LockCountNotMatchException();
-                    }
+                    log.debug("Expected {}, got {} {}",
+                            getReplicationCount() - 1,
+                            successCount,
+                            idString);
 
-                    log.debug("Save success {}.", idString);
-                } else {
-                    throw new ExistingFileException();
+                    throw new LockCountNotMatchException();
                 }
+
+                log.debug("Save success {}.", idString);
             } else {
-                log.warn("Save lock problem for {}: {}", idString, message);
-                throw new CannotAcquireLockException();
+                throw new ExistingFileException();
             }
-        } catch (InterruptedException e) {
-            log.warn("Locking interrupted!", e);
-            Thread.currentThread().interrupt();
-        } finally {
-            remoteLock.unlockForFile(message.getFilename(), message.getOwner(), neighbours);
+        } else {
+            log.warn("Save lock problem for {}: {}", idString, message);
+            throw new CannotAcquireLockException();
         }
+
+        remoteLock.unlockForFile(message.getFilename(), message.getOwner(), neighbours);
     }
 
     private void sendSaveMessage(FileMessage message) {
@@ -339,10 +325,9 @@ public class DefaultReplicationService implements
         return nodes;
     }
 
-    private boolean lockFile(FileMessage message) {
+    private boolean lockFile(FileMessage message, int lockCount) {
         try {
-            return remoteLock.lockForFile(
-                    message.getFilename(), message.getOwner(), neighbourCount());
+            return remoteLock.lockForFile(message.getFilename(), message.getOwner(), lockCount);
         } catch (InterruptedException e) {
             log.warn("Locking interrupted!", e);
             remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0);

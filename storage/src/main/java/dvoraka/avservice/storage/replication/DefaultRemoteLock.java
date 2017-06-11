@@ -98,7 +98,7 @@ public class DefaultRemoteLock implements
         }
 
         log.debug("Locking {} nodes ({})...", lockCount, nodeId);
-        lockingLock.lock();
+        lockingLock.lockInterruptibly();
         log.debug("Locked.");
 
         ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
