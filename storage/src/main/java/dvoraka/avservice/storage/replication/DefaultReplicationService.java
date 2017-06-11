@@ -160,15 +160,17 @@ public class DefaultReplicationService implements
                     long successCount = getSaveResponse(
                             message.getId(),
                             maxSaveTime,
-                            getReplicationCount() - 1);
-
-                    if (successCount != getReplicationCount() - 1) {
-                        //TODO: rollback transaction (delete locked file)
-
+                            remoteReplicationCount());
+                    if (successCount != remoteReplicationCount()) {
                         log.debug("Expected {}, got {} {}",
-                                getReplicationCount() - 1,
+                                remoteReplicationCount(),
                                 successCount,
                                 idString);
+
+                        log.debug("Rolling back save {}...", idString);
+                        FileMessage deleteMessage = fileDeleteMessage(message);
+                        fileService.deleteFile(fileDeleteMessage(deleteMessage));
+                        sendDeleteMessage(deleteMessage);
 
                         throw new LockCountNotMatchException();
                     } else {
@@ -404,6 +406,10 @@ public class DefaultReplicationService implements
 
     public int getReplicationCount() {
         return replicationCount;
+    }
+
+    private int remoteReplicationCount() {
+        return replicationCount - 1;
     }
 
     public void setReplicationCount(int replicationCount) {
