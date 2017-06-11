@@ -273,45 +273,31 @@ public class DefaultReplicationService implements
         log.debug("Delete {}: {}", idString, message);
 
         int neighbours = neighbourCount();
-        try {
-            if (remoteLock.lockForFile(
-                    message.getFilename(),
-                    message.getOwner(),
-                    neighbours)) {
-
+        if (lockFile(message, neighbours)) {
+            try {
                 if (localCopyExists(message)) {
                     log.debug("Deleting local copy {}...", idString);
                     fileService.deleteFile(message);
                 }
 
                 Set<String> nodes = sendDeleteMessage(message);
+
                 if (nodes.isEmpty()) {
                     throw new FileNotFoundException();
                 }
 
-                Optional<ReplicationMessageList> responses =
-                        responseClient.getResponseWaitSize(
-                                message.getId(), MAX_RESPONSE_TIME, nodes.size());
-
-                long successCount = responses.orElseGet(ReplicationMessageList::new)
-                        .stream()
-                        .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
-                        .count();
-
-                if (nodes.size() == successCount) {
+                long successCount = getDeleteResponse(message.getId(), nodes.size());
+                if (successCount == nodes.size()) {
                     log.debug("Delete success {}.", idString);
                 } else {
                     log.debug("Delete failed {}.", idString);
                 }
-            } else {
-                log.warn("Delete lock problem for {}: {}", idString, message);
-                throw new CannotAcquireLockException();
+            } finally {
+                unlockFile(message, neighbours);
             }
-        } catch (InterruptedException e) {
-            log.warn("Delete problem.", e);
-        } finally {
-            remoteLock.unlockForFile(
-                    message.getFilename(), message.getOwner(), neighbours);
+        } else {
+            log.warn("Delete lock problem for {}: {}", idString, message);
+            throw new CannotAcquireLockException();
         }
     }
 
@@ -324,6 +310,14 @@ public class DefaultReplicationService implements
                 .forEach(serviceClient::sendMessage);
 
         return nodes;
+    }
+
+    private long getDeleteResponse(String messageId, int responseCount) {
+        return responseClient.getResponseWaitSize(messageId, MAX_RESPONSE_TIME, responseCount)
+                .orElseGet(ReplicationMessageList::new)
+                .stream()
+                .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                .count();
     }
 
     private boolean lockFile(FileMessage message, int lockCount) {
