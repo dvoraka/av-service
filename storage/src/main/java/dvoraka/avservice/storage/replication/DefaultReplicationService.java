@@ -138,7 +138,7 @@ public class DefaultReplicationService implements
         // depends on an efficiency of the sending algorithm and
         // it still must be different for "bigger" (~10 MB+) files
         final int sizeTimeRatio = 2_000;
-        final int maxSaveTime = message.getData().length / sizeTimeRatio;
+        final int maxSaveTime = (message.getData().length / sizeTimeRatio) + MAX_RESPONSE_TIME;
         log.debug("Setting max save time to {} {}", maxSaveTime, idString);
 
         if (localCopyExists(message)) {
@@ -147,46 +147,41 @@ public class DefaultReplicationService implements
 
         int neighbours = neighbourCount();
         if (lockFile(message, neighbours)) {
+            try {
+                if (exists(message)) {
+                    throw new ExistingFileException();
+                } else {
+                    log.debug("Saving locally {}...", idString);
+                    fileService.saveFile(message);
 
-            if (!exists(message)) {
-                log.debug("Saving locally {}...", idString);
-                fileService.saveFile(message);
+                    log.debug("Saving remotely {}...", idString);
+                    sendSaveMessage(message);
 
-                log.debug("Saving remotely {}...", idString);
-                sendSaveMessage(message);
+                    long successCount = getSaveResponse(
+                            message.getId(),
+                            maxSaveTime,
+                            getReplicationCount() - 1);
 
-                ReplicationMessageList messages = responseClient.getResponseWaitSize(
-                        message.getId(),
-                        MAX_RESPONSE_TIME + maxSaveTime,
-                        getReplicationCount() - 1)
-                        .orElseGet(ReplicationMessageList::new);
+                    if (successCount != getReplicationCount() - 1) {
+                        //TODO: rollback transaction (delete locked file)
 
-                long successCount = messages.stream()
-                        .filter(msg -> msg.getCommand() == Command.SAVE)
-                        .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
-                        .count();
+                        log.debug("Expected {}, got {} {}",
+                                getReplicationCount() - 1,
+                                successCount,
+                                idString);
 
-                if (successCount != getReplicationCount() - 1) {
-                    //TODO: rollback transaction
-
-                    log.debug("Expected {}, got {} {}",
-                            getReplicationCount() - 1,
-                            successCount,
-                            idString);
-
-                    throw new LockCountNotMatchException();
+                        throw new LockCountNotMatchException();
+                    } else {
+                        log.debug("Save success {}.", idString);
+                    }
                 }
-
-                log.debug("Save success {}.", idString);
-            } else {
-                throw new ExistingFileException();
+            } finally {
+                unlockFile(message, neighbours);
             }
         } else {
             log.warn("Save lock problem for {}: {}", idString, message);
             throw new CannotAcquireLockException();
         }
-
-        remoteLock.unlockForFile(message.getFilename(), message.getOwner(), neighbours);
     }
 
     private void sendSaveMessage(FileMessage message) {
@@ -196,6 +191,19 @@ public class DefaultReplicationService implements
                 .peek(msg -> log.debug(
                         "Sending save message to {} {}...", msg.getToId(), idString))
                 .forEach(serviceClient::sendMessage);
+    }
+
+    private long getSaveResponse(String messageId, int maxTime, int replicationCount) {
+        ReplicationMessageList messages = responseClient.getResponseWaitSize(
+                messageId,
+                maxTime,
+                replicationCount
+        ).orElseGet(ReplicationMessageList::new);
+
+        return messages.stream()
+                .filter(msg -> msg.getCommand() == Command.SAVE)
+                .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
+                .count();
     }
 
     @Override
@@ -335,6 +343,10 @@ public class DefaultReplicationService implements
 
             return false;
         }
+    }
+
+    private boolean unlockFile(FileMessage message, int lockCount) {
+        return remoteLock.unlockForFile(message.getFilename(), message.getOwner(), lockCount);
     }
 
     @Override
