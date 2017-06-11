@@ -223,15 +223,9 @@ public class DefaultReplicationService implements
 
                 if (exists(message)) {
                     log.debug("Loading remotely {}...", idString);
-
                     sendLoadMessage(message);
 
-                    Optional<ReplicationMessageList> replicationMessages = responseClient
-                            .getResponseWait(message.getId(), MAX_RESPONSE_TIME);
-                    ReplicationMessageList messages = replicationMessages
-                            .orElseGet(ReplicationMessageList::new);
-
-                    return messages.stream()
+                    return getLoadResponse(message.getId()).stream()
                             .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
                             .peek(m -> log.debug("Load success {}.", idString))
                             .findFirst()
@@ -257,6 +251,12 @@ public class DefaultReplicationService implements
 
         log.debug("Loading from {} {}...", neighbourId, idString);
         serviceClient.sendMessage(createLoadMessage(message, nodeId, neighbourId));
+    }
+
+    private ReplicationMessageList getLoadResponse(String messageId) {
+        return responseClient
+                .getResponseWait(messageId, MAX_RESPONSE_TIME)
+                .orElseGet(ReplicationMessageList::new);
     }
 
     @Override
