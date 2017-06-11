@@ -178,7 +178,7 @@ public class DefaultReplicationResponseClient implements
     }
 
     private boolean sleep(long start, long maxTime) {
-        final long sleepTime = 10;
+        final long sleepTime = 2;
 
         if ((System.currentTimeMillis() - start) > maxTime) {
 
