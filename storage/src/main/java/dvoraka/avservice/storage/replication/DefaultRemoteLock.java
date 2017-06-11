@@ -20,6 +20,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Optional;
@@ -75,16 +76,17 @@ public class DefaultRemoteLock implements
         responseClient.addNoResponseMessageListener(this);
     }
 
-    @EventListener
-    public void handleContextRefresh(ContextRefreshedEvent event) {
-        log.debug("Context refreshed event received.");
-        synchronize();
-    }
-
+    @PreDestroy
     @Override
     public void stop() {
         log.info("Stop.");
         responseClient.removeNoResponseMessageListener(this);
+    }
+
+    @EventListener
+    public void handleContextRefresh(ContextRefreshedEvent event) {
+        log.debug("Context refreshed event received.");
+        synchronize();
     }
 
     @Override

@@ -85,7 +85,6 @@ class DefaultReplicationServiceSpec extends Specification
 
         then:
             1 * responseClient.removeNoResponseMessageListener(_)
-            1 * remoteLock.stop()
     }
 
     def "save"() {

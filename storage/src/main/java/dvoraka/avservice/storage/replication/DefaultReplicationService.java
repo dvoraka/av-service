@@ -95,7 +95,6 @@ public class DefaultReplicationService implements
     public void stop() {
         log.info("Stopping service {}...", idString);
         responseClient.removeNoResponseMessageListener(this);
-        remoteLock.stop();
         shutdownAndAwaitTermination(executorService, TERM_TIME, log);
     }
 
