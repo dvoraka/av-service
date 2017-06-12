@@ -132,7 +132,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
 
         expect:
             fileMessages.forEach() {
-                assert service.loadFile(it)
+                assert service.loadFile(fileLoadMessage(it))
             }
     }
 
