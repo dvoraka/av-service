@@ -36,16 +36,16 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
     def setup() {
         // the local node is a node too
         service.setReplicationCount(replicationNodes + 1)
-        // wait for initialization
-        sleep(2_000)
     }
 
     def cleanup() {
     }
 
-    def "test configuration"() {
+    def "test configuration and wait"() {
         expect:
             true
+            // wait for initialization
+            sleep(2_000)
     }
 
     def "save file"() {
