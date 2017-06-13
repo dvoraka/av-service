@@ -171,11 +171,9 @@ public class DefaultRemoteLock implements
         ReplicationMessage request = createSequenceRequest(nodeId);
         serviceClient.sendMessage(request);
 
-        ReplicationMessageList responses = responseClient
-                .getResponseWait(request.getId(), MAX_RESPONSE_TIME)
-                .orElseGet(ReplicationMessageList::new);
-
-        long actualSequence = responses.stream()
+        long actualSequence = responseClient.getResponseWait(request.getId(), MAX_RESPONSE_TIME)
+                .orElseGet(ReplicationMessageList::new)
+                .stream()
                 .peek(message -> log.debug("Sequence: {}", message))
                 .findFirst()
                 .map(ReplicationMessage::getSequence)
@@ -234,44 +232,31 @@ public class DefaultRemoteLock implements
 
     @Override
     public void onMessage(ReplicationMessage message) {
-        // filter out unicasts
-        if (message.getRouting() == MessageRouting.UNICAST) {
-            return;
-        }
-
-        // filter out discover and exists messages
-        if (message.getCommand() == Command.DISCOVER || message.getCommand() == Command.EXISTS) {
+        // input filtering
+        if (message.getRouting() == MessageRouting.UNICAST
+                || message.getCommand() == Command.DISCOVER
+                || message.getCommand() == Command.EXISTS) {
             return;
         }
 
         log.debug("On message: {}", message);
 
-        // handle broadcasts
-        if (message.getRouting() == MessageRouting.BROADCAST) {
-            switch (message.getCommand()) {
+        switch (message.getCommand()) {
+            case SEQUENCE:
+                serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
+                break;
 
-                case SEQUENCE:
-                    serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
-                    break;
+            case LOCK:
+                lock(message);
+                break;
 
-                case LOCK:
-                    lock(message);
-                    break;
+            case UNLOCK:
+                unlock(message);
+                break;
 
-                case UNLOCK:
-                    try {
-                        unlockFile(message.getFilename(), message.getOwner());
-                        serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
-                    } catch (FileNotLockedException e) {
-                        log.warn("Unlocking failed.", e);
-                        serviceClient.sendMessage(createUnlockFailedReply(message, nodeId));
-                    }
-                    break;
-
-                default:
-                    log.debug("Unhandled broadcast command: {}", message.getCommand());
-                    break;
-            }
+            default:
+                log.debug("Unhandled broadcast command: {}", message.getCommand());
+                break;
         }
     }
 
@@ -288,6 +273,16 @@ public class DefaultRemoteLock implements
             }
         } else {
             serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
+        }
+    }
+
+    private void unlock(ReplicationMessage message) {
+        try {
+            unlockFile(message.getFilename(), message.getOwner());
+            serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
+        } catch (FileNotLockedException e) {
+            log.warn("Unlocking failed.", e);
+            serviceClient.sendMessage(createUnlockFailedReply(message, nodeId));
         }
     }
 }
