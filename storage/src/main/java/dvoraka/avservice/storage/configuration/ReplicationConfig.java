@@ -6,6 +6,7 @@ import dvoraka.avservice.common.service.BasicServiceManagement;
 import dvoraka.avservice.storage.replication.DefaultRemoteLock;
 import dvoraka.avservice.storage.replication.DefaultReplicationService;
 import dvoraka.avservice.storage.replication.RemoteLock;
+import dvoraka.avservice.storage.replication.ReplicationService;
 import dvoraka.avservice.storage.service.FileService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,8 @@ public class ReplicationConfig {
 
     @Value("${avservice.storage.replication.nodeId}")
     private String nodeId;
+    @Value("${avservice.storage.replication.count}")
+    private int replicationCount;
 
 
     @Bean
@@ -30,13 +33,16 @@ public class ReplicationConfig {
             ReplicationResponseClient replicationResponseClient,
             RemoteLock remoteLock
     ) {
-        return new DefaultReplicationService(
+        ReplicationService service = new DefaultReplicationService(
                 fileService,
                 replicationServiceClient,
                 replicationResponseClient,
                 remoteLock,
                 nodeId
         );
+        service.setReplicationCount(replicationCount);
+
+        return service;
     }
 
     @Bean
