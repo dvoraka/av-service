@@ -29,6 +29,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Default remote lock implementation.
  */
@@ -42,13 +44,12 @@ public class DefaultRemoteLock implements
 
     private static final Logger log = LogManager.getLogger(DefaultRemoteLock.class);
 
-    private static final String UNLOCKING_FAILED = "Unlocking failed.";
-    private static final int MAX_RESPONSE_TIME = 1_000; // one second
+    private static final String UNLOCKING_FAILED = "Unlocking failed!";
+    private static final int MAX_RESPONSE_TIME = 500;
 
     private final AtomicLong sequence;
     private final Set<String> lockedFiles;
     private final Lock lockingLock;
-
     private final HashingService hashingService;
 
 
@@ -58,14 +59,13 @@ public class DefaultRemoteLock implements
             ReplicationResponseClient responseClient,
             String nodeId
     ) {
-        this.serviceClient = serviceClient;
-        this.responseClient = responseClient;
-        this.nodeId = nodeId;
+        this.serviceClient = requireNonNull(serviceClient);
+        this.responseClient = requireNonNull(responseClient);
+        this.nodeId = requireNonNull(nodeId);
 
         sequence = new AtomicLong();
         lockedFiles = new HashSet<>();
         lockingLock = new ReentrantLock();
-
         hashingService = new Md5HashingService();
     }
 
@@ -99,55 +99,37 @@ public class DefaultRemoteLock implements
             return false;
         }
 
+        // remote locking
         log.debug("Locking {} nodes ({})...", lockCount, nodeId);
         lockingLock.lockInterruptibly();
-        log.debug("Locked.");
 
         ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(lockRequest);
 
-        Optional<ReplicationMessageList> lockReplies =
-                responseClient.getResponseWaitSize(
-                        lockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
+        long successLocks = responseClient.getResponseWaitSize(
+                lockRequest.getId(), MAX_RESPONSE_TIME, lockCount)
+                .orElseGet(ReplicationMessageList::new)
+                .stream()
+                .filter(message -> message.getReplicationStatus() == ReplicationStatus.READY)
+                .count();
 
-        // count success locks
-        if (lockReplies.isPresent()) {
-            long successLocks = lockReplies.get().stream()
-                    .filter(message -> message.getReplicationStatus() == ReplicationStatus.READY)
-                    .count();
+        if (successLocks == lockCount) {
+            incSequence();
+            log.debug("Remote locking success.");
+            lockingLock.unlock();
 
-            if (lockCount == successLocks) {
-                incSequence();
-
-                log.info("Remote locking success.");
-                lockingLock.unlock();
-                log.debug("Unlocked.");
-
-                return true;
-            } else {
-                lockingLock.unlock();
-                log.debug("Unlocked.");
-
-                try {
-                    unlockFile(filename, owner);
-                } catch (FileNotLockedException e) {
-                    log.warn(UNLOCKING_FAILED, e);
-                }
-
-                return false;
+            return true;
+        } else {
+            log.warn("Remote locking failed.");
+            lockingLock.unlock();
+            try {
+                unlockFile(filename, owner);
+            } catch (FileNotLockedException e) {
+                log.warn(UNLOCKING_FAILED, e);
             }
+
+            return false;
         }
-
-        lockingLock.unlock();
-        log.debug("Unlocked.");
-
-        try {
-            unlockFile(filename, owner);
-        } catch (FileNotLockedException e) {
-            log.warn(UNLOCKING_FAILED, e);
-        }
-
-        return false;
     }
 
     @Override
