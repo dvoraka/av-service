@@ -23,7 +23,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
@@ -135,36 +134,28 @@ public class DefaultRemoteLock implements
     @Override
     public boolean unlockForFile(String filename, String owner, int lockCount) {
 
-        // send the unlock request
         ReplicationMessage unlockRequest = createUnlockRequest(
                 filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(unlockRequest);
 
-        // get replies
-        Optional<ReplicationMessageList> unlockReplies =
-                responseClient.getResponseWaitSize(
-                        unlockRequest.getId(), MAX_RESPONSE_TIME, lockCount);
+        long successUnlocks = responseClient.getResponseWaitSize(
+                unlockRequest.getId(), MAX_RESPONSE_TIME, lockCount)
+                .orElseGet(ReplicationMessageList::new)
+                .stream()
+                .filter(message -> message.getReplicationStatus() == ReplicationStatus.OK)
+                .count();
 
-        // count success unlocks
-        if (unlockReplies.isPresent()) {
-            long successUnlocks = unlockReplies.get().stream()
-                    .filter(message -> message.getReplicationStatus() == ReplicationStatus.OK)
-                    .count();
+        boolean remoteSuccess = (successUnlocks == lockCount);
 
-            if (lockCount == successUnlocks) {
-                try {
-                    unlockFile(filename, owner);
-                } catch (FileNotLockedException e) {
-                    log.warn(UNLOCKING_FAILED, e);
-                }
+        try {
+            unlockFile(filename, owner);
+        } catch (FileNotLockedException e) {
+            log.warn("Local file was not locked!", e);
 
-                return true;
-            } else {
-                log.warn(UNLOCKING_FAILED);
-            }
+            return false;
         }
 
-        return false;
+        return remoteSuccess;
     }
 
     /**
