@@ -61,6 +61,7 @@ public class FileServiceAspect {
 
         long start = System.currentTimeMillis();
         String methodName = pjp.getSignature().getName();
+        String className = pjp.getSourceLocation().getWithinType().getSimpleName();
 
         Object result = null;
         try {
@@ -72,7 +73,8 @@ public class FileServiceAspect {
         }
 
         long duration = System.currentTimeMillis() - start;
-        log.debug("Method: {}, time: {} ms, result: {}", methodName, duration, result);
+        log.debug("{}.{}(), time: {} ms, result: {}",
+                className, methodName, duration, result);
 
         return result;
     }
