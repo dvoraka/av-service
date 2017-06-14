@@ -3,12 +3,11 @@ package dvoraka.avservice.db.configuration;
 import dvoraka.avservice.db.repository.db.DbMessageInfoRepository;
 import dvoraka.avservice.db.service.DbMessageInfoService;
 import dvoraka.avservice.db.service.MessageInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -31,13 +30,9 @@ import java.util.Properties;
 @Profile("db-mem")
 public class DbMemConfig {
 
-    private final Environment env;
+    @Value("${avservice.db.hibernate.show_sql}")
+    private boolean showSql;
 
-
-    @Autowired
-    public DbMemConfig(Environment env) {
-        this.env = env;
-    }
 
     @Bean
     public DataSource dataSource() {
@@ -76,7 +71,7 @@ public class DbMemConfig {
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        properties.put("hibernate.show_sql", env.getProperty("avservice.db.hibernate.show_sql"));
+        properties.put("hibernate.show_sql", showSql);
         properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
 

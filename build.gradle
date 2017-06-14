@@ -8,7 +8,7 @@ plugins {
 description = 'Anti-virus and file network service'
 
 // Temporary overrides for BOMs
-ext['spring.version'] = '5.0.0.RC1'
+ext['spring.version'] = '5.0.0.RC2'
 ext['spring-data-releasetrain.version'] = 'Kay-M1'
 ext['spring-amqp.version'] = '2.0.0.M4'
 ext['jackson.version'] = '2.9.0.pr3'
@@ -147,6 +147,9 @@ allprojects {
 
         // H2 DB
         compile group: 'com.h2database', name: 'h2'
+
+        // For Findbugs annotations
+        compile group: 'com.google.code.findbugs', name: 'findbugs', version: '3.0.1'
 
         //
         // Testing

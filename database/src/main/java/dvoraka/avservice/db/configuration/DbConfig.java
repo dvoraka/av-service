@@ -3,12 +3,11 @@ package dvoraka.avservice.db.configuration;
 import dvoraka.avservice.db.repository.db.DbMessageInfoRepository;
 import dvoraka.avservice.db.service.DbMessageInfoService;
 import dvoraka.avservice.db.service.MessageInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -21,7 +20,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Database configuration for import.
+ * Database configuration for the import.
  */
 @Configuration
 @EnableJpaRepositories(basePackages = "dvoraka.avservice.db.repository")
@@ -30,21 +29,29 @@ import java.util.Properties;
 @Profile("db")
 public class DbConfig {
 
-    private final Environment env;
+    @Value("${avservice.db.driver}")
+    private String driver;
+    @Value("${avservice.db.url}")
+    private String url;
 
+    @Value("${avservice.db.user}")
+    private String user;
+    @Value("${avservice.db.pass}")
+    private String pass;
 
-    @Autowired
-    public DbConfig(Environment env) {
-        this.env = env;
-    }
+    @Value("${avservice.db.hibernate.dialect}")
+    private String dialect;
+    @Value("${avservice.db.hibernate.show_sql}")
+    private boolean showSql;
+
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("avservice.db.driver"));
-        dataSource.setUrl(env.getProperty("avservice.db.url"));
-        dataSource.setUsername(env.getProperty("avservice.db.user"));
-        dataSource.setPassword(env.getProperty("avservice.db.pass"));
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(user);
+        dataSource.setPassword(pass);
 
         return dataSource;
     }
@@ -77,8 +84,8 @@ public class DbConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", env.getProperty("avservice.db.hibernate.dialect"));
-        properties.put("hibernate.show_sql", env.getProperty("avservice.db.hibernate.show_sql"));
+        properties.put("hibernate.dialect", dialect);
+        properties.put("hibernate.show_sql", showSql);
         properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
 
