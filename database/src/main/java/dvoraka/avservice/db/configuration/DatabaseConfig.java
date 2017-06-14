@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Import;
         DbMemConfig.class,
         // No DB - dummy
         NoDbConfig.class,
+        // DB common
+        DbCommonConfig.class,
         // Solr
         SolrConfig.class
 })

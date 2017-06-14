@@ -9,7 +9,7 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [DbMemConfig.class])
+@ContextConfiguration(classes = [DatabaseConfig.class])
 @ActiveProfiles(['db-mem'])
 class DbMemConfigISpec extends Specification {
 

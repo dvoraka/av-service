@@ -9,7 +9,7 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [DbConfig.class])
+@ContextConfiguration(classes = [DatabaseConfig.class])
 @ActiveProfiles(['db'])
 class DbConfigISpec extends Specification {
 
