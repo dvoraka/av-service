@@ -15,7 +15,7 @@ import spock.lang.Unroll
 /**
  * File service spec.
  */
-@Ignore
+@Ignore('base class')
 class FileServiceISpec extends Specification implements FileServiceHelper {
 
     @Autowired
