@@ -8,9 +8,24 @@ import dvoraka.avservice.common.data.ReplicationMessage;
  */
 public interface ReplicationComponent extends MessageListenerAdapter {
 
+    /**
+     * Sends a replication message.
+     *
+     * @param message the message
+     */
     void sendMessage(ReplicationMessage message);
 
+    /**
+     * Adds a message listener.
+     *
+     * @param listener the listener
+     */
     void addReplicationMessageListener(ReplicationMessageListener listener);
 
+    /**
+     * Removes a message listener.
+     *
+     * @param listener the listener
+     */
     void removeReplicationMessageListener(ReplicationMessageListener listener);
 }

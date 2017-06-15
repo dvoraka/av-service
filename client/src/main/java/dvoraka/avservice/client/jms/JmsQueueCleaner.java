@@ -20,9 +20,9 @@ public class JmsQueueCleaner implements QueueCleaner {
     }
 
     @Override
-    public void clean(String queueName) {
+    public void clean(String name) {
         while (true) {
-            if (jmsTemplate.receive(queueName) == null) {
+            if (jmsTemplate.receive(name) == null) {
                 break;
             }
         }

@@ -3,11 +3,21 @@ package dvoraka.avservice.client;
 import dvoraka.avservice.common.AvMessageListener;
 
 /**
- * Interface for messages receiving.
+ * Interface for AV messages receiving.
  */
 public interface AvMessageReceiver {
 
+    /**
+     * Adds a listener.
+     *
+     * @param listener the listener
+     */
     void addAvMessageListener(AvMessageListener listener);
 
+    /**
+     * Removes a listener.
+     *
+     * @param listener the listener
+     */
     void removeAvMessageListener(AvMessageListener listener);
 }

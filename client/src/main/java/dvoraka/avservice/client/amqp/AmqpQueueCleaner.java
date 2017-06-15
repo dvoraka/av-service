@@ -20,9 +20,9 @@ public class AmqpQueueCleaner implements QueueCleaner {
     }
 
     @Override
-    public void clean(String queueName) {
+    public void clean(String name) {
         while (true) {
-            if (amqpTemplate.receive(queueName) == null) {
+            if (amqpTemplate.receive(name) == null) {
                 break;
             }
         }

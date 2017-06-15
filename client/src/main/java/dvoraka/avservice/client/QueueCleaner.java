@@ -3,12 +3,13 @@ package dvoraka.avservice.client;
 /**
  * Cleaner for full/dirty queues.
  */
+@FunctionalInterface
 public interface QueueCleaner {
 
     /**
-     * Receives all available messages from a given queue and throws them out.
+     * Receives all available messages from a given queue/destination and throws them out.
      *
-     * @param queueName the queue name
+     * @param name the queue/destination name
      */
-    void clean(String queueName);
+    void clean(String name);
 }

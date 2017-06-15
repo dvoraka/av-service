@@ -3,7 +3,7 @@ package dvoraka.avservice.client;
 import dvoraka.avservice.common.helper.AvMessageHelper;
 
 /**
- * Server component.
+ * Component for sending and receiving AV messages.
  */
 public interface ServerComponent extends
         AvMessageReceiver,
@@ -11,5 +11,10 @@ public interface ServerComponent extends
         AvMessageHelper,
         MessageListenerAdapter {
 
+    /**
+     * Returns a service ID.
+     *
+     * @return the ID
+     */
     String getServiceId();
 }
