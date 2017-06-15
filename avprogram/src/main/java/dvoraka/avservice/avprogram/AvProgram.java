@@ -8,7 +8,7 @@ import dvoraka.avservice.common.exception.ScanException;
 public interface AvProgram {
 
     /**
-     * Scans the bytes and returns the infected flag.
+     * Scans bytes and returns an infected flag.
      *
      * @param bytes bytes for scanning
      * @return the infected flag
@@ -17,16 +17,17 @@ public interface AvProgram {
     boolean scanBytes(byte[] bytes) throws ScanException;
 
     /**
-     * Scans the bytes and returns an info about found viruses.
+     * Scans bytes and returns an info about found viruses.
      *
      * @param bytes bytes for scanning
      * @return the virus description
      * @throws ScanException when scanning failed
+     * @see #getNoVirusResponse()
      */
     String scanBytesWithInfo(byte[] bytes) throws ScanException;
 
     /**
-     * Returns the concrete string which means no virus in a message.
+     * Returns a concrete string which means no virus in a message.
      * <p>
      * Every program can have different string for success so it is good to know what means OK.
      *
@@ -35,21 +36,21 @@ public interface AvProgram {
     String getNoVirusResponse();
 
     /**
-     * Returns status of the program.
+     * Returns a running state of the program.
      *
-     * @return the running status
+     * @return the running state
      */
     boolean isRunning();
 
     /**
-     * Returns the caching status.
+     * Returns a caching status.
      *
      * @return the caching status
      */
     boolean isCaching();
 
     /**
-     * Sets the caching for the program.
+     * Sets a caching for the program.
      *
      * @param caching enable/disable caching
      */
