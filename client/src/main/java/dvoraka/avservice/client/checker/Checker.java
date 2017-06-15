@@ -8,7 +8,7 @@ import dvoraka.avservice.client.AvMessageSender;
 public interface Checker extends Receiver, AvMessageSender {
 
     /**
-     * Checks a message sending and receiving and returns the status.
+     * Checks a message sending and receiving and returns a status.
      *
      * @return true if everything works
      */

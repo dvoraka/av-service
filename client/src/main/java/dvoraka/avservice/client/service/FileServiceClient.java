@@ -10,7 +10,7 @@ public interface FileServiceClient {
     /**
      * Saves a file from the message.
      *
-     * @param message the message.
+     * @param message the save message.
      */
     void saveFile(AvMessage message);
 

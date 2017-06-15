@@ -8,5 +8,12 @@ import dvoraka.avservice.common.data.ReplicationMessage;
 @FunctionalInterface
 public interface ReplicationServiceClient {
 
+    /**
+     * Sends a replication message.
+     *
+     * @param message the message
+     * @see dvoraka.avservice.common.replication.ReplicationHelper
+     * @see dvoraka.avservice.common.replication.ReplicationServiceHelper
+     */
     void sendMessage(ReplicationMessage message);
 }
