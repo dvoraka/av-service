@@ -11,7 +11,7 @@ public interface Test {
     void run();
 
     /**
-     * Returns if the test is done.
+     * Returns true if a test is done.
      *
      * @return true if the test execution ended
      */

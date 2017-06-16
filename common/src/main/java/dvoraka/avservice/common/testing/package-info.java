@@ -1,4 +1,4 @@
 /**
- * Common testing classes.
+ * Application testing infrastructure.
  */
 package dvoraka.avservice.common.testing;

@@ -12,6 +12,12 @@ public class CustomThreadFactory implements ThreadFactory {
     private AtomicLong counter = new AtomicLong(0);
 
 
+    /**
+     * Creates a custom thread factory with a given name. Every thread will have this name
+     * and a different number starting with 0 as a suffix.
+     *
+     * @param name the name
+     */
     public CustomThreadFactory(String name) {
         poolName = name;
     }

@@ -6,7 +6,7 @@ package dvoraka.avservice.common.testing;
 public interface PerformanceTest extends Test {
 
     /**
-     * Returns a result for the test.
+     * Returns a result for a test.
      *
      * @return the test result
      */

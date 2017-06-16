@@ -6,14 +6,14 @@ package dvoraka.avservice.common.testing;
 public interface PerformanceTestProperties extends TestProperties {
 
     /**
-     * Returns a message count for the test.
+     * Returns a message count for a test.
      *
      * @return the message count
      */
     long getMsgCount();
 
     /**
-     * If the test sends a data without receiving.
+     * If a test sends a data without receiving.
      *
      * @return the send only flag
      */
