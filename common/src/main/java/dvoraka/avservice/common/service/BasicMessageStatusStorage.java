@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Basic implementation for a storage.
+ * Basic implementation for a message status storage.
  */
 public class BasicMessageStatusStorage implements MessageStatusStorage {
 

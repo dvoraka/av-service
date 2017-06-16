@@ -1,17 +1,17 @@
 package dvoraka.avservice.common.service;
 
 /**
- * Interface for application management.
+ * Interface for an application management.
  */
 public interface ApplicationManagement {
 
     /**
-     * Starts application.
+     * Starts an application.
      */
     void start();
 
     /**
-     * Check application status.
+     * Checks an application running status.
      *
      * @return the running status
      */
