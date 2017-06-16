@@ -1,5 +1,7 @@
-FROM elasticsearch:2.4.0
+FROM docker.elastic.co/elasticsearch/elasticsearch:5.4.1
 MAINTAINER dvoraka <alen.dvorak@gmail.com>
+
+ENV ES_JAVA_OPTS="-Xms256m -Xmx256m"
 
 EXPOSE 9200
 

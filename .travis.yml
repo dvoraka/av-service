@@ -11,6 +11,7 @@ before_install:
   - sudo netstat -lnp46
   - sudo /etc/init.d/postgresql stop
   - sudo netstat -lnp46
+  - sudo sysctl vm.max_map_count=262144
   - env
   - cd docker
   - travis_wait 40 docker-compose up -d
