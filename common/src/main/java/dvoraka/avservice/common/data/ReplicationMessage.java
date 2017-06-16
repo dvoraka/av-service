@@ -1,7 +1,7 @@
 package dvoraka.avservice.common.data;
 
 /**
- * Replication message.
+ * Replication message interface.
  */
 public interface ReplicationMessage extends FileMessage {
 

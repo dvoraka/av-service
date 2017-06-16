@@ -1,6 +1,8 @@
 package dvoraka.avservice.common.data;
 
 /**
+ * AV message interface.
+ * <p>
  * Data structure for the whole service.
  * <br>
  * <br>
@@ -18,7 +20,7 @@ package dvoraka.avservice.common.data;
 public interface AvMessage extends FileMessage {
 
     /**
-     * Returns an info about virus.
+     * Returns an info about virus inside the message.
      *
      * @return the info
      */

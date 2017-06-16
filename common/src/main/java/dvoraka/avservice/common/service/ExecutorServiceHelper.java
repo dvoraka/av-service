@@ -10,6 +10,14 @@ import java.util.concurrent.TimeUnit;
  */
 public interface ExecutorServiceHelper {
 
+    /**
+     * Executor service helper method for shutting down an executor service with
+     * a given maximum wait time.
+     *
+     * @param executorService the executor service
+     * @param waitSeconds     the max wait time
+     * @param logger          the logger
+     */
     default void shutdownAndAwaitTermination(
             ExecutorService executorService,
             long waitSeconds,

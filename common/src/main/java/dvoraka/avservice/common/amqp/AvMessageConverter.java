@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Spring AMQP AvMessage converter.
+ * Spring AMQP AV message converter.
+ *
+ * @see AvMessage
  */
 @Component
 public class AvMessageConverter implements MessageConverter {

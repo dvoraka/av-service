@@ -16,6 +16,8 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * AMQP AV message mapper.
+ *
+ * @see AvMessage
  */
 @Component
 public class AvMessageMapper {

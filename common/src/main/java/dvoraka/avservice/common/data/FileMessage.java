@@ -1,7 +1,7 @@
 package dvoraka.avservice.common.data;
 
 /**
- * Interface for file message.
+ * File message interface.
  */
 public interface FileMessage extends Message {
 
