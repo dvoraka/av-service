@@ -13,7 +13,8 @@ ENV ACTIVEMQ_TCP=61616 \
 #    ACTIVEMQ_MQTT=1883
 #    ACTIVEMQ_WS=61614
     ACTIVEMQ_HTTP=8161 \
-    ACTIVEMQ_HOME=/opt/activemq
+    ACTIVEMQ_HOME=/opt/activemq \
+    ACTIVEMQ_OPTS="-Xms256m -Xmx256m"
 
 RUN curl -O $AMQ_DOWN_URL \
     && mkdir -p /opt \
