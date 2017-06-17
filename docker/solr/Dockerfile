@@ -13,4 +13,4 @@ RUN solr start -p $SOLR_PORT \
 
 EXPOSE $SOLR_PORT
 
-CMD ["solr-foreground"]
+CMD ["solr-foreground", "-m", "256m"]
