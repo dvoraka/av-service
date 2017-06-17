@@ -1,4 +1,4 @@
-FROM solr:6.2.1
+FROM solr:6.6
 MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
 ARG SOLR_CONF=/opt/solr/server/solr/configsets
