@@ -7,7 +7,7 @@ CPU: i5 4.0 GHz (4 cores)
 
 Storage: SSD
 
-Loggin level: WARN
+Logging level: WARN
 
 Settings: 4 threads, no message logging
 
@@ -16,7 +16,7 @@ CPU: i3 2.40 GHz (2 cores)
 
 Storage: SSD
 
-Loggin level: INFO
+Logging level: INFO
 
 Settings: 4 threads, no message logging
 
@@ -32,9 +32,10 @@ JMS load test run command: `./gradlew runJmsLoadTest`
 
 Old load test run command: `./gradlew loadTest`
 
-DB logging: no
+Message logging: no
 
-### Other scenarios (tested on the old computer)
+### Other scenarios
+#### Results on the old computer
  * **1 million** messages with AMQP server. It didn't show any memory leaks.
  * Result: **557** msgs/s
  * **1 million** messages with JMS server. It didn't show any memory leaks.
@@ -65,13 +66,13 @@ msg/s | 926 | 907 | 897 | 888 | 913
 Socket pooling is default.
 
 #### Feb 17, 2017
-With experimental ClamAV socket pooling.
+With an experimental ClamAV socket pooling.
 
 run | 1. | 2. | 3. | 4. | 5.
 ---|---|---|---|---|---
 msg/s | 563 | 559 | 560 | 556 | 553
 
-Without socket pooling.
+Without the socket pooling.
 
 run | 1. | 2. | 3. | 4. | 5.
 ---|---|---|---|---|---
@@ -111,7 +112,7 @@ run | 1. | 2. | 3. | 4. | 5.
 msg/s | 949 | 988 | 951 | 1009 | 978
 
 #### Jan 16, 2017
-Version 0.5-rc1 with JMS async sending.
+Version 0.5-rc1 with JMS async sending setting.
 
 run | 1. | 2. | 3. | 4. | 5.
 ---|---|---|---|---|---
@@ -205,7 +206,7 @@ first hits
 
 ### Commits
 
-Insert document and commit after.
+Insert one document and commit after.
 
 With **empty** collection.
 
