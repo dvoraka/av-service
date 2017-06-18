@@ -1,24 +1,20 @@
 # Performance notes
 
-All test until Feb 17, 2017 ran on the old computer:
+All tests until Feb 17, 2017 ran on the old computer.
 
 #### New computer and settings
-CPU: i5 4.0 GHz (4 cores)
 
-Storage: SSD
-
-Logging level: WARN
-
-Settings: 4 threads, no message logging
+ * CPU: i5 4.0 GHz (4 cores)
+ * Storage: SSD
+ * Logging level: WARN
+ * Settings: 4 threads, no message logging
 
 #### Old computer and settings
-CPU: i3 2.40 GHz (2 cores)
 
-Storage: SSD
-
-Logging level: INFO
-
-Settings: 4 threads, no message logging
+ * CPU: i3 2.40 GHz (2 cores)
+ * Storage: SSD
+ * Logging level: INFO
+ * Settings: 4 threads, no message logging
 
 ## Testing server performance
 
@@ -65,6 +61,8 @@ msg/s | 926 | 907 | 897 | 888 | 913
 
 Socket pooling is default.
 
+#### Results on the old computer
+
 #### Feb 17, 2017
 With an experimental ClamAV socket pooling.
 
@@ -110,6 +108,8 @@ msg/s | 471 | 470 | 480 | 480 | 481
 run | 1. | 2. | 3. | 4. | 5.
 ---|---|---|---|---|---
 msg/s | 949 | 988 | 951 | 1009 | 978
+
+#### Results on the old computer
 
 #### Jan 16, 2017
 Version 0.5-rc1 with JMS async sending setting.
