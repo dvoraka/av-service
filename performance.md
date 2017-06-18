@@ -18,6 +18,8 @@ All tests until Feb 17, 2017 ran on the old computer.
 
 ## Testing server performance
 
+#### Tests for AV server
+
 AMQP server run command: `./gradlew runAmqpServer`
 
 AMQP load test run command: `./gradlew runAmqpLoadTest`
@@ -206,7 +208,7 @@ first hits
 
 ### Commits
 
-Insert one document and commit after.
+Inserts one document and commit after. Runs in a loop.
 
 With **empty** collection.
 
