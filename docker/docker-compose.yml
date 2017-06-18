@@ -1,50 +1,57 @@
 version: '2'
 
 services:
+
+  # RabbitMQ
   rabbitmq-dev:
     build: ./rabbitmq
     image: "rabbitmq-dev-server"
     network_mode: "host"
-#    ports:
-#      - "5672:5672"
+
+  # ActiveMQ
   activemq-dev:
     build: ./activemq
     image: "activemq-dev-server"
     network_mode: "host"
 
+  # ClamAV daemon
   clamav-dev:
     build: ./clamav
     image: "clamav-dev-server"
     network_mode: "host"
-#    ports:
-#      - "3310:3310"
 
+  # Kibana
   kibana-dev:
     build: ./kibana
     image: "kibana-dev-server"
     network_mode: "host"
 
+  # Elasticsearch
   elasticsearch-dev:
     build: ./elasticsearch
     image: "elasticsearch-dev-server"
     network_mode: "host"
 
+  # Logstash
   logstash-dev:
     build: ./logstash
     image: "logstash-dev-server"
     network_mode: "host"
 
+  # PostgreSQL
   postgresql-dev:
     build: ./postgresql
     image: "postgresql-dev-server"
     network_mode: "host"
 
+  # Solr
   solr-dev:
     build: ./solr
     image: "solr-dev-server"
     network_mode: "host"
 
-  sonarqube-dev:
-    build: ./sonarqube
-    image: "sonarqube-dev-server"
-    network_mode: "host"
+  # Sonarqube (optional)
+#  sonarqube-dev:
+#    build: ./sonarqube
+#    image: "sonarqube-dev-server"
+#    network_mode: "host"
