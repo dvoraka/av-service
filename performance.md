@@ -1,16 +1,26 @@
 # Performance notes
 
-The old computer is broken so we will test on the new one: i5 4.0 Ghz (4 cores) and SSD. Socket pooling is default and logging level WARN.
+All test until Feb 17, 2017 ran on the old computer:
 
-All test until Feb 17, 2017 ran on the old one:
+#### New computer and settings
+CPU: i5 4.0 GHz (4 cores)
 
-Based on PC3 (NB, i3 2.40 GHz (2 cores), SSD) and everything runs on localhost. Setting is
-4 threads for the message processor. Logging level INFO.
+Storage: SSD
 
-## Servers
+Loggin level: WARN
 
-New prototype for a load test is prepared. It is a bit slower than the old
-one but the old one was tuned several times to have better performance. 
+Settings: 4 threads, no message logging
+
+#### Old computer and settings
+CPU: i3 2.40 GHz (2 cores)
+
+Storage: SSD
+
+Loggin level: INFO
+
+Settings: 4 threads, no message logging
+
+## Testing server performance
 
 AMQP server run command: `./gradlew runAmqpServer`
 
