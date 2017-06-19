@@ -82,13 +82,13 @@ public class DefaultRemoteLock implements
     @PreDestroy
     @Override
     public void stop() {
-        log.info("Stop.");
+        log.info("Stop {}.", idString);
         responseClient.removeNoResponseMessageListener(this);
     }
 
     @EventListener
     public void handleContextRefresh(ContextRefreshedEvent event) {
-        log.debug("Context refreshed event received.");
+        log.debug("Context refreshed event received {}.", idString);
         synchronize();
     }
 
@@ -103,7 +103,7 @@ public class DefaultRemoteLock implements
         }
 
         // remote locking
-        log.debug("Locking {} nodes ({})...", lockCount, nodeId);
+        log.debug("Locking {} nodes {}...", lockCount, idString);
         lockingLock.lockInterruptibly();
 
         ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
@@ -118,12 +118,12 @@ public class DefaultRemoteLock implements
 
         if (successLocks == lockCount) {
             incSequence();
-            log.debug("Remote locking success.");
+            log.debug("Remote locking success {}.", idString);
             lockingLock.unlock();
 
             return true;
         } else {
-            log.warn("Remote locking failed.");
+            log.warn("Remote locking failed {}.", idString);
             lockingLock.unlock();
             try {
                 unlockFile(filename, owner);
@@ -154,7 +154,7 @@ public class DefaultRemoteLock implements
         try {
             unlockFile(filename, owner);
         } catch (FileNotLockedException e) {
-            log.warn("Local file was not locked!", e);
+            log.warn("Local file was not locked " + idString + "!", e);
 
             return false;
         }
@@ -170,7 +170,7 @@ public class DefaultRemoteLock implements
     }
 
     private void initializeSequence() {
-        log.debug("Initializing sequence...");
+        log.debug("Initializing sequence {}...", idString);
 
         ReplicationMessage request = createSequenceRequest(nodeId);
         serviceClient.sendMessage(request);
@@ -178,7 +178,7 @@ public class DefaultRemoteLock implements
         long actualSequence = responseClient.getResponseWait(request.getId(), MAX_RESPONSE_TIME)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
-                .peek(message -> log.debug("Sequence: {}", message))
+                .peek(message -> log.debug("Sequence {}: {}", idString, message))
                 .findFirst()
                 .map(ReplicationMessage::getSequence)
                 .orElse(1L);
@@ -191,7 +191,7 @@ public class DefaultRemoteLock implements
     }
 
     private void setSequence(long sequence) {
-        log.debug("Setting sequence: {}", sequence);
+        log.debug("Setting sequence {}: {}", idString, sequence);
         this.sequence.set(sequence);
     }
 
@@ -246,7 +246,7 @@ public class DefaultRemoteLock implements
             return;
         }
 
-        log.debug("On message: {}", message);
+        log.debug("On message {}: {}", idString, message);
 
         switch (message.getCommand()) {
             case SEQUENCE:
@@ -288,7 +288,7 @@ public class DefaultRemoteLock implements
             unlockFile(message.getFilename(), message.getOwner());
             serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
         } catch (FileNotLockedException e) {
-            log.warn("Unlocking failed.", e);
+            log.warn("Unlocking failed " + idString + ".", e);
             serviceClient.sendMessage(createUnlockFailedReply(message, nodeId));
         }
     }
