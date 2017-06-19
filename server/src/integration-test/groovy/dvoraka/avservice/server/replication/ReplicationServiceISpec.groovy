@@ -77,6 +77,7 @@ class ReplicationServiceISpec extends Specification
 
     def cleanupSpec() {
         runner.stop()
+        sleep(2_000)
     }
 
     def "discovery testing"() {
