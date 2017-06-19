@@ -10,6 +10,9 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Unroll
+
+import java.util.concurrent.Semaphore
 
 /**
  * AMQP replication service spec.
@@ -31,6 +34,8 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
      */
     @Shared
     int replicationNodes = 3
+    @Shared
+    int fileCount = 200
 
 
     def setup() {
@@ -68,7 +73,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
 
     def "save many files"() {
         when:
-            100.times {
+            fileCount.times {
                 service.saveFile(Utils.genSaveMessage())
             }
 
@@ -76,10 +81,41 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
             notThrown(Exception)
     }
 
+    @Unroll
+    def "save many files concurrently: #semaphoreSize threads"() {
+        given:
+            int taskCount = fileCount
+            List<Thread> tasks = new ArrayList<>()
+            Semaphore semaphore = new Semaphore(semaphoreSize)
+            taskCount.times {
+                tasks.add(new Thread({
+                    FileMessage saveMessage = Utils.genSaveMessage()
+                    // acquire semaphore
+                    semaphore.acquire()
+                    // save file
+                    service.saveFile(saveMessage)
+                    // check file
+                    assert service.exists(saveMessage)
+                    // release semaphore
+                    semaphore.release()
+                }))
+            }
+
+        when:
+            tasks.each { it.start() }
+            tasks.each { it.join() }
+
+        then:
+            notThrown(Exception)
+
+        where:
+            semaphoreSize << [64, 32, 16, 8, 4, 8, 16, 32, 64]
+    }
+
     def "save many files and check"() {
         given:
             List<FileMessage> fileMessages = new ArrayList<>()
-            int loops = 100
+            int loops = fileCount
 
         when:
             loops.times {
@@ -120,7 +156,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
     def "save many files and load"() {
         given:
             List<FileMessage> fileMessages = new ArrayList<>()
-            int loops = 100
+            int loops = fileCount
 
         when:
             loops.times {
@@ -142,7 +178,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         given:
             FileMessage message = Utils.genSaveMessage()
             FileMessage loadMessage = fileLoadMessage(message.getFilename(), message.getOwner())
-            int loops = 100
+            int loops = fileCount
 
         when:
             service.saveFile(message)
