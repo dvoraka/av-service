@@ -93,12 +93,7 @@ class RemoteLockISpec extends Specification
 
         and:
             ReplicationMessage response = messages.get().stream().findAny().get()
-            response.getType() == MessageType.REPLICATION_SERVICE
-            response.getCommand() == Command.LOCK
-            response.getRouting() == MessageRouting.UNICAST
-            response.getReplicationStatus() == ReplicationStatus.READY
-            response.getFromId() == otherNodeId
-            response.getToId() == nodeId
+            checkOkResponse(response)
             response.getSequence() == request.getSequence()
 
         when:
@@ -111,12 +106,7 @@ class RemoteLockISpec extends Specification
 
         and:
             ReplicationMessage response2 = messages.get().stream().findAny().get()
-            response2.getType() == MessageType.REPLICATION_SERVICE
-            response2.getCommand() == Command.LOCK
-            response2.getRouting() == MessageRouting.UNICAST
-            response2.getReplicationStatus() == ReplicationStatus.FAILED
-            response2.getFromId() == otherNodeId
-            response2.getToId() == nodeId
+            checkFailedResponse(response2)
             response2.getSequence() == request2.getSequence()
 
         cleanup:
@@ -139,12 +129,7 @@ class RemoteLockISpec extends Specification
 
         and:
             ReplicationMessage response = messages.get().stream().findAny().get()
-            response.getType() == MessageType.REPLICATION_SERVICE
-            response.getCommand() == Command.LOCK
-            response.getRouting() == MessageRouting.UNICAST
-            response.getReplicationStatus() == ReplicationStatus.READY
-            response.getFromId() == otherNodeId
-            response.getToId() == nodeId
+            checkOkResponse(response)
             response.getSequence() == request.getSequence()
 
         when:
@@ -157,16 +142,29 @@ class RemoteLockISpec extends Specification
 
         and:
             ReplicationMessage response2 = messages.get().stream().findAny().get()
-            response2.getType() == MessageType.REPLICATION_SERVICE
-            response2.getCommand() == Command.LOCK
-            response2.getRouting() == MessageRouting.UNICAST
-            response2.getReplicationStatus() == ReplicationStatus.FAILED
-            response2.getFromId() == otherNodeId
-            response2.getToId() == nodeId
+            checkFailedResponse(response2)
             response2.getSequence() == request.getSequence() + 1
 
         cleanup:
             unlockTestFile()
+    }
+
+    void checkOkResponse(ReplicationMessage message) {
+        assert message.getType() == MessageType.REPLICATION_SERVICE
+        assert message.getCommand() == Command.LOCK
+        assert message.getRouting() == MessageRouting.UNICAST
+        assert message.getReplicationStatus() == ReplicationStatus.READY
+        assert message.getFromId() == otherNodeId
+        assert message.getToId() == nodeId
+    }
+
+    void checkFailedResponse(ReplicationMessage message) {
+        assert message.getType() == MessageType.REPLICATION_SERVICE
+        assert message.getCommand() == Command.LOCK
+        assert message.getRouting() == MessageRouting.UNICAST
+        assert message.getReplicationStatus() == ReplicationStatus.FAILED
+        assert message.getFromId() == otherNodeId
+        assert message.getToId() == nodeId
     }
 
     void unlockTestFile() {
