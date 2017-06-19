@@ -149,6 +149,44 @@ class RemoteLockISpec extends Specification
             unlockTestFile()
     }
 
+    def "lock two different files"() {
+        given:
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, 3)
+            String otherFile = file + "2"
+            ReplicationMessage request2 = createLockRequest(otherFile, owner, nodeId, 4)
+
+        when:
+            client.sendMessage(request)
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(request.getId(), responseTime)
+
+        then:
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        and:
+            ReplicationMessage response = messages.get().stream().findAny().get()
+            checkOkResponse(response)
+            response.getSequence() == request.getSequence()
+
+        when:
+            client.sendMessage(request2)
+            messages = responseClient.getResponseWait(request2.getId(), responseTime)
+
+        then:
+            messages.isPresent()
+            messages.get().stream().count() == 1
+
+        and:
+            ReplicationMessage response2 = messages.get().stream().findAny().get()
+            checkOkResponse(response2)
+            response2.getSequence() == request2.getSequence()
+
+        cleanup:
+            unlockTestFile()
+            unlockFile(otherFile)
+    }
+
     void checkOkResponse(ReplicationMessage message) {
         assert message.getType() == MessageType.REPLICATION_SERVICE
         assert message.getCommand() == Command.LOCK
@@ -168,8 +206,12 @@ class RemoteLockISpec extends Specification
     }
 
     void unlockTestFile() {
+        unlockFile(file)
+    }
+
+    void unlockFile(String filename) {
         // sequence is not checked now
-        ReplicationMessage unlockRequest = createUnlockRequest(file, owner, nodeId, 0)
+        ReplicationMessage unlockRequest = createUnlockRequest(filename, owner, nodeId, 0)
         client.sendMessage(unlockRequest)
     }
 }
