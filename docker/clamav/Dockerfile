@@ -4,6 +4,7 @@ MAINTAINER dvoraka <alen.dvorak@gmail.com>
 RUN apt-get update \
     && apt-get --no-install-recommends -y install \
         clamav-daemon \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 COPY conf/clamd.conf /etc/clamav/

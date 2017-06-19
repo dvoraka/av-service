@@ -4,6 +4,7 @@ MAINTAINER dvoraka <alen.dvorak@gmail.com>
 RUN apt-get update \
     && apt-get --no-install-recommends -y install \
         rabbitmq-server \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 COPY conf/rabbitmq-env.conf /etc/rabbitmq/

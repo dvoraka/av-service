@@ -14,6 +14,7 @@ RUN apt-get update \
     && apt-get --no-install-recommends -y install \
         openjdk-8-jdk-headless \
         git-core \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -d "$USER_HOME" -s /bin/bash user

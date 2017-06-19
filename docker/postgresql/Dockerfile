@@ -9,6 +9,7 @@ RUN apt-get update \
     apt-get --no-install-recommends -y install \
         postgresql \
         postgresql-contrib \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 COPY conf/pg_hba.conf /etc/postgresql/$VERSION/main/
