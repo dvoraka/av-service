@@ -51,6 +51,8 @@ public class DefaultRemoteLock implements
     private final Lock lockingLock;
     private final HashingService hashingService;
 
+    private final String idString;
+
 
     @Autowired
     public DefaultRemoteLock(
@@ -66,6 +68,8 @@ public class DefaultRemoteLock implements
         lockedFiles = new HashSet<>();
         lockingLock = new ReentrantLock();
         hashingService = new Md5HashingService();
+
+        idString = "(" + nodeId + ")";
     }
 
     @PostConstruct
@@ -200,13 +204,16 @@ public class DefaultRemoteLock implements
     }
 
     private boolean lockFile(String filename, String owner) {
-        log.debug("Locking: {}, {}", filename, owner);
+        log.debug("Locking {}: {}, {}", idString, filename, owner);
 
         synchronized (lockedFiles) {
             if (isFileLocked(filename, owner)) {
+                log.debug("File is already locked {}: {}, {}",
+                        idString, filename, owner);
 
                 return false;
             } else {
+                log.debug("Lock success {}: {}, {}", idString, filename, owner);
                 lockedFiles.add(hash(filename, owner));
 
                 return true;
@@ -215,7 +222,7 @@ public class DefaultRemoteLock implements
     }
 
     private void unlockFile(String filename, String owner) throws FileNotLockedException {
-        log.debug("Unlocking: {}, {}", filename, owner);
+        log.debug("Unlocking {}: {}, {}", idString, filename, owner);
 
         synchronized (lockedFiles) {
             if (!lockedFiles.remove(hash(filename, owner))) {
