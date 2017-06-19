@@ -20,6 +20,7 @@ import org.springframework.context.annotation.PropertySource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
@@ -113,9 +114,54 @@ class RemoteLockISpec extends Specification
             unlockTestFile()
     }
 
-    def "lock request with right and wrong sequence"() {
+    def "two lock requests for same file at once"() {
         given:
             ReplicationMessage request = createLockRequest(file, owner, nodeId, 2)
+            ReplicationMessage request2 = createLockRequest(file, owner, nodeId, 2)
+
+        when:
+            client.sendMessage(request)
+            client.sendMessage(request2)
+
+            Optional<ReplicationMessageList> messages =
+                    responseClient.getResponseWait(request.getId(), responseTime)
+            Optional<ReplicationMessageList> messages2 =
+                    responseClient.getResponseWait(request.getId(), responseTime)
+
+        then:
+            messages.isPresent()
+            messages.get().stream().count() == 1
+            messages2.isPresent()
+            messages2.get().stream().count() == 1
+
+        cleanup:
+            unlockTestFile()
+    }
+
+    @Ignore("manual testing")
+    def "a lot of requests for same file at once"() {
+        given:
+            List<Thread> requests = new ArrayList<>()
+            int threads = 100
+            String ownerName = owner
+            threads.times {
+                requests.add(new Thread({
+                    ReplicationMessage request = createLockRequest(file, ownerName, nodeId, 3);
+                    client.sendMessage(request)
+                }))
+            }
+
+        expect:
+            requests.each { it.start() }
+            requests.each { it.join() }
+
+        cleanup:
+            unlockTestFile()
+    }
+
+    def "lock request with right and wrong sequence"() {
+        given:
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, 3)
             ReplicationMessage request2 = createLockRequest(file, owner, nodeId, 5)
 
         when:
@@ -151,9 +197,9 @@ class RemoteLockISpec extends Specification
 
     def "lock two different files"() {
         given:
-            ReplicationMessage request = createLockRequest(file, owner, nodeId, 3)
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, 4)
             String otherFile = file + "2"
-            ReplicationMessage request2 = createLockRequest(otherFile, owner, nodeId, 4)
+            ReplicationMessage request2 = createLockRequest(otherFile, owner, nodeId, 5)
 
         when:
             client.sendMessage(request)

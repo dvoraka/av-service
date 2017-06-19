@@ -279,6 +279,7 @@ public class DefaultRemoteLock implements
                 serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
             }
         } else {
+            log.debug("Bad sequence {}: {}", idString, message.getSequence());
             serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
         }
     }
