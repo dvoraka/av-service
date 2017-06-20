@@ -106,33 +106,58 @@ public class DefaultRemoteLock implements
         log.debug("Locking {} nodes {}...", lockCount, idString);
         lockingLock.lockInterruptibly();
 
+        final int retryCount = 3;
+        for (int i = 0; i < retryCount; i++) {
+
+            String id = sendLockRequest(filename, owner);
+            long successLocks = getLockResponse(id, lockCount);
+
+            if (successLocks == lockCount) {
+                incSequence();
+                log.debug("Remote locking success {}.", idString);
+                lockingLock.unlock();
+
+                return true;
+            } else if (successLocks > (lockCount / 2)) {
+                sendForceUnlockRequest(filename, owner);
+            } else {
+                log.warn("Remote locking failed {}.", idString);
+                lockingLock.unlock();
+                try {
+                    unlockFile(filename, owner);
+                } catch (FileNotLockedException e) {
+                    log.warn(UNLOCKING_FAILED, e);
+                }
+
+                return false;
+            }
+        }
+
+        lockingLock.unlock();
+
+        return false;
+    }
+
+    private String sendLockRequest(String filename, String owner) {
         ReplicationMessage lockRequest = createLockRequest(filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(lockRequest);
 
-        long successLocks = responseClient.getResponseWaitSize(
-                lockRequest.getId(), MAX_RESPONSE_TIME, lockCount)
+        return lockRequest.getId();
+    }
+
+    private void sendForceUnlockRequest(String filename, String owner) {
+        ReplicationMessage forceUnlockRequest = createForceUnlockRequest(
+                filename, owner, nodeId, getSequence());
+        serviceClient.sendMessage(forceUnlockRequest);
+    }
+
+    private long getLockResponse(String messageId, int lockCount) {
+        return responseClient.getResponseWaitSize(
+                messageId, MAX_RESPONSE_TIME, lockCount)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .filter(message -> message.getReplicationStatus() == ReplicationStatus.READY)
                 .count();
-
-        if (successLocks == lockCount) {
-            incSequence();
-            log.debug("Remote locking success {}.", idString);
-            lockingLock.unlock();
-
-            return true;
-        } else {
-            log.warn("Remote locking failed {}.", idString);
-            lockingLock.unlock();
-            try {
-                unlockFile(filename, owner);
-            } catch (FileNotLockedException e) {
-                log.warn(UNLOCKING_FAILED, e);
-            }
-
-            return false;
-        }
     }
 
     @Override
@@ -299,12 +324,14 @@ public class DefaultRemoteLock implements
     }
 
     private void forceUnlock(ReplicationMessage message) {
-        log.warn("Force unlock {}: {}, {}",
-                idString, message.getFilename(), message.getOwner());
-        try {
-            unlockFile(message.getFilename(), message.getOwner());
-        } catch (FileNotLockedException e) {
-            log.warn("Force unlock failed " + idString + ".", e);
+        if (isFileLocked(message.getFilename(), message.getOwner())) {
+            log.warn("Force unlock {}: {}, {}",
+                    idString, message.getFilename(), message.getOwner());
+            try {
+                unlockFile(message.getFilename(), message.getOwner());
+            } catch (FileNotLockedException e) {
+                log.warn("Force unlock failed " + idString + ".", e);
+            }
         }
     }
 }
