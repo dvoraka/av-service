@@ -21,7 +21,7 @@ import java.util.concurrent.Semaphore
  * infrastructure. You can run real node with a Docker script in the tools directory called
  * <b>startReplicationNodes.sh</b> with argument 1 for starting one remote node.
  */
-@Ignore("manual testing")
+//@Ignore("manual testing")
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'storage-check', 'replication', 'client', 'amqp', 'no-db'])
 class ReplicationServiceISpec extends Specification implements FileServiceHelper {
@@ -33,7 +33,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
      * Replication node count on a network.
      */
     @Shared
-    int replicationNodes = 3
+    int replicationNodes = 2
     @Shared
     int fileCount = 200
 
@@ -81,6 +81,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
             notThrown(Exception)
     }
 
+    @Ignore("manual testing")
     @Unroll
     def "save many files concurrently: #semaphoreSize threads"() {
         given:

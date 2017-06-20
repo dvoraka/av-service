@@ -7,7 +7,7 @@
 # IMAGE is Docker image name.
 #
 
-IMAGE='replication_node'
+IMAGE='replication-node'
 
 if [ $# -ne 1 ]
 then

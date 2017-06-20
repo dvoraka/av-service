@@ -50,6 +50,26 @@ services:
     image: "solr-dev-server"
     network_mode: "host"
 
+  # Replication node1000
+  replication-node-1000:
+    build: ./replicationnodesnap
+    depends_on:
+      - rabbitmq-dev
+    image: "replication-node"
+    network_mode: "host"
+    environment:
+      - AVSERVICE_STORAGE_REPLICATION_NODEID=node1000
+
+  # Replication node1001
+  replication-node-1001:
+    build: ./replicationnodesnap
+    depends_on:
+      - replication-node-1000
+    image: "replication-node"
+    network_mode: "host"
+    environment:
+      - AVSERVICE_STORAGE_REPLICATION_NODEID=node1001
+
   # Sonarqube (optional)
 #  sonarqube-dev:
 #    build: ./sonarqube
