@@ -108,7 +108,6 @@ public class DefaultRemoteLock implements
 
         final int retryCount = 2;
         for (int i = 0; i <= retryCount; i++) {
-
             String id = sendLockRequest(filename, owner);
             long successLocks = getLockResponse(id, lockCount);
 
@@ -120,20 +119,16 @@ public class DefaultRemoteLock implements
                 return true;
             } else if (successLocks > (lockCount / 2)) {
                 sendForceUnlockRequest(filename, owner);
-            } else {
-                log.warn("Remote locking failed {}.", idString);
-                lockingLock.unlock();
-                try {
-                    unlockFile(filename, owner);
-                } catch (FileNotLockedException e) {
-                    log.warn(UNLOCKING_FAILED, e);
-                }
-
-                return false;
             }
         }
 
+        log.warn("Remote locking failed {}.", idString);
         lockingLock.unlock();
+        try {
+            unlockFile(filename, owner);
+        } catch (FileNotLockedException e) {
+            log.warn(UNLOCKING_FAILED, e);
+        }
 
         return false;
     }
