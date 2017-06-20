@@ -261,6 +261,10 @@ public class DefaultRemoteLock implements
                 unlock(message);
                 break;
 
+            case FORCE_UNLOCK:
+                forceUnlock(message);
+                break;
+
             default:
                 log.debug("Unhandled broadcast command: {}", message.getCommand());
                 break;
@@ -291,6 +295,16 @@ public class DefaultRemoteLock implements
         } catch (FileNotLockedException e) {
             log.warn("Unlocking failed " + idString + ".", e);
             serviceClient.sendMessage(createUnlockFailedReply(message, nodeId));
+        }
+    }
+
+    private void forceUnlock(ReplicationMessage message) {
+        log.warn("Force unlock {}: {}, {}",
+                idString, message.getFilename(), message.getOwner());
+        try {
+            unlockFile(message.getFilename(), message.getOwner());
+        } catch (FileNotLockedException e) {
+            log.warn("Force unlock failed " + idString + ".", e);
         }
     }
 }

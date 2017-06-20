@@ -178,6 +178,19 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
+    default ReplicationMessage createForceUnlockRequest(
+            String filename, String owner, String nodeId, long sequence) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.REPLICATION_SERVICE)
+                .routing(MessageRouting.BROADCAST)
+                .command(Command.FORCE_UNLOCK)
+                .fromId(nodeId)
+                .sequence(sequence)
+                .filename(filename)
+                .owner(owner)
+                .build();
+    }
+
     default ReplicationMessage createSequenceRequest(String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
