@@ -106,8 +106,8 @@ public class DefaultRemoteLock implements
         log.debug("Locking {} nodes {}...", lockCount, idString);
         lockingLock.lockInterruptibly();
 
-        final int retryCount = 3;
-        for (int i = 0; i < retryCount; i++) {
+        final int retryCount = 2;
+        for (int i = 0; i <= retryCount; i++) {
 
             String id = sendLockRequest(filename, owner);
             long successLocks = getLockResponse(id, lockCount);
@@ -146,6 +146,7 @@ public class DefaultRemoteLock implements
     }
 
     private void sendForceUnlockRequest(String filename, String owner) {
+        log.warn("Sending force unlock request {}...", idString);
         ReplicationMessage forceUnlockRequest = createForceUnlockRequest(
                 filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(forceUnlockRequest);
