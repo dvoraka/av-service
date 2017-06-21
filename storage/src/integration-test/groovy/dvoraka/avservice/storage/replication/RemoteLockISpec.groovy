@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.replication
+package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
@@ -30,8 +30,7 @@ import spock.lang.Specification
 @ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
-class RemoteLockISpec extends Specification
-        implements ReplicationHelper, FileServiceHelper {
+class RemoteLockISpec extends Specification implements ReplicationHelper, FileServiceHelper {
 
     @Autowired
     ReplicationServiceClient client
@@ -50,9 +49,9 @@ class RemoteLockISpec extends Specification
     @Shared
     String otherNodeId = 'node1000'
     @Shared
-    String file = 'replTestFile'
+    String file = 'replicationTestFile'
     @Shared
-    String owner = 'replTestOwner'
+    String owner = 'replicationTestOwner'
 
 
     def setup() {
@@ -198,7 +197,6 @@ class RemoteLockISpec extends Specification
             unlockTestFile()
     }
 
-//    @Ignore
     def "lock two different files"() {
         given:
             ReplicationMessage request = createLockRequest(file, owner, nodeId, actualSequence)
@@ -208,9 +206,8 @@ class RemoteLockISpec extends Specification
 
         when:
             client.sendMessage(request)
-            Optional<ReplicationMessageList> messages =
-                    responseClient.getResponseWaitSize(
-                            request.getId(), responseTime, nodeCount)
+            Optional<ReplicationMessageList> messages = responseClient.getResponseWaitSize(
+                    request.getId(), responseTime, nodeCount)
 
         then:
             messages.isPresent()

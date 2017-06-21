@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
@@ -24,6 +25,7 @@ import java.util.concurrent.Semaphore
 //@Ignore("manual testing")
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'storage-check', 'replication', 'client', 'amqp', 'no-db'])
+@DirtiesContext
 class ReplicationServiceISpec extends Specification implements FileServiceHelper {
 
     @Autowired
