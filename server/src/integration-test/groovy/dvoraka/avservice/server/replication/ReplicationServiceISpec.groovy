@@ -13,7 +13,6 @@ import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.common.runner.ServiceRunner
-import dvoraka.avservice.server.runner.amqp.AmqpReplicationServiceRunner
 import dvoraka.avservice.storage.configuration.StorageConfig
 import dvoraka.avservice.storage.service.FileService
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,8 +51,12 @@ class ReplicationServiceISpec extends Specification
     @Value('${avservice.storage.replication.testNodeId}')
     String nodeId
 
+    long actualSequence
+
     @Shared
     long responseTime = 2_000
+    @Shared
+    int nodeCount = 2
     @Shared
     String otherNodeId = 'node1'
     @Shared
@@ -66,18 +69,19 @@ class ReplicationServiceISpec extends Specification
 
 
     def setup() {
-    }
+        ReplicationMessage request = createSequenceRequest(nodeId)
+        client.sendMessage(request)
+        Optional<ReplicationMessageList> messages = responseClient
+                .getResponseWait(request.getId(), responseTime)
 
-    def setupSpec() {
-        AmqpReplicationServiceRunner.setTestRun(false)
-        runner = new AmqpReplicationServiceRunner()
-        runner.runAsync()
-        sleep(6_000) // wait for server start
-    }
+        actualSequence = messages
+                .orElse(new ReplicationMessageList())
+                .stream()
+                .findFirst()
+                .map({ m -> m.getSequence() })
+                .orElse(0L)
 
-    def cleanupSpec() {
-        runner.stop()
-        sleep(2_000)
+        println actualSequence
     }
 
     def "discovery testing"() {
@@ -87,11 +91,11 @@ class ReplicationServiceISpec extends Specification
         when: "send discovery request"
             client.sendMessage(request)
             Optional<ReplicationMessageList> messages =
-                    responseClient.getResponseWait(request.getId(), responseTime)
+                    responseClient.getResponseWaitSize(request.getId(), responseTime, nodeCount)
 
-        then: "we should get one response"
+        then:
             messages.isPresent()
-            messages.get().stream().count() == 1
+            messages.get().stream().count() == nodeCount
 
         and: "check response fields"
             ReplicationMessage response = messages.get().stream().findAny().get()
@@ -110,11 +114,11 @@ class ReplicationServiceISpec extends Specification
         when: "send sequence request"
             client.sendMessage(request)
             Optional<ReplicationMessageList> messages =
-                    responseClient.getResponseWait(request.getId(), responseTime)
+                    responseClient.getResponseWaitSize(request.getId(), responseTime, nodeCount)
 
-        then: "we should get one response"
+        then:
             messages.isPresent()
-            messages.get().stream().count() == 1
+            messages.get().stream().count() == nodeCount
 
         and: "check response fields"
             ReplicationMessage response = messages.get().stream().findAny().get()
@@ -123,21 +127,21 @@ class ReplicationServiceISpec extends Specification
             response.getRouting() == MessageRouting.UNICAST
             response.getFromId()
             response.getToId() == nodeId
-            response.getSequence() == 1
+            response.getSequence() == actualSequence
     }
 
     def "lock request"() {
         given:
-            ReplicationMessage request = createLockRequest(file, owner, nodeId, 1)
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, actualSequence)
 
         when:
             client.sendMessage(request)
             Optional<ReplicationMessageList> messages =
-                    responseClient.getResponseWait(request.getId(), responseTime)
+                    responseClient.getResponseWaitSize(request.getId(), responseTime, nodeCount)
 
-        then: "we should get one response"
+        then:
             messages.isPresent()
-            messages.get().stream().count() == 1
+            messages.get().stream().count() == nodeCount
 
         and:
             ReplicationMessage response = messages.get().stream().findAny().get()
@@ -161,11 +165,12 @@ class ReplicationServiceISpec extends Specification
         when: "get actual sequence"
             client.sendMessage(sequenceRequest)
             Optional<ReplicationMessageList> messages =
-                    responseClient.getResponseWait(sequenceRequest.getId(), responseTime)
+                    responseClient.getResponseWaitSize(
+                            sequenceRequest.getId(), responseTime, nodeCount)
 
-        then: "we should get one sequence response"
+        then:
             messages.isPresent()
-            messages.get().stream().count() == 1
+            messages.get().stream().count() == nodeCount
 
         when:
             ReplicationMessage sequenceResponse = messages.get().stream().findAny().get()
@@ -182,11 +187,11 @@ class ReplicationServiceISpec extends Specification
             ReplicationMessage request = createLockRequest(file, owner, nodeId, sequence)
             client.sendMessage(request)
             Optional<ReplicationMessageList> lockMessages =
-                    responseClient.getResponseWait(request.getId(), responseTime)
+                    responseClient.getResponseWaitSize(request.getId(), responseTime, nodeCount)
 
-        then: "we should get one response"
+        then:
             lockMessages.isPresent()
-            lockMessages.get().stream().count() == 1
+            lockMessages.get().stream().count() == nodeCount
 
         when:
             ReplicationMessage response = lockMessages.get().stream().findAny().get()
@@ -215,9 +220,9 @@ class ReplicationServiceISpec extends Specification
             Optional<ReplicationMessageList> lockMessages =
                     responseClient.getResponseWait(request.getId(), responseTime)
 
-        then: "we should get one response"
+        then:
             lockMessages.isPresent()
-            lockMessages.get().stream().count() == 1
+            lockMessages.get().stream().count() == nodeCount
 
         when:
             ReplicationMessage response = lockMessages.get().stream().findAny().get()
@@ -240,11 +245,12 @@ class ReplicationServiceISpec extends Specification
         when: "get actual sequence"
             client.sendMessage(sequenceRequest)
             Optional<ReplicationMessageList> messages =
-                    responseClient.getResponseWait(sequenceRequest.getId(), responseTime)
+                    responseClient.getResponseWaitSize(
+                            sequenceRequest.getId(), responseTime, nodeCount)
 
-        then: "we should get one sequence response"
+        then:
             messages.isPresent()
-            messages.get().stream().count() == 1
+            messages.get().stream().count() == nodeCount
 
         when:
             ReplicationMessage sequenceResponse = messages.get().stream().findAny().get()
@@ -261,11 +267,11 @@ class ReplicationServiceISpec extends Specification
             ReplicationMessage request = createLockRequest(file, owner, nodeId, sequence)
             client.sendMessage(request)
             Optional<ReplicationMessageList> lockMessages =
-                    responseClient.getResponseWait(request.getId(), responseTime)
+                    responseClient.getResponseWaitSize(request.getId(), responseTime, nodeCount)
 
-        then: "we should get one response"
+        then:
             lockMessages.isPresent()
-            lockMessages.get().stream().count() == 1
+            lockMessages.get().stream().count() == nodeCount
 
         when:
             ReplicationMessage response = lockMessages.get().stream().findAny().get()
@@ -283,11 +289,12 @@ class ReplicationServiceISpec extends Specification
             ReplicationMessage unlockRequest = createUnlockRequest(file, owner, nodeId, sequence)
             client.sendMessage(unlockRequest)
             Optional<ReplicationMessageList> unlockMessages =
-                    responseClient.getResponseWait(unlockRequest.getId(), responseTime)
+                    responseClient.getResponseWaitSize(
+                            unlockRequest.getId(), responseTime, nodeCount)
 
-        then: "we should get one response"
+        then:
             unlockMessages.isPresent()
-            unlockMessages.get().stream().count() == 1
+            unlockMessages.get().stream().count() == nodeCount
 
         when:
             ReplicationMessage unlockResponse = unlockMessages.get().stream().findAny().get()
