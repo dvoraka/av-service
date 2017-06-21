@@ -21,21 +21,17 @@ import org.springframework.context.annotation.PropertySource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.lang.Stepwise
 
 /**
  * Replication service spec.
  * <p>
- * It uses low-level clients for simulating a service node. A real service node runs on
- * the replication network and is started automatically before the testing. A testing file
- * service uses the same storage as the service node so it is possible to check files after
- * processing directly through the file service.
+ * It uses low-level clients for simulating a service node.
  */
-@Stepwise
 @ContextConfiguration(classes = [StorageConfig.class])
-@ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'db-mem'])
+@ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
 class ReplicationServiceISpec extends Specification
@@ -58,7 +54,7 @@ class ReplicationServiceISpec extends Specification
     @Shared
     int nodeCount = 2
     @Shared
-    String otherNodeId = 'node1'
+    String otherNodeId = 'node1000'
     @Shared
     String file = 'replTestFile'
     @Shared
@@ -80,8 +76,6 @@ class ReplicationServiceISpec extends Specification
                 .findFirst()
                 .map({ m -> m.getSequence() })
                 .orElse(0L)
-
-        println actualSequence
     }
 
     def "discovery testing"() {
@@ -218,7 +212,7 @@ class ReplicationServiceISpec extends Specification
             ReplicationMessage request = createLockRequest(file, owner, nodeId, sequence)
             client.sendMessage(request)
             Optional<ReplicationMessageList> lockMessages =
-                    responseClient.getResponseWait(request.getId(), responseTime)
+                    responseClient.getResponseWaitSize(request.getId(), responseTime, nodeCount)
 
         then:
             lockMessages.isPresent()
@@ -315,9 +309,6 @@ class ReplicationServiceISpec extends Specification
             FileMessage saveMessage = Utils.genSaveMessage()
             ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
 
-        expect: "file not exists"
-            !fileService.exists(saveMessage)
-
         when:
             client.sendMessage(saveRequest)
             Optional<ReplicationMessageList> messages =
@@ -335,14 +326,8 @@ class ReplicationServiceISpec extends Specification
             saveStatus.getCommand() == Command.SAVE
             saveStatus.getRouting() == MessageRouting.UNICAST
             saveStatus.getReplicationStatus() == ReplicationStatus.OK
-            saveStatus.getFromId()
+            saveStatus.getFromId() == otherNodeId
             saveStatus.getToId() == nodeId
-
-        and: "file should be stored"
-            fileService.exists(saveMessage)
-
-        cleanup:
-            fileService.deleteFile(fileDeleteMessage(saveMessage))
     }
 
     def "exists"() {
@@ -351,9 +336,6 @@ class ReplicationServiceISpec extends Specification
             ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
             ReplicationMessage existsRequest = createExistsRequest(
                     saveMessage.getFilename(), saveMessage.getOwner(), nodeId)
-
-        expect: "file not exists"
-            !fileService.exists(saveMessage)
 
         when:
             client.sendMessage(saveRequest)
@@ -375,19 +357,21 @@ class ReplicationServiceISpec extends Specification
             saveStatus.getFromId() == otherNodeId
             saveStatus.getToId() == nodeId
 
-        and: "file should be stored"
-            fileService.exists(saveMessage)
-
         when:
             client.sendMessage(existsRequest)
-            messages = responseClient.getResponseWait(existsRequest.getId(), responseTime)
+            messages = responseClient.getResponseWaitSize(
+                    existsRequest.getId(), responseTime, nodeCount)
 
         then:
             messages.isPresent()
-            messages.get().stream().count() == 1
+            messages.get().stream()
+                    .filter({ msg -> msg.getFromId() == otherNodeId })
+                    .count() == 1
 
         when:
-            ReplicationMessage existsStatus = messages.get().stream().findFirst().get()
+            ReplicationMessage existsStatus = messages.get().stream()
+                    .filter({ msg -> msg.getFromId() == otherNodeId })
+                    .findFirst().get()
 
         then:
             existsStatus.getType() == MessageType.REPLICATION_SERVICE
@@ -396,11 +380,9 @@ class ReplicationServiceISpec extends Specification
             existsStatus.getReplicationStatus() == ReplicationStatus.OK
             existsStatus.getFromId() == otherNodeId
             existsStatus.getToId() == nodeId
-
-        cleanup:
-            fileService.deleteFile(fileDeleteMessage(saveMessage))
     }
 
+    @Ignore
     def "load file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
@@ -449,6 +431,7 @@ class ReplicationServiceISpec extends Specification
             fileService.deleteFile(fileDeleteMessage(saveMessage))
     }
 
+    @Ignore
     def "delete file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
