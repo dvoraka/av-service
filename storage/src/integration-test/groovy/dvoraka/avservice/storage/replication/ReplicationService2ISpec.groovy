@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.replication
+package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
@@ -12,21 +12,18 @@ import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.replication.ReplicationHelper
-import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.storage.configuration.StorageConfig
-import dvoraka.avservice.storage.service.FileService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
 /**
- * Replication service spec.
+ * Replication service spec 2.
  * <p>
  * It uses low-level clients for simulating a service node.
  */
@@ -34,15 +31,13 @@ import spock.lang.Specification
 @ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
-class ReplicationServiceISpec extends Specification
+class ReplicationService2ISpec extends Specification
         implements ReplicationHelper, FileServiceHelper {
 
     @Autowired
     ReplicationServiceClient client
     @Autowired
     ReplicationResponseClient responseClient
-    @Autowired
-    FileService fileService
 
     @Value('${avservice.storage.replication.testNodeId}')
     String nodeId
@@ -59,9 +54,6 @@ class ReplicationServiceISpec extends Specification
     String file = 'replTestFile'
     @Shared
     String owner = 'replTestOwner'
-
-    @Shared
-    ServiceRunner runner
 
 
     def setup() {
@@ -382,7 +374,6 @@ class ReplicationServiceISpec extends Specification
             existsStatus.getToId() == nodeId
     }
 
-    @Ignore
     def "load file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
@@ -391,9 +382,6 @@ class ReplicationServiceISpec extends Specification
             ReplicationMessage saveRequest = createSaveMessage(saveMessage, nodeId, otherNodeId)
             ReplicationMessage loadRequest = createLoadMessage(loadMessage, nodeId, otherNodeId)
 
-        expect: "file not exists"
-            !fileService.exists(saveMessage)
-
         when: "save generated file"
             client.sendMessage(saveRequest)
             Optional<ReplicationMessageList> messages =
@@ -401,7 +389,6 @@ class ReplicationServiceISpec extends Specification
 
         then: "response should be OK and file exist"
             messages.isPresent()
-            fileService.exists(saveMessage)
 
         when:
             client.sendMessage(loadRequest)
@@ -419,19 +406,15 @@ class ReplicationServiceISpec extends Specification
             loadReponse.getCommand() == Command.LOAD
             loadReponse.getRouting() == MessageRouting.UNICAST
             loadReponse.getReplicationStatus() == ReplicationStatus.OK
-            loadReponse.getFromId()
+            loadReponse.getFromId() == otherNodeId
             loadReponse.getToId() == nodeId
 
         and:
             loadReponse.getFilename() == saveMessage.getFilename()
             loadReponse.getOwner() == saveMessage.getOwner()
             Arrays.equals(loadReponse.getData(), saveMessage.getData())
-
-        cleanup:
-            fileService.deleteFile(fileDeleteMessage(saveMessage))
     }
 
-    @Ignore
     def "delete file"() {
         given:
             FileMessage saveMessage = Utils.genSaveMessage()
@@ -440,9 +423,6 @@ class ReplicationServiceISpec extends Specification
             FileMessage deleteMessage = fileDeleteMessage(saveMessage)
             ReplicationMessage deleteRequest = createDeleteMessage(
                     deleteMessage, nodeId, otherNodeId)
-
-        expect: "file not exists"
-            !fileService.exists(saveMessage)
 
         when:
             client.sendMessage(saveRequest)
@@ -464,9 +444,6 @@ class ReplicationServiceISpec extends Specification
             saveStatus.getFromId() == otherNodeId
             saveStatus.getToId() == nodeId
 
-        and: "file should be stored"
-            fileService.exists(saveMessage)
-
         when:
             client.sendMessage(deleteRequest)
             messages = responseClient.getResponseWait(deleteRequest.getId(), responseTime)
@@ -485,9 +462,6 @@ class ReplicationServiceISpec extends Specification
             deleteStatus.getReplicationStatus() == ReplicationStatus.OK
             deleteStatus.getFromId() == otherNodeId
             deleteStatus.getToId() == nodeId
-
-        cleanup:
-            fileService.deleteFile(deleteMessage)
     }
 
     void unlockTestFile() {
