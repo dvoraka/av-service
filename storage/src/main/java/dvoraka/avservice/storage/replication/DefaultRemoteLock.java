@@ -119,6 +119,8 @@ public class DefaultRemoteLock implements
                 return true;
             } else if (successLocks > (lockCount / 2)) {
                 sendForceUnlockRequest(filename, owner);
+            } else {
+                break;
             }
         }
 
