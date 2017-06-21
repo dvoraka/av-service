@@ -10,9 +10,7 @@ import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.data.ReplicationStatus
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.replication.ReplicationHelper
-import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.storage.configuration.StorageConfig
-import dvoraka.avservice.storage.service.FileService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
@@ -22,17 +20,14 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.lang.Stepwise
 
 /**
  * Remote lock spec. Other specs are in Replication service spec.
  * <p>
- * It uses low-level clients for simulating a service node. A real service node runs on
- * the replication network and is started automatically before the testing.
+ * It uses low-level clients for simulating a service node.
  */
-@Stepwise
 @ContextConfiguration(classes = [StorageConfig.class])
-@ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'db-mem'])
+@ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
 class RemoteLockISpec extends Specification
@@ -42,8 +37,6 @@ class RemoteLockISpec extends Specification
     ReplicationServiceClient client
     @Autowired
     ReplicationResponseClient responseClient
-    @Autowired
-    FileService fileService
 
     @Value('${avservice.storage.replication.testNodeId}')
     String nodeId
@@ -60,9 +53,6 @@ class RemoteLockISpec extends Specification
     String file = 'replTestFile'
     @Shared
     String owner = 'replTestOwner'
-
-    @Shared
-    ServiceRunner runner
 
 
     def setup() {
@@ -180,7 +170,10 @@ class RemoteLockISpec extends Specification
             messages.get().stream().count() == nodeCount
 
         and:
-            ReplicationMessage response = messages.get().stream().findAny().get()
+            ReplicationMessage response = messages.get().stream()
+                    .filter({ msg -> msg.getFromId() == otherNodeId })
+                    .findFirst()
+                    .get()
             checkOkResponse(response)
             response.getSequence() == request.getSequence()
 
@@ -205,37 +198,46 @@ class RemoteLockISpec extends Specification
             unlockTestFile()
     }
 
-    @Ignore
+//    @Ignore
     def "lock two different files"() {
         given:
-            ReplicationMessage request = createLockRequest(file, owner, nodeId, 4)
+            ReplicationMessage request = createLockRequest(file, owner, nodeId, actualSequence)
             String otherFile = file + "2"
-            ReplicationMessage request2 = createLockRequest(otherFile, owner, nodeId, 5)
+            ReplicationMessage request2 = createLockRequest(
+                    otherFile, owner, nodeId, actualSequence + 1)
 
         when:
             client.sendMessage(request)
             Optional<ReplicationMessageList> messages =
-                    responseClient.getResponseWait(request.getId(), responseTime)
+                    responseClient.getResponseWaitSize(
+                            request.getId(), responseTime, nodeCount)
 
         then:
             messages.isPresent()
-            messages.get().stream().count() == 1
+            messages.get().stream().count() == nodeCount
 
         and:
-            ReplicationMessage response = messages.get().stream().findAny().get()
+            ReplicationMessage response = messages.get().stream()
+                    .filter({ msg -> msg.getFromId() == otherNodeId })
+                    .findFirst()
+                    .get()
             checkOkResponse(response)
             response.getSequence() == request.getSequence()
 
         when:
             client.sendMessage(request2)
-            messages = responseClient.getResponseWait(request2.getId(), responseTime)
+            messages = responseClient.getResponseWaitSize(
+                    request2.getId(), responseTime, nodeCount)
 
         then:
             messages.isPresent()
-            messages.get().stream().count() == 1
+            messages.get().stream().count() == nodeCount
 
         and:
-            ReplicationMessage response2 = messages.get().stream().findAny().get()
+            ReplicationMessage response2 = messages.get().stream()
+                    .filter({ msg -> msg.getFromId() == otherNodeId })
+                    .findFirst()
+                    .get()
             checkOkResponse(response2)
             response2.getSequence() == request2.getSequence()
 
