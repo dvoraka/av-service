@@ -18,11 +18,9 @@ import java.util.concurrent.Semaphore
 /**
  * AMQP replication service spec.
  *
- * Complete test is in the server module. This could be for some testing without a server
- * infrastructure. You can run real node with a Docker script in the tools directory called
+ * You can run real node with a Docker script in the tools directory called
  * <b>startReplicationNodes.sh</b> with argument 1 for starting one remote node.
  */
-//@Ignore("manual testing")
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'storage-check', 'replication', 'client', 'amqp', 'no-db'])
 @DirtiesContext
@@ -54,7 +52,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         expect:
             true
             // wait for initialization
-            sleep(4_000)
+            sleep(5_000)
     }
 
     def "save file"() {
