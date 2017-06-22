@@ -224,7 +224,7 @@ class AvCheckMessageProcessorSpec extends Specification {
 
     def "add observers from different threads"() {
         given:
-            int observers = 50
+            int observers = 20
 
             Runnable addObserver = {
                 processor.addProcessedAVMessageListener({})
@@ -251,7 +251,7 @@ class AvCheckMessageProcessorSpec extends Specification {
 
     def "remove observers from different threads"() {
         given:
-            int observers = 50
+            int observers = 20
             AvMessageListener messageListener = {}
 
             Runnable removeObserver = {
