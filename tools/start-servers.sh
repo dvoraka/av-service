@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Starts all development Docker containers with "docker-compose up" command.
+# Starts all development Docker containers with the "docker-compose up" command.
 #
 # It uses Python virtual environment because of docker-compose installation.
 #
@@ -13,7 +13,7 @@ VIRT_ENVS=~/.virtenvs
 PROJECT_DIR=~/projects/av-service
 
 
-# activate virtual environment
+# activate the virtual environment
 source ${VIRT_ENVS}/${ENV}/bin/activate
 
 cd ${PROJECT_DIR}/docker/

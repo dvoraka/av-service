@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Prepares basic RabbitMQ structure
+# Prepares basic RabbitMQ configuration.
 #
 
 # add user guest with password guest
@@ -11,6 +11,3 @@ rabbitmqctl add_vhost antivirus
 
 # set all permissions on antivirus for user guest
 rabbitmqctl set_permissions -p antivirus guest ".*" ".*" ".*"
-
-
-exit 0
