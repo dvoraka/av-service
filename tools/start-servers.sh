@@ -1,18 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
-# Starts all docker containers with "docker-compose up" command
+# Starts all development Docker containers with "docker-compose up" command.
+#
+# It uses Python virtual environment because of docker-compose installation.
 #
 
-# virtual environment name
+# the Python virtual environment name with installed docker-compose
 ENV=docker
-# root of all virtual environments
+# the root of all virtual environments
 VIRT_ENVS=~/.virtenvs
-# root of project
+# the root of the project sources
 PROJECT_DIR=~/projects/av-service
 
 
-source $VIRT_ENVS/$ENV/bin/activate
+# activate virtual environment
+source ${VIRT_ENVS}/${ENV}/bin/activate
 
-cd $PROJECT_DIR/docker/
+cd ${PROJECT_DIR}/docker/
 
+# start containers
 docker-compose up
+
+echo
+echo "Removing replication containers..."
+docker rm docker_replication-node-1000_1
+docker rm docker_replication-node-1001_1
+echo "Done."
