@@ -49,7 +49,7 @@ public class DefaultReplicationService implements
     /**
      * Max waiting time for a response from the network in ms.
      */
-    private static final int MAX_RESPONSE_TIME = 400;
+    private static final int MAX_RESPONSE_TIME = 600;
     private static final int DISCOVER_DELAY = 20_000;
     private static final int TERM_TIME = 10;
     private static final int REPLICATION_COUNT = 3;
