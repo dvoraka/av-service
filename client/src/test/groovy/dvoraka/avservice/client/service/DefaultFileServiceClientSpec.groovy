@@ -33,6 +33,17 @@ class DefaultFileServiceClientSpec extends Specification {
             1 * serverComponent.sendAvMessage(message)
     }
 
+    def "save file with bad type"() {
+        setup:
+            AvMessage message = Utils.genLoadMessage()
+
+        when:
+            service.saveFile(message)
+
+        then:
+            thrown(IllegalArgumentException)
+    }
+
     def "load file"() {
         setup:
             AvMessage message = Utils.genLoadMessage()
@@ -42,6 +53,17 @@ class DefaultFileServiceClientSpec extends Specification {
 
         then:
             1 * serverComponent.sendAvMessage(message)
+    }
+
+    def "load file with bad type"() {
+        setup:
+            AvMessage message = Utils.genDeleteMessage()
+
+        when:
+            service.loadFile(message)
+
+        then:
+            thrown(IllegalArgumentException)
     }
 
     def "update file"() {
@@ -55,6 +77,17 @@ class DefaultFileServiceClientSpec extends Specification {
             1 * serverComponent.sendAvMessage(message)
     }
 
+    def "update file with bad type"() {
+        setup:
+            AvMessage message = Utils.genLoadMessage()
+
+        when:
+            service.updateFile(message)
+
+        then:
+            thrown(IllegalArgumentException)
+    }
+
     def "delete file"() {
         setup:
             AvMessage message = Utils.genDeleteMessage()
@@ -64,5 +97,16 @@ class DefaultFileServiceClientSpec extends Specification {
 
         then:
             1 * serverComponent.sendAvMessage(message)
+    }
+
+    def "delete file with bad type"() {
+        setup:
+            AvMessage message = Utils.genLoadMessage()
+
+        when:
+            service.deleteFile(message)
+
+        then:
+            thrown(IllegalArgumentException)
     }
 }
