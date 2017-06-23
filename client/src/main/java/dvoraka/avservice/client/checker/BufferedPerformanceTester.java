@@ -63,7 +63,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
         BlockingQueue<AvMessage> buffer = new ArrayBlockingQueue<>(bufferSize);
 
         long start = System.currentTimeMillis();
-        for (int loop = 0; loop <= loops; loop++) {
+        for (int loop = 0; loop < loops; loop++) {
             AvMessage message = Utils.genInfectedMessage();
             try {
                 buffer.offer(message, getTimeout(), TimeUnit.MILLISECONDS);
@@ -123,7 +123,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
 
     @Override
     public boolean isDone() {
-        return !running;
+        return !running && result != 0.0f;
     }
 
     @Override
