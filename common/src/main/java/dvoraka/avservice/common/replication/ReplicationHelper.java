@@ -148,4 +148,20 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .owner(message.getOwner())
                 .build();
     }
+
+    default ReplicationMessage createDeleteFailed(
+            FileMessage message, String fromNode, String toNode
+    ) {
+        return new DefaultReplicationMessage.Builder(null)
+                .correlationId(message.getId())
+                .type(MessageType.REPLICATION_COMMAND)
+                .routing(MessageRouting.UNICAST)
+                .command(Command.DELETE)
+                .replicationStatus(ReplicationStatus.FAILED)
+                .toId(toNode)
+                .fromId(fromNode)
+                .filename(message.getFilename())
+                .owner(message.getOwner())
+                .build();
+    }
 }

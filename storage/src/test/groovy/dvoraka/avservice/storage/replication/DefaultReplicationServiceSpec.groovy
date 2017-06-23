@@ -300,6 +300,58 @@ class DefaultReplicationServiceSpec extends Specification
             1 * serviceClient.sendMessage(_)
     }
 
+    def "on message - load"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage loadRequest = createLoadMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            service.onMessage(loadRequest)
+
+        then:
+            1 * fileService.loadFile(_) >> Utils.genSaveMessage()
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message - load failed"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage loadRequest = createLoadMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            service.onMessage(loadRequest)
+
+        then:
+            1 * fileService.loadFile(_) >> { throw new FileServiceException() }
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message - delete"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage deleteRequest = createDeleteMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            service.onMessage(deleteRequest)
+
+        then:
+            1 * fileService.deleteFile(_)
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message - delete failed"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage deleteRequest = createDeleteMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            service.onMessage(deleteRequest)
+
+        then:
+            1 * fileService.deleteFile(_) >> { throw new FileServiceException() }
+            1 * serviceClient.sendMessage(_)
+    }
+
     Optional<ReplicationMessageList> replicationList(ReplicationMessage message) {
         ReplicationMessageList messages = new ReplicationMessageList()
         messages.add(message)

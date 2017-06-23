@@ -477,7 +477,8 @@ public class DefaultReplicationService implements
                     createDeleteSuccess(message, nodeId, message.getFromId()));
         } catch (FileServiceException e) {
             log.warn("Deleting failed " + idString, e);
-//                      serviceClient.sendMessage();
+            serviceClient.sendMessage(
+                    createDeleteFailed(message, nodeId, message.getFromId()));
         }
     }
 }
