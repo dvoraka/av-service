@@ -53,6 +53,14 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
             size << [10, 1 * 1000, 1000 * 1000]
     }
 
+    def "save file with bad type"() {
+        when:
+            service.saveFile(Utils.genLoadMessage())
+
+        then:
+            thrown(IllegalArgumentException)
+    }
+
     def "save same file twice"() {
         given:
             FileMessage saveMessage = Utils.genFileMessage()
@@ -148,6 +156,14 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
             service.loadFile(loadMessage).getType() == MessageType.FILE_NOT_FOUND
     }
 
+    def "load file with bad type"() {
+        when:
+            service.loadFile(Utils.genSaveMessage())
+
+        then:
+            thrown(IllegalArgumentException)
+    }
+
     def "update non-existent file"() {
         given:
             FileMessage message = Utils.genFileMessage(testingOwner)
@@ -161,6 +177,14 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
             thrown(FileNotFoundException)
     }
 
+    def "update file with bad type"() {
+        when:
+            service.updateFile(Utils.genSaveMessage())
+
+        then:
+            thrown(IllegalArgumentException)
+    }
+
     def "delete non-existent file"() {
         given:
             FileMessage saveMessage = Utils.genFileMessage(testingOwner)
@@ -171,5 +195,13 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
         then:
             !service.exists(saveMessage)
+    }
+
+    def "delete file with bad type"() {
+        when:
+            service.updateFile(Utils.genSaveMessage())
+
+        then:
+            thrown(IllegalArgumentException)
     }
 }
