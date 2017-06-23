@@ -58,6 +58,21 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
             !client.isStarted()
     }
 
+    def "get response wait without anything sent"() {
+        expect:
+            client.getResponseWait('test id', 10) == Optional.empty()
+    }
+
+    def "get response wait 2 without anything sent"() {
+        expect:
+            client.getResponseWait('test id', 10, 10) == Optional.empty()
+    }
+
+    def "get response wait and size without anything sent"() {
+        expect:
+            client.getResponseWaitSize('test id', 10, 2) == Optional.empty()
+    }
+
     def "processing message - response"() {
         given:
             ReplicationMessage request = createDiscoverRequest(nodeId)
