@@ -13,6 +13,7 @@ import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.storage.exception.ExistingFileException
 import dvoraka.avservice.storage.exception.FileNotFoundException
 import dvoraka.avservice.storage.exception.FileServiceException
+import dvoraka.avservice.storage.replication.exception.LockCountNotMatchException
 import dvoraka.avservice.storage.service.FileService
 import spock.lang.Ignore
 import spock.lang.Shared
@@ -107,6 +108,34 @@ class DefaultReplicationServiceSpec extends Specification
             1 * remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0)
     }
 
+    def "save with failed lock"() {
+        given:
+            service.setReplicationCount(2)
+            FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
+
+        when:
+            service.saveFile(message)
+
+        then:
+            2 * fileService.exists(message.getFilename(), message.getOwner()) >> false
+            1 * serviceClient.sendMessage(_)
+
+            2 * responseClient.getResponseWaitSize(_, _, _) >> {
+                return Optional.ofNullable(null)
+            }
+
+            1 * serviceClient.sendMessage(_)
+            1 * responseClient.getResponseWaitSize(_, _, _) >> {
+                return Optional.ofNullable(null)
+            }
+            1 * fileService.deleteFile(_)
+
+            1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), 0) >> true
+            1 * remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0)
+
+            thrown(LockCountNotMatchException)
+    }
+
     def "save with existing local file"() {
         given:
             FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
@@ -116,6 +145,24 @@ class DefaultReplicationServiceSpec extends Specification
             service.saveFile(message)
 
         then:
+            thrown(ExistingFileException)
+    }
+
+    def "save with existing remote file"() {
+        given:
+            service.setReplicationCount(1)
+            FileMessage message = Utils.genFileMessage(MessageType.FILE_SAVE)
+            fileService.exists(message.getFilename(), message.getOwner()) >> false
+            responseClient.getResponseWaitSize(_, _, _) >> replicationList(createExistsReply(
+                    createExistsRequest('a', 'a', 'node'), 'node'))
+
+        when:
+            service.saveFile(message)
+
+        then:
+            1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), 0) >> true
+            1 * remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0)
+
             thrown(ExistingFileException)
     }
 
