@@ -199,7 +199,7 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
 
     def "delete file with bad type"() {
         when:
-            service.updateFile(Utils.genSaveMessage())
+            service.deleteFile(Utils.genSaveMessage())
 
         then:
             thrown(IllegalArgumentException)
