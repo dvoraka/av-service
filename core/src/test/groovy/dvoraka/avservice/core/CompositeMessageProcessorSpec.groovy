@@ -173,4 +173,22 @@ class CompositeMessageProcessorSpec extends Specification {
         expect:
             processor.messageStatus('XXX') == MessageStatus.UNKNOWN
     }
+
+    def "set input filter"() {
+        given:
+            AvMessage saveMessage = Utils.genSaveMessage()
+
+        when:
+            processor.sendMessage(saveMessage)
+
+        then:
+            1 * listener.onAvMessage(_)
+
+        when:
+            processor.setInputFilter({ msg -> msg.getType() == MessageType.FILE_LOAD })
+            processor.sendMessage(saveMessage)
+
+        then:
+            0 * listener.onAvMessage(_)
+    }
 }

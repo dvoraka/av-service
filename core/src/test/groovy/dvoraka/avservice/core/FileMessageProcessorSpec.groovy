@@ -18,14 +18,14 @@ class FileMessageProcessorSpec extends Specification {
     @Subject
     FileMessageProcessor processor
 
-    FileService service
+    FileService fileService
     AvMessageListener listener
 
 
     def setup() {
-        service = Mock()
+        fileService = Mock()
         listener = Mock()
-        processor = new FileMessageProcessor(service)
+        processor = new FileMessageProcessor(fileService)
         processor.addProcessedAVMessageListener(listener)
     }
 
@@ -41,7 +41,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.saveFile(_)
+            1 * fileService.saveFile(_)
             1 * listener.onAvMessage(_)
     }
 
@@ -53,7 +53,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.saveFile(_) >> {
+            1 * fileService.saveFile(_) >> {
                 throw new FileServiceException()
             }
             1 * listener.onAvMessage(_)
@@ -67,7 +67,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.loadFile(_) >> message
+            1 * fileService.loadFile(_) >> message
             1 * listener.onAvMessage(_)
     }
 
@@ -79,7 +79,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.loadFile(_) >> {
+            1 * fileService.loadFile(_) >> {
                 throw new FileServiceException()
             }
             1 * listener.onAvMessage(_)
@@ -93,7 +93,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.updateFile(_)
+            1 * fileService.updateFile(_)
             1 * listener.onAvMessage(_)
     }
 
@@ -105,7 +105,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.updateFile(_) >> {
+            1 * fileService.updateFile(_) >> {
                 throw new FileServiceException()
             }
             1 * listener.onAvMessage(_)
@@ -119,7 +119,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.deleteFile(_)
+            1 * fileService.deleteFile(_)
             1 * listener.onAvMessage(_)
     }
 
@@ -131,7 +131,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            1 * service.deleteFile(_) >> {
+            1 * fileService.deleteFile(_) >> {
                 throw new FileServiceException()
             }
             1 * listener.onAvMessage(_)
@@ -145,7 +145,7 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(message)
 
         then:
-            0 * service._
+            0 * fileService._
             0 * listener.onAvMessage(_)
     }
 
@@ -183,13 +183,13 @@ class FileMessageProcessorSpec extends Specification {
             processor.sendMessage(saveMessage)
 
         then:
-            1 * service._
+            1 * fileService._
 
         when:
             processor.setInputFilter({ msg -> msg.getType() == MessageType.FILE_LOAD })
             processor.sendMessage(saveMessage)
 
         then:
-            0 * service._
+            0 * fileService._
     }
 }
