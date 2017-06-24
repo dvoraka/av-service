@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * File service synchronous interface.
  */
-//TODO: figure out exceptions
 public interface FileService {
 
     /**
