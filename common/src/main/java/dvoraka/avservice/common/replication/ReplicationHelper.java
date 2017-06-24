@@ -105,7 +105,7 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     }
 
     default ReplicationMessage createLoadFailed(
-            FileMessage message, String fromNode, String toNode
+            ReplicationMessage message, String fromNode, String toNode
     ) {
         return new DefaultReplicationMessage.Builder(null)
                 .correlationId(message.getCorrelationId())
@@ -132,24 +132,12 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
         return createNoDataMessage(message, Command.DELETE, fromNode, toNode);
     }
 
-    default ReplicationMessage createDeleteSuccess(
-            FileMessage message, String fromNode, String toNode
-    ) {
-        return new DefaultReplicationMessage.Builder(null)
-                .correlationId(message.getId())
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.UNICAST)
-                .command(Command.DELETE)
-                .replicationStatus(ReplicationStatus.OK)
-                .toId(toNode)
-                .fromId(fromNode)
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
+    default ReplicationMessage createDeleteSuccess(ReplicationMessage message, String fromNode) {
+        return createSuccessResponse(message, fromNode);
     }
 
     default ReplicationMessage createDeleteFailed(
-            FileMessage message, String fromNode, String toNode
+            ReplicationMessage message, String fromNode, String toNode
     ) {
         return new DefaultReplicationMessage.Builder(null)
                 .correlationId(message.getId())
