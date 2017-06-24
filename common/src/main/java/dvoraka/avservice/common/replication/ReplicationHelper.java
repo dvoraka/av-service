@@ -43,24 +43,34 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createSaveMessage(
-            FileMessage message, String fromNode, String toNode
+    default ReplicationMessage createResponse(
+            ReplicationMessage message, ReplicationStatus status, String fromNode
     ) {
-        return createDataMessage(message, Command.SAVE, fromNode, toNode);
-    }
-
-    default ReplicationMessage createSuccessResponse(ReplicationMessage message, String fromNode) {
         return new DefaultReplicationMessage.Builder(null)
                 .correlationId(message.getId())
                 .type(MessageType.REPLICATION_COMMAND)
                 .routing(MessageRouting.UNICAST)
                 .command(message.getCommand())
-                .replicationStatus(ReplicationStatus.OK)
+                .replicationStatus(status)
                 .toId(message.getFromId())
                 .fromId(fromNode)
                 .filename(message.getFilename())
                 .owner(message.getOwner())
                 .build();
+    }
+
+    default ReplicationMessage createSuccessResponse(ReplicationMessage message, String fromNode) {
+        return createResponse(message, ReplicationStatus.OK, fromNode);
+    }
+
+    default ReplicationMessage createFailedResponse(ReplicationMessage message, String fromNode) {
+        return createResponse(message, ReplicationStatus.FAILED, fromNode);
+    }
+
+    default ReplicationMessage createSaveMessage(
+            FileMessage message, String fromNode, String toNode
+    ) {
+        return createDataMessage(message, Command.SAVE, fromNode, toNode);
     }
 
     default ReplicationMessage createSaveSuccess(ReplicationMessage message, String fromNode) {
@@ -68,17 +78,7 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     }
 
     default ReplicationMessage createSaveFailed(ReplicationMessage message, String fromNode) {
-        return new DefaultReplicationMessage.Builder(null)
-                .correlationId(message.getId())
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.UNICAST)
-                .command(Command.SAVE)
-                .replicationStatus(ReplicationStatus.FAILED)
-                .toId(message.getFromId())
-                .fromId(fromNode)
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
+        return createFailedResponse(message, fromNode);
     }
 
     default ReplicationMessage createLoadMessage(
@@ -104,20 +104,9 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createLoadFailed(
-            ReplicationMessage message, String fromNode, String toNode
+    default ReplicationMessage createLoadFailed(ReplicationMessage message, String fromNode
     ) {
-        return new DefaultReplicationMessage.Builder(null)
-                .correlationId(message.getCorrelationId())
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.UNICAST)
-                .command(Command.LOAD)
-                .replicationStatus(ReplicationStatus.FAILED)
-                .toId(toNode)
-                .fromId(fromNode)
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
+        return createFailedResponse(message, fromNode);
     }
 
     default ReplicationMessage createUpdateMessage(
@@ -136,19 +125,8 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
         return createSuccessResponse(message, fromNode);
     }
 
-    default ReplicationMessage createDeleteFailed(
-            ReplicationMessage message, String fromNode, String toNode
+    default ReplicationMessage createDeleteFailed(ReplicationMessage message, String fromNode
     ) {
-        return new DefaultReplicationMessage.Builder(null)
-                .correlationId(message.getId())
-                .type(MessageType.REPLICATION_COMMAND)
-                .routing(MessageRouting.UNICAST)
-                .command(Command.DELETE)
-                .replicationStatus(ReplicationStatus.FAILED)
-                .toId(toNode)
-                .fromId(fromNode)
-                .filename(message.getFilename())
-                .owner(message.getOwner())
-                .build();
+        return createFailedResponse(message, fromNode);
     }
 }

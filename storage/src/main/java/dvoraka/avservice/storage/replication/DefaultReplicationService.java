@@ -427,6 +427,10 @@ public class DefaultReplicationService implements
                     handleLoad(message);
                     break;
 
+                case UPDATE:
+                    //TODO
+                    break;
+
                 case DELETE:
                     handleDelete(message);
                     break;
@@ -461,24 +465,20 @@ public class DefaultReplicationService implements
     private void handleLoad(ReplicationMessage message) {
         try {
             FileMessage fileMessage = fileService.loadFile(message.fileMessage());
-            serviceClient.sendMessage(
-                    createLoadSuccess(fileMessage, message, nodeId));
+            serviceClient.sendMessage(createLoadSuccess(fileMessage, message, nodeId));
         } catch (FileServiceException e) {
             log.warn("Loading failed " + idString, e);
-            serviceClient.sendMessage(
-                    createLoadFailed(message, nodeId, message.getFromId()));
+            serviceClient.sendMessage(createLoadFailed(message, nodeId));
         }
     }
 
     private void handleDelete(ReplicationMessage message) {
         try {
             fileService.deleteFile(message.fileMessage());
-            serviceClient.sendMessage(
-                    createDeleteSuccess(message, nodeId));
+            serviceClient.sendMessage(createDeleteSuccess(message, nodeId));
         } catch (FileServiceException e) {
             log.warn("Deleting failed " + idString, e);
-            serviceClient.sendMessage(
-                    createDeleteFailed(message, nodeId, message.getFromId()));
+            serviceClient.sendMessage(createDeleteFailed(message, nodeId));
         }
     }
 }
