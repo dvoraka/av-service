@@ -463,7 +463,13 @@ public class DefaultReplicationService implements
     }
 
     private void handleUpdate(ReplicationMessage message) {
-        //TODO
+        try {
+            fileService.updateFile(message.fileMessage());
+            serviceClient.sendMessage(createSuccessResponse(message, nodeId));
+        } catch (FileServiceException e) {
+            log.warn("Update failed " + idString, e);
+            serviceClient.sendMessage(createFailedResponse(message, nodeId));
+        }
     }
 
     private void handleLoad(ReplicationMessage message) {
