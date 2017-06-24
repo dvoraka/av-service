@@ -428,7 +428,7 @@ public class DefaultReplicationService implements
                     break;
 
                 case UPDATE:
-                    //TODO
+                    handleUpdate(message);
                     break;
 
                 case DELETE:
@@ -455,11 +455,15 @@ public class DefaultReplicationService implements
     private void handleSave(ReplicationMessage message) {
         try {
             fileService.saveFile(message.fileMessage());
-            serviceClient.sendMessage(createSaveSuccess(message, nodeId));
+            serviceClient.sendMessage(createSuccessResponse(message, nodeId));
         } catch (FileServiceException e) {
             log.warn("Saving failed " + idString, e);
-            serviceClient.sendMessage(createSaveFailed(message, nodeId));
+            serviceClient.sendMessage(createFailedResponse(message, nodeId));
         }
+    }
+
+    private void handleUpdate(ReplicationMessage message) {
+        //TODO
     }
 
     private void handleLoad(ReplicationMessage message) {
@@ -468,17 +472,17 @@ public class DefaultReplicationService implements
             serviceClient.sendMessage(createLoadSuccess(fileMessage, message, nodeId));
         } catch (FileServiceException e) {
             log.warn("Loading failed " + idString, e);
-            serviceClient.sendMessage(createLoadFailed(message, nodeId));
+            serviceClient.sendMessage(createFailedResponse(message, nodeId));
         }
     }
 
     private void handleDelete(ReplicationMessage message) {
         try {
             fileService.deleteFile(message.fileMessage());
-            serviceClient.sendMessage(createDeleteSuccess(message, nodeId));
+            serviceClient.sendMessage(createSuccessResponse(message, nodeId));
         } catch (FileServiceException e) {
             log.warn("Deleting failed " + idString, e);
-            serviceClient.sendMessage(createDeleteFailed(message, nodeId));
+            serviceClient.sendMessage(createFailedResponse(message, nodeId));
         }
     }
 }

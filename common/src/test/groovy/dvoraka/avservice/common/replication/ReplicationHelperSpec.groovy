@@ -45,7 +45,7 @@ class ReplicationHelperSpec extends Specification {
 
     def "save success"() {
         when:
-            result = helper.createSaveSuccess(
+            result = helper.createSuccessResponse(
                     helper.createSaveMessage(fileMessage, otherId, mainId), mainId)
 
         then:
@@ -57,7 +57,7 @@ class ReplicationHelperSpec extends Specification {
 
     def "save failed"() {
         when:
-            result = helper.createSaveFailed(
+            result = helper.createFailedResponse(
                     helper.createSaveMessage(fileMessage, otherId, mainId), mainId)
 
         then:
@@ -92,7 +92,7 @@ class ReplicationHelperSpec extends Specification {
 
     def "load failed"() {
         when:
-            result = helper.createLoadFailed(
+            result = helper.createFailedResponse(
                     helper.createLoadMessage(fileMessage, otherId, mainId), mainId)
 
         then:

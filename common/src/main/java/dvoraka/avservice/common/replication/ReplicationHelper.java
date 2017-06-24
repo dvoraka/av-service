@@ -11,7 +11,6 @@ import dvoraka.avservice.common.data.ReplicationStatus;
 /**
  * Replication helper interface.
  */
-//TODO: refactoring
 public interface ReplicationHelper extends ReplicationServiceHelper {
 
     default ReplicationMessage createNoDataMessage(
@@ -73,14 +72,6 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
         return createDataMessage(message, Command.SAVE, fromNode, toNode);
     }
 
-    default ReplicationMessage createSaveSuccess(ReplicationMessage message, String fromNode) {
-        return createSuccessResponse(message, fromNode);
-    }
-
-    default ReplicationMessage createSaveFailed(ReplicationMessage message, String fromNode) {
-        return createFailedResponse(message, fromNode);
-    }
-
     default ReplicationMessage createLoadMessage(
             FileMessage message, String fromNode, String toNode
     ) {
@@ -104,11 +95,6 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createLoadFailed(ReplicationMessage message, String fromNode
-    ) {
-        return createFailedResponse(message, fromNode);
-    }
-
     default ReplicationMessage createUpdateMessage(
             FileMessage message, String fromNode, String toNode
     ) {
@@ -119,14 +105,5 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
             FileMessage message, String fromNode, String toNode
     ) {
         return createNoDataMessage(message, Command.DELETE, fromNode, toNode);
-    }
-
-    default ReplicationMessage createDeleteSuccess(ReplicationMessage message, String fromNode) {
-        return createSuccessResponse(message, fromNode);
-    }
-
-    default ReplicationMessage createDeleteFailed(ReplicationMessage message, String fromNode
-    ) {
-        return createFailedResponse(message, fromNode);
     }
 }

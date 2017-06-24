@@ -98,7 +98,7 @@ class AmqpReplicationComponentSpec extends Specification implements
         then:
             1 * rabbitTemplate._
         when:
-            component.sendMessage(createSaveSuccess(
+            component.sendMessage(createSuccessResponse(
                     createSaveMessage(
                             fileSaveMessage('test', 'test', null),
                             nodeId,
