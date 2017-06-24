@@ -373,6 +373,32 @@ class DefaultReplicationServiceSpec extends Specification
             1 * serviceClient.sendMessage(_)
     }
 
+    def "on message - update"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage updateRequest = createUpdateMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            service.onMessage(updateRequest)
+
+        then:
+            1 * fileService.updateFile(_)
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message - update failed"() {
+        given:
+            FileMessage fileMessage = Utils.genFileMessage()
+            ReplicationMessage updateRequest = createUpdateMessage(fileMessage, nodeId, otherNodeId)
+
+        when:
+            service.onMessage(updateRequest)
+
+        then:
+            1 * fileService.updateFile(_) >> { throw new FileServiceException() }
+            1 * serviceClient.sendMessage(_)
+    }
+
     def "on message - delete"() {
         given:
             FileMessage fileMessage = Utils.genFileMessage()
