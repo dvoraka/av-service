@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Stepwise
 import spock.lang.Unroll
 
 import java.util.concurrent.Semaphore
@@ -21,6 +22,7 @@ import java.util.concurrent.Semaphore
  * You can run real node with a Docker script in the tools directory called
  * <b>startReplicationNodes.sh</b> with argument 1 for starting one remote node.
  */
+@Stepwise
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'storage-check', 'replication', 'client', 'amqp', 'no-db'])
 @DirtiesContext
