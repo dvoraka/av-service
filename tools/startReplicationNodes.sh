@@ -40,7 +40,7 @@ do
 
     echo 'OK'
 
-    sleep 3
+    sleep 5
 done
 
 echo
@@ -48,6 +48,7 @@ echo
 read -p 'Press enter to stop the nodes' _
 echo
 
+# kill all containers started from $IMAGE
 echo -n 'Stopping nodes... '
 docker kill $(docker ps -f ancestor=${IMAGE} -q) 2>&1 > /dev/null
 echo 'OK'
