@@ -27,7 +27,7 @@ allprojects {
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    version = '0.8-SNAPSHOT'
+    version = '0.8-RC1'
 
     ext {
         taskGroupName = 'AV-service'
