@@ -9,6 +9,22 @@
  * Improved lock synchronization in replication service
  * New settings for socket pool
  * Improved unicast communication in replication service
+ * Improved replication message design
+ * New optional file service type checking
+ * Updated TODOs
+ * New aspect for measuring file service method times
+ * Improved replication infrastructure
+ * Improved remote lock tests
+ * New force unlock command in replication service
+ * Improved helpers
+ 
+ #### Docker
+ * Tuned configurations
+ * Updated Elastic stack
+ * Tuned Solr heap size
+ * Tuned ActiveMQ heap size
+ * New replication service images (release and snapshot version)
+ * Improved scripts
 
 ## v0.7.2 (May 17, 2017)
  * Fixed ClamAV program scan method response parsing
