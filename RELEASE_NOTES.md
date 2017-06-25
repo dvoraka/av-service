@@ -1,3 +1,15 @@
+## v0.8-RC1 (June 25, 2017)
+ * New external filter for check processor
+ * Updated ignored tests
+ * Message info service plugged to new components
+ * New hashing service
+ * New script for running replication nodes
+ * New in memory DB profile for file service (db-mem)
+ * Added negative response to replication service for not existing files
+ * Improved lock synchronization in replication service
+ * New settings for socket pool
+ * Improved unicast communication in replication service
+
 ## v0.7.2 (May 17, 2017)
  * Fixed ClamAV program scan method response parsing
 
