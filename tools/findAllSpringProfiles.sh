@@ -9,7 +9,7 @@ SRC_ROOT=".."
 # find all Java files
 find ${SRC_ROOT} -name "*.java" -exec cat {} \; | \
     # find all @Profile annotations
-    grep -E '.*@Profile(.+).*' | \
+    grep -E '.*@Profile\(".+"\).*' | \
     # clean the output
     sed -e 's/.*\(@.*)\)/\1/g' | \
     sed -e 's/@Profile("\(.\+\)")/\1/g' | \
