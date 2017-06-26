@@ -5,8 +5,8 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2e3856220448493482f6de90a0d84ee0)](https://www.codacy.com/app/dvoraka/av-service?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dvoraka/av-service&amp;utm_campaign=Badge_Grade)
 [![Open Hub](https://www.openhub.net/p/av-service/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/av-service/)
 
-A file service with a replication and anti-virus checking prototype. It is mostly a study project
-but it is possible to use it with some "production" tuning.
+A file service prototype with a replication and anti-virus checking. It is mostly a study project
+but it is possible to use it after some "production" tuning.
 
 A replacement for [amqpav](https://github.com/dvoraka/amqpav)
 and first requirements were from the old service.
