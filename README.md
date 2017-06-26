@@ -29,7 +29,7 @@ can find something else for you
  * [Features](#features)
  * [Planned features](#planned-features)
  * [Used components](#used-components)
- * [How to send a message](#how-to-send-a-message-for-check)
+ * [How to send a message](#how-to-send-a-message-for-anti-virus-check)
  * [Installation](#installation)
  * [Run services](#run-service)
  * [AMQP checker](#amqp-checker)
@@ -139,26 +139,54 @@ Here will be the best combinations for various usages soon.
 You can find all profiles for a concrete code base with the script **findAllSpringProfiles.sh**
 in the ```tools``` directory.
 
-### How to send a message for check
-You can use AMQP checker from this project for first steps. For sending simple message
-you need only:
+### How to send a message for anti-virus check
+AvCheckExample class:
 
 ```java
-    public static void main(String[] args) {
-    
+package dvoraka.avservice.client.example;
+
+import dvoraka.avservice.client.configuration.ClientConfig;
+import dvoraka.avservice.client.service.AvServiceClient;
+import dvoraka.avservice.client.service.response.ResponseClient;
+import dvoraka.avservice.common.Utils;
+import dvoraka.avservice.common.data.AvMessage;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+/**
+ * Anti-virus checking example.
+ */
+public class AvCheckExample {
+
+    public static void main(String[] args) throws InterruptedException {
+        // initialize client context
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles("client", "amqp", "file-client", "checker", "no-db");
+        context.getEnvironment().setActiveProfiles(
+                "client", "amqp", "file-client", "checker", "no-db"
+        );
         context.register(ClientConfig.class);
         context.refresh();
 
-        Checker checker = context.getBean(Checker.class);
+        // get clients
+        AvServiceClient avServiceClient = context.getBean(AvServiceClient.class);
+        ResponseClient responseClient = context.getBean(ResponseClient.class);
 
-        AvMessage message = Utils.genMessage();
-        // send message to check exchange
-        checker.sendMessage(message);
+        // generate message and send it
+        AvMessage avMessage = Utils.genMessage();
+        avServiceClient.checkMessage(avMessage);
+
+        // wait a bit
+        Thread.sleep(200);
+
+        // get response
+        AvMessage response = responseClient.getResponse(avMessage.getId());
+        // raw output
+        System.out.println("Response: " + response);
+        // virus info
+        System.out.println("Virus info: " + response.getVirusInfo());
 
         context.close();
     }
+}
 ```
 
 ### Installation
