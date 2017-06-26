@@ -108,6 +108,7 @@ checker | enable checker | 0.7 |
 client | enable client infrastructure | 0.7 |
 core | core functionality
 db | use SQL DB for message logging
+db-mem | use in-memory SQL DB for message logging | 0.8
 db-solr | use Solr for message logging
 file-client | enable file client | 0.7 |
 itest | profile for integration testing | 0.7 |
@@ -118,6 +119,7 @@ jms-rest | JMS infrastructure for REST | 0.5 | 0.6
 jms-server | JMS server | | 0.6
 ldap | enable LDAP infrastructure | 0.7 |
 no-db | disable message logging
+performance | profile for performance testing | 0.8
 replication | enable replication infrastructure | 0.7 |
 replication-test | enable replication testing infrastructure | 0.7 |
 rest | enable REST
@@ -128,6 +130,7 @@ server | enable server infrastructure | 0.7 |
 stats | enable statistics | 0.5
 stats-solr | statistics in Solr | 0.5
 storage | enable file service | 0.6
+storage-check | profile for storage testing | 0.8
 to-amqp | bridging to AMQP | 0.7 |
 to-jms | bridging to JMS | 0.7 |
 
