@@ -18,9 +18,7 @@ public final class AvCheckExample {
     public static void main(String[] args) throws InterruptedException {
         // initialize client context
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles(
-                "client", "amqp", "file-client", "no-db"
-        );
+        context.getEnvironment().setActiveProfiles("client", "amqp", "file-client", "no-db");
         context.register(ClientConfig.class);
         context.refresh();
 

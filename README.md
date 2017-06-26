@@ -140,8 +140,8 @@ You can find all profiles for a concrete code base with the script **findAllSpri
 in the ```tools``` directory.
 
 ### How to send a message for anti-virus check
-AvCheckExample class:
 
+AvCheckExample class:
 ```java
 package dvoraka.avservice.client.example;
 
@@ -160,9 +160,7 @@ public class AvCheckExample {
     public static void main(String[] args) throws InterruptedException {
         // initialize client context
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.getEnvironment().setActiveProfiles(
-                "client", "amqp", "file-client", "no-db"
-        );
+        context.getEnvironment().setActiveProfiles("client", "amqp", "file-client", "no-db");
         context.register(ClientConfig.class);
         context.refresh();
 
