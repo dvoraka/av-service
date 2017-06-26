@@ -190,8 +190,9 @@ public class AvCheckExample {
 ```
 
 ### Installation
-You can use Docker to prepare necessary services for the development.
-Docker configurations are a good documentation for installing services without Docker.
+You can use Docker to prepare necessary services for a development.
+The Docker configurations are a good documentation for installing services without Docker.
+Everything is inside the ```docker/``` directory.
 
 #### Docker
 Docker is recommended approach.
@@ -205,9 +206,10 @@ Docker is recommended approach.
 * Kibana
 * Elasticsearch
 * Logstash
-* SonarQube
+* 2 app replication nodes
+* SonarQube (optional)
 
-Change your working directory to *docker*:
+Change your working directory to ```docker/```:
 ```
 $ cd docker/
 ```
@@ -261,14 +263,14 @@ $ ./gradlew rest:bootRun
 ```
 **Spring Boot**
 
-You need to build the executable jar:
+You need to build an executable jar:
 ```
 $ ./gradlew assemble
 ```
 And then the the jar is in `rest/build/libs/` directory called **avservice-rest-XXX.jar**.
 You can run it with:
 ```
-$ java -jar avservice-rest-0.7.jar 
+$ java -jar avservice-rest-0.8.jar 
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -276,11 +278,11 @@ $ java -jar avservice-rest-0.7.jar
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::            (v1.5.3.RELEASE)
+ :: Spring Boot ::            (v1.5.4.RELEASE)
 ```
 
 ### AMQP checker
-Utility for testing AMQP infrastructure.
+Utility for testing AMQP infrastructure. It sends a message and wait for a response.
 
 #### Run
 ```
@@ -296,7 +298,7 @@ Checking... failed!
 ```
 
 ### JMS checker
-Utility for testing JMS infrastructure.
+Utility for testing JMS infrastructure. It sends a message and wait for a response.
 
 #### Run
 ```
