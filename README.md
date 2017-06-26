@@ -161,7 +161,7 @@ public class AvCheckExample {
         // initialize client context
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles(
-                "client", "amqp", "file-client", "checker", "no-db"
+                "client", "amqp", "file-client", "no-db"
         );
         context.register(ClientConfig.class);
         context.refresh();
@@ -175,14 +175,15 @@ public class AvCheckExample {
         avServiceClient.checkMessage(avMessage);
 
         // wait a bit
-        Thread.sleep(200);
+        final long waitTime = 200;
+        Thread.sleep(waitTime);
 
         // get response
         AvMessage response = responseClient.getResponse(avMessage.getId());
         // raw output
         System.out.println("Response: " + response);
         // virus info
-        System.out.println("Virus info: " + response.getVirusInfo());
+        System.out.println("Virus info: " + (response != null ? response.getVirusInfo() : ""));
 
         context.close();
     }

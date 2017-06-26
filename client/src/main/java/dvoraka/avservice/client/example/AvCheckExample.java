@@ -19,7 +19,7 @@ public final class AvCheckExample {
         // initialize client context
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.getEnvironment().setActiveProfiles(
-                "client", "amqp", "file-client", "checker", "no-db"
+                "client", "amqp", "file-client", "no-db"
         );
         context.register(ClientConfig.class);
         context.refresh();
@@ -41,7 +41,7 @@ public final class AvCheckExample {
         // raw output
         System.out.println("Response: " + response);
         // virus info
-        System.out.println("Virus info: " + response.getVirusInfo());
+        System.out.println("Virus info: " + (response != null ? response.getVirusInfo() : ""));
 
         context.close();
     }
