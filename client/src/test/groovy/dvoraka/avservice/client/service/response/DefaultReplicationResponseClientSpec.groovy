@@ -86,6 +86,19 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
             client.getResponse(request.getId())
     }
 
+    def "processing message - 2 responses"() {
+        given:
+            ReplicationMessage request = createDiscoverRequest(nodeId)
+            ReplicationMessage reply = createDiscoverReply(request, 'otherId')
+
+        when:
+            client.onMessage(reply)
+            client.onMessage(reply)
+
+        then:
+            client.getResponse(request.getId())
+    }
+
     def "processing message - own message"() {
         given:
             ReplicationMessage request = createDiscoverRequest(nodeId)
@@ -94,7 +107,19 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
             client.onMessage(request)
 
         then:
-            notThrown(Exception)
+            client.getResponse(request.getId()) == null
+    }
+
+    def "processing message - message for different node"() {
+        given:
+            ReplicationMessage request = createDiscoverReply(
+                    createDiscoverRequest('otherId'), 'otherId')
+
+        when:
+            client.onMessage(request)
+
+        then:
+            client.getResponse(request.getId()) == null
     }
 
     def "add and remove no response listener"() {
