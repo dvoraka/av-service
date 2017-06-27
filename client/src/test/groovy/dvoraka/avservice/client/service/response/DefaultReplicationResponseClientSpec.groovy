@@ -1,6 +1,7 @@
 package dvoraka.avservice.client.service.response
 
 import dvoraka.avservice.client.ReplicationComponent
+import dvoraka.avservice.common.ReplicationMessageListener
 import dvoraka.avservice.common.data.ReplicationMessage
 import dvoraka.avservice.common.replication.ReplicationHelper
 import spock.lang.Specification
@@ -83,5 +84,36 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
 
         then:
             client.getResponse(request.getId())
+    }
+
+    def "processing message - own message"() {
+        given:
+            ReplicationMessage request = createDiscoverRequest(nodeId)
+
+        when:
+            client.onMessage(request)
+
+        then:
+            notThrown(Exception)
+    }
+
+    def "add and remove no response listener"() {
+        given:
+            ReplicationMessageListener listener = Mock()
+            ReplicationMessage request = createDiscoverRequest('otherId')
+
+        when:
+            client.addNoResponseMessageListener(listener)
+            client.onMessage(request)
+
+        then:
+            1 * listener.onMessage(_)
+
+        when:
+            client.removeNoResponseMessageListener(listener)
+            client.onMessage(request)
+
+        then:
+            0 * listener.onMessage(_)
     }
 }
