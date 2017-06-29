@@ -7,9 +7,9 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * Default performance tester spec.
+ * Performance tester spec.
  */
-class DefaultPerformanceTesterSpec extends Specification {
+class PerformanceTesterSpec extends Specification {
 
     @Subject
     PerformanceTester tester
@@ -31,14 +31,18 @@ class DefaultPerformanceTesterSpec extends Specification {
     def "shouldn't be running before start"() {
         expect:
             !tester.isRunning()
+            !tester.passed()
+            !tester.getResult()
     }
 
     def "after start ended it should be stopped"() {
         when:
-            tester.start()
+            tester.run()
 
         then:
             !tester.isRunning()
+            tester.isDone()
+            tester.passed()
     }
 
     def "test without problems"() {
