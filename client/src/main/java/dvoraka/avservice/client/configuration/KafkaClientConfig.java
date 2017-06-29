@@ -1,5 +1,7 @@
 package dvoraka.avservice.client.configuration;
 
+import dvoraka.avservice.client.KafkaComponent;
+import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -20,6 +22,13 @@ import java.util.Map;
 @Configuration
 @Profile("kafka")
 public class KafkaClientConfig {
+
+    @Bean
+    public ServerComponent serverComponent(
+            KafkaTemplate<String, AvMessage> kafkaTemplate
+    ) {
+        return new KafkaComponent(kafkaTemplate);
+    }
 
     @Bean
     public ProducerFactory<String, AvMessage> producerFactory() {
