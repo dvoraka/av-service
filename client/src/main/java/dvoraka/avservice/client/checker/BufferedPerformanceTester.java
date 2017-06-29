@@ -97,6 +97,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
         System.out.println("Messages: " + result + "/s");
 
         running = false;
+        passed = true;
     }
 
     private void getMessage(BlockingQueue<AvMessage> buffer) {

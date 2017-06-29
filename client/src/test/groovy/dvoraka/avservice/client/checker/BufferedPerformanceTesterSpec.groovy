@@ -28,9 +28,9 @@ class BufferedPerformanceTesterSpec extends Specification {
         tester = new BufferedPerformanceTester(avServiceClient, responseClient, testProperties)
     }
 
-    def "start"() {
+    def "run"() {
         when:
-            tester.start()
+            tester.run()
 
         then:
             1 * testProperties.getMsgCount() >> 1
@@ -38,6 +38,9 @@ class BufferedPerformanceTesterSpec extends Specification {
             1 * avServiceClient.checkMessage(_)
             1 * responseClient.getResponse(_) >> Utils.genInfectedMessage()
                     .createCheckResponse("")
+        then:
+            tester.getResult()
+            tester.passed()
     }
 
     def "is not running before start"() {
@@ -48,5 +51,16 @@ class BufferedPerformanceTesterSpec extends Specification {
     def "is not done before start"() {
         expect:
             !tester.isDone()
+    }
+
+    def "setting timeout"() {
+        given:
+            int timeout = 1
+
+        when:
+            tester.setTimeout(1)
+
+        then:
+            tester.getTimeout() == timeout
     }
 }
