@@ -23,10 +23,12 @@ public class KafkaComponent implements ServerComponent {
 
     private static final Logger log = LogManager.getLogger(KafkaComponent.class);
 
+    private final String topic;
     private final List<AvMessageListener> listeners;
 
 
-    public KafkaComponent(KafkaTemplate<String, AvMessage> kafkaTemplate) {
+    public KafkaComponent(String topic, KafkaTemplate<String, AvMessage> kafkaTemplate) {
+        this.topic = requireNonNull(topic);
         this.kafkaTemplate = requireNonNull(kafkaTemplate);
 
         listeners = new CopyOnWriteArrayList<>();
@@ -34,7 +36,7 @@ public class KafkaComponent implements ServerComponent {
 
     @Override
     public void sendAvMessage(AvMessage message) {
-        kafkaTemplate.send("avcheck.t", message);
+        kafkaTemplate.send(topic, message);
     }
 
     @Override
