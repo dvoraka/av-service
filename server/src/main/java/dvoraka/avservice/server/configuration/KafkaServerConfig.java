@@ -78,7 +78,7 @@ public class KafkaServerConfig {
     @Bean
     public MessageListenerContainer fileServerMessageListenerContainer(
             ConsumerFactory<String, DefaultAvMessage> consumerFactory,
-            MessageListener fileServerMessageListener
+            MessageListener<String, AvMessage> fileServerMessageListener
     ) {
         ContainerProperties props = new ContainerProperties(fileTopic);
         MessageListenerContainer container = new ConcurrentMessageListenerContainer<>(
