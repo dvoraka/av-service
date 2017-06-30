@@ -32,6 +32,8 @@ import org.springframework.context.annotation.PropertySource;
         // JMS
         JmsServerConfig.class,
         JmsCommonServerConfig.class,
+        // Kafka
+        KafkaServerConfig.class,
 
         CoreConfig.class,
 })
