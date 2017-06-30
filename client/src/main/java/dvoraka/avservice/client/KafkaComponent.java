@@ -2,7 +2,7 @@ package dvoraka.avservice.client;
 
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
-import org.springframework.kafka.annotation.KafkaListener;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +27,11 @@ public class KafkaComponent implements ServerComponent {
     }
 
     @Override
+    public void onMessage(ConsumerRecord<String, AvMessage> record) {
+        System.out.println(record);
+    }
+
+    @Override
     public String getServiceId() {
         return null;
     }
@@ -39,10 +44,5 @@ public class KafkaComponent implements ServerComponent {
     @Override
     public void removeAvMessageListener(AvMessageListener listener) {
 
-    }
-
-    @KafkaListener(topics = "avcheck.t")
-    public void onMessage(AvMessage message) {
-        System.out.println(message);
     }
 }

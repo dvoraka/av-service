@@ -11,13 +11,15 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.MessageListener;
+import org.springframework.kafka.listener.MessageListenerContainer;
+import org.springframework.kafka.listener.config.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
@@ -28,7 +30,6 @@ import java.util.Map;
  * Kafka configuration.
  */
 @Configuration
-@EnableKafka
 @Profile("kafka")
 public class KafkaClientConfig {
 
@@ -74,18 +75,30 @@ public class KafkaClientConfig {
         );
     }
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, DefaultAvMessage>
-    kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, DefaultAvMessage> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+//    @Bean
+//    public ConcurrentKafkaListenerContainerFactory<String, DefaultAvMessage>
+//    kafkaListenerContainerFactory() {
+//        ConcurrentKafkaListenerContainerFactory<String, DefaultAvMessage> factory =
+//                new ConcurrentKafkaListenerContainerFactory<>();
+//        factory.setConsumerFactory(consumerFactory());
+//
+//        return factory;
+//    }
 
-        return factory;
+    @Bean
+    public MessageListenerContainer messageListenerContainer(MessageListener messageListener) {
+        ContainerProperties props = new ContainerProperties("avcheck.t");
+        MessageListenerContainer container = new ConcurrentMessageListenerContainer<>(
+                consumerFactory(),
+                props
+        );
+        container.setupMessageListener(messageListener);
+
+        return container;
     }
 
-//    @Bean
-//    public MessageListener<String, AvMessage> messageListener(ServerComponent serverComponent) {
-//        return serverComponent;
-//    }
+    @Bean
+    public MessageListener<String, AvMessage> messageListener(ServerComponent serverComponent) {
+        return serverComponent;
+    }
 }
