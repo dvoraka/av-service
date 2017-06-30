@@ -66,17 +66,6 @@ public class KafkaFileClientConfig {
     }
 
     @Bean
-    public Map<String, Object> consumerConfigs() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, broker);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "json");
-
-        return props;
-    }
-
-    @Bean
     public ConsumerFactory<String, DefaultAvMessage> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(
                 consumerConfigs(),
@@ -84,16 +73,6 @@ public class KafkaFileClientConfig {
                 new JsonDeserializer<>(DefaultAvMessage.class)
         );
     }
-
-//    @Bean
-//    public ConcurrentKafkaListenerContainerFactory<String, DefaultAvMessage>
-//    kafkaListenerContainerFactory() {
-//        ConcurrentKafkaListenerContainerFactory<String, DefaultAvMessage> factory =
-//                new ConcurrentKafkaListenerContainerFactory<>();
-//        factory.setConsumerFactory(consumerFactory());
-//
-//        return factory;
-//    }
 
     @Bean
     public MessageListenerContainer messageListenerContainer(
@@ -113,5 +92,15 @@ public class KafkaFileClientConfig {
     @Bean
     public MessageListener<String, AvMessage> messageListener(ServerComponent serverComponent) {
         return serverComponent;
+    }
+
+    private Map<String, Object> consumerConfigs() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, broker);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "json");
+
+        return props;
     }
 }

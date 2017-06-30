@@ -11,6 +11,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -30,6 +31,7 @@ import java.util.Map;
  * Kafka server configuration for the import.
  */
 @Configuration
+@Profile("kafka")
 public class KafkaServerConfig {
 
     @Value("${avservice.kafka.broker}")
