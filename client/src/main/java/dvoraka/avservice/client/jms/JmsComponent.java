@@ -33,7 +33,7 @@ public class JmsComponent implements ServerComponent {
 
     private static final Logger log = LogManager.getLogger(JmsComponent.class);
 
-    private final String responseDestination;
+    private final String destination;
     private final String serviceId;
     private final List<AvMessageListener> listeners;
     private final MessageConverter messageConverter;
@@ -41,12 +41,12 @@ public class JmsComponent implements ServerComponent {
 
     @Autowired
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public JmsComponent(String responseDestination,
+    public JmsComponent(String destination,
                         String serviceId,
                         JmsTemplate jmsTemplate,
                         MessageInfoService messageInfoService
     ) {
-        this.responseDestination = requireNonNull(responseDestination);
+        this.destination = requireNonNull(destination);
         this.serviceId = requireNonNull(serviceId);
         this.jmsTemplate = requireNonNull(jmsTemplate);
         this.messageInfoService = requireNonNull(messageInfoService);
@@ -77,14 +77,14 @@ public class JmsComponent implements ServerComponent {
         requireNonNull(message, "Message must not be null!");
 
         try {
-            jmsTemplate.convertAndSend(responseDestination, message);
+            jmsTemplate.convertAndSend(destination, message);
             messageInfoService.save(message, AvMessageSource.JMS_COMPONENT_OUT, serviceId);
         } catch (MessageConversionException e) {
             log.warn("Conversion problem!", e);
 
             String errorMessage = e.getMessage() == null ? "" : e.getMessage();
             AvMessage errorResponse = message.createErrorResponse(errorMessage);
-            jmsTemplate.convertAndSend(responseDestination, errorResponse);
+            jmsTemplate.convertAndSend(destination, errorResponse);
         } catch (JmsException e) {
             log.warn("Message send problem!", e);
         }
