@@ -227,6 +227,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
 
         cleanup:
             service.deleteFile(fileDeleteMessage(saveMessage))
+            sleep(1_000)
     }
 
     def "save and delete file"() {
