@@ -22,7 +22,19 @@ class ClientPSpec extends Specification {
 
     @Shared
     int loops = 10_000_000
+    @Shared
+    int threads = 4
 
+    ExecutorService executorService
+
+
+    def setup() {
+        executorService = Executors.newFixedThreadPool(threads)
+    }
+
+    def cleanup() {
+        executorService.shutdownNow()
+    }
 
     def "test config"() {
         expect:
@@ -49,9 +61,6 @@ class ClientPSpec extends Specification {
     def "send same messages to queue concurrently"() {
         given:
             AvMessage message = Utils.genMessage()
-            int threads = 4
-
-            ExecutorService executorService = Executors.newFixedThreadPool(threads)
             Runnable task = { avServiceClient.checkMessage(message) }
 
         expect:
@@ -62,9 +71,6 @@ class ClientPSpec extends Specification {
 
     def "send random messages to queue concurrently"() {
         given:
-            int threads = 4
-
-            ExecutorService executorService = Executors.newFixedThreadPool(threads)
             Runnable task = { avServiceClient.checkMessage(Utils.genMessage()) }
 
         expect:
