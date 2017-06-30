@@ -11,10 +11,10 @@ import spock.lang.Specification
 /**
  * Configuration test.
  */
-@ContextConfiguration(classes = [KafkaClientConfig.class])
+@ContextConfiguration(classes = [KafkaFileClientConfig.class])
 @DirtiesContext
 @ActiveProfiles(['kafka'])
-class KafkaClientConfigISpec extends Specification {
+class KafkaFileClientConfigISpec extends Specification {
 
     @Autowired
     ServerComponent serverComponent

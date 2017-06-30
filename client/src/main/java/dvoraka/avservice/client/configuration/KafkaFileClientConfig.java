@@ -31,7 +31,7 @@ import java.util.Map;
  */
 @Configuration
 @Profile("kafka")
-public class KafkaClientConfig {
+public class KafkaFileClientConfig {
 
     @Bean
     public ServerComponent serverComponent(
@@ -86,10 +86,13 @@ public class KafkaClientConfig {
 //    }
 
     @Bean
-    public MessageListenerContainer messageListenerContainer(MessageListener messageListener) {
-        ContainerProperties props = new ContainerProperties("avcheck.t");
+    public MessageListenerContainer messageListenerContainer(
+            ConsumerFactory<String, DefaultAvMessage> consumerFactory,
+            MessageListener messageListener
+    ) {
+        ContainerProperties props = new ContainerProperties("avcheck.tt");
         MessageListenerContainer container = new ConcurrentMessageListenerContainer<>(
-                consumerFactory(),
+                consumerFactory,
                 props
         );
         container.setupMessageListener(messageListener);
