@@ -41,9 +41,7 @@ public class KafkaComponent implements ServerComponent {
 
     @Override
     public void onMessage(ConsumerRecord<String, AvMessage> record) {
-        System.out.println(record);
         AvMessage avMessage = record.value();
-
         notifyListeners(listeners, avMessage);
     }
 
