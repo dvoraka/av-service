@@ -88,7 +88,7 @@ Release [NOTES](RELEASE_NOTES.md)
  * **Docker** - environment preparation
 
 **Development**
- * **ELK Stack** (Elasticsearch, Logstash, Kibana) - logs analyzing
+ * **Elastic Stack** (Elasticsearch, Logstash, Kibana) - logs analyzing
 
 ### Spring profiles
 Application is configurable and it's possible to run many configurations. Here is a list
