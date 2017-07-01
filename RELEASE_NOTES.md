@@ -1,4 +1,12 @@
-## v0.8-RC1 (June 25, 2017)
+## v0.8 (Jul 1, 2017)
+ * Improved tests
+ * Added new example for better start with project
+ * Improved script for finding all Spring profiles
+ 
+ #### Docker
+ * Reordered start of Docker containers with docker-compose
+
+## v0.8-RC1 (Jun 25, 2017)
  * New external filter for check processor
  * Updated ignored tests
  * Message info service plugged to new components
