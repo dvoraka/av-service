@@ -1,6 +1,6 @@
 plugins {
     // SonarQube
-    id 'org.sonarqube' version '2.2.1'
+    id 'org.sonarqube' version '2.5'
     // Spring Boot and dependency management
     id 'org.springframework.boot' version '1.5.4.RELEASE'
 }
@@ -192,7 +192,7 @@ allprojects {
     }
 
     task integrationTest(type: Test) {
-        testClassesDir = sourceSets.integrationTest.output.classesDir
+        testClassesDirs = sourceSets.integrationTest.output.classesDirs
         classpath = sourceSets.integrationTest.runtimeClasspath
 
         mustRunAfter test
@@ -210,7 +210,7 @@ allprojects {
     }
 
     task performanceTest(type: Test) {
-        testClassesDir = sourceSets.performanceTest.output.classesDir
+        testClassesDirs = sourceSets.performanceTest.output.classesDirs
         classpath = sourceSets.performanceTest.runtimeClasspath
     }
 
@@ -297,5 +297,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    gradleVersion = '4.0'
 }
