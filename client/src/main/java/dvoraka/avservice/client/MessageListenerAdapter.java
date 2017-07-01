@@ -1,5 +1,8 @@
 package dvoraka.avservice.client;
 
+import dvoraka.avservice.common.data.AvMessage;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+
 import javax.jms.Message;
 
 /**
@@ -7,7 +10,8 @@ import javax.jms.Message;
  */
 public interface MessageListenerAdapter extends
         javax.jms.MessageListener,
-        org.springframework.amqp.core.MessageListener {
+        org.springframework.amqp.core.MessageListener,
+        org.springframework.kafka.listener.MessageListener<String, AvMessage> {
 
     @Override
     default void onMessage(Message message) {
@@ -16,6 +20,11 @@ public interface MessageListenerAdapter extends
 
     @Override
     default void onMessage(org.springframework.amqp.core.Message message) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void onMessage(ConsumerRecord<String, AvMessage> record) {
         throw new UnsupportedOperationException();
     }
 }

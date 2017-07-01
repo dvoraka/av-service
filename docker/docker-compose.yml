@@ -54,6 +54,12 @@ services:
     image: "solr-dev-server"
     network_mode: "host"
 
+  # Kafka
+  kafka-dev:
+    build: ./kafka
+    image: "kafka-dev-server"
+    network_mode: "host"
+
   # Replication node1000
   replication-node-1000:
     build: ./replicationnodesnap

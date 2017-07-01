@@ -24,7 +24,9 @@ import org.springframework.context.annotation.Profile;
         AmqpFileCommonConfig.class,
         // JMS
         JmsFileClientConfig.class,
-        JmsFileCommonConfig.class
+        JmsFileCommonConfig.class,
+        // Kafka
+        KafkaFileClientConfig.class
 })
 public class FileClientConfig {
 
