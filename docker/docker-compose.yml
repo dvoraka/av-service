@@ -23,14 +23,14 @@ services:
   # Kibana
   kibana-dev:
     build: ./kibana
+    depends_on:
+      - elasticsearch-dev
     image: "kibana-dev-server"
     network_mode: "host"
 
   # Elasticsearch
   elasticsearch-dev:
     build: ./elasticsearch
-    depends_on:
-      - kibana-dev
     image: "elasticsearch-dev-server"
     network_mode: "host"
 

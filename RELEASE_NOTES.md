@@ -3,7 +3,7 @@
  * Added new example for better start with project
  * Improved script for finding all Spring profiles
  
- #### Docker
+#### Docker
  * Reordered start of Docker containers with docker-compose
 
 ## v0.8-RC1 (Jun 25, 2017)
@@ -26,7 +26,7 @@
  * New force unlock command in replication service
  * Improved helpers
  
- #### Docker
+#### Docker
  * Tuned configurations
  * Updated Elastic stack
  * Tuned Solr heap size
