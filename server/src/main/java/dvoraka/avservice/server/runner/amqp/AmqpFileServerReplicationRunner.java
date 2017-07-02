@@ -21,8 +21,7 @@ public class AmqpFileServerReplicationRunner extends AbstractServiceRunner {
     @Override
     public String[] profiles() {
         return new String[]{
-                "core", "server", "replication", "client",
-                "amqp", "storage", "db"
+                "core", "server", "replication", "client", "amqp", "storage", "db"
         };
     }
 
