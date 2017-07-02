@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner;
+package dvoraka.avservice.runner.server.kafka;
 
 import dvoraka.avservice.common.runner.AbstractServiceRunner;
 import dvoraka.avservice.common.runner.ServiceRunner;

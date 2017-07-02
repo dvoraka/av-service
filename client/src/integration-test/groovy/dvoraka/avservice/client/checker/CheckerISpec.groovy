@@ -28,7 +28,7 @@ class CheckerISpec extends Specification {
 
     def cleanupSpec() {
         runner.stop()
-        sleep(3_000)
+        sleep(2_000)
     }
 
     def setup() {

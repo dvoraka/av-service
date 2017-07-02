@@ -1,6 +1,6 @@
-package dvoraka.avservice.server.runner;
+package dvoraka.avservice.runner.client.kafka;
 
-import dvoraka.avservice.client.checker.PerformanceTester;
+import dvoraka.avservice.client.checker.BufferedPerformanceTester;
 import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
@@ -9,18 +9,18 @@ import dvoraka.avservice.common.service.ApplicationManagement;
 import java.io.IOException;
 
 /**
- * Kafka load test runner.
+ * Kafka buffered load test runner.
  */
-public class KafkaLoadTestRunner extends AbstractAppRunner {
+public class KafkaBufferedLoadTestRunner extends AbstractAppRunner {
 
     public static void main(String[] args) throws IOException {
-        AppRunner runner = new KafkaLoadTestRunner();
+        AppRunner runner = new KafkaBufferedLoadTestRunner();
         runner.run();
     }
 
     @Override
     protected String[] profiles() {
-        return new String[]{"client", "checker", "kafka", "file-client", "no-db"};
+        return new String[]{"client", "performance", "kafka", "file-client", "no-db"};
     }
 
     @Override
@@ -30,6 +30,6 @@ public class KafkaLoadTestRunner extends AbstractAppRunner {
 
     @Override
     protected Class<? extends ApplicationManagement> runClass() {
-        return PerformanceTester.class;
+        return BufferedPerformanceTester.class;
     }
 }
