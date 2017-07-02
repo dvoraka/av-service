@@ -1,9 +1,9 @@
-package dvoraka.avservice.server.runner
+package dvoraka.avservice.runner
 
 import spock.lang.Specification
 
 /**
- * Test configurator.
+ * Test for configurator runner.
  */
 class EnvironmentConfiguratorISpec extends Specification {
 

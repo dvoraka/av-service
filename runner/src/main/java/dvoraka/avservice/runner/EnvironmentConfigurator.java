@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner;
+package dvoraka.avservice.runner;
 
 import dvoraka.avservice.common.exception.MapperException;
 import dvoraka.avservice.server.configuration.EnvironmentConfiguratorConfig;

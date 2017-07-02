@@ -3,7 +3,7 @@ package dvoraka.avservice.runner.server.amqp
 import spock.lang.Specification
 
 /**
- * Test for server running.
+ * Test for server runner.
  */
 class AmqpCheckServerRunnerISpec extends Specification {
 

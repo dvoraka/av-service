@@ -3,7 +3,7 @@ package dvoraka.avservice.runner.server.amqp
 import spock.lang.Specification
 
 /**
- * Test for bridge running.
+ * Test for bridge runner.
  */
 class AmqpToJmsBridgeRunnerISpec extends Specification {
 
