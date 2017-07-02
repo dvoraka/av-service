@@ -1,7 +1,7 @@
-package dvoraka.avservice.server.checker
+package dvoraka.avservice.client.checker
 
 import dvoraka.avservice.client.configuration.ClientConfig
-import dvoraka.avservice.server.runner.amqp.AmqpFileServerRunner
+import dvoraka.avservice.runner.server.amqp.AmqpFileServerRunner
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration

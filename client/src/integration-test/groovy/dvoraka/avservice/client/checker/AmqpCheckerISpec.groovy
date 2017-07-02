@@ -1,4 +1,4 @@
-package dvoraka.avservice.runner.checker
+package dvoraka.avservice.client.checker
 
 import dvoraka.avservice.client.configuration.ClientConfig
 import dvoraka.avservice.runner.server.amqp.AmqpCheckServerRunner

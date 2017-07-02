@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner.amqp
+package dvoraka.avservice.runner.server.amqp
 
 import spock.lang.Specification
 

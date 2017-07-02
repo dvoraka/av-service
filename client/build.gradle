@@ -3,4 +3,6 @@ description = 'Server client components'
 dependencies {
     compile project(':common')
     compile project(':database')
+
+    testCompile project(':runner')
 }
