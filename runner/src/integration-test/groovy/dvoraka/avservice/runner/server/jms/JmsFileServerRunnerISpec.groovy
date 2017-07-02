@@ -1,9 +1,9 @@
-package dvoraka.avservice.server.runner.jms
+package dvoraka.avservice.runner.server.jms
 
 import spock.lang.Specification
 
 /**
- * Test for server running.
+ * Test for server runner.
  */
 class JmsFileServerRunnerISpec extends Specification {
 

@@ -2,7 +2,7 @@ package dvoraka.avservice.rest.service
 
 import dvoraka.avservice.common.runner.ServiceRunner
 import dvoraka.avservice.rest.Application
-import dvoraka.avservice.server.runner.jms.JmsFileServerRunner
+import dvoraka.avservice.runner.server.jms.JmsFileServerRunner
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import spock.lang.Shared

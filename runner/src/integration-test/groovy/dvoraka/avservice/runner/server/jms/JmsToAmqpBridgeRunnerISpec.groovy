@@ -1,9 +1,9 @@
-package dvoraka.avservice.server.runner.jms
+package dvoraka.avservice.runner.server.jms
 
 import spock.lang.Specification
 
 /**
- * Test for bridge running.
+ * Test for bridge runner.
  */
 class JmsToAmqpBridgeRunnerISpec extends Specification {
 

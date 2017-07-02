@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.checker
 
 import dvoraka.avservice.client.configuration.ClientConfig
-import dvoraka.avservice.server.runner.jms.JmsFileServerRunner
+import dvoraka.avservice.runner.server.jms.JmsFileServerRunner
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
