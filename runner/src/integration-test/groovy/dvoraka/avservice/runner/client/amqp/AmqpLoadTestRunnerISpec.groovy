@@ -1,9 +1,9 @@
-package dvoraka.avservice.server.runner.amqp
+package dvoraka.avservice.runner.client.amqp
 
 import spock.lang.Specification
 
 /**
- * Test for load test running.
+ * Test for load test runner.
  */
 class AmqpLoadTestRunnerISpec extends Specification {
 

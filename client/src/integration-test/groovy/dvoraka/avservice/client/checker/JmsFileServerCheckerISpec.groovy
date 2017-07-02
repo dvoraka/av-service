@@ -18,6 +18,6 @@ class JmsFileServerCheckerISpec extends CheckerISpec {
         JmsFileServerRunner.setTestRun(false)
         runner = new JmsFileServerRunner()
         runner.runAsync()
-        sleep(3_000)
+        sleep(5_000)
     }
 }

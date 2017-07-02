@@ -1,6 +1,6 @@
-package dvoraka.avservice.server.runner.amqp;
+package dvoraka.avservice.runner.client.amqp;
 
-import dvoraka.avservice.client.checker.BufferedPerformanceTester;
+import dvoraka.avservice.client.checker.PerformanceTester;
 import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
@@ -9,18 +9,18 @@ import dvoraka.avservice.common.service.ApplicationManagement;
 import java.io.IOException;
 
 /**
- * AMQP buffered load test runner.
+ * AMQP load test runner.
  */
-public class AmqpBufferedLoadTestRunner extends AbstractAppRunner {
+public class AmqpLoadTestRunner extends AbstractAppRunner {
 
     public static void main(String[] args) throws IOException {
-        AppRunner runner = new AmqpBufferedLoadTestRunner();
+        AppRunner runner = new AmqpLoadTestRunner();
         runner.run();
     }
 
     @Override
     protected String[] profiles() {
-        return new String[]{"client", "performance", "amqp", "file-client", "no-db"};
+        return new String[]{"client", "checker", "amqp", "file-client", "no-db"};
     }
 
     @Override
@@ -30,6 +30,6 @@ public class AmqpBufferedLoadTestRunner extends AbstractAppRunner {
 
     @Override
     protected Class<? extends ApplicationManagement> runClass() {
-        return BufferedPerformanceTester.class;
+        return PerformanceTester.class;
     }
 }
