@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner.jms;
+package dvoraka.avservice.runner.client.jms;
 
 import dvoraka.avservice.client.checker.CheckApp;
 import dvoraka.avservice.client.configuration.ClientConfig;
