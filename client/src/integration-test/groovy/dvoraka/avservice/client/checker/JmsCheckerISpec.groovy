@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 
 /**
- * JMS checker spec.
+ * JMS AV checker spec.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['client', 'jms', 'file-client', 'checker', 'no-db'])

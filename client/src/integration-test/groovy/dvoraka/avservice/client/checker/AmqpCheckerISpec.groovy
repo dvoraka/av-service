@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 
 /**
- * AMQP checker spec.
+ * AMQP AV checker spec.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['client', 'amqp', 'file-client', 'checker', 'no-db'])

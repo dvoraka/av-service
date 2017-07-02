@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner.amqp;
+package dvoraka.avservice.runner.client.amqp;
 
 import dvoraka.avservice.client.checker.CheckApp;
 import dvoraka.avservice.client.configuration.ClientConfig;
