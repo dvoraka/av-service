@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.runner
+package dvoraka.avservice.runner.server
 
 import spock.lang.Specification
 

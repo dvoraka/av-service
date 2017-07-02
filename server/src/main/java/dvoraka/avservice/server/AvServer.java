@@ -5,7 +5,7 @@ import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.service.ServiceManagement;
 
 /**
- * Anti-virus server interface.
+ * Server interface.
  */
 public interface AvServer extends ServiceManagement, AvMessageListener, AvMessageSender {
 }
