@@ -9,12 +9,12 @@ import dvoraka.avservice.server.configuration.ServerConfig;
 import java.io.IOException;
 
 /**
- * AMQP server runner.
+ * AMQP AV check server runner.
  */
-public class AmqpServerRunner extends AbstractServiceRunner {
+public class AmqpCheckServerRunner extends AbstractServiceRunner {
 
     public static void main(String[] args) throws IOException {
-        ServiceRunner runner = new AmqpServerRunner();
+        ServiceRunner runner = new AmqpCheckServerRunner();
         runner.run();
     }
 

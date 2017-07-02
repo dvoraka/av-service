@@ -5,12 +5,12 @@ import spock.lang.Specification
 /**
  * Test for server running.
  */
-class AmqpServerRunnerISpec extends Specification {
+class AmqpCheckServerRunnerISpec extends Specification {
 
     def "Run AMQP server runner"() {
         when:
-            AmqpServerRunner.setTestRun(true)
-            AmqpServerRunner.main([] as String[])
+            AmqpCheckServerRunner.setTestRun(true)
+            AmqpCheckServerRunner.main([] as String[])
 
         then:
             notThrown(Exception)
