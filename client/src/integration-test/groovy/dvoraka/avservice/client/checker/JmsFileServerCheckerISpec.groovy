@@ -1,23 +1,23 @@
-package dvoraka.avservice.server.checker
+package dvoraka.avservice.client.checker
 
 import dvoraka.avservice.client.configuration.ClientConfig
-import dvoraka.avservice.server.runner.jms.JmsServerRunner
+import dvoraka.avservice.server.runner.jms.JmsFileServerRunner
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 
 /**
- * JMS checker spec.
+ * JMS file server checker spec.
  */
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['client', 'jms', 'file-client', 'checker', 'no-db'])
 @DirtiesContext
-class JmsCheckerISpec extends CheckerISpec {
+class JmsFileServerCheckerISpec extends CheckerISpec {
 
     def setupSpec() {
-        JmsServerRunner.setTestRun(false)
-        runner = new JmsServerRunner()
+        JmsFileServerRunner.setTestRun(false)
+        runner = new JmsFileServerRunner()
         runner.runAsync()
-        sleep(5_000)
+        sleep(3_000)
     }
 }

@@ -18,6 +18,6 @@ class AmqpCheckerISpec extends CheckerISpec {
         AmqpCheckServerRunner.setTestRun(false)
         runner = new AmqpCheckServerRunner()
         runner.runAsync()
-        sleep(2_000)
+        sleep(3_000)
     }
 }

@@ -9,12 +9,12 @@ import dvoraka.avservice.server.configuration.ServerConfig;
 import java.io.IOException;
 
 /**
- * JMS server runner.
+ * JMS AV check server runner.
  */
-public class JmsServerRunner extends AbstractServiceRunner {
+public class JmsCheckServerRunner extends AbstractServiceRunner {
 
     public static void main(String[] args) throws IOException {
-        ServiceRunner runner = new JmsServerRunner();
+        ServiceRunner runner = new JmsCheckServerRunner();
         runner.run();
     }
 
