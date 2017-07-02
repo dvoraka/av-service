@@ -2,4 +2,5 @@ description = 'Module for runners'
 
 dependencies {
     compile project(':common')
+    compile project(':server')
 }
