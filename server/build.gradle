@@ -6,14 +6,6 @@ dependencies {
     compile project(':core')
 }
 
-task configureEnvironment(type: JavaExec) {
-    description = 'Configure environment'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.runner.EnvironmentConfigurator'
-    classpath = sourceSets.main.runtimeClasspath
-}
-
 task runAmqpServer(type: JavaExec) {
     description = 'Run AMQP AV check server'
     group = "${taskGroupName}"
