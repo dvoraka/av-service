@@ -45,7 +45,7 @@ class ReplicationService2ISpec extends Specification
     long actualSequence
 
     @Shared
-    long responseTime = 2_000
+    long responseTime = 3_000
     @Shared
     int nodeCount = 2
     @Shared
