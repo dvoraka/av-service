@@ -10,6 +10,7 @@ import dvoraka.avservice.server.configuration.amqp.AmqpCommonServerConfig;
 import dvoraka.avservice.server.configuration.amqp.AmqpServerConfig;
 import dvoraka.avservice.server.configuration.jms.JmsCommonServerConfig;
 import dvoraka.avservice.server.configuration.jms.JmsServerConfig;
+import dvoraka.avservice.server.configuration.kafka.KafkaServerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

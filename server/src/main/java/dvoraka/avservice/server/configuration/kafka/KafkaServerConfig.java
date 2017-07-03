@@ -1,4 +1,4 @@
-package dvoraka.avservice.server.configuration;
+package dvoraka.avservice.server.configuration.kafka;
 
 import dvoraka.avservice.client.KafkaComponent;
 import dvoraka.avservice.client.ServerComponent;

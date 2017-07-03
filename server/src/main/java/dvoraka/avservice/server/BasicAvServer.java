@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import static java.util.Objects.requireNonNull;
 
 /**
- * AV server implementation
+ * Server implementation
  */
 @Service
 public class BasicAvServer implements AvServer {
