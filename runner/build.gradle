@@ -13,6 +13,23 @@ task configureEnvironment(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task runAmqpCheck(type: JavaExec) {
+    description = 'Run AMQP infrastructure check'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.amqp.AmqpCheckRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runAmqpCheckServer(type: JavaExec) {
+    description = 'Run AMQP AV check server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.amqp.AmqpCheckServerRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 task runAmqpReplicationService(type: JavaExec) {
     description = 'Run AMQP replication service'
     group = "${taskGroupName}"

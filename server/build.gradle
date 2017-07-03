@@ -6,15 +6,6 @@ dependencies {
     compile project(':core')
 }
 
-task runAmqpServer(type: JavaExec) {
-    description = 'Run AMQP AV check server'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.amqp.AmqpServerRunner'
-    standardInput = System.in
-    classpath = sourceSets.main.runtimeClasspath
-}
-
 task runAmqpFileServer(type: JavaExec) {
     description = 'Run AMQP file server'
     group = "${taskGroupName}"
@@ -83,14 +74,6 @@ task runJmsLoadTest(type: JavaExec) {
     group = "${taskGroupName}"
 
     main = 'dvoraka.avservice.server.runner.jms.JmsLoadTestRunner'
-    classpath = sourceSets.main.runtimeClasspath
-}
-
-task runAmqpCheck(type: JavaExec) {
-    description = 'Run AMQP infrastructure check'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.amqp.AmqpCheckRunner'
     classpath = sourceSets.main.runtimeClasspath
 }
 

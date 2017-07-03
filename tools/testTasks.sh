@@ -6,7 +6,7 @@
 TASKS="
     configureEnvironment
     runAmqpCheck
-    runAmqpServer
+    runAmqpCheckServer
     runAmqpFileServer
     runAmqpFileServerWithReplication
     runAmqpToJmsBridge
@@ -32,6 +32,7 @@ do
     echo | ./gradlew -q ${task} > /dev/null 2>&1
     if [ $? != 0 ]
     then
+        echo
         echo "Test failed for: ${task}"
         exit 1
     fi
