@@ -20,7 +20,7 @@ task runAmqpReplicationService(type: JavaExec) {
     minHeapSize = '256m'
     maxHeapSize = '256m'
 
-    main = 'dvoraka.avservice.server.runner.amqp.AmqpReplicationServiceRunner'
+    main = 'dvoraka.avservice.runner.server.amqp.AmqpReplicationServiceRunner'
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }
