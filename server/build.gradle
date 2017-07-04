@@ -6,24 +6,6 @@ dependencies {
     compile project(':core')
 }
 
-task runAmqpFileServer(type: JavaExec) {
-    description = 'Run AMQP file server'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.amqp.AmqpFileServerRunner'
-    standardInput = System.in
-    classpath = sourceSets.main.runtimeClasspath
-}
-
-task runAmqpFileServerWithReplication(type: JavaExec) {
-    description = 'Run AMQP file server with replication'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.amqp.AmqpFileServerReplicationRunner'
-    standardInput = System.in
-    classpath = sourceSets.main.runtimeClasspath
-}
-
 task runJmsServer(type: JavaExec) {
     description = 'Run JMS AV check server'
     group = "${taskGroupName}"
@@ -39,15 +21,6 @@ task runCustomServer(type: JavaExec) {
     group = "${taskGroupName}"
 
     main = 'dvoraka.avservice.server.runner.CustomServerRunner'
-    standardInput = System.in
-    classpath = sourceSets.main.runtimeClasspath
-}
-
-task runAmqpToJmsBridge(type: JavaExec) {
-    description = 'Run AMQP to JMS bridge'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.amqp.AmqpToJmsBridgeRunner'
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }

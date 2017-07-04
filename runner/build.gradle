@@ -30,6 +30,33 @@ task runAmqpCheckServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task runAmqpFileServer(type: JavaExec) {
+    description = 'Run AMQP file server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.amqp.AmqpFileServerRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runAmqpFileServerWithReplication(type: JavaExec) {
+    description = 'Run AMQP file server with replication'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.amqp.AmqpFileServerReplicationRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runAmqpToJmsBridge(type: JavaExec) {
+    description = 'Run AMQP to JMS bridge'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.amqp.AmqpToJmsBridgeRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 task runAmqpReplicationService(type: JavaExec) {
     description = 'Run AMQP replication service'
     group = "${taskGroupName}"
