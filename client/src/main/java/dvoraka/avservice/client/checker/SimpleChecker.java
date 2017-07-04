@@ -30,7 +30,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     private static final Logger log = LogManager.getLogger(SimpleChecker.class.getName());
 
-    private static final long MAX_TIMEOUT = 1_000;
+    private static final long MAX_TIMEOUT = 3_000;
     private static final int QUEUE_CAPACITY = 10;
 
     private final BlockingQueue<AvMessage> queue;
