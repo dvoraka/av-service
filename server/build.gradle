@@ -5,19 +5,3 @@ dependencies {
     compile project(':client')
     compile project(':core')
 }
-
-task runAmqpLoadTest(type: JavaExec) {
-    description = 'Run AMQP AV check load test'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.amqp.AmqpLoadTestRunner'
-    classpath = sourceSets.main.runtimeClasspath
-}
-
-task runJmsLoadTest(type: JavaExec) {
-    description = 'Run JMS AV check load test'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.jms.JmsLoadTestRunner'
-    classpath = sourceSets.main.runtimeClasspath
-}
