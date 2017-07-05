@@ -58,7 +58,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         expect:
             true
             // wait for initialization
-            sleep(3_000)
+            sleep(5_000)
     }
 
     def "save file"() {
