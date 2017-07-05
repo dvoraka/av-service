@@ -6,15 +6,6 @@ dependencies {
     compile project(':core')
 }
 
-task runJmsToAmqpBridge(type: JavaExec) {
-    description = 'Run JMS to AMQP bridge'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.jms.JmsToAmqpBridgeRunner'
-    standardInput = System.in
-    classpath = sourceSets.main.runtimeClasspath
-}
-
 task runAmqpLoadTest(type: JavaExec) {
     description = 'Run AMQP AV check load test'
     group = "${taskGroupName}"

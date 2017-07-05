@@ -94,3 +94,21 @@ task runJmsCheckServer(type: JavaExec) {
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }
+
+task runJmsFileServer(type: JavaExec) {
+    description = 'Run JMS file server server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.jms.JmsFileServerRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runJmsToAmqpBridge(type: JavaExec) {
+    description = 'Run JMS to AMQP bridge'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.jms.JmsToAmqpBridgeRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}

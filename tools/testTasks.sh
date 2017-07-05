@@ -14,6 +14,7 @@ TASKS="
     runCustomServer
     runJmsCheck
     runJmsCheckServer
+    runJmsFileServer
     runJmsToAmqpBridge
     "
 SRC_ROOT=".."
