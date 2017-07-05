@@ -6,25 +6,6 @@ dependencies {
     compile project(':core')
 }
 
-task runJmsServer(type: JavaExec) {
-    description = 'Run JMS AV check server'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.jms.JmsServerRunner'
-    standardInput = System.in
-    classpath = sourceSets.main.runtimeClasspath
-//    environment('spring.profiles.active', '')
-}
-
-task runCustomServer(type: JavaExec) {
-    description = 'Run custom server'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.CustomServerRunner'
-    standardInput = System.in
-    classpath = sourceSets.main.runtimeClasspath
-}
-
 task runJmsToAmqpBridge(type: JavaExec) {
     description = 'Run JMS to AMQP bridge'
     group = "${taskGroupName}"
@@ -47,13 +28,5 @@ task runJmsLoadTest(type: JavaExec) {
     group = "${taskGroupName}"
 
     main = 'dvoraka.avservice.server.runner.jms.JmsLoadTestRunner'
-    classpath = sourceSets.main.runtimeClasspath
-}
-
-task runJmsCheck(type: JavaExec) {
-    description = 'Run JMS infrastructure check'
-    group = "${taskGroupName}"
-
-    main = 'dvoraka.avservice.server.runner.jms.JmsCheckRunner'
     classpath = sourceSets.main.runtimeClasspath
 }

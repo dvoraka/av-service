@@ -68,3 +68,29 @@ task runAmqpReplicationService(type: JavaExec) {
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }
+
+task runCustomServer(type: JavaExec) {
+    description = 'Run custom server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.CustomServerRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runJmsCheck(type: JavaExec) {
+    description = 'Run JMS infrastructure check'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.jms.JmsCheckRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runJmsCheckServer(type: JavaExec) {
+    description = 'Run JMS AV check server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.jms.JmsCheckServerRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
