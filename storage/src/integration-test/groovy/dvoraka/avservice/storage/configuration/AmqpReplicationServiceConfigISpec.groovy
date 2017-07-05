@@ -19,6 +19,10 @@ class AmqpReplicationServiceConfigISpec extends Specification {
     ReplicationService service
 
 
+    def cleanupSpec() {
+        sleep(1_000)
+    }
+
     def "test"() {
         expect:
             true

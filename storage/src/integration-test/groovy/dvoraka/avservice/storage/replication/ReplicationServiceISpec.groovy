@@ -40,6 +40,10 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
     int fileCount = 200
 
 
+    def cleanupSpec() {
+        sleep(1_000)
+    }
+
     def setup() {
         // the local node is a node too
         service.setReplicationCount(replicationNodes + 1)
@@ -54,7 +58,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         expect:
             true
             // wait for initialization
-            sleep(7_000)
+            sleep(3_000)
     }
 
     def "save file"() {

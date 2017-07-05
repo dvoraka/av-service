@@ -45,7 +45,7 @@ class ReplicationService2ISpec extends Specification
     long actualSequence
 
     @Shared
-    long responseTime = 3_000
+    long responseTime = 2_000
     @Shared
     int nodeCount = 2
     @Shared
@@ -55,6 +55,10 @@ class ReplicationService2ISpec extends Specification
     @Shared
     String owner = 'replTestOwner'
 
+
+    def cleanupSpec() {
+        sleep(1_000)
+    }
 
     def setup() {
         ReplicationMessage request = createSequenceRequest(nodeId)

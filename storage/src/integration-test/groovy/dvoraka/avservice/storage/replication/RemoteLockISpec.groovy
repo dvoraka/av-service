@@ -54,6 +54,10 @@ class RemoteLockISpec extends Specification implements ReplicationHelper, FileSe
     String owner = 'replicationTestOwner'
 
 
+    def cleanupSpec() {
+        sleep(1_000)
+    }
+
     def setup() {
         ReplicationMessage request = createSequenceRequest(nodeId)
         client.sendMessage(request)
