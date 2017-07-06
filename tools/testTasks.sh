@@ -6,6 +6,7 @@
 TASKS="
     configureEnvironment
     runAmqpCheck
+    runAmqpLoadTest
     runAmqpCheckServer
     runAmqpFileServer
     runAmqpFileServerWithReplication
@@ -13,11 +14,15 @@ TASKS="
     runAmqpReplicationService
     runCustomServer
     runJmsCheck
+    runJmsLoadTest
     runJmsCheckServer
     runJmsFileServer
     runJmsToAmqpBridge
     "
 SRC_ROOT=".."
+
+# export message count for load tests
+export AVSERVICE_PERF_MSGCOUNT=1
 
 
 cd ${SRC_ROOT}
