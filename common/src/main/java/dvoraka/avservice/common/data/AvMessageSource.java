@@ -14,6 +14,9 @@ public enum AvMessageSource {
     JMS_COMPONENT_IN,
     JMS_COMPONENT_OUT,
 
+    KAFKA_COMPONENT_IN,
+    KAFKA_COMPONENT_OUT,
+
     REST_ENDPOINT,
 
     SERVER,

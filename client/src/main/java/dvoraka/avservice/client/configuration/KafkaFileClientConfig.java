@@ -4,6 +4,7 @@ import dvoraka.avservice.client.ServerComponent;
 import dvoraka.avservice.client.kafka.KafkaComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessage;
+import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -42,12 +43,16 @@ public class KafkaFileClientConfig {
     @Value("${avservice.kafka.resultTopic}")
     private String resultTopic;
 
+    @Value("${avservice.serviceId}")
+    private String serviceId;
+
 
     @Bean
     public ServerComponent serverComponent(
-            KafkaTemplate<String, AvMessage> kafkaTemplate
+            KafkaTemplate<String, AvMessage> kafkaTemplate,
+            MessageInfoService messageInfoService
     ) {
-        return new KafkaComponent(fileTopic, kafkaTemplate);
+        return new KafkaComponent(fileTopic, serviceId, kafkaTemplate, messageInfoService);
     }
 
     @Bean
