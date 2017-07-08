@@ -34,7 +34,7 @@ allprojects {
         // Log4j version
         log4jVersion = '2.7'
         // Logstash Logback encoder version
-        logstashLogbackVersion = '4.7'
+        logstashLogbackVersion = '4.11'
         // Cglib nodep version
         cglibVersion = '3.2.4'
         // Equals verifier version
