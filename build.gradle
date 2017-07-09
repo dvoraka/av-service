@@ -127,6 +127,7 @@ allprojects {
         compile('org.springframework.boot:spring-boot-starter-data-jpa')
         // Data Solr
         compile('org.springframework.boot:spring-boot-starter-data-solr')
+        compile('org.springframework.data:spring-data-solr:3.0.0.DATASOLR-405-SNAPSHOT')
         // PostgreSQL
         compile('org.postgresql:postgresql')
 

@@ -2,6 +2,7 @@ package dvoraka.avservice.db.repository.solr
 
 import dvoraka.avservice.db.model.MessageInfoDocument
 import org.springframework.data.solr.core.SolrTemplate
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -18,6 +19,7 @@ class SolrMessageInfoRepositoryImplSpec extends Specification {
         messageInfoRepository = new SolrMessageInfoRepositoryImpl(solrTemplate)
     }
 
+    @Ignore('WIP')
     def "saveSoft interactions"() {
         given:
             MessageInfoDocument document = new MessageInfoDocument()
