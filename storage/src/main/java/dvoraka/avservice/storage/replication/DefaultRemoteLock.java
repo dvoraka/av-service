@@ -64,7 +64,7 @@ public class DefaultRemoteLock implements
         this.responseClient = requireNonNull(responseClient);
         this.nodeId = requireNonNull(nodeId);
 
-        sequence = new AtomicLong();
+        sequence = new AtomicLong(-1);
         lockedFiles = new HashSet<>();
         lockingLock = new ReentrantLock();
         hashingService = new Md5HashingService();

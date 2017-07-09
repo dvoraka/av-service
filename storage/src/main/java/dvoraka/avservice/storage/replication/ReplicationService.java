@@ -17,4 +17,8 @@ public interface ReplicationService extends
     ReplicationStatus getStatus(FileMessage message);
 
     void setReplicationCount(int count);
+
+    int getMaxResponseTime();
+
+    void setMaxResponseTime(int maxTime);
 }

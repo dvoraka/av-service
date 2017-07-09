@@ -37,6 +37,8 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
     @Shared
     int replicationNodes = 2
     @Shared
+    int maxResponseTime = 2_000
+    @Shared
     int fileCount = 200
 
 
@@ -47,6 +49,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
     def setup() {
         // the local node is a node too
         service.setReplicationCount(replicationNodes + 1)
+        service.setMaxResponseTime(maxResponseTime)
         // if you don't run all tests
 //        sleep(2_000)
     }
@@ -58,7 +61,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
         expect:
             true
             // wait for initialization
-            sleep(8_000)
+            sleep(3_000)
     }
 
     def "save file"() {
