@@ -47,7 +47,7 @@ public class DefaultReplicationService implements
     private static final Logger log = LogManager.getLogger(DefaultReplicationService.class);
 
     /**
-     * Max waiting time for a response from the network in ms.
+     * Default max waiting time for a response from the network in ms.
      */
     private static final int MAX_RESPONSE_TIME = 600;
     private static final int DISCOVER_DELAY = 20_000;
@@ -55,6 +55,7 @@ public class DefaultReplicationService implements
     private static final int REPLICATION_COUNT = 3;
 
     private Set<String> neighbours;
+    private int maxResponseTime;
     private int replicationCount;
     private ScheduledExecutorService executorService;
 
@@ -76,6 +77,7 @@ public class DefaultReplicationService implements
         this.nodeId = requireNonNull(nodeId);
 
         neighbours = new CopyOnWriteArraySet<>();
+        maxResponseTime = MAX_RESPONSE_TIME;
         replicationCount = REPLICATION_COUNT;
         executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -105,7 +107,7 @@ public class DefaultReplicationService implements
         serviceClient.sendMessage(message);
 
         Set<String> newNeighbours = responseClient
-                .getResponseWait(message.getId(), MAX_RESPONSE_TIME, MAX_RESPONSE_TIME)
+                .getResponseWait(message.getId(), maxResponseTime, maxResponseTime)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.READY)
@@ -132,7 +134,7 @@ public class DefaultReplicationService implements
         // depends on an efficiency of the sending algorithm and
         // it still must be different for "bigger" (~10 MB+) files
         final int sizeTimeRatio = 2_000;
-        final int maxSaveTime = (message.getData().length / sizeTimeRatio) + MAX_RESPONSE_TIME;
+        final int maxSaveTime = (message.getData().length / sizeTimeRatio) + maxResponseTime;
         log.debug("Setting max save time to {} {}", maxSaveTime, idString);
 
         if (localCopyExists(message)) {
@@ -248,7 +250,7 @@ public class DefaultReplicationService implements
 
     private ReplicationMessageList getLoadResponse(String messageId) {
         return responseClient
-                .getResponseWait(messageId, MAX_RESPONSE_TIME)
+                .getResponseWait(messageId, maxResponseTime)
                 .orElseGet(ReplicationMessageList::new);
     }
 
@@ -306,7 +308,7 @@ public class DefaultReplicationService implements
     }
 
     private long getDeleteResponse(String messageId, int responseCount) {
-        return responseClient.getResponseWaitSize(messageId, MAX_RESPONSE_TIME, responseCount)
+        return responseClient.getResponseWaitSize(messageId, maxResponseTime, responseCount)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .filter(msg -> msg.getReplicationStatus() == ReplicationStatus.OK)
@@ -348,7 +350,7 @@ public class DefaultReplicationService implements
         serviceClient.sendMessage(request);
 
         return responseClient.getResponseWaitSize(
-                request.getId(), MAX_RESPONSE_TIME, neighbourCount())
+                request.getId(), maxResponseTime, neighbourCount())
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .filter(message -> message.getReplicationStatus() == ReplicationStatus.OK)
@@ -370,16 +372,24 @@ public class DefaultReplicationService implements
         }
     }
 
+    public int getMaxResponseTime() {
+        return maxResponseTime;
+    }
+
+    public void setMaxResponseTime(int maxResponseTime) {
+        this.maxResponseTime = maxResponseTime;
+    }
+
     public int getReplicationCount() {
         return replicationCount;
     }
 
-    private int remoteReplicationCount() {
-        return replicationCount - 1;
-    }
-
     public void setReplicationCount(int replicationCount) {
         this.replicationCount = replicationCount;
+    }
+
+    private int remoteReplicationCount() {
+        return replicationCount - 1;
     }
 
     private boolean localCopyExists(FileMessage message) {
