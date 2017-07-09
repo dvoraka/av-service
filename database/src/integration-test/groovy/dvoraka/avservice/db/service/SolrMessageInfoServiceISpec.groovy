@@ -10,6 +10,5 @@ import spock.lang.Ignore
  */
 @ContextConfiguration(classes = [SolrConfig.class])
 @ActiveProfiles(['db-solr'])
-@Ignore("Data Solr is probably broken since Kay-M3")
 class SolrMessageInfoServiceISpec extends MessageInfoServiceISpec {
 }
