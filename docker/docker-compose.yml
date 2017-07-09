@@ -44,7 +44,8 @@ services:
     image: "solr-dev-server"
     network_mode: "host"
 
-  sonarqube-dev:
-    build: ./sonarqube
-    image: "sonarqube-dev-server"
-    network_mode: "host"
+# Sonarqube (optional)
+#  sonarqube-dev:
+#    build: ./sonarqube
+#    image: "sonarqube-dev-server"
+#    network_mode: "host"
