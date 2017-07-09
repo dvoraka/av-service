@@ -21,12 +21,14 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Stepwise
 
 /**
  * Replication service spec 2.
  * <p>
  * It uses low-level clients for simulating a service node.
  */
+@Stepwise
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')
@@ -71,12 +73,14 @@ class ReplicationService2ISpec extends Specification
                 .stream()
                 .findFirst()
                 .map({ m -> m.getSequence() })
-                .orElse(0L)
+                .orElse(-2L)
     }
 
     def "discovery testing"() {
         given:
             ReplicationMessage request = createDiscoverRequest(nodeId)
+            // wait for client initializations
+            sleep(2_000)
 
         when: "send discovery request"
             client.sendMessage(request)
