@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Message info document.
  */
-@SolrDocument(solrCoreName = "messageinfo")
+@SolrDocument(collection = "messageinfo")
 public class MessageInfoDocument {
 
     @Id
