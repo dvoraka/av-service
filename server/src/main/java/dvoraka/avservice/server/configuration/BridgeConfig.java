@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.ServerAdapter;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
 import dvoraka.avservice.server.ServerComponentBridge;
 import dvoraka.avservice.server.configuration.amqp.AmqpBridgeOutputConfig;
@@ -39,9 +39,9 @@ public class BridgeConfig {
 
     @Bean
     public ServerComponentBridge componentBridge(
-            ServerComponent fileServerComponent,
-            ServerComponent outComponent
+            ServerAdapter fileServerAdapter,
+            ServerAdapter outComponent
     ) {
-        return new ServerComponentBridge(fileServerComponent, outComponent);
+        return new ServerComponentBridge(fileServerAdapter, outComponent);
     }
 }

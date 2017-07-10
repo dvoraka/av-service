@@ -3,9 +3,9 @@ package dvoraka.avservice.client;
 import dvoraka.avservice.common.helper.AvMessageHelper;
 
 /**
- * Component for sending and receiving AV messages.
+ * Adapter for sending and receiving AV messages.
  */
-public interface ServerComponent extends
+public interface ServerAdapter extends
         AvMessageReceiver,
         AvMessageSender,
         AvMessageHelper,

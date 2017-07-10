@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service.response;
 
-import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.ServerAdapter;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class DefaultResponseClient implements ResponseClient, AvMessageListener {
 
-    private final ServerComponent serverComponent;
+    private final ServerAdapter serverAdapter;
     private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(DefaultResponseClient.class);
@@ -48,12 +48,12 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
     @Autowired
     public DefaultResponseClient(
-            ServerComponent serverComponent,
+            ServerAdapter serverAdapter,
             MessageInfoService messageInfoService
     ) {
-        this.serverComponent = requireNonNull(serverComponent);
+        this.serverAdapter = requireNonNull(serverAdapter);
         this.messageInfoService = requireNonNull(messageInfoService);
-        serviceId = requireNonNull(serverComponent.getServiceId());
+        serviceId = requireNonNull(serverAdapter.getServiceId());
     }
 
     @PostConstruct
@@ -65,7 +65,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
         log.info("Start.");
         initializeCache();
-        serverComponent.addAvMessageListener(this);
+        serverAdapter.addAvMessageListener(this);
         setStarted(true);
     }
 
@@ -78,7 +78,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
         log.info("Stop.");
         setStarted(false);
-        serverComponent.removeAvMessageListener(this);
+        serverAdapter.removeAvMessageListener(this);
         cacheManager.close();
     }
 

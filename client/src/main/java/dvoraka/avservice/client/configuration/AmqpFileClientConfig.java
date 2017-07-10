@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.ServerAdapter;
 import dvoraka.avservice.client.amqp.AmqpComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.amqp.core.MessageListener;
@@ -30,7 +30,7 @@ public class AmqpFileClientConfig {
 
 
     @Bean
-    public ServerComponent serverComponent(
+    public ServerAdapter serverComponent(
             RabbitTemplate rabbitTemplate,
             MessageInfoService messageInfoService
     ) {
@@ -38,8 +38,8 @@ public class AmqpFileClientConfig {
     }
 
     @Bean
-    public MessageListener messageListener(ServerComponent serverComponent) {
-        return serverComponent;
+    public MessageListener messageListener(ServerAdapter serverAdapter) {
+        return serverAdapter;
     }
 
     @Bean

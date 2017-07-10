@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service;
 
-import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.ServerAdapter;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageType;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +16,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class DefaultAvServiceClient implements AvServiceClient {
 
-    private final ServerComponent serverComponent;
+    private final ServerAdapter serverAdapter;
 
     private static final Logger log = LogManager.getLogger(DefaultAvServiceClient.class);
 
@@ -24,8 +24,8 @@ public class DefaultAvServiceClient implements AvServiceClient {
 
 
     @Autowired
-    public DefaultAvServiceClient(ServerComponent serverComponent) {
-        this.serverComponent = requireNonNull(serverComponent);
+    public DefaultAvServiceClient(ServerAdapter serverAdapter) {
+        this.serverAdapter = requireNonNull(serverAdapter);
     }
 
     @Override
@@ -35,6 +35,6 @@ public class DefaultAvServiceClient implements AvServiceClient {
             throw new IllegalArgumentException(BAD_TYPE);
         }
 
-        serverComponent.sendAvMessage(message);
+        serverAdapter.sendAvMessage(message);
     }
 }

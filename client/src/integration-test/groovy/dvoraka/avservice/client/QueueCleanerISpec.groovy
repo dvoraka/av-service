@@ -15,7 +15,7 @@ class QueueCleanerISpec extends Specification {
     QueueCleaner queueCleaner
 
     @Autowired
-    ServerComponent serverComponent
+    ServerAdapter serverComponent
 
     @Value('${avservice.amqp.fileQueue}')
     String queueName

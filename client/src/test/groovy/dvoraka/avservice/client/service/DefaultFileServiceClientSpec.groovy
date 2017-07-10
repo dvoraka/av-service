@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service
 
-import dvoraka.avservice.client.ServerComponent
+import dvoraka.avservice.client.ServerAdapter
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import spock.lang.Specification
@@ -14,7 +14,7 @@ class DefaultFileServiceClientSpec extends Specification {
     @Subject
     DefaultFileServiceClient service
 
-    ServerComponent serverComponent
+    ServerAdapter serverComponent
 
 
     def setup() {

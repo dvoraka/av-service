@@ -1,6 +1,6 @@
 package dvoraka.avservice.server;
 
-import dvoraka.avservice.client.ServerComponent;
+import dvoraka.avservice.client.ServerAdapter;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.service.ServiceManagement;
 import org.apache.logging.log4j.LogManager;
@@ -16,8 +16,8 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class ServerComponentBridge implements ServiceManagement {
 
-    private final ServerComponent inComponent;
-    private final ServerComponent outComponent;
+    private final ServerAdapter inComponent;
+    private final ServerAdapter outComponent;
 
     private static final Logger log = LogManager.getLogger(ServerComponentBridge.class);
 
@@ -30,7 +30,7 @@ public class ServerComponentBridge implements ServiceManagement {
 
 
     @Autowired
-    public ServerComponentBridge(ServerComponent inComponent, ServerComponent outComponent) {
+    public ServerComponentBridge(ServerAdapter inComponent, ServerAdapter outComponent) {
         this.inComponent = requireNonNull(inComponent);
         this.outComponent = requireNonNull(outComponent);
 
