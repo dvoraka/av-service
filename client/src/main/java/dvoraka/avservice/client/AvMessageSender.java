@@ -3,7 +3,7 @@ package dvoraka.avservice.client;
 import dvoraka.avservice.common.data.AvMessage;
 
 /**
- * Interface for sending AV messages.
+ * Interface for AV message sending.
  */
 @FunctionalInterface
 public interface AvMessageSender {

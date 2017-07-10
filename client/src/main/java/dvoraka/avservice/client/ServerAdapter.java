@@ -11,7 +11,7 @@ public interface ServerAdapter extends
     /**
      * Returns a service ID.
      *
-     * @return the ID
+     * @return the service ID
      */
     String getServiceId();
 }

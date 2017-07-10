@@ -3,7 +3,7 @@ package dvoraka.avservice.client;
 import dvoraka.avservice.common.AvMessageListener;
 
 /**
- * Interface for AV messages receiving.
+ * Interface for AV message receiving.
  */
 public interface AvMessageReceiver {
 
