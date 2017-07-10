@@ -9,6 +9,7 @@ import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,22 +19,23 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Kafka component.
+ * Kafka server adapter.
  */
 @Component
-public class KafkaComponent implements ServerAdapter, AvMessageHelper {
+public class KafkaServerAdapter implements ServerAdapter, AvMessageHelper {
 
     private final String topic;
     private final String serviceId;
     private final KafkaTemplate<String, AvMessage> kafkaTemplate;
     private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(KafkaComponent.class);
+    private static final Logger log = LogManager.getLogger(KafkaServerAdapter.class);
 
     private final List<AvMessageListener> listeners;
 
 
-    public KafkaComponent(
+    @Autowired
+    public KafkaServerAdapter(
             String topic,
             String serviceId,
             KafkaTemplate<String, AvMessage> kafkaTemplate,
