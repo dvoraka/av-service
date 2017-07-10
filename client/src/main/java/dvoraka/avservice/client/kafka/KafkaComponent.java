@@ -4,6 +4,7 @@ import dvoraka.avservice.client.ServerAdapter;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +21,7 @@ import static java.util.Objects.requireNonNull;
  * Kafka component.
  */
 @Component
-public class KafkaComponent implements ServerAdapter {
+public class KafkaComponent implements ServerAdapter, AvMessageHelper {
 
     private final String topic;
     private final String serviceId;

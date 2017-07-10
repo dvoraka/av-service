@@ -4,6 +4,7 @@ import dvoraka.avservice.client.ServerAdapter;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  * JMS component.
  */
 @Component
-public class JmsComponent implements ServerAdapter {
+public class JmsComponent implements ServerAdapter, AvMessageHelper {
 
     private final JmsTemplate jmsTemplate;
     private final MessageInfoService messageInfoService;

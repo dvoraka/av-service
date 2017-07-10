@@ -4,6 +4,7 @@ import dvoraka.avservice.client.ServerAdapter;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,7 @@ import static java.util.Objects.requireNonNull;
  * AMQP component.
  */
 @Component
-public class AmqpComponent implements ServerAdapter {
+public class AmqpComponent implements ServerAdapter, AvMessageHelper {
 
     private final String responseExchange;
     private final String serviceId;
