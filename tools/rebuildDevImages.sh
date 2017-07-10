@@ -18,5 +18,5 @@ echo
 
 echo "Building replication node..."
 cd ${DOCKER_DIR}/replicationnodesnap
-docker build -t replication-node .
+docker build --no-cache -t replication-node .
 echo "Done."
