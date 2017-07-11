@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.client.checker.CheckApp;
 import dvoraka.avservice.client.checker.Checker;
 import dvoraka.avservice.client.checker.PerformanceTester;
@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Profile;
 public class CheckerConfig {
 
     @Bean
-    public Checker checker(ServerAdapter serverAdapter) {
-        return new SimpleChecker(serverAdapter);
+    public Checker checker(NetworkComponent networkComponent) {
+        return new SimpleChecker(networkComponent);
     }
 
     @Bean

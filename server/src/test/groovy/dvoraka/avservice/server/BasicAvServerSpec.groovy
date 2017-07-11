@@ -1,6 +1,6 @@
 package dvoraka.avservice.server
 
-import dvoraka.avservice.client.ServerAdapter
+import dvoraka.avservice.client.NetworkComponent
 import dvoraka.avservice.core.MessageProcessor
 import dvoraka.avservice.db.service.MessageInfoService
 import spock.lang.Specification
@@ -14,7 +14,7 @@ class BasicAvServerSpec extends Specification {
     @Subject
     BasicAvServer server
 
-    ServerAdapter component
+    NetworkComponent component
     MessageProcessor processor
     MessageInfoService messageInfoService
 

@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.jms;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.client.jms.JmsComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -70,7 +70,7 @@ public class JmsBridgeOutputConfig {
     }
 
     @Bean
-    public ServerAdapter outComponent(
+    public NetworkComponent outComponent(
             JmsTemplate outJmsTemplate,
             MessageInfoService messageInfoService
     ) {
@@ -78,7 +78,7 @@ public class JmsBridgeOutputConfig {
     }
 
     @Bean
-    public MessageListener outMessageListener(ServerAdapter outComponent) {
+    public MessageListener outMessageListener(NetworkComponent outComponent) {
         return outComponent;
     }
 

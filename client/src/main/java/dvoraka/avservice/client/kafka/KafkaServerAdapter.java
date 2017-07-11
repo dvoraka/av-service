@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.kafka;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
@@ -22,7 +22,7 @@ import static java.util.Objects.requireNonNull;
  * Kafka server adapter.
  */
 @Component
-public class KafkaServerAdapter implements ServerAdapter, AvMessageHelper {
+public class KafkaServerAdapter implements NetworkComponent, AvMessageHelper {
 
     private final String topic;
     private final String serviceId;

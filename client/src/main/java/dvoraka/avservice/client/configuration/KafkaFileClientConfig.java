@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.client.kafka.KafkaServerAdapter;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessage;
@@ -48,7 +48,7 @@ public class KafkaFileClientConfig {
 
 
     @Bean
-    public ServerAdapter serverComponent(
+    public NetworkComponent serverComponent(
             KafkaTemplate<String, AvMessage> kafkaTemplate,
             MessageInfoService messageInfoService
     ) {
@@ -95,8 +95,8 @@ public class KafkaFileClientConfig {
     }
 
     @Bean
-    public MessageListener<String, AvMessage> messageListener(ServerAdapter serverAdapter) {
-        return serverAdapter;
+    public MessageListener<String, AvMessage> messageListener(NetworkComponent networkComponent) {
+        return networkComponent;
     }
 
     private Map<String, Object> consumerConfigs() {

@@ -1,19 +1,19 @@
 package dvoraka.avservice.server
 
-import dvoraka.avservice.client.ServerAdapter
+import dvoraka.avservice.client.NetworkComponent
 import spock.lang.Specification
 import spock.lang.Subject
 
 /**
  * Server component bridge spec.
  */
-class ServerAdapterBridgeSpec extends Specification {
+class NetworkComponentBridgeSpec extends Specification {
 
     @Subject
     ServerComponentBridge bridge
 
-    ServerAdapter inComponent
-    ServerAdapter outComponent
+    NetworkComponent inComponent
+    NetworkComponent outComponent
 
 
     def setup() {

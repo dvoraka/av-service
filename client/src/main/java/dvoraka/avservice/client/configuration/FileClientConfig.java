@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.DefaultAvServiceClient;
 import dvoraka.avservice.client.service.DefaultFileServiceClient;
@@ -31,20 +31,20 @@ import org.springframework.context.annotation.Profile;
 public class FileClientConfig {
 
     @Bean
-    public AvServiceClient avServiceClient(ServerAdapter serverAdapter) {
-        return new DefaultAvServiceClient(serverAdapter);
+    public AvServiceClient avServiceClient(NetworkComponent networkComponent) {
+        return new DefaultAvServiceClient(networkComponent);
     }
 
     @Bean
-    public FileServiceClient fileServiceClient(ServerAdapter serverAdapter) {
-        return new DefaultFileServiceClient(serverAdapter);
+    public FileServiceClient fileServiceClient(NetworkComponent networkComponent) {
+        return new DefaultFileServiceClient(networkComponent);
     }
 
     @Bean
     public ResponseClient responseClient(
-            ServerAdapter serverAdapter,
+            NetworkComponent networkComponent,
             MessageInfoService messageInfoService
     ) {
-        return new DefaultResponseClient(serverAdapter, messageInfoService);
+        return new DefaultResponseClient(networkComponent, messageInfoService);
     }
 }

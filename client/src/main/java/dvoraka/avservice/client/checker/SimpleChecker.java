@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.checker;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class SimpleChecker implements Checker, AvMessageListener {
 
-    private final ServerAdapter component;
+    private final NetworkComponent component;
 
     private static final Logger log = LogManager.getLogger(SimpleChecker.class.getName());
 
@@ -37,11 +37,11 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
 
     @Autowired
-    public SimpleChecker(ServerAdapter component) {
+    public SimpleChecker(NetworkComponent component) {
         this(component, QUEUE_CAPACITY);
     }
 
-    public SimpleChecker(ServerAdapter component, int queueSize) {
+    public SimpleChecker(NetworkComponent component, int queueSize) {
         this.component = requireNonNull(component);
         this.component.addAvMessageListener(this);
         queue = new ArrayBlockingQueue<>(queueSize);

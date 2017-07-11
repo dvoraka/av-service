@@ -1,9 +1,9 @@
 package dvoraka.avservice.client;
 
 /**
- * Adapter for sending and receiving AV messages.
+ * Network component for sending and receiving AV messages.
  */
-public interface ServerAdapter extends
+public interface NetworkComponent extends
         AvMessageReceiver,
         AvMessageSender,
         MessageListenerAdapter {

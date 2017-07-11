@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.jms;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  * JMS component.
  */
 @Component
-public class JmsComponent implements ServerAdapter, AvMessageHelper {
+public class JmsComponent implements NetworkComponent, AvMessageHelper {
 
     private final JmsTemplate jmsTemplate;
     private final MessageInfoService messageInfoService;

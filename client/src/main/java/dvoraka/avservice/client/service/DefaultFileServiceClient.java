@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageType;
 import org.apache.logging.log4j.LogManager;
@@ -16,19 +16,19 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class DefaultFileServiceClient implements FileServiceClient {
 
-    private final ServerAdapter serverAdapter;
+    private final NetworkComponent networkComponent;
 
     private static final Logger log = LogManager.getLogger(DefaultFileServiceClient.class);
     public static final String BAD_TYPE = "Bad message type.";
 
 
     @Autowired
-    public DefaultFileServiceClient(ServerAdapter serverAdapter) {
-        this.serverAdapter = requireNonNull(serverAdapter);
+    public DefaultFileServiceClient(NetworkComponent networkComponent) {
+        this.networkComponent = requireNonNull(networkComponent);
     }
 
     private void sendMessage(AvMessage message) {
-        serverAdapter.sendAvMessage(message);
+        networkComponent.sendAvMessage(message);
     }
 
     @Override

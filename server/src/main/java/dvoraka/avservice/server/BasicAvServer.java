@@ -1,6 +1,6 @@
 package dvoraka.avservice.server;
 
-import dvoraka.avservice.client.ServerAdapter;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageSource;
@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class BasicAvServer implements AvServer {
 
-    private final ServerAdapter serverAdapter;
+    private final NetworkComponent networkComponent;
     private final MessageProcessor messageProcessor;
     private final MessageInfoService messageInfoService;
 
@@ -38,12 +38,12 @@ public class BasicAvServer implements AvServer {
     @Autowired
     public BasicAvServer(
             String serviceId,
-            ServerAdapter serverAdapter,
+            NetworkComponent networkComponent,
             MessageProcessor messageProcessor,
             MessageInfoService messageInfoService
     ) {
         this.serviceId = requireNonNull(serviceId);
-        this.serverAdapter = requireNonNull(serverAdapter);
+        this.networkComponent = requireNonNull(networkComponent);
         this.messageProcessor = requireNonNull(messageProcessor);
         this.messageInfoService = requireNonNull(messageInfoService);
 
@@ -56,7 +56,7 @@ public class BasicAvServer implements AvServer {
         setStopped(false);
         setStarted(true);
 
-        serverAdapter.addAvMessageListener(this);
+        networkComponent.addAvMessageListener(this);
         messageProcessor.addProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(true);
@@ -68,7 +68,7 @@ public class BasicAvServer implements AvServer {
         log.info("Server stopped.");
         setStopped(true);
 
-        serverAdapter.removeAvMessageListener(this);
+        networkComponent.removeAvMessageListener(this);
         messageProcessor.removeProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(false);
@@ -110,7 +110,7 @@ public class BasicAvServer implements AvServer {
 
     @Override
     public void sendAvMessage(AvMessage message) {
-        serverAdapter.sendAvMessage(message);
+        networkComponent.sendAvMessage(message);
     }
 
     class ProcessedAvMessageListener implements AvMessageListener {
