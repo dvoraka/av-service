@@ -8,6 +8,12 @@ ARG SOLR_PORT=8983
 
 COPY conf/ $SOLR_CONF/
 
+RUN apt-get update \
+    && apt-get --no-install-recommends -y install \
+        procps \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN solr start -p $SOLR_PORT \
     && sleep 15 \
     && solr create -c test -d test -p $SOLR_PORT \
