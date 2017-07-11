@@ -1,7 +1,9 @@
-FROM solr:6.6
+FROM solr:6.6.0
 MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
-ARG SOLR_CONF=/opt/solr/server/solr/configsets
+ENV SOLR_HOME=/opt/solr/server/solr/
+
+ARG SOLR_CONF=${SOLR_HOME}/configsets
 ARG SOLR_PORT=8983
 
 COPY conf/ $SOLR_CONF/
