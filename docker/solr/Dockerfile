@@ -8,11 +8,15 @@ ARG SOLR_PORT=8983
 
 COPY conf/ $SOLR_CONF/
 
+USER root
+
 RUN apt-get update \
     && apt-get --no-install-recommends -y install \
         procps \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+USER solr
 
 RUN solr start -p $SOLR_PORT \
     && sleep 15 \
