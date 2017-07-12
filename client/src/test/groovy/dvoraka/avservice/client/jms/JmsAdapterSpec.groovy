@@ -17,10 +17,10 @@ import javax.jms.Message
 /**
  * JMS component test.
  */
-class JmsComponentSpec extends Specification {
+class JmsAdapterSpec extends Specification {
 
     @Subject
-    JmsComponent component
+    JmsAdapter component
 
     JmsTemplate jmsTemplate
     String destination
@@ -36,7 +36,7 @@ class JmsComponentSpec extends Specification {
         jmsTemplate = Mock()
         jmsTemplate.getMessageConverter() >> converter
 
-        component = new JmsComponent(destination, "TEST1", jmsTemplate, messageInfoService)
+        component = new JmsAdapter(destination, "TEST1", jmsTemplate, messageInfoService)
     }
 
     def "on message"() {

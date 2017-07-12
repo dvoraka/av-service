@@ -24,15 +24,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static java.util.Objects.requireNonNull;
 
 /**
- * JMS component.
+ * JMS network component adapter.
  */
 @Component
-public class JmsComponent implements NetworkComponent, AvMessageHelper {
+public class JmsAdapter implements NetworkComponent, AvMessageHelper {
 
     private final JmsTemplate jmsTemplate;
     private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(JmsComponent.class);
+    private static final Logger log = LogManager.getLogger(JmsAdapter.class);
 
     private final String destination;
     private final String serviceId;
@@ -42,10 +42,11 @@ public class JmsComponent implements NetworkComponent, AvMessageHelper {
 
     @Autowired
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public JmsComponent(String destination,
-                        String serviceId,
-                        JmsTemplate jmsTemplate,
-                        MessageInfoService messageInfoService
+    public JmsAdapter(
+            String destination,
+            String serviceId,
+            JmsTemplate jmsTemplate,
+            MessageInfoService messageInfoService
     ) {
         this.destination = requireNonNull(destination);
         this.serviceId = requireNonNull(serviceId);

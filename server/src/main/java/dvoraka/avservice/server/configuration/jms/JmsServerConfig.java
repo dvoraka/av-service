@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.configuration.jms;
 
 import dvoraka.avservice.client.NetworkComponent;
-import dvoraka.avservice.client.jms.JmsComponent;
+import dvoraka.avservice.client.jms.JmsAdapter;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +39,7 @@ public class JmsServerConfig {
             JmsTemplate fileServerJmsTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new JmsComponent(
+        return new JmsAdapter(
                 resultDestination, serviceId, fileServerJmsTemplate, messageInfoService);
     }
 

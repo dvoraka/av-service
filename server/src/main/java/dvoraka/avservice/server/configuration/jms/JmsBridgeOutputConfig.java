@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.configuration.jms;
 
 import dvoraka.avservice.client.NetworkComponent;
-import dvoraka.avservice.client.jms.JmsComponent;
+import dvoraka.avservice.client.jms.JmsAdapter;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,7 +74,7 @@ public class JmsBridgeOutputConfig {
             JmsTemplate outJmsTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new JmsComponent(fileDestination, serviceId, outJmsTemplate, messageInfoService);
+        return new JmsAdapter(fileDestination, serviceId, outJmsTemplate, messageInfoService);
     }
 
     @Bean
