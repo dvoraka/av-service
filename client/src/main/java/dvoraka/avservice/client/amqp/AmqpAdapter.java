@@ -22,17 +22,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static java.util.Objects.requireNonNull;
 
 /**
- * AMQP component.
+ * AMQP network component adapter.
  */
 @Component
-public class AmqpComponent implements NetworkComponent, AvMessageHelper {
+public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
 
     private final String responseExchange;
     private final String serviceId;
     private final RabbitTemplate rabbitTemplate;
     private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(AmqpComponent.class);
+    private static final Logger log = LogManager.getLogger(AmqpAdapter.class);
     public static final String ROUTING_KEY = "ROUTINGKEY";
 
     private final List<AvMessageListener> listeners;
@@ -40,7 +40,7 @@ public class AmqpComponent implements NetworkComponent, AvMessageHelper {
 
 
     @Autowired
-    public AmqpComponent(
+    public AmqpAdapter(
             String responseExchange,
             String serviceId,
             RabbitTemplate rabbitTemplate,

@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.configuration.amqp;
 
 import dvoraka.avservice.client.NetworkComponent;
-import dvoraka.avservice.client.amqp.AmqpComponent;
+import dvoraka.avservice.client.amqp.AmqpAdapter;
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.common.amqp.AvMessageMapper;
 import dvoraka.avservice.db.service.MessageInfoService;
@@ -40,7 +40,7 @@ public class AmqpServerConfig {
             RabbitTemplate fileServerRabbitTemplate,
             MessageInfoService messageInfoService
     ) {
-        return new AmqpComponent(
+        return new AmqpAdapter(
                 resultExchange, serviceId, fileServerRabbitTemplate, messageInfoService);
     }
 

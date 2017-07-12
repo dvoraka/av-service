@@ -17,10 +17,10 @@ import spock.lang.Subject
 /**
  * AMQP component test.
  */
-class AmqpComponentSpec extends Specification {
+class AmqpAdapterSpec extends Specification {
 
     @Subject
-    AmqpComponent component
+    AmqpAdapter component
 
     RabbitTemplate rabbitTemplate
     AvMessageMapper messageMapper
@@ -39,7 +39,7 @@ class AmqpComponentSpec extends Specification {
         rabbitTemplate = Mock()
         rabbitTemplate.getMessageConverter() >> converter
 
-        component = new AmqpComponent(testExchange, "TEST1", rabbitTemplate, infoService)
+        component = new AmqpAdapter(testExchange, "TEST1", rabbitTemplate, infoService)
 
         messageMapper = new AvMessageMapper()
     }
