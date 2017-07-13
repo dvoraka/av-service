@@ -22,7 +22,8 @@ USER postgres
 
 RUN /etc/init.d/postgresql start \
     && psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" \
-    && createdb -O docker -E UTF8 -T template0 docker
+    && createdb -O docker -E UTF8 -T template0 docker \
+    && /etc/init.d/postgresql stop
 
 EXPOSE 5432
 
