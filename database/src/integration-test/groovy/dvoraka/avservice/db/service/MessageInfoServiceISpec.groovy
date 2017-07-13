@@ -3,7 +3,7 @@ package dvoraka.avservice.db.service
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageInfo
-import dvoraka.avservice.common.data.AvMessageSource
+import dvoraka.avservice.common.data.InfoSource
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
 import spock.lang.Specification
@@ -23,7 +23,7 @@ class MessageInfoServiceISpec extends Specification {
 
     def "save message"() {
         expect:
-            service.save(Utils.genMessage(), AvMessageSource.TEST, 'TEST-SERVICE')
+            service.save(Utils.genMessage(), InfoSource.TEST, 'TEST-SERVICE')
     }
 
     def "save message and then load info"() {
@@ -31,14 +31,14 @@ class MessageInfoServiceISpec extends Specification {
             AvMessage message = Utils.genMessage()
 
         expect:
-            service.save(message, AvMessageSource.TEST, Utils.TEST_SERVICE_ID)
+            service.save(message, InfoSource.TEST, Utils.TEST_SERVICE_ID)
 
         when:
             AvMessageInfo messageInfo = service.loadInfo(message.getId())
 
         then:
             messageInfo
-            messageInfo.getSource() == AvMessageSource.TEST
+            messageInfo.getSource() == InfoSource.TEST
             messageInfo.getServiceId() == Utils.TEST_SERVICE_ID
     }
 
@@ -50,7 +50,7 @@ class MessageInfoServiceISpec extends Specification {
 
         expect:
             count.times {
-                service.save(message, AvMessageSource.TEST, Utils.TEST_SERVICE_ID)
+                service.save(message, InfoSource.TEST, Utils.TEST_SERVICE_ID)
             }
 
         when:

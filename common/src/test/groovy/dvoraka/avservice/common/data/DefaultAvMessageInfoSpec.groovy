@@ -16,14 +16,14 @@ class DefaultAvMessageInfoSpec extends Specification {
             Instant now = Instant.now()
             DefaultAvMessageInfo messageInfo =
                     new DefaultAvMessageInfo.Builder(uuid)
-                            .source(AvMessageSource.TEST)
+                            .source(InfoSource.TEST)
                             .serviceId(Utils.TEST_SERVICE_ID)
                             .created(now)
                             .build()
 
         expect:
             messageInfo.getId() == uuid
-            messageInfo.getSource() == AvMessageSource.TEST
+            messageInfo.getSource() == InfoSource.TEST
             messageInfo.getServiceId() == Utils.TEST_SERVICE_ID
             messageInfo.getCreated() == now
     }

@@ -3,7 +3,7 @@ package dvoraka.avservice.client.amqp;
 import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.logging.log4j.LogManager;
@@ -62,7 +62,7 @@ public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
         AvMessage avMessage;
         try {
             avMessage = (AvMessage) messageConverter.fromMessage(message);
-            messageInfoService.save(avMessage, AvMessageSource.AMQP_COMPONENT_IN, serviceId);
+            messageInfoService.save(avMessage, InfoSource.AMQP_COMPONENT_IN, serviceId);
         } catch (MessageConversionException e) {
             log.warn("Conversion error!", e);
 
@@ -78,7 +78,7 @@ public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
 
         try {
             rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
-            messageInfoService.save(message, AvMessageSource.AMQP_COMPONENT_OUT, serviceId);
+            messageInfoService.save(message, InfoSource.AMQP_COMPONENT_OUT, serviceId);
         } catch (MessageConversionException e) {
             log.warn("Conversion problem!", e);
 

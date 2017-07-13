@@ -3,7 +3,7 @@ package dvoraka.avservice.db.service;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageInfoData;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.db.model.MessageInfo;
 import dvoraka.avservice.db.repository.db.DbMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +36,7 @@ public class DbMessageInfoService implements MessageInfoService {
     }
 
     @Override
-    public void save(AvMessage message, AvMessageSource source, String serviceId) {
+    public void save(AvMessage message, InfoSource source, String serviceId) {
         log.debug("Saving: " + message.getId());
 
         MessageInfo messageInfo = toMessageInfo(message, source, serviceId);
@@ -45,7 +45,7 @@ public class DbMessageInfoService implements MessageInfoService {
 
     private MessageInfo toMessageInfo(
             AvMessage message,
-            AvMessageSource source,
+            InfoSource source,
             String serviceId
     ) {
         MessageInfo messageInfo = new MessageInfo();

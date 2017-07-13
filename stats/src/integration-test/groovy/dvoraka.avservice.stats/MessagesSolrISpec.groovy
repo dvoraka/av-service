@@ -3,7 +3,7 @@ package dvoraka.avservice.stats
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageInfo
-import dvoraka.avservice.common.data.AvMessageSource
+import dvoraka.avservice.common.data.InfoSource
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.stats.configuration.StatsSolrConfig
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,12 +26,12 @@ class MessagesSolrISpec extends Specification {
     @Autowired
     MessageInfoService infoService
 
-    AvMessageSource source
+    InfoSource source
     String serviceId
 
 
     def setup() {
-        source = AvMessageSource.TEST
+        source = InfoSource.TEST
         serviceId = Utils.TEST_SERVICE_ID
     }
 

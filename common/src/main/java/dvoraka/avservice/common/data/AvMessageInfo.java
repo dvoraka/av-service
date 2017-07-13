@@ -18,7 +18,7 @@ public interface AvMessageInfo {
 
     String getId();
 
-    AvMessageSource getSource();
+    InfoSource getSource();
 
     String getServiceId();
 

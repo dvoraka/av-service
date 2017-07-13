@@ -1,7 +1,7 @@
 package dvoraka.avservice.rest;
 
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +32,6 @@ public class RestAspect {
     @Before("execution(public * dvoraka.avservice.rest.controller.*.*(..)) && args(message,..)")
     public void logMessageInfo(AvMessage message) {
         log.debug("Saving message info: {}", message);
-        messageInfoService.save(message, AvMessageSource.REST_ENDPOINT, serviceId);
+        messageInfoService.save(message, InfoSource.REST_ENDPOINT, serviceId);
     }
 }

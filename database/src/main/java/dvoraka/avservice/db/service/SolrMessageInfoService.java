@@ -3,7 +3,7 @@ package dvoraka.avservice.db.service;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageInfoData;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.service.ExecutorServiceHelper;
 import dvoraka.avservice.db.model.MessageInfoDocument;
 import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository;
@@ -78,7 +78,7 @@ public class SolrMessageInfoService implements MessageInfoService, ExecutorServi
     }
 
     @Override
-    public void save(AvMessage message, AvMessageSource source, String serviceId) {
+    public void save(AvMessage message, InfoSource source, String serviceId) {
         log.debug("Saving: " + message.getId());
 
         MessageInfoDocument messageInfoDocument =
@@ -124,7 +124,7 @@ public class SolrMessageInfoService implements MessageInfoService, ExecutorServi
 
     private MessageInfoDocument toMessageInfoDocument(
             AvMessage message,
-            AvMessageSource source,
+            InfoSource source,
             String serviceId
     ) {
         MessageInfoDocument messageInfoDocument = new MessageInfoDocument();

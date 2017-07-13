@@ -2,7 +2,7 @@ package dvoraka.avservice.db.service
 
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessageInfo
-import dvoraka.avservice.common.data.AvMessageSource
+import dvoraka.avservice.common.data.InfoSource
 import dvoraka.avservice.db.model.MessageInfo
 import dvoraka.avservice.db.repository.db.DbMessageInfoRepository
 import spock.lang.Specification
@@ -32,7 +32,7 @@ class DbMessageInfoServiceSpec extends Specification {
 
     def "save"() {
         when:
-            messageService.save(Utils.genMessage(), AvMessageSource.TEST, testService)
+            messageService.save(Utils.genMessage(), InfoSource.TEST, testService)
 
         then:
             1 * messageRepository.save(_ as MessageInfo)
@@ -64,7 +64,7 @@ class DbMessageInfoServiceSpec extends Specification {
     MessageInfo createTestInfo(String uuid) {
         MessageInfo testInfo = new MessageInfo()
         testInfo.setUuid(uuid)
-        testInfo.setSource(AvMessageSource.TEST.toString())
+        testInfo.setSource(InfoSource.TEST.toString())
         testInfo.setCreated(Instant.now())
 
         return testInfo

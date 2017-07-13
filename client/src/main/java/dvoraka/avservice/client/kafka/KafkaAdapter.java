@@ -3,7 +3,7 @@ package dvoraka.avservice.client.kafka;
 import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -50,7 +50,7 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
     @Override
     public void sendAvMessage(AvMessage message) {
         kafkaTemplate.send(topic, message);
-        messageInfoService.save(message, AvMessageSource.KAFKA_COMPONENT_OUT, serviceId);
+        messageInfoService.save(message, InfoSource.KAFKA_COMPONENT_OUT, serviceId);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
         requireNonNull(record, "Record must not be null!");
         AvMessage avMessage = record.value();
 
-        messageInfoService.save(avMessage, AvMessageSource.KAFKA_COMPONENT_IN, serviceId);
+        messageInfoService.save(avMessage, InfoSource.KAFKA_COMPONENT_IN, serviceId);
 
         notifyListeners(listeners, avMessage);
     }

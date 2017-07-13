@@ -3,7 +3,7 @@ package dvoraka.avservice.db.service
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageInfo
-import dvoraka.avservice.common.data.AvMessageSource
+import dvoraka.avservice.common.data.InfoSource
 import dvoraka.avservice.db.model.MessageInfoDocument
 import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository
 import spock.lang.Specification
@@ -36,7 +36,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             AvMessage message = Utils.genMessage()
 
         when:
-            messageService.save(message, AvMessageSource.TEST, testService)
+            messageService.save(message, InfoSource.TEST, testService)
 
         then:
             1 * messageRepository.save(_)
@@ -54,7 +54,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.getBatchSize() == batchSize
 
         when:
-            messageService.save(message, AvMessageSource.TEST, testService)
+            messageService.save(message, InfoSource.TEST, testService)
 
         then:
             0 * messageRepository.save(_)
@@ -72,7 +72,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.getBatchSize() == batchSize
 
         when:
-            messageService.save(message, AvMessageSource.TEST, testService)
+            messageService.save(message, InfoSource.TEST, testService)
 
         then:
             1 * messageRepository.save(_ as Iterable)
@@ -126,7 +126,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.enableBatching()
 
         when:
-            messageService.save(Utils.genMessage(), AvMessageSource.TEST, testService)
+            messageService.save(Utils.genMessage(), InfoSource.TEST, testService)
 
         then:
             0 * messageRepository.save(_ as MessageInfoDocument)
@@ -140,7 +140,7 @@ class SolrMessageInfoServiceSpec extends Specification {
 
     def "test stop without batching"() {
         when:
-            messageService.save(Utils.genMessage(), AvMessageSource.TEST, testService)
+            messageService.save(Utils.genMessage(), InfoSource.TEST, testService)
 
         then:
             1 * messageRepository.save(_ as MessageInfoDocument)
@@ -155,7 +155,7 @@ class SolrMessageInfoServiceSpec extends Specification {
     MessageInfoDocument createTestDoc(String uuid) {
         MessageInfoDocument testDoc = new MessageInfoDocument()
         testDoc.setUuid(uuid)
-        testDoc.setSource(AvMessageSource.TEST.toString())
+        testDoc.setSource(InfoSource.TEST.toString())
         testDoc.setCreated(new Date())
 
         return testDoc

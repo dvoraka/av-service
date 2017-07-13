@@ -3,7 +3,7 @@ package dvoraka.avservice.server;
 import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.core.MessageProcessor;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +25,7 @@ public class BasicAvServer implements AvServer {
 
     private static final Logger log = LogManager.getLogger(BasicAvServer.class);
 
-    public static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.SERVER;
+    public static final InfoSource MESSAGE_SOURCE = InfoSource.SERVER;
 
     private final String serviceId;
     private final ProcessedAvMessageListener processedAvMessageListener;

@@ -10,7 +10,7 @@ import static java.util.Objects.requireNonNull;
 public final class DefaultAvMessageInfo implements AvMessageInfo {
 
     private final String id;
-    private final AvMessageSource source;
+    private final InfoSource source;
     private final String serviceId;
     private final Instant created;
 
@@ -28,7 +28,7 @@ public final class DefaultAvMessageInfo implements AvMessageInfo {
     }
 
     @Override
-    public AvMessageSource getSource() {
+    public InfoSource getSource() {
         return source;
     }
 
@@ -45,7 +45,7 @@ public final class DefaultAvMessageInfo implements AvMessageInfo {
     public static class Builder {
 
         private String id;
-        private AvMessageSource source;
+        private InfoSource source;
         private String serviceId;
         private Instant created;
 
@@ -54,7 +54,7 @@ public final class DefaultAvMessageInfo implements AvMessageInfo {
             this.id = requireNonNull(id);
         }
 
-        public Builder source(AvMessageSource source) {
+        public Builder source(InfoSource source) {
             this.source = source;
             return this;
         }

@@ -2,8 +2,8 @@ package dvoraka.avservice.db.model;
 
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageInfoData;
-import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.DefaultAvMessageInfo;
+import dvoraka.avservice.common.data.InfoSource;
 import org.apache.solr.client.solrj.beans.Field;
 
 import javax.persistence.Id;
@@ -70,7 +70,7 @@ public class MessageInfoDocument implements AvMessageInfoData {
     @Override
     public AvMessageInfo avMessageInfo() {
         return new DefaultAvMessageInfo.Builder(getUuid())
-                .source(AvMessageSource.valueOf(getSource()))
+                .source(InfoSource.valueOf(getSource()))
                 .serviceId(getServiceId())
                 .created(getCreated().toInstant())
                 .build();

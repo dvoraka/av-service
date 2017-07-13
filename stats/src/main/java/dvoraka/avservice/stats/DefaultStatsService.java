@@ -1,6 +1,6 @@
 package dvoraka.avservice.stats;
 
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class DefaultStatsService implements StatsService {
 
         return messages
                 .when(start, Instant.now())
-                .filter(info -> info.getSource().equals(AvMessageSource.PROCESSOR))
+                .filter(info -> info.getSource().equals(InfoSource.PROCESSOR))
                 .count();
     }
 }

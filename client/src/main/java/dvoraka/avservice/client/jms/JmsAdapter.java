@@ -3,7 +3,7 @@ package dvoraka.avservice.client.jms;
 import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -64,7 +64,7 @@ public class JmsAdapter implements NetworkComponent, AvMessageHelper {
         AvMessage avMessage;
         try {
             avMessage = (AvMessage) messageConverter.fromMessage(message);
-            messageInfoService.save(avMessage, AvMessageSource.JMS_COMPONENT_IN, serviceId);
+            messageInfoService.save(avMessage, InfoSource.JMS_COMPONENT_IN, serviceId);
         } catch (JMSException | MessageConversionException e) {
             log.warn("Conversion error!", e);
 
@@ -80,7 +80,7 @@ public class JmsAdapter implements NetworkComponent, AvMessageHelper {
 
         try {
             jmsTemplate.convertAndSend(destination, message);
-            messageInfoService.save(message, AvMessageSource.JMS_COMPONENT_OUT, serviceId);
+            messageInfoService.save(message, InfoSource.JMS_COMPONENT_OUT, serviceId);
         } catch (MessageConversionException e) {
             log.warn("Conversion problem!", e);
 

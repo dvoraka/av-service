@@ -4,7 +4,7 @@ import dvoraka.avservice.avprogram.service.AvService;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.CustomThreadFactory;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.exception.ScanException;
 import dvoraka.avservice.common.service.BasicMessageStatusStorage;
@@ -43,7 +43,7 @@ public class AvCheckMessageProcessor implements MessageProcessor {
 
     public static final int CACHE_TIMEOUT = 60 * 1_000; // one minute
     private static final long POOL_TERM_TIME_S = 20;
-    private static final AvMessageSource MESSAGE_SOURCE = AvMessageSource.PROCESSOR;
+    private static final InfoSource MESSAGE_SOURCE = InfoSource.PROCESSOR;
 
     private final MessageStatusStorage statusStorage;
 

@@ -2,7 +2,7 @@ package dvoraka.avservice.db.service;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class DummyMessageInfoService implements MessageInfoService {
 
     @Override
-    public void save(AvMessage message, AvMessageSource source, String serviceId) {
+    public void save(AvMessage message, InfoSource source, String serviceId) {
         // do nothing
     }
 

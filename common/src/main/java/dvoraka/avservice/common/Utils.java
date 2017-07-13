@@ -2,9 +2,9 @@ package dvoraka.avservice.common;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
-import dvoraka.avservice.common.data.AvMessageSource;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessageInfo;
+import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.data.MessageType;
 
 import java.nio.charset.StandardCharsets;
@@ -116,7 +116,7 @@ public final class Utils {
         return genFileMessage(MessageType.FILE_DELETE);
     }
 
-    public static AvMessageInfo genAvMessageInfo(AvMessageSource source) {
+    public static AvMessageInfo genAvMessageInfo(InfoSource source) {
         return new DefaultAvMessageInfo.Builder(genUuidString())
                 .source(source)
                 .serviceId(TEST_SERVICE_ID)

@@ -2,7 +2,7 @@ package dvoraka.avservice.db.service;
 
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
-import dvoraka.avservice.common.data.AvMessageSource;
+import dvoraka.avservice.common.data.InfoSource;
 
 import java.time.Instant;
 import java.util.stream.Stream;
@@ -19,7 +19,7 @@ public interface MessageInfoService {
      * @param source    the source of the AV message
      * @param serviceId the service ID
      */
-    void save(AvMessage message, AvMessageSource source, String serviceId);
+    void save(AvMessage message, InfoSource source, String serviceId);
 
     /**
      * Loads a stored AV message info for a given UUID string.

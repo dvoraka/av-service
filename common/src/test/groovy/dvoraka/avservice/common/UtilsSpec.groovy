@@ -2,7 +2,7 @@ package dvoraka.avservice.common
 
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageInfo
-import dvoraka.avservice.common.data.AvMessageSource
+import dvoraka.avservice.common.data.InfoSource
 import dvoraka.avservice.common.data.MessageType
 import spock.lang.Specification
 
@@ -118,7 +118,7 @@ class UtilsSpec extends Specification {
 
     def "generate message info"() {
         given:
-            AvMessageInfo messageInfo = Utils.genAvMessageInfo(AvMessageSource.TEST)
+            AvMessageInfo messageInfo = Utils.genAvMessageInfo(InfoSource.TEST)
 
         expect:
             with(messageInfo) {
@@ -128,7 +128,7 @@ class UtilsSpec extends Specification {
                 getCreated()
             }
 
-            messageInfo.getSource() == AvMessageSource.TEST
+            messageInfo.getSource() == InfoSource.TEST
     }
 
     void checkMessageFields(AvMessage message) {
