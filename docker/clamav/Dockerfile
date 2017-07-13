@@ -2,7 +2,8 @@ FROM debian:stretch
 MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
 RUN apt-get update \
-    && apt-get --no-install-recommends -y install \
+    && DEBIAN_FRONTEND=noninteractive \
+    apt-get --no-install-recommends -y install \
         clamav-daemon \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
