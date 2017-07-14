@@ -25,7 +25,9 @@ public class ReplicationConfig {
     @Value("${avservice.storage.replication.count}")
     private int replicationCount;
     @Value("${avservice.storage.replication.service.maxResponseTime}")
-    private int maxResponseTime;
+    private int maxServiceResponseTime;
+    @Value("${avservice.storage.replication.remoteLock.maxResponseTime}")
+    private int maxLockResponseTime;
 
 
     @Bean
@@ -43,7 +45,7 @@ public class ReplicationConfig {
                 nodeId
         );
         service.setReplicationCount(replicationCount);
-        service.setMaxResponseTime(maxResponseTime);
+        service.setMaxResponseTime(maxServiceResponseTime);
 
         return service;
     }
@@ -53,7 +55,10 @@ public class ReplicationConfig {
             ReplicationServiceClient serviceClient,
             ReplicationResponseClient responseClient
     ) {
-        return new DefaultRemoteLock(serviceClient, responseClient, nodeId);
+        DefaultRemoteLock lock = new DefaultRemoteLock(serviceClient, responseClient, nodeId);
+        lock.setMaxResponseTime(maxLockResponseTime);
+
+        return lock;
     }
 
     @Bean

@@ -44,12 +44,17 @@ public class DefaultRemoteLock implements
     private static final Logger log = LogManager.getLogger(DefaultRemoteLock.class);
 
     private static final String UNLOCKING_FAILED = "Unlocking failed!";
+    /**
+     * Default max response time in ms.
+     */
     private static final int MAX_RESPONSE_TIME = 500;
 
     private final AtomicLong sequence;
     private final Set<String> lockedFiles;
     private final Lock lockingLock;
     private final HashingService hashingService;
+
+    private int maxResponseTime;
 
     private final String idString;
 
@@ -68,6 +73,8 @@ public class DefaultRemoteLock implements
         lockedFiles = new HashSet<>();
         lockingLock = new ReentrantLock();
         hashingService = new Md5HashingService();
+
+        maxResponseTime = MAX_RESPONSE_TIME;
 
         idString = "(" + nodeId + ")";
     }
@@ -151,7 +158,7 @@ public class DefaultRemoteLock implements
 
     private long getLockResponse(String messageId, int lockCount) {
         return responseClient.getResponseWaitSize(
-                messageId, MAX_RESPONSE_TIME, lockCount)
+                messageId, maxResponseTime, lockCount)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .filter(message -> message.getReplicationStatus() == ReplicationStatus.READY)
@@ -166,7 +173,7 @@ public class DefaultRemoteLock implements
         serviceClient.sendMessage(unlockRequest);
 
         long successUnlocks = responseClient.getResponseWaitSize(
-                unlockRequest.getId(), MAX_RESPONSE_TIME, lockCount)
+                unlockRequest.getId(), maxResponseTime, lockCount)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .filter(message -> message.getReplicationStatus() == ReplicationStatus.OK)
@@ -198,7 +205,7 @@ public class DefaultRemoteLock implements
         ReplicationMessage request = createSequenceRequest(nodeId);
         serviceClient.sendMessage(request);
 
-        long actualSequence = responseClient.getResponseWait(request.getId(), MAX_RESPONSE_TIME)
+        long actualSequence = responseClient.getResponseWait(request.getId(), maxResponseTime)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .peek(message -> log.debug("Sequence {}: {}", idString, message))
@@ -258,6 +265,14 @@ public class DefaultRemoteLock implements
         byte[] bytes = (filename + owner).getBytes(StandardCharsets.UTF_8);
 
         return hashingService.arrayHash(bytes);
+    }
+
+    public int getMaxResponseTime() {
+        return maxResponseTime;
+    }
+
+    public void setMaxResponseTime(int maxResponseTime) {
+        this.maxResponseTime = maxResponseTime;
     }
 
     @Override
