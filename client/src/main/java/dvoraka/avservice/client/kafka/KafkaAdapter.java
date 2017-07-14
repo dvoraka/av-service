@@ -50,7 +50,7 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
     @Override
     public void sendAvMessage(AvMessage message) {
         kafkaTemplate.send(topic, message);
-        messageInfoService.save(message, InfoSource.KAFKA_COMPONENT_OUT, serviceId);
+        messageInfoService.save(message, InfoSource.KAFKA_ADAPTER_OUT, serviceId);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
         requireNonNull(record, "Record must not be null!");
         AvMessage avMessage = record.value();
 
-        messageInfoService.save(avMessage, InfoSource.KAFKA_COMPONENT_IN, serviceId);
+        messageInfoService.save(avMessage, InfoSource.KAFKA_ADAPTER_IN, serviceId);
 
         notifyListeners(listeners, avMessage);
     }

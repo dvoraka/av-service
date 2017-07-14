@@ -64,7 +64,7 @@ public class JmsAdapter implements NetworkComponent, AvMessageHelper {
         AvMessage avMessage;
         try {
             avMessage = (AvMessage) messageConverter.fromMessage(message);
-            messageInfoService.save(avMessage, InfoSource.JMS_COMPONENT_IN, serviceId);
+            messageInfoService.save(avMessage, InfoSource.JMS_ADAPTER_IN, serviceId);
         } catch (JMSException | MessageConversionException e) {
             log.warn("Conversion error!", e);
 
@@ -80,7 +80,7 @@ public class JmsAdapter implements NetworkComponent, AvMessageHelper {
 
         try {
             jmsTemplate.convertAndSend(destination, message);
-            messageInfoService.save(message, InfoSource.JMS_COMPONENT_OUT, serviceId);
+            messageInfoService.save(message, InfoSource.JMS_ADAPTER_OUT, serviceId);
         } catch (MessageConversionException e) {
             log.warn("Conversion problem!", e);
 
