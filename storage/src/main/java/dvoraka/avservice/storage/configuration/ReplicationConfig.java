@@ -24,6 +24,8 @@ public class ReplicationConfig {
     private String nodeId;
     @Value("${avservice.storage.replication.count}")
     private int replicationCount;
+    @Value("${avservice.storage.replication.service.maxResponseTime}")
+    private int maxResponseTime;
 
 
     @Bean
@@ -41,6 +43,7 @@ public class ReplicationConfig {
                 nodeId
         );
         service.setReplicationCount(replicationCount);
+        service.setMaxResponseTime(maxResponseTime);
 
         return service;
     }
