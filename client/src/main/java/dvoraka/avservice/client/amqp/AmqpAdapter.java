@@ -62,7 +62,7 @@ public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
         AvMessage avMessage;
         try {
             avMessage = (AvMessage) messageConverter.fromMessage(message);
-            messageInfoService.save(avMessage, InfoSource.AMQP_COMPONENT_IN, serviceId);
+            messageInfoService.save(avMessage, InfoSource.AMQP_ADAPTER_IN, serviceId);
         } catch (MessageConversionException e) {
             log.warn("Conversion error!", e);
 
@@ -78,7 +78,7 @@ public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
 
         try {
             rabbitTemplate.convertAndSend(responseExchange, ROUTING_KEY, message);
-            messageInfoService.save(message, InfoSource.AMQP_COMPONENT_OUT, serviceId);
+            messageInfoService.save(message, InfoSource.AMQP_ADAPTER_OUT, serviceId);
         } catch (MessageConversionException e) {
             log.warn("Conversion problem!", e);
 

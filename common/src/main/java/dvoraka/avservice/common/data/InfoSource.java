@@ -4,10 +4,8 @@ package dvoraka.avservice.common.data;
  * Info sources.
  */
 public enum InfoSource {
-    CUSTOM,
-
-    AMQP_COMPONENT_IN,
-    AMQP_COMPONENT_OUT,
+    AMQP_ADAPTER_IN,
+    AMQP_ADAPTER_OUT,
 
     JMS_COMPONENT_IN,
     JMS_COMPONENT_OUT,
