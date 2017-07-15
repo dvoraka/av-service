@@ -3,4 +3,6 @@ server.host: "0"
 elasticsearch.url: http://localhost:9200
 elasticsearch.username: elastic
 elasticsearch.password: changeme
-xpack.monitoring.ui.container.elasticsearch.enabled: true
+
+xpack.security.enabled: false
+xpack.monitoring.ui.container.elasticsearch.enabled: false

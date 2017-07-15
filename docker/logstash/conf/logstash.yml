@@ -1,5 +1,7 @@
 http.host: "localhost"
 path.config: /usr/share/logstash/pipeline
+
+xpack.security.enabled: false
 xpack.monitoring.elasticsearch.url: http://localhost:9200
 xpack.monitoring.elasticsearch.username: logstash_system
 xpack.monitoring.elasticsearch.password: changeme

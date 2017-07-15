@@ -3,8 +3,8 @@
 # Xms represents the initial size of total heap space
 # Xmx represents the maximum size of total heap space
 
--Xms192m
--Xmx192m
+-Xms256m
+-Xmx256m
 
 ################################################################
 ## Expert settings
