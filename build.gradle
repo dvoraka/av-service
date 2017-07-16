@@ -228,7 +228,7 @@ allprojects {
     }
 
     findbugs {
-        toolVersion = '3.0.4'
+        toolVersion = '3.0.1'
         reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
         reportLevel = 'medium'
         sourceSets = [sourceSets.main]
@@ -244,7 +244,7 @@ allprojects {
     }
 
     pmd {
-        toolVersion = '5.5.2'
+        toolVersion = '5.8.1'
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
         sourceSets = [sourceSets.main]
 
