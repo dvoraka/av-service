@@ -228,7 +228,7 @@ allprojects {
     }
 
     findbugs {
-        toolVersion = '3.0.1'
+        toolVersion = '3.0.4'
         reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
         reportLevel = 'medium'
         sourceSets = [sourceSets.main]
