@@ -2,6 +2,8 @@ package dvoraka.avservice.runner;
 
 import dvoraka.avservice.common.runner.ServiceRunner;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * Runner configuration.
  */
@@ -24,7 +26,7 @@ public interface RunnerConfiguration {
     /**
      * Check service running status. The real service check.
      *
-     * @return the running status
+     * @return the boolean supplier
      */
-    boolean running();
+    BooleanSupplier running();
 }

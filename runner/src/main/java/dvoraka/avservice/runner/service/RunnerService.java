@@ -10,6 +10,8 @@ public interface RunnerService {
 
     void start(RunnerConfiguration configuration);
 
+    void start(String id);
+
     void stop(RunnerConfiguration configuration);
 
     void stop(String id);
