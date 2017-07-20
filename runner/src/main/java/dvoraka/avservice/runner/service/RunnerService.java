@@ -1,5 +1,6 @@
 package dvoraka.avservice.runner.service;
 
+import dvoraka.avservice.runner.RunnerAlreadyExists;
 import dvoraka.avservice.runner.RunnerConfiguration;
 import dvoraka.avservice.runner.RunningState;
 
@@ -8,15 +9,11 @@ import dvoraka.avservice.runner.RunningState;
  */
 public interface RunnerService {
 
-    void start(RunnerConfiguration configuration);
+    void create(RunnerConfiguration configuration) throws RunnerAlreadyExists;
 
     void start(String id);
 
-    void stop(RunnerConfiguration configuration);
-
     void stop(String id);
-
-    RunningState getState(RunnerConfiguration configuration);
 
     RunningState getState(String id);
 }

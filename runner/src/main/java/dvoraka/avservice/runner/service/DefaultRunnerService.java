@@ -1,5 +1,6 @@
 package dvoraka.avservice.runner.service;
 
+import dvoraka.avservice.runner.RunnerAlreadyExists;
 import dvoraka.avservice.runner.RunnerConfiguration;
 import dvoraka.avservice.runner.RunningState;
 
@@ -9,7 +10,7 @@ import dvoraka.avservice.runner.RunningState;
 public class DefaultRunnerService implements RunnerService {
 
     @Override
-    public void start(RunnerConfiguration configuration) {
+    public void create(RunnerConfiguration configuration) throws RunnerAlreadyExists {
     }
 
     @Override
@@ -17,16 +18,7 @@ public class DefaultRunnerService implements RunnerService {
     }
 
     @Override
-    public void stop(RunnerConfiguration configuration) {
-    }
-
-    @Override
     public void stop(String id) {
-    }
-
-    @Override
-    public RunningState getState(RunnerConfiguration configuration) {
-        return null;
     }
 
     @Override
