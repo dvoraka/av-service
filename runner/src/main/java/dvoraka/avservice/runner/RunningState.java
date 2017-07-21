@@ -5,6 +5,7 @@ package dvoraka.avservice.runner;
  */
 public enum RunningState {
     UNKNOWN,
+    STARTING,
     RUNNING,
     STOPPED
 }
