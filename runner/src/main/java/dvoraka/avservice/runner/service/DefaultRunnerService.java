@@ -75,6 +75,7 @@ public class DefaultRunnerService implements RunnerService {
                 Thread.sleep(waitTime);
             } catch (InterruptedException e) {
                 log.warn("Waiting interrupted!", e);
+                Thread.currentThread().interrupt();
 
                 return;
             }
