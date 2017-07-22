@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Default runner service implementation.
@@ -22,11 +24,15 @@ public class DefaultRunnerService implements RunnerService {
     private static final Logger log = LogManager.getLogger(DefaultRunnerService.class);
 
     private final ConcurrentMap<String, RunningState> states;
+    private final ExecutorService executorService;
 
 
     public DefaultRunnerService() {
         configurations = new ConcurrentHashMap<>();
         states = new ConcurrentHashMap<>();
+
+        final int threadCount = 8;
+        executorService = Executors.newFixedThreadPool(threadCount);
     }
 
     @Override
