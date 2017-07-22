@@ -20,32 +20,57 @@ class DefaultRunnerServiceSpec extends Specification {
         service = new DefaultRunnerService()
     }
 
+    def cleanup() {
+        service.stop()
+    }
+
     def "create runner"() {
         when:
-            service.create(configuration)
+            service.createRunner(configuration)
 
         then:
-            service.getState(configuration.getId()) == RunningState.UNKNOWN
+            service.getRunnerState(configuration.getId()) == RunningState.UNKNOWN
     }
 
     def "create runner and start"() {
         when:
-            service.create(configuration)
+            service.createRunner(configuration)
 
         then:
-            service.getState(configuration.getId()) == RunningState.UNKNOWN
+            service.getRunnerState(configuration.getId()) == RunningState.UNKNOWN
 
         when:
-            service.start(configuration.getId())
+            service.startRunner(configuration.getId())
             sleep(100)
 
         then:
-            service.getState(configuration.getId()) == RunningState.RUNNING
+            service.getRunnerState(configuration.getId()) == RunningState.RUNNING
+    }
+
+    def "create runner, start and stop"() {
+        when:
+            service.createRunner(configuration)
+
+        then:
+            service.getRunnerState(configuration.getId()) == RunningState.UNKNOWN
+
+        when:
+            service.startRunner(configuration.getId())
+            sleep(100)
+
+        then:
+            service.getRunnerState(configuration.getId()) == RunningState.RUNNING
+
+        when:
+            service.stopRunner(configuration.getId())
+
+        then:
+            service.getRunnerState(configuration.getId()) == RunningState.STOPPED
     }
 
     def "start with unknown ID"() {
         when:
-            service.start("aaaaaa")
+            service.startRunner("aaaaaa")
 
         then:
             thrown(RunnerNotFoundException)
@@ -53,7 +78,7 @@ class DefaultRunnerServiceSpec extends Specification {
 
     def "stop with unknown ID"() {
         when:
-            service.stop("aaaaaa")
+            service.stopRunner("aaaaaa")
 
         then:
             thrown(RunnerNotFoundException)
@@ -61,7 +86,7 @@ class DefaultRunnerServiceSpec extends Specification {
 
     def "state for unknown ID"() {
         when:
-            service.stop("aaaaaa")
+            service.stopRunner("aaaaaa")
 
         then:
             thrown(RunnerNotFoundException)

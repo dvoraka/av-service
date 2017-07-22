@@ -10,11 +10,15 @@ import dvoraka.avservice.runner.RunningState;
  */
 public interface RunnerService {
 
-    void create(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
+    void createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
 
-    void start(String id) throws RunnerNotFoundException;
+    void start();
 
-    void stop(String id) throws RunnerNotFoundException;
+    void stop();
 
-    RunningState getState(String id) throws RunnerNotFoundException;
+    void startRunner(String id) throws RunnerNotFoundException;
+
+    void stopRunner(String id) throws RunnerNotFoundException;
+
+    RunningState getRunnerState(String id) throws RunnerNotFoundException;
 }

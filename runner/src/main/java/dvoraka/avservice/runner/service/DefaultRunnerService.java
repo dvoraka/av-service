@@ -1,5 +1,6 @@
 package dvoraka.avservice.runner.service;
 
+import dvoraka.avservice.common.service.ExecutorServiceHelper;
 import dvoraka.avservice.runner.RunnerAlreadyExistsException;
 import dvoraka.avservice.runner.RunnerConfiguration;
 import dvoraka.avservice.runner.RunnerNotFoundException;
@@ -8,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -17,7 +20,7 @@ import java.util.concurrent.Executors;
  * Default runner service implementation.
  */
 @Service
-public class DefaultRunnerService implements RunnerService {
+public class DefaultRunnerService implements RunnerService, ExecutorServiceHelper {
 
     private final ConcurrentMap<String, RunnerConfiguration> configurations;
 
@@ -36,7 +39,8 @@ public class DefaultRunnerService implements RunnerService {
     }
 
     @Override
-    public void create(RunnerConfiguration configuration) throws RunnerAlreadyExistsException {
+    public void createRunner(RunnerConfiguration configuration)
+            throws RunnerAlreadyExistsException {
         log.info("Creating new configuration: {}...", configuration.getId());
 
         if (configurations.containsKey(configuration.getId())) {
@@ -48,7 +52,19 @@ public class DefaultRunnerService implements RunnerService {
     }
 
     @Override
-    public void start(String id) throws RunnerNotFoundException {
+    @PostConstruct
+    public void start() {
+    }
+
+    @Override
+    @PreDestroy
+    public void stop() {
+        final int waitTime = 5;
+        shutdownAndAwaitTermination(executorService, waitTime, log);
+    }
+
+    @Override
+    public void startRunner(String id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
 
         RunnerConfiguration configuration = configurations.get(id);
@@ -59,7 +75,7 @@ public class DefaultRunnerService implements RunnerService {
     }
 
     @Override
-    public void stop(String id) throws RunnerNotFoundException {
+    public void stopRunner(String id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
 
         RunnerConfiguration configuration = configurations.get(id);
@@ -68,7 +84,7 @@ public class DefaultRunnerService implements RunnerService {
     }
 
     @Override
-    public RunningState getState(String id) throws RunnerNotFoundException {
+    public RunningState getRunnerState(String id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
 
         return states.get(id);
