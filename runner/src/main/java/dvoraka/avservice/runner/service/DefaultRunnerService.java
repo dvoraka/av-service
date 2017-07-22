@@ -54,6 +54,8 @@ public class DefaultRunnerService implements RunnerService {
         RunnerConfiguration configuration = configurations.get(id);
         configuration.getServiceRunner().runAsync();
         states.put(id, RunningState.STARTING);
+
+        executorService.execute(() -> updateState(id));
     }
 
     @Override
