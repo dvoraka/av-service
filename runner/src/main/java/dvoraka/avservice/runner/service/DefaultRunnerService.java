@@ -44,11 +44,19 @@ public class DefaultRunnerService implements RunnerService {
     @Override
     public void start(String id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
+
+        RunnerConfiguration configuration = configurations.get(id);
+        configuration.getServiceRunner().runAsync();
+        states.put(id, RunningState.STARTING);
     }
 
     @Override
     public void stop(String id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
+
+        RunnerConfiguration configuration = configurations.get(id);
+        configuration.getServiceRunner().stop();
+        states.put(id, RunningState.STOPPED);
     }
 
     @Override
@@ -56,6 +64,23 @@ public class DefaultRunnerService implements RunnerService {
         checkRunnerExistence(id);
 
         return states.get(id);
+    }
+
+    private void updateState(String id) {
+        RunnerConfiguration configuration = configurations.get(id);
+
+        final int waitTime = 1_000;
+        while (!configuration.running().getAsBoolean()) {
+            try {
+                Thread.sleep(waitTime);
+            } catch (InterruptedException e) {
+                log.warn("Waiting interrupted!", e);
+
+                return;
+            }
+        }
+
+        states.put(id, RunningState.RUNNING);
     }
 
     private void checkRunnerExistence(String id) throws RunnerNotFoundException {
