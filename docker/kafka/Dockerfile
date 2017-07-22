@@ -1,4 +1,5 @@
 FROM  spotify/kafka
+MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
 COPY conf/server.properties $KAFKA_HOME/config/
 
