@@ -23,15 +23,13 @@ import java.util.concurrent.Executors;
 @Service
 public class DefaultRunnerService implements RunnerService, ExecutorServiceHelper {
 
-    private final ConcurrentMap<String, RunnerConfiguration> configurations;
-
     private static final Logger log = LogManager.getLogger(DefaultRunnerService.class);
 
+    private final ConcurrentMap<String, RunnerConfiguration> configurations;
     private final ConcurrentMap<String, RunningState> states;
     private final ExecutorService executorService;
 
 
-    @Autowired
     public DefaultRunnerService() {
         configurations = new ConcurrentHashMap<>();
         states = new ConcurrentHashMap<>();
