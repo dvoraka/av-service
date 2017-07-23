@@ -4,7 +4,13 @@ import dvoraka.avservice.common.runner.ServiceRunner;
 
 import java.util.function.BooleanSupplier;
 
+/**
+ * Dummy runner configuration which does nothing.
+ */
 public class DummyRunnerConfiguration implements RunnerConfiguration {
+
+    private boolean running;
+
 
     @Override
     public String getId() {
@@ -16,19 +22,22 @@ public class DummyRunnerConfiguration implements RunnerConfiguration {
         return new ServiceRunner() {
             @Override
             public void stop() {
+                running = false;
             }
 
             @Override
             public void run() {
+                running = true;
             }
 
             @Override
             public void runAsync() {
+                run();
             }
 
             @Override
             public boolean isRunning() {
-                return false;
+                return running;
             }
         };
     }
