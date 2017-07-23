@@ -7,6 +7,7 @@ import dvoraka.avservice.runner.RunnerNotFoundException;
 import dvoraka.avservice.runner.RunningState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +31,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     private final ExecutorService executorService;
 
 
+    @Autowired
     public DefaultRunnerService() {
         configurations = new ConcurrentHashMap<>();
         states = new ConcurrentHashMap<>();
