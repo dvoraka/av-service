@@ -4,7 +4,7 @@
 [![Latest release](https://img.shields.io/badge/release-0.8-brightgreen.svg)](https://github.com/dvoraka/av-service/releases/tag/v0.8)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2e3856220448493482f6de90a0d84ee0)](https://www.codacy.com/app/dvoraka/av-service?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dvoraka/av-service&amp;utm_campaign=Badge_Grade)
 [![Open Hub](https://www.openhub.net/p/av-service/widgets/project_thin_badge?format=gif)](https://www.openhub.net/p/av-service/)
-[![IntelliJ IDEA](/imgs/idea_logo.svg)](https://www.jetbrains.com)
+[![IntelliJ IDEA](/imgs/idea_logo.png)](https://www.jetbrains.com)
 
 A file service prototype with a replication and anti-virus checking. It is mostly a study project
 but it is possible to use it after some "production" tuning.
