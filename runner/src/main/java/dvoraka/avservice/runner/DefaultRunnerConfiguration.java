@@ -9,18 +9,33 @@ import java.util.function.BooleanSupplier;
  */
 public class DefaultRunnerConfiguration implements RunnerConfiguration {
 
+    private final String configurationId;
+    private final ServiceRunner serviceRunner;
+    private final BooleanSupplier supplier;
+
+
+    public DefaultRunnerConfiguration(
+            String configurationId,
+            ServiceRunner serviceRunner,
+            BooleanSupplier supplier
+    ) {
+        this.configurationId = configurationId;
+        this.serviceRunner = serviceRunner;
+        this.supplier = supplier;
+    }
+
     @Override
     public String getId() {
-        return null;
+        return configurationId;
     }
 
     @Override
     public ServiceRunner getServiceRunner() {
-        return null;
+        return serviceRunner;
     }
 
     @Override
     public BooleanSupplier running() {
-        return null;
+        return supplier;
     }
 }
