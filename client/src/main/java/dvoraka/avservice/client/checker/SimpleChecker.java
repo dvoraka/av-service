@@ -134,4 +134,9 @@ public class SimpleChecker implements Checker, AvMessageListener {
             Thread.currentThread().interrupt();
         }
     }
+
+    @Override
+    public boolean getAsBoolean() {
+        return check();
+    }
 }
