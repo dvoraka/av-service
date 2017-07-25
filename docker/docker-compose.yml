@@ -1,4 +1,4 @@
-version: '2'
+version: '3.3'
 
 services:
 
@@ -47,6 +47,7 @@ services:
     build: ./postgresql
     image: "postgresql-dev-server"
     network_mode: "host"
+    stop_grace_period: 30s
 
   # Solr
   solr-dev:
