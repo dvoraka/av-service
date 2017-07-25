@@ -21,7 +21,7 @@ before_install:
   - sudo sysctl vm.max_map_count=262144
   - env
   - cd docker
-  - sudo pip install -U docker-compose
+  - sudo -H pip install -U docker-compose
   - travis_wait 40 docker-compose up -d
   - cd $TRAVIS_BUILD_DIR
 
