@@ -32,6 +32,15 @@ class DefaultRunnerServiceSpec extends Specification {
             service.getRunnerState(configuration.getId()) == RunningState.UNKNOWN
     }
 
+    def "list configurations"() {
+        when:
+            service.createRunner(configuration)
+
+        then:
+            service.listRunners().size() == 1
+            service.listRunners().stream().findAny().orElse("") == configuration.getId()
+    }
+
     def "create runner and start"() {
         when:
             service.createRunner(configuration)

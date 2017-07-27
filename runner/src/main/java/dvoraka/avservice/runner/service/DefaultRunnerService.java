@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -48,6 +50,11 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
         states.put(configuration.getId(), RunningState.UNKNOWN);
         configurations.put(configuration.getId(), configuration);
+    }
+
+    @Override
+    public Collection<String> listRunners() {
+        return new ArrayList<>(configurations.keySet());
     }
 
     @Override
