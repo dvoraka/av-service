@@ -3,7 +3,7 @@ package dvoraka.avservice.storage.service;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageType;
-import dvoraka.avservice.db.model.File;
+import dvoraka.avservice.db.model.FileEntity;
 import dvoraka.avservice.db.repository.db.DbFileRepository;
 import dvoraka.avservice.storage.exception.ExistingFileException;
 import dvoraka.avservice.storage.exception.FileNotFoundException;
@@ -50,8 +50,8 @@ public class DbFileService implements FileService {
         }
     }
 
-    private File buildFile(FileMessage message) {
-        File file = new File();
+    private FileEntity buildFile(FileMessage message) {
+        FileEntity file = new FileEntity();
         file.setData(message.getData());
         file.setFilename(message.getFilename());
         file.setOwner(message.getOwner());
@@ -63,7 +63,7 @@ public class DbFileService implements FileService {
     public FileMessage loadFile(FileMessage message) {
         log.debug("Loading: " + message);
 
-        Optional<File> file = repository.findByFilenameAndOwner(
+        Optional<FileEntity> file = repository.findByFilenameAndOwner(
                 message.getFilename(), message.getOwner());
         log.debug("Loaded: " + file);
 
@@ -82,7 +82,7 @@ public class DbFileService implements FileService {
     public void updateFile(FileMessage message) throws FileNotFoundException {
         log.debug("Updating: " + message);
 
-        Optional<File> oldFile = repository.findByFilenameAndOwner(
+        Optional<FileEntity> oldFile = repository.findByFilenameAndOwner(
                 message.getFilename(), message.getOwner());
 
         if (oldFile.isPresent()) {

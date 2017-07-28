@@ -17,12 +17,13 @@ import java.util.UUID;
  * File entity.
  */
 @Table(
+        name = "FILE",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"filename", "owner"})
         }
 )
 @Entity
-public class File {
+public class FileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,14 +7,14 @@ import spock.lang.Subject
 /**
  * File spec.
  */
-class FileSpec extends Specification {
+class FileEntitySpec extends Specification {
 
     @Subject
-    File file
+    FileEntity file
 
 
     def setup() {
-        file = new File()
+        file = new FileEntity()
     }
 
     def "set and get"() {
