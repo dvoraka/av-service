@@ -43,7 +43,8 @@ public interface FileService {
      * Deletes a file.
      *
      * @param message the delete request/message
-     * @throws FileServiceException if other service problem occurs
+     * @throws FileNotFoundException if the file is not found
+     * @throws FileServiceException  if other service problem occurs
      */
     void deleteFile(FileMessage message) throws FileServiceException;
 
