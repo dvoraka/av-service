@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.configuration;
+package dvoraka.avservice.client.configuration.file;
 
 import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.client.amqp.AmqpAdapter;
