@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.Future;
+
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -29,12 +31,14 @@ public class DefaultAvServiceClient implements AvServiceClient {
     }
 
     @Override
-    public void checkMessage(AvMessage message) {
+    public Future<AvMessage> checkMessage(AvMessage message) {
         if (!MessageType.FILE_CHECK.equals(message.getType())) {
             log.warn(BAD_TYPE);
             throw new IllegalArgumentException(BAD_TYPE);
         }
 
         networkComponent.sendAvMessage(message);
+
+        return null;
     }
 }

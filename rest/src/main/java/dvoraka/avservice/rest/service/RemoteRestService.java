@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.concurrent.Future;
 
 import static java.util.Objects.requireNonNull;
 
@@ -60,10 +61,12 @@ public class RemoteRestService implements RestService {
     }
 
     @Override
-    public void checkMessage(AvMessage message) {
+    public Future<AvMessage> checkMessage(AvMessage message) {
         log.debug("Checking: {}", message);
         statusStorage.started(message.getId());
         avServiceClient.checkMessage(message);
+
+        return null;
     }
 
     @Override

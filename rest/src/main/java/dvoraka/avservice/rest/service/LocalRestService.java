@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Objects.requireNonNull;
@@ -70,8 +71,10 @@ public class LocalRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public void checkMessage(AvMessage message) {
+    public Future<AvMessage> checkMessage(AvMessage message) {
         messageProcessor.sendMessage(message);
+
+        return null;
     }
 
     @Override
