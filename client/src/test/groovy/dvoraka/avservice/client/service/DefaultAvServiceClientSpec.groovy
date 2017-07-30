@@ -1,6 +1,7 @@
 package dvoraka.avservice.client.service
 
 import dvoraka.avservice.client.NetworkComponent
+import dvoraka.avservice.client.service.response.ResponseClient
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import spock.lang.Specification
@@ -15,11 +16,13 @@ class DefaultAvServiceClientSpec extends Specification {
     DefaultAvServiceClient client
 
     NetworkComponent serverComponent
+    ResponseClient responseClient
 
 
     def setup() {
         serverComponent = Mock()
-        client = new DefaultAvServiceClient(serverComponent)
+        responseClient = Mock()
+        client = new DefaultAvServiceClient(serverComponent, responseClient)
     }
 
     def "check message with correct type"() {

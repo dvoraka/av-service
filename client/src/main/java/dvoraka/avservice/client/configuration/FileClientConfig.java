@@ -31,8 +31,11 @@ import org.springframework.context.annotation.Profile;
 public class FileClientConfig {
 
     @Bean
-    public AvServiceClient avServiceClient(NetworkComponent networkComponent) {
-        return new DefaultAvServiceClient(networkComponent);
+    public AvServiceClient avServiceClient(
+            NetworkComponent networkComponent,
+            ResponseClient responseClient
+    ) {
+        return new DefaultAvServiceClient(networkComponent, responseClient);
     }
 
     @Bean

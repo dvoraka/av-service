@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static java.util.Objects.requireNonNull;
 
@@ -124,5 +126,31 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
         log.debug("On message: {}", response);
         messageCache.put(response.getCorrelationId(), response);
         messageInfoService.save(response, InfoSource.RESPONSE_CACHE, serviceId);
+    }
+
+    @Override
+    public boolean cancel(boolean mayInterruptIfRunning) {
+        return false;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return false;
+    }
+
+    @Override
+    public boolean isDone() {
+        return false;
+    }
+
+    @Override
+    public AvMessage get() throws InterruptedException, ExecutionException {
+        return null;
+    }
+
+    @Override
+    public AvMessage get(long timeout, TimeUnit unit)
+            throws InterruptedException, ExecutionException, TimeoutException {
+        return null;
     }
 }

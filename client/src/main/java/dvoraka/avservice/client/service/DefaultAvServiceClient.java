@@ -1,6 +1,7 @@
 package dvoraka.avservice.client.service;
 
 import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageType;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +20,7 @@ import static java.util.Objects.requireNonNull;
 public class DefaultAvServiceClient implements AvServiceClient {
 
     private final NetworkComponent networkComponent;
+    private final ResponseClient responseClient;
 
     private static final Logger log = LogManager.getLogger(DefaultAvServiceClient.class);
 
@@ -26,8 +28,12 @@ public class DefaultAvServiceClient implements AvServiceClient {
 
 
     @Autowired
-    public DefaultAvServiceClient(NetworkComponent networkComponent) {
+    public DefaultAvServiceClient(
+            NetworkComponent networkComponent,
+            ResponseClient responseClient
+    ) {
         this.networkComponent = requireNonNull(networkComponent);
+        this.responseClient = requireNonNull(responseClient);
     }
 
     @Override
@@ -39,6 +45,6 @@ public class DefaultAvServiceClient implements AvServiceClient {
 
         networkComponent.sendAvMessage(message);
 
-        return null;
+        return responseClient;
     }
 }
