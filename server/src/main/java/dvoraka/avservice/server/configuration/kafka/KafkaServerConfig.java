@@ -48,7 +48,7 @@ public class KafkaServerConfig {
 
 
     @Bean
-    public NetworkComponent fileServerComponent(
+    public NetworkComponent fileNetworkComponent(
             KafkaTemplate<String, AvMessage> kafkaTemplate,
             MessageInfoService messageInfoService
     ) {

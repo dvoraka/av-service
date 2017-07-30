@@ -30,7 +30,7 @@ public class AmqpFileClientConfig {
 
 
     @Bean
-    public NetworkComponent serverComponent(
+    public NetworkComponent networkComponent(
             RabbitTemplate rabbitTemplate,
             MessageInfoService messageInfoService
     ) {
@@ -44,7 +44,8 @@ public class AmqpFileClientConfig {
 
     @Bean
     public MessageListenerContainer messageListenerContainer(
-            ConnectionFactory connectionFactory, MessageListener messageListener
+            ConnectionFactory connectionFactory,
+            MessageListener messageListener
     ) {
         DirectMessageListenerContainer container = new DirectMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);

@@ -30,7 +30,7 @@ public class JmsFileClientConfig {
 
 
     @Bean
-    public NetworkComponent serverComponent(
+    public NetworkComponent networkComponent(
             JmsTemplate jmsTemplate,
             MessageInfoService messageInfoService
     ) {
