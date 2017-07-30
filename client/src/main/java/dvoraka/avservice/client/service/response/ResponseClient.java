@@ -2,12 +2,10 @@ package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.common.data.AvMessage;
 
-import java.util.concurrent.Future;
-
 /**
  * Client interface for getting a response.
  */
-public interface ResponseClient extends Future<AvMessage>, ResponseProvider<AvMessage> {
+public interface ResponseClient extends ResponseProvider<AvMessage> {
 
     /**
      * Returns a response message.

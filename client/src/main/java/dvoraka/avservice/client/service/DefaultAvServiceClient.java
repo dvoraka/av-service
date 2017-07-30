@@ -1,6 +1,7 @@
 package dvoraka.avservice.client.service;
 
 import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.service.response.AvMessageResponseFuture;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageType;
@@ -45,6 +46,6 @@ public class DefaultAvServiceClient implements AvServiceClient {
 
         networkComponent.sendAvMessage(message);
 
-        return responseClient;
+        return new AvMessageResponseFuture(responseClient, message.getId());
     }
 }
