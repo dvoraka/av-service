@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static java.util.Objects.requireNonNull;
 
@@ -100,6 +101,12 @@ public class LocalRestService implements RestService, AvMessageListener {
     @Override
     public AvMessage getResponse(String id) {
         return messageCache.get(id);
+    }
+
+    @Override
+    public AvMessage getResponse(long timeout, TimeUnit unit)
+            throws InterruptedException, TimeoutException {
+        return null;
     }
 
     @PostConstruct

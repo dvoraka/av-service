@@ -1,5 +1,8 @@
 package dvoraka.avservice.client.service.response;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 /**
  * Generic response provider.
  *
@@ -14,4 +17,15 @@ public interface ResponseProvider<T> {
      * @return the response or null if response is not available
      */
     T getResponse(String id);
+
+    /**
+     * Waits if necessary for a response.
+     *
+     * @param timeout the maximum time to wait
+     * @param unit    the unit of the timeout
+     * @return the response
+     * @throws InterruptedException if the current thread was interrupted
+     * @throws TimeoutException     if the wait timed out
+     */
+    T getResponse(long timeout, TimeUnit unit) throws InterruptedException, TimeoutException;
 }

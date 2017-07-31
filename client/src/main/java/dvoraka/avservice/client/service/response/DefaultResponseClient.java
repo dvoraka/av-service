@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static java.util.Objects.requireNonNull;
 
@@ -117,6 +118,12 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
         }
 
         return messageCache.get(id);
+    }
+
+    @Override
+    public AvMessage getResponse(long timeout, TimeUnit unit)
+            throws InterruptedException, TimeoutException {
+        return null;
     }
 
     @Override
