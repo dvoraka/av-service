@@ -105,7 +105,7 @@ public class RemoteRestService implements RestService {
     }
 
     @Override
-    public AvMessage getResponse(long timeout, TimeUnit unit)
+    public AvMessage getResponse(String id, long timeout, TimeUnit unit)
             throws InterruptedException, TimeoutException {
         return null;
     }

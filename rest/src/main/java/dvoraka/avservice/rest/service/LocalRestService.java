@@ -104,7 +104,7 @@ public class LocalRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public AvMessage getResponse(long timeout, TimeUnit unit)
+    public AvMessage getResponse(String id, long timeout, TimeUnit unit)
             throws InterruptedException, TimeoutException {
         return null;
     }

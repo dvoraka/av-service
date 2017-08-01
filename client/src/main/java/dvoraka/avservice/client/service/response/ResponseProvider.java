@@ -21,11 +21,13 @@ public interface ResponseProvider<T> {
     /**
      * Waits if necessary for a response.
      *
+     * @param id      the request ID
      * @param timeout the maximum time to wait
      * @param unit    the unit of the timeout
      * @return the response
      * @throws InterruptedException if the current thread was interrupted
      * @throws TimeoutException     if the wait timed out
      */
-    T getResponse(long timeout, TimeUnit unit) throws InterruptedException, TimeoutException;
+    T getResponse(String id, long timeout, TimeUnit unit)
+            throws InterruptedException, TimeoutException;
 }

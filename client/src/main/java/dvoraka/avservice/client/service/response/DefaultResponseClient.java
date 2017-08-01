@@ -121,9 +121,23 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
     }
 
     @Override
-    public AvMessage getResponse(long timeout, TimeUnit unit)
+    public AvMessage getResponse(String id, long timeout, TimeUnit unit)
             throws InterruptedException, TimeoutException {
-        return null;
+
+        final long start = System.currentTimeMillis();
+
+        AvMessage response;
+        final int sleepTime = 10;
+        while ((response = getResponse(id)) == null) {
+
+            if ((System.currentTimeMillis() - start) > unit.toMillis(timeout)) {
+                throw new TimeoutException();
+            }
+
+            TimeUnit.MILLISECONDS.sleep(sleepTime);
+        }
+
+        return response;
     }
 
     @Override
