@@ -2,7 +2,7 @@ package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.common.data.AvMessage;
 
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -13,6 +13,11 @@ import static java.util.Objects.requireNonNull;
  * Future for AvMessage response.
  */
 public class AvMessageResponseFuture implements Future<AvMessage> {
+
+    /**
+     * Auto-cancellation timeout.
+     */
+    private static final long MAX_TIMEOUT = 10_000;
 
     private final ResponseClient responseClient;
     private final String requestId;
@@ -43,14 +48,27 @@ public class AvMessageResponseFuture implements Future<AvMessage> {
     }
 
     @Override
-    public AvMessage get() throws InterruptedException, ExecutionException {
-        return null;
+    public AvMessage get() throws InterruptedException {
+        AvMessage result;
+        try {
+            result = get(MAX_TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException e) {
+            throw new CancellationException();
+        }
+
+        return result;
     }
 
     @Override
     public AvMessage get(long timeout, TimeUnit unit)
-            throws InterruptedException, ExecutionException, TimeoutException {
+            throws InterruptedException, TimeoutException {
 
-        return responseClient.getResponse(requestId, timeout, unit);
+        AvMessage result = responseClient.getResponse(requestId, timeout, unit);
+
+        if (cancelled) {
+            throw new CancellationException();
+        }
+
+        return result;
     }
 }
