@@ -17,6 +17,8 @@ public class AvMessageResponseFuture implements Future<AvMessage> {
     private final ResponseClient responseClient;
     private final String requestId;
 
+    private volatile boolean cancelled;
+
 
     public AvMessageResponseFuture(ResponseClient responseClient, String requestId) {
         this.responseClient = requireNonNull(responseClient);
@@ -25,18 +27,19 @@ public class AvMessageResponseFuture implements Future<AvMessage> {
 
     @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
-        // client will get the response anyway
-        return false;
+        cancelled = true;
+
+        return true;
     }
 
     @Override
     public boolean isCancelled() {
-        return false;
+        return cancelled;
     }
 
     @Override
     public boolean isDone() {
-        return responseClient.getResponse(requestId) != null;
+        return cancelled || responseClient.getResponse(requestId) != null;
     }
 
     @Override
@@ -47,6 +50,7 @@ public class AvMessageResponseFuture implements Future<AvMessage> {
     @Override
     public AvMessage get(long timeout, TimeUnit unit)
             throws InterruptedException, ExecutionException, TimeoutException {
-        return null;
+
+        return responseClient.getResponse(requestId, timeout, unit);
     }
 }
