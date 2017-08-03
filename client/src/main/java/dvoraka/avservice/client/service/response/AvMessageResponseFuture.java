@@ -52,7 +52,7 @@ public class AvMessageResponseFuture implements AvMessageFuture {
         try {
             result = get(MAX_TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
-            throw new CancellationException();
+            throw new CancellationException("No response received in time.");
         }
 
         return result;

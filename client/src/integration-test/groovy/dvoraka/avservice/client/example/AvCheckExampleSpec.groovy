@@ -2,6 +2,8 @@ package dvoraka.avservice.client.example
 
 import spock.lang.Specification
 
+import java.util.concurrent.CancellationException
+
 /**
  * Example spec.
  */
@@ -12,6 +14,6 @@ class AvCheckExampleSpec extends Specification {
             AvCheckExample.main(null)
 
         then:
-            notThrown(Exception)
+            thrown(CancellationException)
     }
 }
