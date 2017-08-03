@@ -25,17 +25,21 @@ public final class AvCheckExample {
         // get client
         AvServiceClient avServiceClient = context.getBean(AvServiceClient.class);
 
-        // generate message and send it
+        // generate message
         AvMessage avMessage = Utils.genMessage();
-        AvMessageFuture futureResponse = avServiceClient.checkMessage(avMessage);
 
-        // get response
-        AvMessage response = futureResponse.get();
+        // send it and get response
+        AvMessage response;
+        try {
+            AvMessageFuture futureResponse = avServiceClient.checkMessage(avMessage);
+            response = futureResponse.get();
+        } finally {
+            context.close();
+        }
+
         // raw output
         System.out.println("Response: " + response);
         // virus info
         System.out.println("Virus info: " + (response != null ? response.getVirusInfo() : ""));
-
-        context.close();
     }
 }
