@@ -1,5 +1,6 @@
 package dvoraka.avservice.rest.service;
 
+import dvoraka.avservice.client.service.response.AvMessageFuture;
 import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -72,7 +72,7 @@ public class LocalRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public Future<AvMessage> checkMessage(AvMessage message) {
+    public AvMessageFuture checkMessage(AvMessage message) {
         messageProcessor.sendMessage(message);
 
         return null;

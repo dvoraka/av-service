@@ -3,7 +3,6 @@ package dvoraka.avservice.client.service.response;
 import dvoraka.avservice.common.data.AvMessage;
 
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -12,7 +11,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Future for AvMessage response.
  */
-public class AvMessageResponseFuture implements Future<AvMessage> {
+public class AvMessageResponseFuture implements AvMessageFuture {
 
     /**
      * Auto-cancellation timeout.

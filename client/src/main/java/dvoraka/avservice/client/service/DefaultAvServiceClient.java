@@ -1,6 +1,7 @@
 package dvoraka.avservice.client.service;
 
 import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.service.response.AvMessageFuture;
 import dvoraka.avservice.client.service.response.AvMessageResponseFuture;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.data.AvMessage;
@@ -9,8 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.Future;
 
 import static java.util.Objects.requireNonNull;
 
@@ -38,7 +37,7 @@ public class DefaultAvServiceClient implements AvServiceClient {
     }
 
     @Override
-    public Future<AvMessage> checkMessage(AvMessage message) {
+    public AvMessageFuture checkMessage(AvMessage message) {
         if (!MessageType.FILE_CHECK.equals(message.getType())) {
             log.warn(BAD_TYPE);
             throw new IllegalArgumentException(BAD_TYPE);

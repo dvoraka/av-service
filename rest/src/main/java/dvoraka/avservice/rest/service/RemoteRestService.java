@@ -2,6 +2,7 @@ package dvoraka.avservice.rest.service;
 
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.FileServiceClient;
+import dvoraka.avservice.client.service.response.AvMessageFuture;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -63,7 +63,7 @@ public class RemoteRestService implements RestService {
     }
 
     @Override
-    public Future<AvMessage> checkMessage(AvMessage message) {
+    public AvMessageFuture checkMessage(AvMessage message) {
         log.debug("Checking: {}", message);
         statusStorage.started(message.getId());
         avServiceClient.checkMessage(message);
