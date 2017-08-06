@@ -1,5 +1,6 @@
 package dvoraka.avservice.client.service.response;
 
+import dvoraka.avservice.client.AvMessageFuture;
 import dvoraka.avservice.common.data.AvMessage;
 
 import java.util.concurrent.CancellationException;

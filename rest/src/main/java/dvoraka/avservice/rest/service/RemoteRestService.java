@@ -1,8 +1,8 @@
 package dvoraka.avservice.rest.service;
 
+import dvoraka.avservice.client.AvMessageFuture;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.FileServiceClient;
-import dvoraka.avservice.client.service.response.AvMessageFuture;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;

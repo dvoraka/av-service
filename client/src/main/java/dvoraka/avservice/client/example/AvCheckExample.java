@@ -1,8 +1,8 @@
 package dvoraka.avservice.client.example;
 
+import dvoraka.avservice.client.AvMessageFuture;
 import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.client.service.AvServiceClient;
-import dvoraka.avservice.client.service.response.AvMessageFuture;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

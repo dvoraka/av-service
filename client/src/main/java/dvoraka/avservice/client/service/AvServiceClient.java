@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service;
 
-import dvoraka.avservice.client.service.response.AvMessageFuture;
+import dvoraka.avservice.client.AvMessageFuture;
 import dvoraka.avservice.common.data.AvMessage;
 
 /**
@@ -13,7 +13,7 @@ public interface AvServiceClient {
      * Checks a data from a message.
      *
      * @param message the AV message
-     * @return future with the response
+     * @return future for the response
      * @see dvoraka.avservice.common.data.MessageType#FILE_CHECK
      */
     AvMessageFuture checkMessage(AvMessage message);
