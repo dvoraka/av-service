@@ -1,8 +1,11 @@
-package dvoraka.avservice.common.data;
+package dvoraka.avservice.common.data.replication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import dvoraka.avservice.common.data.Command;
+import dvoraka.avservice.common.data.FileMessage;
+import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.helper.FileServiceHelper;
 
 import java.nio.charset.StandardCharsets;

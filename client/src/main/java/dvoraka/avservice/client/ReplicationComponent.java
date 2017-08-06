@@ -1,7 +1,7 @@
 package dvoraka.avservice.client;
 
 import dvoraka.avservice.common.ReplicationMessageListener;
-import dvoraka.avservice.common.data.ReplicationMessage;
+import dvoraka.avservice.common.data.replication.ReplicationMessage;
 
 /**
  * Component for sending and receiving replication messages.

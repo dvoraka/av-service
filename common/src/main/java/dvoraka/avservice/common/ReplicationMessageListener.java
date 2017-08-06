@@ -1,6 +1,6 @@
 package dvoraka.avservice.common;
 
-import dvoraka.avservice.common.data.ReplicationMessage;
+import dvoraka.avservice.common.data.replication.ReplicationMessage;
 
 /**
  * Replication message listener.

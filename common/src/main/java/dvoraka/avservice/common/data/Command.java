@@ -1,5 +1,7 @@
 package dvoraka.avservice.common.data;
 
+import dvoraka.avservice.common.data.replication.ReplicationMessage;
+
 /**
  * Enum for command types.
  *

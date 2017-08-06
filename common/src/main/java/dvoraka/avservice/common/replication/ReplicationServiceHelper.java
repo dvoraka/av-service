@@ -1,11 +1,11 @@
 package dvoraka.avservice.common.replication;
 
 import dvoraka.avservice.common.data.Command;
-import dvoraka.avservice.common.data.DefaultReplicationMessage;
-import dvoraka.avservice.common.data.MessageRouting;
 import dvoraka.avservice.common.data.MessageType;
-import dvoraka.avservice.common.data.ReplicationMessage;
-import dvoraka.avservice.common.data.ReplicationStatus;
+import dvoraka.avservice.common.data.replication.DefaultReplicationMessage;
+import dvoraka.avservice.common.data.replication.MessageRouting;
+import dvoraka.avservice.common.data.replication.ReplicationMessage;
+import dvoraka.avservice.common.data.replication.ReplicationStatus;
 
 /**
  * Replication helper for service commands.

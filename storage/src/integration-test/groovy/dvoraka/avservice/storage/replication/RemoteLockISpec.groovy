@@ -4,10 +4,10 @@ import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
 import dvoraka.avservice.common.data.Command
-import dvoraka.avservice.common.data.MessageRouting
 import dvoraka.avservice.common.data.MessageType
-import dvoraka.avservice.common.data.ReplicationMessage
-import dvoraka.avservice.common.data.ReplicationStatus
+import dvoraka.avservice.common.data.replication.MessageRouting
+import dvoraka.avservice.common.data.replication.ReplicationMessage
+import dvoraka.avservice.common.data.replication.ReplicationStatus
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.storage.configuration.StorageConfig

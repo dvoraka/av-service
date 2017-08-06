@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service;
 
-import dvoraka.avservice.common.data.ReplicationMessage;
+import dvoraka.avservice.common.data.replication.ReplicationMessage;
 
 /**
  * Replication service client. It is used for client connections to the replication service.

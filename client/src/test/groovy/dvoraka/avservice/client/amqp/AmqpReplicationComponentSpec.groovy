@@ -1,8 +1,8 @@
 package dvoraka.avservice.client.amqp
 
 import dvoraka.avservice.common.ReplicationMessageListener
-import dvoraka.avservice.common.data.DefaultReplicationMessage
-import dvoraka.avservice.common.data.ReplicationMessage
+import dvoraka.avservice.common.data.replication.DefaultReplicationMessage
+import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.common.replication.ReplicationServiceHelper

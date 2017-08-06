@@ -2,7 +2,7 @@ package dvoraka.avservice.client.service.response
 
 import dvoraka.avservice.client.ReplicationComponent
 import dvoraka.avservice.common.ReplicationMessageListener
-import dvoraka.avservice.common.data.ReplicationMessage
+import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.replication.ReplicationHelper
 import spock.lang.Specification
 import spock.lang.Subject

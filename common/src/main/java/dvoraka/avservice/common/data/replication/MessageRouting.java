@@ -1,4 +1,4 @@
-package dvoraka.avservice.common.data;
+package dvoraka.avservice.common.data.replication;
 
 /**
  * Message routing type.

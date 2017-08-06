@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service.response;
 
-import dvoraka.avservice.common.data.ReplicationMessage;
+import dvoraka.avservice.common.data.replication.ReplicationMessage;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

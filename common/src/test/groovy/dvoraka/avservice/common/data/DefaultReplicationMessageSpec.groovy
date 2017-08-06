@@ -1,5 +1,8 @@
 package dvoraka.avservice.common.data
 
+import dvoraka.avservice.common.data.replication.DefaultReplicationMessage
+import dvoraka.avservice.common.data.replication.MessageRouting
+import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.replication.ReplicationHelper
 import dvoraka.avservice.common.replication.ReplicationServiceHelper
@@ -35,7 +38,7 @@ class DefaultReplicationMessageSpec extends Specification
 
             long testSequence = 999L
             MessageRouting testRouting = MessageRouting.BROADCAST
-            ReplicationStatus testStatus = ReplicationStatus.READY
+            dvoraka.avservice.common.data.replication.ReplicationStatus testStatus = dvoraka.avservice.common.data.replication.ReplicationStatus.READY
             Command testCommand = Command.DISCOVER
 
         when:
