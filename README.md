@@ -146,9 +146,9 @@ AvCheckExample class:
 ```java
 package dvoraka.avservice.client.example;
 
+import dvoraka.avservice.client.AvMessageFuture;
 import dvoraka.avservice.client.configuration.ClientConfig;
 import dvoraka.avservice.client.service.AvServiceClient;
-import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -156,7 +156,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 /**
  * Anti-virus checking example.
  */
-public class AvCheckExample {
+public final class AvCheckExample {
 
     public static void main(String[] args) throws InterruptedException {
         // initialize client context
@@ -165,28 +165,28 @@ public class AvCheckExample {
         context.register(ClientConfig.class);
         context.refresh();
 
-        // get clients
+        // get client
         AvServiceClient avServiceClient = context.getBean(AvServiceClient.class);
-        ResponseClient responseClient = context.getBean(ResponseClient.class);
 
-        // generate message and send it
+        // generate message
         AvMessage avMessage = Utils.genMessage();
-        avServiceClient.checkMessage(avMessage);
 
-        // wait a bit
-        final long waitTime = 200;
-        Thread.sleep(waitTime);
+        // send it and get response
+        AvMessage response;
+        try {
+            AvMessageFuture futureResponse = avServiceClient.checkMessage(avMessage);
+            response = futureResponse.get();
+        } finally {
+            context.close();
+        }
 
-        // get response
-        AvMessage response = responseClient.getResponse(avMessage.getId());
         // raw output
         System.out.println("Response: " + response);
         // virus info
         System.out.println("Virus info: " + (response != null ? response.getVirusInfo() : ""));
-
-        context.close();
     }
 }
+
 ```
 
 ### Installation
