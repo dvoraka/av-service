@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.configuration;
+package dvoraka.avservice.client.configuration.replication;
 
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.client.amqp.AmqpReplicationComponent;

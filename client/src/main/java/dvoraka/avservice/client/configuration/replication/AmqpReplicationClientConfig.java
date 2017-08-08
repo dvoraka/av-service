@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.configuration;
+package dvoraka.avservice.client.configuration.replication;
 
 import dvoraka.avservice.client.QueueCleaner;
 import dvoraka.avservice.client.ReplicationComponent;

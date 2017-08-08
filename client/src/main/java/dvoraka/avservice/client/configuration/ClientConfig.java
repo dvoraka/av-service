@@ -1,6 +1,8 @@
 package dvoraka.avservice.client.configuration;
 
 import dvoraka.avservice.client.configuration.file.FileClientConfig;
+import dvoraka.avservice.client.configuration.replication.ReplicationClientConfig;
+import dvoraka.avservice.client.configuration.replication.TestReplicationClientConfig;
 import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
