@@ -4,7 +4,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.AvMessageInfo;
 import dvoraka.avservice.common.data.AvMessageInfoData;
 import dvoraka.avservice.common.data.InfoSource;
-import dvoraka.avservice.common.service.ExecutorServiceHelper;
+import dvoraka.avservice.common.helper.ExecutorServiceHelper;
 import dvoraka.avservice.db.model.MessageInfoDocument;
 import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository;
 import org.apache.logging.log4j.LogManager;

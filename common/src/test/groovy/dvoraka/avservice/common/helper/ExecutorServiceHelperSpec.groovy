@@ -1,4 +1,4 @@
-package dvoraka.avservice.common.service
+package dvoraka.avservice.common.helper
 
 import org.apache.logging.log4j.Logger
 import spock.lang.Specification

@@ -1,6 +1,6 @@
 package dvoraka.avservice.runner.service;
 
-import dvoraka.avservice.common.service.ExecutorServiceHelper;
+import dvoraka.avservice.common.helper.ExecutorServiceHelper;
 import dvoraka.avservice.runner.RunnerAlreadyExistsException;
 import dvoraka.avservice.runner.RunnerConfiguration;
 import dvoraka.avservice.runner.RunnerNotFoundException;
