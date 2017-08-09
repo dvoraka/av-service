@@ -14,7 +14,7 @@ public interface WaitingHelper {
      */
     default void waitUntil(BooleanSupplier until) {
         final int checkDelay = 10;
-        while (until.getAsBoolean()) {
+        while (!until.getAsBoolean()) {
             try {
                 Thread.sleep(checkDelay);
             } catch (InterruptedException e) {
