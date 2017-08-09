@@ -47,7 +47,10 @@ class DefaultReplicationServiceSpec extends Specification
     def setup() {
         fileService = Mock()
         serviceClient = Mock()
+
         responseClient = Mock()
+        responseClient.isRunning() >> true
+
         remoteLock = Mock()
 
         service = new DefaultReplicationService(
