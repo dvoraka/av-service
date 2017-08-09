@@ -8,6 +8,7 @@ import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
 import dvoraka.avservice.common.helper.FileServiceHelper;
+import dvoraka.avservice.common.helper.WaitingHelper;
 import dvoraka.avservice.common.replication.ReplicationHelper;
 import dvoraka.avservice.storage.exception.ExistingFileException;
 import dvoraka.avservice.storage.exception.FileNotFoundException;
@@ -36,7 +37,7 @@ import static java.util.Objects.requireNonNull;
  */
 @Service
 public class DefaultReplicationService implements
-        ReplicationService, ReplicationHelper, FileServiceHelper {
+        ReplicationService, ReplicationHelper, FileServiceHelper, WaitingHelper {
 
     private final FileService fileService;
     private final ReplicationServiceClient serviceClient;
@@ -88,7 +89,7 @@ public class DefaultReplicationService implements
     public void start() {
         log.info("Starting service ({})...", nodeId);
         responseClient.addNoResponseMessageListener(this);
-        final int delayTime = 300;
+        final int delayTime = 0;
         executorService.scheduleWithFixedDelay(
                 this::discoverNeighbours, delayTime, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }
@@ -101,6 +102,8 @@ public class DefaultReplicationService implements
     }
 
     private void discoverNeighbours() {
+        waitUntil(responseClient::isRunning);
+
         log.debug("Discovering neighbours ({})...", nodeId);
 
         ReplicationMessage message = createDiscoverRequest(nodeId);

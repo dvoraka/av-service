@@ -1,13 +1,14 @@
 package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.common.ReplicationMessageListener;
+import dvoraka.avservice.common.service.ServiceStatus;
 
 import java.util.Optional;
 
 /**
  * Client interface for getting a replication response.
  */
-public interface ReplicationResponseClient {
+public interface ReplicationResponseClient extends ServiceStatus {
 
     /**
      * Returns a replication response message.

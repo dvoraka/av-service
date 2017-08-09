@@ -246,4 +246,9 @@ public class DefaultReplicationResponseClient implements
     public void removeNoResponseMessageListener(ReplicationMessageListener listener) {
         noResponseListeners.remove(listener);
     }
+
+    @Override
+    public boolean isRunning() {
+        return started;
+    }
 }
