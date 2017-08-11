@@ -249,6 +249,7 @@ public class DefaultReplicationResponseClient implements
 
     @Override
     public boolean isRunning() {
+        //TODO: return real running status
         return started;
     }
 }

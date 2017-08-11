@@ -89,7 +89,7 @@ public class DefaultReplicationService implements
     public void start() {
         log.info("Starting service ({})...", nodeId);
         responseClient.addNoResponseMessageListener(this);
-        final int delayTime = 0;
+        final int delayTime = 500;
         executorService.scheduleWithFixedDelay(
                 this::discoverNeighbours, delayTime, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }

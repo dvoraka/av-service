@@ -73,7 +73,7 @@ class DefaultReplicationServiceSpec extends Specification
     def "start with discovery response"() {
         when:
             service.start()
-            sleep(350)
+            sleep(600)
 
         then:
             1 * responseClient.addNoResponseMessageListener(_)
