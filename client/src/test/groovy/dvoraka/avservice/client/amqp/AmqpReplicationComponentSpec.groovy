@@ -4,8 +4,8 @@ import dvoraka.avservice.common.ReplicationMessageListener
 import dvoraka.avservice.common.data.replication.DefaultReplicationMessage
 import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.helper.FileServiceHelper
-import dvoraka.avservice.common.replication.ReplicationHelper
-import dvoraka.avservice.common.replication.ReplicationServiceHelper
+import dvoraka.avservice.common.helper.replication.ReplicationHelper
+import dvoraka.avservice.common.helper.replication.ReplicationServiceHelper
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate

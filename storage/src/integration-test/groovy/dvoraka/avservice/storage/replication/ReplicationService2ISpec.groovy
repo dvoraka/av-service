@@ -11,7 +11,7 @@ import dvoraka.avservice.common.data.replication.MessageRouting
 import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.data.replication.ReplicationStatus
 import dvoraka.avservice.common.helper.FileServiceHelper
-import dvoraka.avservice.common.replication.ReplicationHelper
+import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

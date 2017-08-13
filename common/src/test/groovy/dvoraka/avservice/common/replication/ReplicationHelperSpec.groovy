@@ -7,6 +7,7 @@ import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.data.replication.MessageRouting
 import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.data.replication.ReplicationStatus
+import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject

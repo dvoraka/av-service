@@ -4,7 +4,7 @@ import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
 import dvoraka.avservice.common.data.replication.ReplicationMessage
-import dvoraka.avservice.common.replication.ReplicationHelper
+import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject

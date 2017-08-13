@@ -4,8 +4,8 @@ import dvoraka.avservice.common.data.replication.DefaultReplicationMessage
 import dvoraka.avservice.common.data.replication.MessageRouting
 import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.helper.FileServiceHelper
-import dvoraka.avservice.common.replication.ReplicationHelper
-import dvoraka.avservice.common.replication.ReplicationServiceHelper
+import dvoraka.avservice.common.helper.replication.ReplicationHelper
+import dvoraka.avservice.common.helper.replication.ReplicationServiceHelper
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject

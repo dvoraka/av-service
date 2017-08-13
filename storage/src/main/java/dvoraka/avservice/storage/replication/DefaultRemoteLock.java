@@ -8,7 +8,7 @@ import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
-import dvoraka.avservice.common.replication.ReplicationHelper;
+import dvoraka.avservice.common.helper.replication.ReplicationHelper;
 import dvoraka.avservice.common.service.HashingService;
 import dvoraka.avservice.common.service.Md5HashingService;
 import dvoraka.avservice.storage.replication.exception.FileNotLockedException;

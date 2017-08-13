@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service.response
 
-import dvoraka.avservice.common.replication.ReplicationHelper
+import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import spock.lang.Specification
 import spock.lang.Subject
 

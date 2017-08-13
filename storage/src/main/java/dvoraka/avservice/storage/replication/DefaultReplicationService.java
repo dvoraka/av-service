@@ -9,7 +9,7 @@ import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
 import dvoraka.avservice.common.helper.FileServiceHelper;
 import dvoraka.avservice.common.helper.WaitingHelper;
-import dvoraka.avservice.common.replication.ReplicationHelper;
+import dvoraka.avservice.common.helper.replication.ReplicationHelper;
 import dvoraka.avservice.storage.exception.ExistingFileException;
 import dvoraka.avservice.storage.exception.FileNotFoundException;
 import dvoraka.avservice.storage.exception.FileServiceException;
