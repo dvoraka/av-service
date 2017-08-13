@@ -2,8 +2,10 @@ package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.common.ReplicationMessageListener;
+import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
+import dvoraka.avservice.common.helper.replication.ReplicationHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;
@@ -21,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +34,7 @@ import static java.util.Objects.requireNonNull;
  */
 @Service
 public class DefaultReplicationResponseClient implements
-        ReplicationResponseClient, ReplicationMessageListener {
+        ReplicationResponseClient, ReplicationMessageListener, ReplicationHelper {
 
     private final ReplicationComponent replicationComponent;
     private final String nodeId;
@@ -47,6 +50,7 @@ public class DefaultReplicationResponseClient implements
     private Set<ReplicationMessageListener> noResponseListeners;
 
     private volatile boolean started;
+    private volatile boolean running;
 
 
     @Autowired
@@ -71,6 +75,7 @@ public class DefaultReplicationResponseClient implements
         initializeCache();
         replicationComponent.addReplicationMessageListener(this);
         setStarted(true);
+        CompletableFuture.runAsync(this::checkTransport);
         log.info("Started ({}).", nodeId);
     }
 
@@ -107,6 +112,35 @@ public class DefaultReplicationResponseClient implements
                 .withExpiry(Expirations.timeToLiveExpiration(
                         new Duration(CACHE_TIMEOUT, TimeUnit.MILLISECONDS)))
                 .build();
+    }
+
+    private void checkTransport() {
+
+        final int waitTime = 10;
+        final int responseTime = 100;
+        ReplicationMessageList emptyList = new ReplicationMessageList();
+
+        while (!isRunning()) {
+            ReplicationMessage diagnosticsMsg = createDiagnosticsMessage(nodeId);
+            replicationComponent.sendMessage(diagnosticsMsg);
+
+            Optional<ReplicationMessageList> response =
+                    getResponseWait(diagnosticsMsg.getId(), responseTime);
+
+            if (response.orElse(emptyList).stream().count() > 0) {
+                setRunning(true);
+                log.info("Transport started.");
+            } else {
+                try {
+                    log.debug("Transport waiting for start...");
+                    Thread.sleep(waitTime);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+
+                    return;
+                }
+            }
+        }
     }
 
     public boolean isStarted() {
@@ -199,8 +233,8 @@ public class DefaultReplicationResponseClient implements
     public void onMessage(ReplicationMessage response) {
         log.debug("On message ({}): {}", nodeId, response);
 
-        // filter out own messages
-        if (nodeId.equals(response.getFromId())) {
+        // filter out own messages except diagnostics messages
+        if (nodeId.equals(response.getFromId()) && response.getType() != MessageType.DIAGNOSTICS) {
             log.debug("Filtering 1 ({}): {}", nodeId, response);
 
             return;
@@ -249,7 +283,10 @@ public class DefaultReplicationResponseClient implements
 
     @Override
     public boolean isRunning() {
-        //TODO: return real running status
-        return started;
+        return running;
+    }
+
+    private void setRunning(boolean running) {
+        this.running = running;
     }
 }

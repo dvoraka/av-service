@@ -7,11 +7,12 @@ import dvoraka.avservice.common.data.replication.DefaultReplicationMessage;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
+import dvoraka.avservice.common.helper.UuidHelper;
 
 /**
  * Replication helper interface.
  */
-public interface ReplicationHelper extends ReplicationServiceHelper {
+public interface ReplicationHelper extends ReplicationServiceHelper, UuidHelper {
 
     default ReplicationMessage createNoDataMessage(
             FileMessage message, Command command, String fromNode, String toNode
@@ -108,9 +109,13 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     }
 
     default ReplicationMessage createDiagnosticsMessage(String fromNode) {
-        return new DefaultReplicationMessage.Builder(null)
+        String uuid = genUuidStr();
+        return new DefaultReplicationMessage.Builder(uuid)
                 .type(MessageType.DIAGNOSTICS)
+                .routing(MessageRouting.UNICAST)
+                .correlationId(uuid)
                 .fromId(fromNode)
+                .toId(fromNode)
                 .build();
     }
 }
