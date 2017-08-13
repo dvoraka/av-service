@@ -106,4 +106,11 @@ public interface ReplicationHelper extends ReplicationServiceHelper {
     ) {
         return createNoDataMessage(message, Command.DELETE, fromNode, toNode);
     }
+
+    default ReplicationMessage createDiagnosticsMessage(String fromNode) {
+        return new DefaultReplicationMessage.Builder(null)
+                .type(MessageType.DIAGNOSTICS)
+                .fromId(fromNode)
+                .build();
+    }
 }

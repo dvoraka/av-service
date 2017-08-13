@@ -47,5 +47,9 @@ public enum MessageType {
     /**
      * Replication service command.
      */
-    REPLICATION_SERVICE
+    REPLICATION_SERVICE,
+    /**
+     * Special message for a network diagnostics.
+     */
+    DIAGNOSTICS
 }
