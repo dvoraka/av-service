@@ -8,6 +8,7 @@ import dvoraka.avservice.common.data.Command;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
+import dvoraka.avservice.common.helper.WaitingHelper;
 import dvoraka.avservice.common.helper.replication.ReplicationHelper;
 import dvoraka.avservice.common.service.HashingService;
 import dvoraka.avservice.common.service.Md5HashingService;
@@ -15,8 +16,6 @@ import dvoraka.avservice.storage.replication.exception.FileNotLockedException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +23,7 @@ import javax.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
  */
 @Component
 public class DefaultRemoteLock implements
-        RemoteLock, ReplicationMessageListener, ReplicationHelper {
+        RemoteLock, ReplicationMessageListener, ReplicationHelper, WaitingHelper {
 
     private final ReplicationServiceClient serviceClient;
     private final ReplicationResponseClient responseClient;
@@ -84,6 +84,7 @@ public class DefaultRemoteLock implements
     public void start() {
         log.info("Start ({}). {}", nodeId, this);
         responseClient.addNoResponseMessageListener(this);
+        CompletableFuture.runAsync(this::synchronize);
     }
 
     @PreDestroy
@@ -93,11 +94,11 @@ public class DefaultRemoteLock implements
         responseClient.removeNoResponseMessageListener(this);
     }
 
-    @EventListener
-    public void handleContextRefresh(ContextRefreshedEvent event) {
-        log.debug("Context refreshed event received {}.", idString);
-        synchronize();
-    }
+//    @EventListener
+//    public void handleContextRefresh(ContextRefreshedEvent event) {
+//        log.debug("Context refreshed event received {}.", idString);
+//        synchronize();
+//    }
 
     @Override
     public boolean lockForFile(String filename, String owner, int lockCount)
@@ -196,6 +197,7 @@ public class DefaultRemoteLock implements
      * Synchronizes the lock with others.
      */
     public void synchronize() {
+        waitUntil(responseClient::isRunning);
         initializeSequence();
     }
 

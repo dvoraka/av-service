@@ -97,6 +97,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
         then:
             1 * serviceClient.sendMessage(_)
             1 * responseClient.getResponseWait(_, _) >> Optional.of(genSequenceResponse())
+            1 * responseClient.isRunning() >> true
     }
 
     def "on message with unicast message"() {
