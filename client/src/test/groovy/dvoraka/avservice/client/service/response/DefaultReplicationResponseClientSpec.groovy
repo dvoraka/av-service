@@ -28,7 +28,7 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
         client = new DefaultReplicationResponseClient(replicationComponent, nodeId)
         client.start()
         // wait for cache initialization
-        sleep(500)
+        sleep(1_000)
     }
 
     def cleanup() {
