@@ -83,7 +83,6 @@ public class DefaultReplicationResponseClient implements
         CompletableFuture.runAsync(this::initializeCache)
                 .thenRun(() -> replicationComponent.addReplicationMessageListener(this))
                 .thenRun(this::checkTransport)
-                .thenRun(() -> setRunning(true))
                 .thenRun(() -> log.info("Running."));
     }
 
@@ -242,6 +241,8 @@ public class DefaultReplicationResponseClient implements
             } catch (InterruptedException e) {
                 log.warn("Sleeping interrupted!", e);
                 Thread.currentThread().interrupt();
+
+                return false;
             }
 
             return true;
