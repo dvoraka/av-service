@@ -4,6 +4,7 @@ import dvoraka.avservice.client.ReplicationComponent
 import dvoraka.avservice.common.ReplicationMessageListener
 import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.helper.replication.ReplicationHelper
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -16,6 +17,8 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
     DefaultReplicationResponseClient client
 
     ReplicationComponent replicationComponent
+
+    @Shared
     String nodeId = 'testId'
 
 
@@ -24,6 +27,8 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
 
         client = new DefaultReplicationResponseClient(replicationComponent, nodeId)
         client.start()
+        // wait for cache initialization
+        sleep(500)
     }
 
     def cleanup() {

@@ -59,37 +59,54 @@ public class DefaultReplicationResponseClient implements
             String nodeId
     ) {
         this.replicationComponent = requireNonNull(replicationComponent);
-        this.nodeId = nodeId;
+        this.nodeId = requireNonNull(nodeId);
 
         noResponseListeners = new CopyOnWriteArraySet<>();
     }
 
     @PostConstruct
-    public synchronized void start() {
-        if (isStarted()) {
-            log.info("Service is already started.");
-            return;
+    public void start() {
+        log.debug("Starting ({})...", nodeId);
+
+        synchronized (this) {
+            if (isStarted()) {
+                log.warn("Service is already started!");
+                return;
+            }
+
+            setStarted(true);
         }
 
-        log.info("Starting ({})...", nodeId);
-        initializeCache();
-        replicationComponent.addReplicationMessageListener(this);
-        setStarted(true);
-        CompletableFuture.runAsync(this::checkTransport);
         log.info("Started ({}).", nodeId);
+
+        // initialize service in a different thread
+        CompletableFuture.runAsync(this::initializeCache)
+                .thenRun(() -> replicationComponent.addReplicationMessageListener(this))
+                .thenRun(this::checkTransport)
+                .thenRun(() -> setRunning(true))
+                .thenRun(() -> log.info("Running."));
     }
 
     @PreDestroy
-    public synchronized void stop() {
-        if (!isStarted()) {
-            log.info("Service is already stopped.");
-            return;
+    public void stop() {
+        log.debug("Stopping ({})...", nodeId);
+
+        synchronized (this) {
+            if (!isStarted()) {
+                log.info("Service is already stopped.");
+                return;
+            }
+
+            setStarted(false);
         }
 
         log.info("Stop ({}).", nodeId);
-        setStarted(false);
+
         replicationComponent.removeReplicationMessageListener(this);
-        cacheManager.close();
+
+        if (cacheManager != null) {
+            cacheManager.close();
+        }
     }
 
     private void initializeCache() {
@@ -99,6 +116,7 @@ public class DefaultReplicationResponseClient implements
                 .build(true);
         messageCache = cacheManager.getCache(
                 CACHE_NAME, String.class, ReplicationMessageList.class);
+        log.info("Cache initialized.");
     }
 
     private CacheConfiguration<String, ReplicationMessageList> getCacheConfiguration() {
@@ -115,6 +133,7 @@ public class DefaultReplicationResponseClient implements
     }
 
     private void checkTransport() {
+        log.debug("Checking transport...");
 
         final int waitTime = 10;
         final int responseTime = 100;
