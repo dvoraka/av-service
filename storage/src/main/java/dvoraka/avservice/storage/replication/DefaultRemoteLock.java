@@ -94,12 +94,6 @@ public class DefaultRemoteLock implements
         responseClient.removeNoResponseMessageListener(this);
     }
 
-//    @EventListener
-//    public void handleContextRefresh(ContextRefreshedEvent event) {
-//        log.debug("Context refreshed event received {}.", idString);
-//        synchronize();
-//    }
-
     @Override
     public boolean lockForFile(String filename, String owner, int lockCount)
             throws InterruptedException {
