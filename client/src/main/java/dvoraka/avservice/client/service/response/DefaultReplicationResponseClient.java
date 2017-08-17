@@ -138,7 +138,7 @@ public class DefaultReplicationResponseClient implements
         final int responseTime = 100;
         ReplicationMessageList emptyList = new ReplicationMessageList();
 
-        while (!isRunning()) {
+        while (!isRunning() && isStarted()) {
             ReplicationMessage diagnosticsMsg = createDiagnosticsMessage(nodeId);
             replicationComponent.sendMessage(diagnosticsMsg);
 
