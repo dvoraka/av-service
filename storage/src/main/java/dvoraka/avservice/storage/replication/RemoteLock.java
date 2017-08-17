@@ -1,9 +1,11 @@
 package dvoraka.avservice.storage.replication;
 
+import dvoraka.avservice.common.service.ServiceStatus;
+
 /**
  * Remote lock interface.
  */
-public interface RemoteLock {
+public interface RemoteLock extends ServiceStatus {
 
     /**
      * Starts the lock.

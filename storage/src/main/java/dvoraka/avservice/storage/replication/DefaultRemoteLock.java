@@ -55,6 +55,7 @@ public class DefaultRemoteLock implements
     private final HashingService hashingService;
 
     private int maxResponseTime;
+    private volatile boolean running;
 
     private final String idString;
 
@@ -91,6 +92,7 @@ public class DefaultRemoteLock implements
     @Override
     public void stop() {
         log.info("Stop {}.", idString);
+        setRunning(false);
         responseClient.removeNoResponseMessageListener(this);
     }
 
@@ -210,6 +212,8 @@ public class DefaultRemoteLock implements
                 .orElse(1L);
 
         setSequence(actualSequence);
+
+        setRunning(true);
     }
 
     private long getSequence() {
@@ -342,5 +346,14 @@ public class DefaultRemoteLock implements
                 log.warn("Force unlock failed " + idString + ".", e);
             }
         }
+    }
+
+    private void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
     }
 }
