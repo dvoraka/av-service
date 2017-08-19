@@ -11,6 +11,7 @@ import dvoraka.avservice.common.data.replication.MessageRouting
 import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.data.replication.ReplicationStatus
 import dvoraka.avservice.common.helper.FileServiceHelper
+import dvoraka.avservice.common.helper.WaitingHelper
 import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +35,7 @@ import spock.lang.Stepwise
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
 class ReplicationService2ISpec extends Specification
-        implements ReplicationHelper, FileServiceHelper {
+        implements ReplicationHelper, FileServiceHelper, WaitingHelper {
 
     @Autowired
     ReplicationServiceClient client
@@ -63,6 +64,8 @@ class ReplicationService2ISpec extends Specification
     }
 
     def setup() {
+        waitUntil({ responseClient.isRunning() })
+
         ReplicationMessage request = createSequenceRequest(nodeId)
         client.sendMessage(request)
         Optional<ReplicationMessageList> messages = responseClient

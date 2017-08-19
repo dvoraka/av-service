@@ -191,6 +191,8 @@ public class DefaultReplicationResponseClient implements
         } catch (InterruptedException e) {
             log.warn("Sleeping interrupted!", e);
             Thread.currentThread().interrupt();
+
+            return Optional.empty();
         }
 
         return Optional.ofNullable(checkGetResponse(id, maxWaitTime - minWaitTime));

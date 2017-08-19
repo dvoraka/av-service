@@ -88,15 +88,16 @@ public class DefaultReplicationService implements
     @PostConstruct
     public void start() {
         log.info("Starting service ({})...", nodeId);
+
         responseClient.addNoResponseMessageListener(this);
-        final int delayTime = 0;
         executorService.scheduleWithFixedDelay(
-                this::discoverNeighbours, delayTime, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
+                this::discoverNeighbours, 0, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }
 
     @PreDestroy
     public void stop() {
         log.info("Stopping service {}...", idString);
+
         responseClient.removeNoResponseMessageListener(this);
         shutdownAndAwaitTermination(executorService, TERM_TIME, log);
     }
