@@ -55,12 +55,12 @@ public class DefaultReplicationService implements
     private static final int TERM_TIME = 10;
     private static final int REPLICATION_COUNT = 3;
 
-    private Set<String> neighbours;
+    private final Set<String> neighbours;
+    private final ScheduledExecutorService executorService;
+    private final String idString;
+
     private int maxResponseTime;
     private int replicationCount;
-    private ScheduledExecutorService executorService;
-
-    private final String idString;
 
 
     @Autowired

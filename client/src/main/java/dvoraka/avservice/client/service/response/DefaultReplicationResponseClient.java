@@ -47,7 +47,7 @@ public class DefaultReplicationResponseClient implements
     private CacheManager cacheManager;
     private Cache<String, ReplicationMessageList> messageCache;
 
-    private Set<ReplicationMessageListener> noResponseListeners;
+    private final Set<ReplicationMessageListener> noResponseListeners;
 
     private volatile boolean started;
     private volatile boolean running;
