@@ -82,7 +82,7 @@ public class DefaultReplicationResponseClient implements
         // initialize service in a different thread
         CompletableFuture.runAsync(this::initializeCache)
                 .thenRun(() -> replicationComponent.addReplicationMessageListener(this))
-                .thenRun(this::checkTransport)
+                .thenRunAsync(this::checkTransport)
                 .thenRun(() -> log.info("Running."));
     }
 
