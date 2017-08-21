@@ -52,6 +52,7 @@ class DefaultReplicationServiceSpec extends Specification
         responseClient.isRunning() >> true
 
         remoteLock = Mock()
+        remoteLock.isRunning() >> true
 
         service = new DefaultReplicationService(
                 fileService, serviceClient, responseClient, remoteLock, nodeId)

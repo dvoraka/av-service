@@ -104,6 +104,7 @@ public class DefaultReplicationService implements
 
     private void discoverNeighbours() {
         waitUntil(responseClient::isRunning);
+        waitUntil(remoteLock::isRunning);
 
         log.debug("Discovering neighbours ({})...", nodeId);
 
