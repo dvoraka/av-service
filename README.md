@@ -71,7 +71,8 @@ Release [NOTES](RELEASE_NOTES.md)
  * **Spring Security** - REST security
  * **Spring AMQP** - AMQP
  * **Spring JMS** - JMS
- * **Spring Data** - message logging
+ * **Spring Kafka** - Kafka
+ * **Spring Data** - message logging and file saving
  * **Ehcache 3** - caching
  * **Spock** - testing
  * **Log4j 2** - logging API
