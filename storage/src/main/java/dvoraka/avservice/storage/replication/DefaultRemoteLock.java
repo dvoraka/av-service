@@ -288,7 +288,9 @@ public class DefaultRemoteLock implements
 
         switch (message.getCommand()) {
             case SEQUENCE:
-                serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
+                if (getSequence() != -1) { // if the lock is initialized
+                    serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
+                }
                 break;
 
             case LOCK:
