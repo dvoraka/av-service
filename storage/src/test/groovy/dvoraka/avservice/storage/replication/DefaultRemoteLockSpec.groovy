@@ -116,12 +116,23 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
             0 * _
     }
 
-    def "on message with sequence request"() {
+    def "on message with sequence request with initialized lock"() {
+        when:
+            lock.synchronize()
+            lock.onMessage(createSequenceRequest(nodeId))
+
+        then:
+            1 * responseClient.isRunning() >> true
+            1 * responseClient.getResponseWait(_, _) >> Optional.of(genSequenceResponse())
+            2 * serviceClient.sendMessage(_)
+    }
+
+    def "on message with sequence request without initialized lock"() {
         when:
             lock.onMessage(createSequenceRequest(nodeId))
 
         then:
-            1 * serviceClient.sendMessage(_)
+            0 * serviceClient.sendMessage(_)
     }
 
     def "on message with lock request with wrong sequence"() {
