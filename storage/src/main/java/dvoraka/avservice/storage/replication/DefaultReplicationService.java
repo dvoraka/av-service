@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -61,6 +62,7 @@ public class DefaultReplicationService implements
 
     private int maxResponseTime;
     private int replicationCount;
+    private volatile boolean running;
 
 
     @Autowired
@@ -90,8 +92,9 @@ public class DefaultReplicationService implements
         log.info("Starting service ({})...", nodeId);
 
         responseClient.addNoResponseMessageListener(this);
-        executorService.scheduleWithFixedDelay(
-                this::discoverNeighbours, 0, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
+
+        CompletableFuture.runAsync(this::waitForOthers)
+                .thenRunAsync(this::scheduleDiscovery);
     }
 
     @PreDestroy
@@ -99,13 +102,21 @@ public class DefaultReplicationService implements
         log.info("Stopping service {}...", idString);
 
         responseClient.removeNoResponseMessageListener(this);
+        setRunning(false);
         shutdownAndAwaitTermination(executorService, TERM_TIME, log);
     }
 
-    private void discoverNeighbours() {
+    private void scheduleDiscovery() {
+        executorService.scheduleWithFixedDelay(
+                this::discoverNeighbours, 0, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
+    }
+
+    private void waitForOthers() {
         waitUntil(responseClient::isRunning);
         waitUntil(remoteLock::isRunning);
+    }
 
+    private void discoverNeighbours() {
         log.debug("Discovering neighbours ({})...", nodeId);
 
         ReplicationMessage message = createDiscoverRequest(nodeId);
@@ -125,6 +136,10 @@ public class DefaultReplicationService implements
             neighbours.clear();
             neighbours.addAll(newNeighbours);
             log.debug("Discovered ({}): {}", nodeId, neighbourCount());
+        }
+
+        if (!isRunning()) {
+            setRunning(true);
         }
     }
 
@@ -505,5 +520,14 @@ public class DefaultReplicationService implements
             log.warn("Deleting failed " + idString, e);
             serviceClient.sendMessage(createFailedResponse(message, nodeId));
         }
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    private void setRunning(boolean running) {
+        this.running = running;
     }
 }
