@@ -43,11 +43,15 @@ public class DefaultRemoteLock implements
 
     private static final Logger log = LogManager.getLogger(DefaultRemoteLock.class);
 
-    private static final String UNLOCKING_FAILED = "Unlocking failed!";
+    /**
+     * Not initialized value for the sequence counter.
+     */
+    private static final int NOT_INITIALIZED = -1;
     /**
      * Default max response time in ms.
      */
     private static final int MAX_RESPONSE_TIME = 500;
+    private static final String UNLOCKING_FAILED = "Unlocking failed!";
 
     private final AtomicLong sequence;
     private final Set<String> lockedFiles;
@@ -70,7 +74,7 @@ public class DefaultRemoteLock implements
         this.responseClient = requireNonNull(responseClient);
         this.nodeId = requireNonNull(nodeId);
 
-        sequence = new AtomicLong(-1);
+        sequence = new AtomicLong(NOT_INITIALIZED);
         lockedFiles = new HashSet<>();
         lockingLock = new ReentrantLock();
         hashingService = new Md5HashingService();
@@ -288,7 +292,7 @@ public class DefaultRemoteLock implements
 
         switch (message.getCommand()) {
             case SEQUENCE:
-                if (getSequence() != -1) { // if the lock is initialized
+                if (getSequence() != NOT_INITIALIZED) {
                     serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
                 }
                 break;
