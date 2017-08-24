@@ -59,10 +59,6 @@ class ReplicationService2ISpec extends Specification
     String owner = 'replTestOwner'
 
 
-    def cleanupSpec() {
-        sleep(1_000)
-    }
-
     def setup() {
         waitUntil({ responseClient.isRunning() })
 
@@ -82,8 +78,6 @@ class ReplicationService2ISpec extends Specification
     def "discovery testing"() {
         given:
             ReplicationMessage request = createDiscoverRequest(nodeId)
-            // wait for client initializations
-            sleep(2_000)
 
         when: "send discovery request"
             client.sendMessage(request)

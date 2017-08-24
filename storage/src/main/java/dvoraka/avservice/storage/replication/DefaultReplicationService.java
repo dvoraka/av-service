@@ -62,6 +62,7 @@ public class DefaultReplicationService implements
 
     private int maxResponseTime;
     private int replicationCount;
+
     private volatile boolean running;
 
 

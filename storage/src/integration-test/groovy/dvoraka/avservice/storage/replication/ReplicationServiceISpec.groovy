@@ -40,22 +40,15 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
     @Shared
     int maxResponseTime = 2_000
     @Shared
-    int fileCount = 200
+    int fileCount = 100
 
-
-    def cleanupSpec() {
-        sleep(1_000)
-    }
 
     def setup() {
+        waitUntil({ service.isRunning() })
+
         // the local node is a node too
         service.setReplicationCount(replicationNodes + 1)
         service.setMaxResponseTime(maxResponseTime)
-
-        waitUntil({ service.isRunning() })
-    }
-
-    def cleanup() {
     }
 
     def "test configuration"() {
