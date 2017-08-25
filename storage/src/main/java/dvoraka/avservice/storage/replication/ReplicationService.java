@@ -16,11 +16,32 @@ public interface ReplicationService extends
         ReplicationMessageListener,
         ServiceStatus {
 
+    /**
+     * Returns a status for the file.
+     *
+     * @param message the file message
+     * @return the status
+     */
     ReplicationStatus getStatus(FileMessage message);
 
+    /**
+     * Sets the replication count for the service.
+     *
+     * @param count the number of replicas
+     */
     void setReplicationCount(int count);
 
+    /**
+     * Returns the maximum response time for the service.
+     *
+     * @return the maximum response time
+     */
     int getMaxResponseTime();
 
+    /**
+     * Sets the maximum response time for the service.
+     *
+     * @param maxTime the maximum response time
+     */
     void setMaxResponseTime(int maxTime);
 }
