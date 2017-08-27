@@ -32,12 +32,12 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
     private static final Logger log = LogManager.getLogger(BufferedPerformanceTester.class);
 
     private static final float MS_PER_SECOND = 1000f;
-    private static final int TIMEOUT = 1_000;
+    private static final int DEFAULT_TIMEOUT = 1_000;
 
     private volatile boolean running;
     private volatile boolean passed;
 
-    private int timeout = TIMEOUT;
+    private int timeout = DEFAULT_TIMEOUT;
 
     private float result;
 
@@ -82,8 +82,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
         }
 
         long start3 = System.currentTimeMillis();
-        while (buffer.size() > 0
-                && (System.currentTimeMillis() - start3) < getTimeout()) {
+        while ((!buffer.isEmpty()) && (System.currentTimeMillis() - start3) < getTimeout()) {
             getMessage(buffer);
         }
 

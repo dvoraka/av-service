@@ -162,8 +162,8 @@ public class DefaultReplicationService implements
             throw new ExistingFileException();
         }
 
-        int neighbours = neighbourCount();
-        if (lockFile(message, neighbours)) {
+        int neighbourCount = neighbourCount();
+        if (lockFile(message, neighbourCount)) {
             try {
                 if (exists(message)) {
                     throw new ExistingFileException();
@@ -195,7 +195,7 @@ public class DefaultReplicationService implements
                     }
                 }
             } finally {
-                unlockFile(message, neighbours);
+                unlockFile(message, neighbourCount);
             }
         } else {
             log.warn("Save lock problem for {}: {}", idString, message);
@@ -393,10 +393,12 @@ public class DefaultReplicationService implements
         }
     }
 
+    @Override
     public int getMaxResponseTime() {
         return maxResponseTime;
     }
 
+    @Override
     public void setMaxResponseTime(int maxResponseTime) {
         this.maxResponseTime = maxResponseTime;
     }
@@ -405,6 +407,7 @@ public class DefaultReplicationService implements
         return replicationCount;
     }
 
+    @Override
     public void setReplicationCount(int replicationCount) {
         this.replicationCount = replicationCount;
     }

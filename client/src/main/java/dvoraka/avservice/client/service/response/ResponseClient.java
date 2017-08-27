@@ -13,5 +13,6 @@ public interface ResponseClient extends ResponseProvider<AvMessage> {
      * @param id the request message ID
      * @return the response message or null if message is not available
      */
+    @Override
     AvMessage getResponse(String id);
 }
