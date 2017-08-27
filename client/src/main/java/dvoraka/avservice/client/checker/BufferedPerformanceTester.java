@@ -57,7 +57,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
     public void start() {
         running = true;
         final long loops = testProperties.getMsgCount();
-        System.out.println("Load test start for " + loops + " messages...");
+        log.info("Load test start for " + loops + " messages...");
 
         final int bufferSize = 6;
         BlockingQueue<AvMessage> buffer = new ArrayBlockingQueue<>(bufferSize);
@@ -88,13 +88,13 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
         }
 
         long duration = System.currentTimeMillis() - start;
-        System.out.println("Load test end.");
+        log.info("Load test end.");
 
         float durationSeconds = duration / MS_PER_SECOND;
         setResult(loops / durationSeconds);
 
-        System.out.println("\nDuration: " + durationSeconds + " s");
-        System.out.println("Messages: " + result + "/s");
+        log.info("\nDuration: " + durationSeconds + " s");
+        log.info("Messages: " + result + "/s");
 
         running = false;
         passed = true;
