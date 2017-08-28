@@ -60,6 +60,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     @Override
     @PostConstruct
     public void start() {
+        // do nothing for now
     }
 
     @Override
