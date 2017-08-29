@@ -46,7 +46,7 @@ public class PerformanceTester implements PerformanceTest, ApplicationManagement
         boolean perfect = true;
         final long loops = testProperties.getMsgCount();
         final long maxRate = testProperties.getMaxRate();
-        System.out.println("Load test start for " + loops + " messages...");
+        log.info("Load test start for " + loops + " messages...");
 
         long start = System.currentTimeMillis();
         long maxRateCounter = start;
@@ -72,16 +72,16 @@ public class PerformanceTester implements PerformanceTest, ApplicationManagement
         }
 
         long duration = System.currentTimeMillis() - start;
-        System.out.println("Load test end.");
+        log.info("Load test end.");
 
         float durationSeconds = duration / MS_PER_SECOND;
         setResult(loops / durationSeconds);
 
-        System.out.println("\nDuration: " + durationSeconds + " s");
-        System.out.println("Messages: " + result + "/s");
+        log.info("\nDuration: " + durationSeconds + " s");
+        log.info("Messages: " + result + "/s");
 
         if (!perfect) {
-            System.out.println("\nSome messages were lost.");
+            log.warn("\nSome messages were lost.");
         } else {
             passed = true;
         }
