@@ -77,11 +77,11 @@ public class PerformanceTester implements PerformanceTest, ApplicationManagement
         float durationSeconds = duration / MS_PER_SECOND;
         setResult(loops / durationSeconds);
 
-        log.info("\nDuration: " + durationSeconds + " s");
+        log.info("Duration: " + durationSeconds + " s");
         log.info("Messages: " + result + "/s");
 
         if (!perfect) {
-            log.warn("\nSome messages were lost.");
+            log.warn("Some messages were lost.");
         } else {
             passed = true;
         }
