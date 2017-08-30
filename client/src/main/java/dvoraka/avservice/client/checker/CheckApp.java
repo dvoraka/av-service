@@ -30,14 +30,12 @@ public class CheckApp implements ApplicationManagement {
     @Override
     public void start() {
         setRunning(true);
-        log.info("Starting check...");
 
-        System.out.print("Checking... ");
-
+        log.info("Checking... ");
         if (checker.check()) {
-            System.out.println("OK");
+            log.info("OK");
         } else {
-            System.out.println("failed!");
+            log.info("failed!");
         }
 
         log.info("Check completed.");
