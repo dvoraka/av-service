@@ -29,7 +29,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
     @Override
     public void start() {
         running = true;
-        final long messageCount = testProperties.getMsgCount();
+//        final long messageCount = testProperties.getMsgCount();
     }
 
     @Override
