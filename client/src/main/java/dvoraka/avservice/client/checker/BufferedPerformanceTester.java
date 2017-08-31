@@ -31,14 +31,13 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
 
     private static final Logger log = LogManager.getLogger(BufferedPerformanceTester.class);
 
-    private static final float MS_PER_SECOND = 1000f;
+    private static final float MS_PER_SECOND = 1_000.0f;
     private static final int DEFAULT_TIMEOUT = 1_000;
 
     private volatile boolean running;
     private volatile boolean passed;
 
     private int timeout = DEFAULT_TIMEOUT;
-
     private float result;
 
 
@@ -92,7 +91,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
         float durationSeconds = duration / MS_PER_SECOND;
         setResult(loops / durationSeconds);
 
-        log.info("\nDuration: " + durationSeconds + " s");
+        log.info("Duration: " + durationSeconds + " s");
         log.info("Messages: " + result + "/s");
 
         running = false;
