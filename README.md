@@ -9,11 +9,12 @@
 A file service prototype with a replication and anti-virus checking. It is mostly a study project
 but it is possible to use it after some "production" tuning.
 
-A replacement for [amqpav](https://github.com/dvoraka/amqpav)
-and first requirements were from the old service.
-Actual network anti-virus service supports JMS, AMQP and REST for communication.
-AV-checker project was integrated as the checker submodule,
-then completely rewritten and the old code was removed.
+A replacement for [amqpav](https://github.com/dvoraka/amqpav) and first requirements were from
+the old service.
+Actual network file service with anti-virus checking supports JMS, AMQP, Kafka and REST for
+transport.
+AV-checker project was integrated as the checker submodule, then completely rewritten and
+the old code was removed.
 
 From version 0.6 it is mostly a file service with an AV checking.
 Currently it is still a bit experimental feature.
