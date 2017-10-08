@@ -4,6 +4,7 @@
 
 # Idea
 .idea/
+*.iml
 
 build/
 classes/
