@@ -177,10 +177,6 @@ allprojects {
         testCompile("nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}")
     }
 
-//    springBoot {
-//        mainClass = 'dvoraka.avservice.rest.Application'
-//    }
-
     jar {
         baseName = "avservice-${project.name}"
     }
@@ -217,7 +213,7 @@ allprojects {
     }
 
     //
-    // Quality tools configuration
+    // Quality tool configurations
     //
     checkstyle {
         toolVersion = '7.3'
@@ -229,7 +225,6 @@ allprojects {
     }
 
     findbugs {
-        toolVersion = '3.0.1'
         reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
         reportLevel = 'medium'
         sourceSets = [sourceSets.main]
@@ -253,7 +248,6 @@ allprojects {
     }
 
     pmd {
-        toolVersion = '5.5.2'
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
         sourceSets = [sourceSets.main]
 
@@ -261,7 +255,6 @@ allprojects {
     }
 
     jacoco {
-        toolVersion = '0.7.8'
         reportsDir = file("${project.rootDir}/reports/jacoco/${project.name}")
     }
 
