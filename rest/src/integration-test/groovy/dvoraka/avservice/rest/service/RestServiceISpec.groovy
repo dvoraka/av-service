@@ -36,7 +36,7 @@ class RestServiceISpec extends Specification {
 
     def "get testing message"() {
         setup:
-            AvMessage message = client.getMessage("/gen-msg/")
+            AvMessage message = client.getMessage("/gen-msg")
 
         expect:
             message != null
