@@ -12,12 +12,13 @@ buildscript {
     }
 }
 
-//plugins {
-//    // SonarQube
-//    id 'org.sonarqube' version '2.5'
+plugins {
+    // SonarQube
+    id 'org.sonarqube' version '2.5'
 //    // Spring Boot and dependency management
 //    id 'org.springframework.boot' version '1.5.3.RELEASE'
-//}
+    id 'com.github.spotbugs' version '1.4'
+}
 
 description = 'Project for anti-virus service'
 
@@ -243,6 +244,14 @@ allprojects {
         }
     }
 
+    spotbugs {
+        reportsDir = file("${project.rootDir}/reports/spotbugsReports/${project.name}")
+        reportLevel = 'medium'
+//        sourceSets = [sourceSets.main]
+
+        ignoreFailures = false
+    }
+
     pmd {
         toolVersion = '5.5.2'
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
@@ -264,12 +273,12 @@ allprojects {
         }
     }
 
-//    sonarqube {
-//        properties {
-//            property 'sonar.jacoco.reportPath', "${buildDir}/jacoco/test.exec"
-//            property 'sonar.jacoco.itReportPath', "${buildDir}/jacoco/integrationTest.exec"
-//        }
-//    }
+    sonarqube {
+        properties {
+            property 'sonar.jacoco.reportPath', "${buildDir}/jacoco/test.exec"
+            property 'sonar.jacoco.itReportPath', "${buildDir}/jacoco/integrationTest.exec"
+        }
+    }
 
     // set reporting HTML output directory
     tasks.withType(Test) {
