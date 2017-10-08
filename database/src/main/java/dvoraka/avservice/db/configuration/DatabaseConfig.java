@@ -37,7 +37,7 @@ public class DatabaseConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("avservice.db.driver"));
+        dataSource.setDriverClassName(env.getProperty("avservice.db.driver", ""));
         dataSource.setUrl(env.getProperty("avservice.db.url"));
         dataSource.setUsername(env.getProperty("avservice.db.user"));
         dataSource.setPassword(env.getProperty("avservice.db.pass"));
@@ -73,8 +73,9 @@ public class DatabaseConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", env.getProperty("avservice.db.hibernate.dialect"));
-        properties.put("hibernate.show_sql", env.getProperty("avservice.db.hibernate.show_sql"));
+        properties.put("hibernate.dialect", env.getProperty("avservice.db.hibernate.dialect", ""));
+        properties.put("hibernate.show_sql",
+                env.getProperty("avservice.db.hibernate.show_sql", ""));
         properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
 

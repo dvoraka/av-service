@@ -1,19 +1,33 @@
-plugins {
-    // SonarQube
-    id 'org.sonarqube' version '2.5'
-    // Spring Boot and dependency management
-    id 'org.springframework.boot' version '1.5.3.RELEASE'
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.M4'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
+
+//plugins {
+//    // SonarQube
+//    id 'org.sonarqube' version '2.5'
+//    // Spring Boot and dependency management
+//    id 'org.springframework.boot' version '1.5.3.RELEASE'
+//}
 
 description = 'Project for anti-virus service'
 
 // Temporary overrides for BOMs
-ext['spring.version'] = '5.0.0.RC1'
-ext['spring-data-releasetrain.version'] = 'Kay-M4'
-ext['spring-amqp.version'] = '2.0.0.M4'
-ext['jackson.version'] = '2.9.0.pr3'
+ext['spring.version'] = '5.0.0.RELEASE'
+ext['spring-data-releasetrain.version'] = 'Kay-RELEASE'
+//ext['spring-amqp.version'] = '2.0.0.M4'
+//ext['jackson.version'] = '2.9.0.pr3'
 ext['solr.version'] = '6.6.0'
-ext['spock.version'] = '1.1-groovy-2.4'
+//ext['spock.version'] = '1.1-groovy-2.4'
 ext['log4j2.version'] = '2.7'
 
 allprojects {
@@ -99,7 +113,7 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.5.3.RELEASE')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:2.0.0.M4')
         }
     }
 
@@ -127,7 +141,6 @@ allprojects {
         compile('org.springframework.boot:spring-boot-starter-data-jpa')
         // Data Solr
         compile('org.springframework.boot:spring-boot-starter-data-solr')
-        compile('org.springframework.data:spring-data-solr:3.0.0.DATASOLR-405-SNAPSHOT')
         // PostgreSQL
         compile('org.postgresql:postgresql')
 
@@ -156,8 +169,8 @@ allprojects {
             exclude module: 'json-path'
         }
         // Spock
-        testCompile('org.spockframework:spock-core')
-        testCompile('org.spockframework:spock-spring')
+        testCompile('org.spockframework:spock-core:1.1-groovy-2.4')
+        testCompile('org.spockframework:spock-spring:1.1-groovy-2.4')
         // Cglib
         testCompile("cglib:cglib-nodep:${cglibVersion}")
         // Objenesis
@@ -166,9 +179,9 @@ allprojects {
         testCompile("nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}")
     }
 
-    springBoot {
-        mainClass = 'dvoraka.avservice.rest.Application'
-    }
+//    springBoot {
+//        mainClass = 'dvoraka.avservice.rest.Application'
+//    }
 
     jar {
         baseName = "avservice-${project.name}"
@@ -254,12 +267,12 @@ allprojects {
         }
     }
 
-    sonarqube {
-        properties {
-            property 'sonar.jacoco.reportPath', "${buildDir}/jacoco/test.exec"
-            property 'sonar.jacoco.itReportPath', "${buildDir}/jacoco/integrationTest.exec"
-        }
-    }
+//    sonarqube {
+//        properties {
+//            property 'sonar.jacoco.reportPath', "${buildDir}/jacoco/test.exec"
+//            property 'sonar.jacoco.itReportPath', "${buildDir}/jacoco/integrationTest.exec"
+//        }
+//    }
 
     // set reporting HTML output directory
     tasks.withType(Test) {
