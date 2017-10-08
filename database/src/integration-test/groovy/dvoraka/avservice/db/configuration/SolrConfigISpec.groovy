@@ -27,12 +27,14 @@ class SolrConfigISpec extends Specification {
     @Shared
     String collection = MessageInfoDocument.class
             .getAnnotation(SolrDocument.class).collection()
+    @Shared
+    String solrBase = 'http://localhost:8983/solr/'
 
 
     def "ping Solr"() {
         given:
             SolrClient solrClient = new HttpSolrClient.Builder()
-                    .withBaseSolrUrl("http://localhost:8983/solr/" + collection + "/")
+                    .withBaseSolrUrl(solrBase + collection + '/')
                     .build();
 
         expect:
