@@ -28,7 +28,7 @@ ext['spring-data-releasetrain.version'] = 'Kay-RELEASE'
 //ext['jackson.version'] = '2.9.0.pr3'
 ext['solr.version'] = '6.6.0'
 //ext['spock.version'] = '1.1-groovy-2.4'
-ext['log4j2.version'] = '2.7'
+//ext['log4j2.version'] = '2.9.1'
 
 allprojects {
     apply plugin: 'java'
@@ -47,9 +47,9 @@ allprojects {
     ext {
         taskGroupName = 'AV-service'
         // Log4j version
-        log4jVersion = '2.7'
+        log4jVersion = '2.9.1'
         // Logstash Logback encoder version
-        logstashLogbackVersion = '4.7'
+        logstashLogbackVersion = '4.11'
         // Cglib nodep version
         cglibVersion = '3.2.4'
         // Equals verifier version
