@@ -5,6 +5,7 @@
 # Idea
 .idea/
 out/
+*.iml
 
 build/
 classes/
