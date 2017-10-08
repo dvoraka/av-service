@@ -39,10 +39,11 @@ public class JmsComponent implements ServerComponent {
 
 
     @Autowired
-    public JmsComponent(String responseDestination,
-                        String serviceId,
-                        JmsTemplate jmsTemplate,
-                        MessageInfoService messageInfoService
+    public JmsComponent(
+            String responseDestination,
+            String serviceId,
+            JmsTemplate jmsTemplate,
+            MessageInfoService messageInfoService
     ) {
         this.responseDestination = requireNonNull(responseDestination);
         this.serviceId = requireNonNull(serviceId);
