@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.0.M4'
+        springBootVersion = '2.0.0.M5'
     }
     repositories {
         mavenCentral()
@@ -23,7 +23,6 @@ plugins {
 description = 'Project for anti-virus service'
 
 // Temporary overrides for BOMs
-ext['spring.version'] = '5.0.0.RELEASE'
 ext['spring-data-releasetrain.version'] = 'Kay-RELEASE'
 
 allprojects {
@@ -111,7 +110,7 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('org.springframework.boot:spring-boot-starter-parent:2.0.0.M4')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:2.0.0.M5')
         }
     }
 
