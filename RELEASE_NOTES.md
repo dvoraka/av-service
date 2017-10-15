@@ -1,3 +1,6 @@
+## v0.5.2 (Oct 15, 2017)
+ * Library versions updated (Spring 5 and Spring Data Kay)
+
 ## v0.5.1 (Apr 18, 2017)
  * Library versions updated
  
