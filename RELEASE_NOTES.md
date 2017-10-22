@@ -1,3 +1,19 @@
+## v0.9-RC1 (Oct 22, 2017)
+ * New Kafka transport
+ * Improved file service
+ * Updated client runners
+ * Improved file service settings
+ * New synchronization between dependent transport components
+ * Updated server components
+ * Use logger for some check outputs
+ * Improved tests
+
+#### modules
+ * New runner module
+ 
+#### Docker
+ * New Kafka image (will be changed to two separate images - Kafka and ZooKeeper)
+
 ## v0.5.2 (Oct 15, 2017)
  * Library versions updated (Spring 5 and Spring Data Kay)
 
