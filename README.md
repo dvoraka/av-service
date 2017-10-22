@@ -272,7 +272,7 @@ $ ./gradlew assemble
 And then the the jar is in `rest/build/libs/` directory called **avservice-rest-XXX.jar**.
 You can run it with:
 ```
-$ java -jar avservice-rest-0.8.jar 
+$ java -jar avservice-rest-0.9.jar 
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -290,14 +290,6 @@ Utility for testing AMQP infrastructure. It sends a message and wait for a respo
 ```
 $ ./gradlew -q runAmqpCheck
 ```
-And output:
-```
-Checking... OK
-```
-or
-```
-Checking... failed!
-```
 
 ### JMS checker
 Utility for testing JMS infrastructure. It sends a message and wait for a response.
@@ -306,13 +298,19 @@ Utility for testing JMS infrastructure. It sends a message and wait for a respon
 ```
 $ ./gradlew -q runJmsCheck
 ```
-And output:
+
+### Check output logs
+
 ```
-Checking... OK
+12:20:00.388 [main] INFO  d.avservice.client.checker.CheckApp - Checking... 
+12:20:03.807 [main] INFO  d.avservice.client.checker.CheckApp - failed!
+12:20:03.808 [main] INFO  d.avservice.client.checker.CheckApp - Check completed.
 ```
 or
 ```
-Checking... failed!
+12:20:00.388 [main] INFO  d.avservice.client.checker.CheckApp - Checking... 
+12:20:03.807 [main] INFO  d.avservice.client.checker.CheckApp - OK
+12:20:03.808 [main] INFO  d.avservice.client.checker.CheckApp - Check completed.
 ```
 
 ---
