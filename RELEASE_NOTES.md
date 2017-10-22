@@ -5,7 +5,7 @@
  * Improved file service settings
  * New synchronization between dependent transport components
  * Updated server components
- * Use logger for some check outputs
+ * Used logger for some check outputs
  * Improved tests
 
 #### modules
