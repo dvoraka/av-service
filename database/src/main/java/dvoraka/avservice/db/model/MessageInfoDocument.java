@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessageInfoData;
 import dvoraka.avservice.common.data.DefaultAvMessageInfo;
 import dvoraka.avservice.common.data.InfoSource;
 import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import javax.persistence.Id;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 /**
  * Message info document.
  */
+@SolrDocument(collection = "messageinfo")
 public class MessageInfoDocument implements AvMessageInfoData {
 
     @Id
