@@ -75,7 +75,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.save(message, InfoSource.TEST, testService)
 
         then:
-            1 * messageRepository.save(_ as Iterable)
+            1 * messageRepository.saveAll(_ as Iterable)
     }
 
     def "load info"() {
@@ -135,7 +135,7 @@ class SolrMessageInfoServiceSpec extends Specification {
             messageService.stop()
 
         then:
-            1 * messageRepository.save(_ as Iterable)
+            1 * messageRepository.saveAll(_ as Iterable)
     }
 
     def "test stop without batching"() {

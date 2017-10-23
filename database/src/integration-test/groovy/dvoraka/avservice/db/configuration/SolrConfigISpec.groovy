@@ -4,9 +4,9 @@ import dvoraka.avservice.db.model.MessageInfoDocument
 import dvoraka.avservice.db.repository.solr.SolrMessageInfoRepository
 import org.apache.solr.client.solrj.SolrClient
 import org.apache.solr.client.solrj.impl.HttpSolrClient
-import org.apache.solr.common.SolrDocument
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.solr.core.SolrTemplate
+import org.springframework.data.solr.core.mapping.SolrDocument
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
