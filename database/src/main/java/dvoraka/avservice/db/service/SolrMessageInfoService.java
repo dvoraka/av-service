@@ -72,7 +72,7 @@ public class SolrMessageInfoService implements MessageInfoService, ExecutorServi
 
     private synchronized void flushCache() {
         if (!documents.isEmpty()) {
-            messageInfoRepository.save(documents);
+            messageInfoRepository.saveAll(documents);
             documents.clear();
         }
     }

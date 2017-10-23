@@ -1,20 +1,28 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.M5'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 plugins {
     // SonarQube
     id 'org.sonarqube' version '2.5'
     // Spring Boot and dependency management
-    id 'org.springframework.boot' version '1.5.8.RELEASE'
+//    id 'org.springframework.boot' version '1.5.8.RELEASE'
 }
 
 description = 'Anti-virus and file network service'
 
 // Temporary overrides for BOMs
-ext['spring.version'] = '5.0.0.RELEASE'
-ext['spring-data-releasetrain.version'] = 'Kay-M2'
-ext['solr.version'] = '6.6.0'
-ext['spring-amqp.version'] = '2.0.0.M5'
-ext['jackson.version'] = '2.9.0.pr3'
-ext['spock.version'] = '1.1-groovy-2.4'
-ext['logback.version'] = '1.2.3'
+ext['spring-data-releasetrain.version'] = 'Kay-RELEASE'
 
 allprojects {
     apply plugin: 'java'
@@ -34,9 +42,11 @@ allprojects {
     ext {
         taskGroupName = 'AV-service'
         // Log4j version
-        log4jVersion = '2.7'
+        log4jVersion = '2.9.1'
         // Logstash Logback encoder version
         logstashLogbackVersion = '4.11'
+        // Spock version
+        spockVersion = '1.1-groovy-2.4'
         // Cglib nodep version
         cglibVersion = '3.2.4'
         // Equals verifier version
@@ -100,7 +110,7 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('org.springframework.boot:spring-boot-starter-parent:1.5.8.RELEASE')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:2.0.0.M5')
         }
     }
 
@@ -164,8 +174,8 @@ allprojects {
             exclude module: 'json-path'
         }
         // Spock
-        testCompile('org.spockframework:spock-core')
-        testCompile('org.spockframework:spock-spring')
+        testCompile("org.spockframework:spock-core:${spockVersion}")
+        testCompile("org.spockframework:spock-spring:${spockVersion}")
         // Cglib
         testCompile("cglib:cglib-nodep:${cglibVersion}")
         // Objenesis
@@ -174,9 +184,9 @@ allprojects {
         testCompile("nl.jqno.equalsverifier:equalsverifier:${equalsVerifierVersion}")
     }
 
-    springBoot {
-        mainClass = 'dvoraka.avservice.rest.Application'
-    }
+//    springBoot {
+//        mainClass = 'dvoraka.avservice.rest.Application'
+//    }
 
     jar {
         baseName = "avservice-${project.name}"
