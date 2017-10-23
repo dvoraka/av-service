@@ -24,22 +24,22 @@ class SolrConfigISpec extends Specification {
     @Autowired
     SolrMessageInfoRepository messageInfoRepository
 
-//    @Shared
-//    String collection = MessageInfoDocument.class
-//            .getAnnotation(SolrDocument.class).collection()
+    @Shared
+    String collection = MessageInfoDocument.class
+            .getAnnotation(SolrDocument.class).collection()
     @Shared
     String solrBase = 'http://localhost:8983/solr/'
 
 
-//    def "ping Solr"() {
-//        given:
-//            SolrClient solrClient = new HttpSolrClient.Builder()
-//                    .withBaseSolrUrl(solrBase + collection + '/')
-//                    .build();
-//
-//        expect:
-//            solrClient.ping()
-//    }
+    def "ping Solr"() {
+        given:
+            SolrClient solrClient = new HttpSolrClient.Builder()
+                    .withBaseSolrUrl(solrBase + collection + '/')
+                    .build();
+
+        expect:
+            solrClient.ping()
+    }
 
     def "save document"() {
         setup:
