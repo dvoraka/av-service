@@ -213,7 +213,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
 
     def "save 10 MB file"() {
         given:
-            int size = 1000 * 1000 * 10
+            int size = 1000 * 1000 * 5
             byte[] data = new byte[size]
             FileMessage saveMessage = getTestSaveMessage(data)
 
