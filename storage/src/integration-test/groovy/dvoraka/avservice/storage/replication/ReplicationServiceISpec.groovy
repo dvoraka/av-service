@@ -38,7 +38,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
     @Shared
     int replicationNodes = 2
     @Shared
-    int maxResponseTime = 2_000
+    int maxResponseTime = 3_000
     @Shared
     int fileCount = 100
 
@@ -211,7 +211,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
             service.deleteFile(fileDeleteMessage(saveMessage))
     }
 
-    def "save 10 MB file"() {
+    def "save 5 MB file"() {
         given:
             int size = 1000 * 1000 * 5
             byte[] data = new byte[size]
