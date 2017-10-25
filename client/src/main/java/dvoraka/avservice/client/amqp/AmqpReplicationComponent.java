@@ -36,7 +36,10 @@ public class AmqpReplicationComponent implements ReplicationComponent {
 
     @Autowired
     public AmqpReplicationComponent(
-            RabbitTemplate rabbitTemplate, String nodeId, String broadcastKey) {
+            RabbitTemplate rabbitTemplate,
+            String nodeId,
+            String broadcastKey
+    ) {
         this.rabbitTemplate = requireNonNull(rabbitTemplate);
         this.nodeId = requireNonNull(nodeId);
         this.broadcastKey = requireNonNull(broadcastKey);

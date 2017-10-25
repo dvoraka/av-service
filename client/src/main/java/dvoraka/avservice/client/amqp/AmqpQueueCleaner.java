@@ -5,6 +5,8 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * AMQP queue cleaner implementation.
  */
@@ -16,7 +18,7 @@ public class AmqpQueueCleaner implements QueueCleaner {
 
     @Autowired
     public AmqpQueueCleaner(AmqpTemplate amqpTemplate) {
-        this.amqpTemplate = amqpTemplate;
+        this.amqpTemplate = requireNonNull(amqpTemplate);
     }
 
     @Override

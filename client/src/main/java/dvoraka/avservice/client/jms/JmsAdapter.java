@@ -6,7 +6,6 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,6 @@ public class JmsAdapter implements NetworkComponent, AvMessageHelper {
 
 
     @Autowired
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public JmsAdapter(
             String destination,
             String serviceId,
