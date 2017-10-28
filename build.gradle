@@ -48,9 +48,9 @@ allprojects {
         // Spock version
         spockVersion = '1.1-groovy-2.4'
         // Cglib nodep version
-        cglibVersion = '3.2.4'
+        cglibVersion = '3.2.5'
         // Equals verifier version
-        equalsVerifierVersion = '2.1.7'
+        equalsVerifierVersion = '2.3.3'
     }
 
     repositories {
