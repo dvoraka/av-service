@@ -1,3 +1,5 @@
+## v0.9 (Oct 29, 2017)
+
 ## v0.9-RC1 (Oct 22, 2017)
  * New Kafka transport
  * Improved file service
