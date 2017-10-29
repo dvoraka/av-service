@@ -18,7 +18,7 @@ public class DummyRunnerConfiguration implements RunnerConfiguration {
     }
 
     @Override
-    public String name() {
+    public String getName() {
         return null;
     }
 

@@ -30,7 +30,7 @@ public class DefaultRunnerConfiguration implements RunnerConfiguration {
     }
 
     @Override
-    public String name() {
+    public String getName() {
         return null;
     }
 

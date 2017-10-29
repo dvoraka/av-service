@@ -21,17 +21,18 @@ public interface RunnerConfiguration {
      *
      * @return the configuration name
      */
-    String name();
+    String getName();
 
     /**
      * Returns a service runner.
      *
      * @return the service runner
+     * @see ServiceRunner
      */
     ServiceRunner getServiceRunner();
 
     /**
-     * Check service running status. The real service check.
+     * Returns a boolean supplier for checking a service running status.
      *
      * @return the boolean supplier
      */
