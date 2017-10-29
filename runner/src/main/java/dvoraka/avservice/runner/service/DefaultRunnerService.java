@@ -1,8 +1,8 @@
 package dvoraka.avservice.runner.service;
 
 import dvoraka.avservice.common.helper.ExecutorServiceHelper;
+import dvoraka.avservice.runner.Runner;
 import dvoraka.avservice.runner.RunnerAlreadyExistsException;
-import dvoraka.avservice.runner.RunnerConfiguration;
 import dvoraka.avservice.runner.RunnerNotFoundException;
 import dvoraka.avservice.runner.RunningState;
 import org.apache.logging.log4j.LogManager;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Default runner service implementation.
@@ -26,36 +26,40 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
     private static final Logger log = LogManager.getLogger(DefaultRunnerService.class);
 
-    private final ConcurrentMap<String, RunnerConfiguration> configurations;
-    private final ConcurrentMap<String, RunningState> states;
+    private final ConcurrentMap<Long, Runner> runners;
+    private final AtomicLong runnerCount;
+
     private final ExecutorService executorService;
 
 
     public DefaultRunnerService() {
-        configurations = new ConcurrentHashMap<>();
-        states = new ConcurrentHashMap<>();
+        runners = new ConcurrentHashMap<>();
+        runnerCount = new AtomicLong();
 
         final int threadCount = 8;
         executorService = Executors.newFixedThreadPool(threadCount);
     }
 
     @Override
-    public long createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException {
-        log.info("Creating new configuration: {}...", configuration.getId());
+    public long createRunner(Runner configuration) throws RunnerAlreadyExistsException {
 
-        if (configurations.containsKey(configuration.getId())) {
+        // create runner
+
+        log.info("Created new runner with ID: {}...", runnerCount.get());
+
+        if (runners.containsKey(configuration.getId())) {
             throw new RunnerAlreadyExistsException();
         }
 
         states.put(configuration.getId(), RunningState.UNKNOWN);
-        configurations.put(configuration.getId(), configuration);
+        runners.put(configuration.getId(), configuration);
 
         return 0;
     }
 
     @Override
-    public Collection<String> listRunners() {
-        return new ArrayList<>(configurations.keySet());
+    public ArrayList<E> listRunners() {
+        return new ArrayList<>(runners.keySet());
     }
 
     @Override
@@ -77,10 +81,10 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public void startRunner(String id) throws RunnerNotFoundException {
+    public void startRunner(Long id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
 
-        RunnerConfiguration configuration = configurations.get(id);
+        Runner configuration = runners.get(id);
         configuration.getServiceRunner().runAsync();
         states.put(id, RunningState.STARTING);
 
@@ -93,23 +97,23 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public void stopRunner(String id) throws RunnerNotFoundException {
+    public void stopRunner(Long id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
 
-        RunnerConfiguration configuration = configurations.get(id);
+        Runner configuration = runners.get(id);
         configuration.getServiceRunner().stop();
         states.put(id, RunningState.STOPPED);
     }
 
     @Override
-    public RunningState getRunnerState(String id) throws RunnerNotFoundException {
+    public RunningState getRunnerState(Long id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
 
         return states.get(id);
     }
 
-    private void updateState(String id) {
-        RunnerConfiguration configuration = configurations.get(id);
+    private void updateState(Long id) {
+        Runner configuration = runners.get(id);
 
         final int waitTime = 1_000;
         while (!configuration.running().getAsBoolean()) {
@@ -126,8 +130,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
         states.put(id, RunningState.RUNNING);
     }
 
-    private void checkRunnerExistence(String id) throws RunnerNotFoundException {
-        if (!configurations.containsKey(id)) {
+    private void checkRunnerExistence(Long id) throws RunnerNotFoundException {
+        if (!runners.containsKey(id)) {
             throw new RunnerNotFoundException();
         }
     }
