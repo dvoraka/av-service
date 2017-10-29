@@ -40,8 +40,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public void createRunner(RunnerConfiguration configuration)
-            throws RunnerAlreadyExistsException {
+    public long createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException {
         log.info("Creating new configuration: {}...", configuration.getId());
 
         if (configurations.containsKey(configuration.getId())) {
@@ -50,6 +49,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
         states.put(configuration.getId(), RunningState.UNKNOWN);
         configurations.put(configuration.getId(), configuration);
+
+        return 0;
     }
 
     @Override
@@ -71,6 +72,11 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
+    public void startRunner(long id) throws RunnerNotFoundException {
+
+    }
+
+    @Override
     public void startRunner(String id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
 
@@ -79,6 +85,11 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
         states.put(id, RunningState.STARTING);
 
         executorService.execute(() -> updateState(id));
+    }
+
+    @Override
+    public void stopRunner(long id) throws RunnerNotFoundException {
+
     }
 
     @Override

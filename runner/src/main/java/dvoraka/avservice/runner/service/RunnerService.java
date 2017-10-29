@@ -12,7 +12,14 @@ import java.util.Collection;
  */
 public interface RunnerService {
 
-    void createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
+    /**
+     * Creates a runner and returns the runner ID.
+     *
+     * @param configuration the runner configuration
+     * @return the runner ID
+     * @throws RunnerAlreadyExistsException if runner already exists
+     */
+    long createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
 
     Collection<String> listRunners();
 
@@ -20,9 +27,13 @@ public interface RunnerService {
 
     void stop();
 
-    void startRunner(String id) throws RunnerNotFoundException;
+    void startRunner(long id) throws RunnerNotFoundException;
 
-    void stopRunner(String id) throws RunnerNotFoundException;
+    void startRunner(String name) throws RunnerNotFoundException;
+
+    void stopRunner(long id) throws RunnerNotFoundException;
+
+    void stopRunner(String name) throws RunnerNotFoundException;
 
     RunningState getRunnerState(String id) throws RunnerNotFoundException;
 }
