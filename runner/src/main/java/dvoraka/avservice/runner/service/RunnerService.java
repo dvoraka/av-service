@@ -5,7 +5,7 @@ import dvoraka.avservice.runner.RunnerAlreadyExistsException;
 import dvoraka.avservice.runner.RunnerNotFoundException;
 import dvoraka.avservice.runner.RunningState;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Runner service interface.
@@ -21,7 +21,7 @@ public interface RunnerService {
      */
     long createRunner(Runner configuration) throws RunnerAlreadyExistsException;
 
-    ArrayList<E> listRunners();
+    List<Runner> listRunners();
 
     void start();
 
