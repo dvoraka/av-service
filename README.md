@@ -47,6 +47,7 @@ Release [NOTES](RELEASE_NOTES.md)
 ### Features
  * AMQP 0.9.1 support
  * JMS support
+ * Kafka support
  * REST support
  * Message tracking DB service (PostgreSQL or Solr)
  * Statistics module
@@ -55,13 +56,15 @@ Release [NOTES](RELEASE_NOTES.md)
  * Robust design
  
 ### Planned features
- * Separate REST app for better scaling and load balancer
+ * Separate REST app for better scaling
+ * REST load balancer
  * AMQP 1.0 support
 
 ### Used components
  * **ClamAV** - open source anti-virus engine
  * **RabbitMQ** - open source message broker used for AMQP
  * **ActiveMQ** - open source message broker used for JMS
+ * **Kafka** - open source message broker used for Kafka
  * **PostgreSQL** - open source DB
  * **Solr** - open source enterprise search platform
 
