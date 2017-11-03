@@ -2,6 +2,7 @@ package dvoraka.avservice.runner.service;
 
 import dvoraka.avservice.runner.Runner;
 import dvoraka.avservice.runner.RunnerAlreadyExistsException;
+import dvoraka.avservice.runner.RunnerConfiguration;
 import dvoraka.avservice.runner.RunnerNotFoundException;
 import dvoraka.avservice.runner.RunningState;
 
@@ -19,7 +20,7 @@ public interface RunnerService {
      * @return the runner ID
      * @throws RunnerAlreadyExistsException if runner already exists
      */
-    long createRunner(Runner configuration) throws RunnerAlreadyExistsException;
+    long createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
 
     List<Runner> listRunners();
 
@@ -29,11 +30,11 @@ public interface RunnerService {
 
     void startRunner(long id) throws RunnerNotFoundException;
 
-    void startRunner(Long name) throws RunnerNotFoundException;
+    void startRunner(String name) throws RunnerNotFoundException;
 
     void stopRunner(long id) throws RunnerNotFoundException;
 
-    void stopRunner(Long name) throws RunnerNotFoundException;
+    void stopRunner(String name) throws RunnerNotFoundException;
 
     RunningState getRunnerState(Long id) throws RunnerNotFoundException;
 }
