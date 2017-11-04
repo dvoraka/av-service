@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -53,8 +54,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
             throw new RunnerAlreadyExistsException();
         }
 
-        Runner newRunner = new Runner(configuration);
         long id = runnerCounter.getAndIncrement();
+        Runner newRunner = new Runner(configuration, id);
         runners.put(id, newRunner);
         log.info("Created new runner with ID: {}...", id);
 
@@ -85,14 +86,9 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public void startRunner(String id) throws RunnerNotFoundException {
-//        checkRunnerExistence(id);
-
-        Runner configuration = runners.get(id);
-        configuration.getServiceRunner().runAsync();
-        states.put(id, RunningState.STARTING);
-
-        executorService.execute(() -> updateState(id));
+    public void startRunner(String name) throws RunnerNotFoundException {
+        checkRunnerExistence(name);
+        findRunner(name).ifPresent(Runner::start);
     }
 
     @Override
@@ -104,39 +100,69 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     public void stopRunner(String id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
 
-        Runner configuration = runners.get(id);
-        configuration.getServiceRunner().stop();
-        states.put(id, RunningState.STOPPED);
+//        Runner configuration = runners.get(id);
+//        configuration.getServiceRunner().stop();
+//        states.put(id, RunningState.STOPPED);
     }
 
     @Override
     public RunningState getRunnerState(Long id) throws RunnerNotFoundException {
-        checkRunnerExistence(id);
+        return findRunner(id)
+                .map(Runner::getState)
+                .orElseThrow(RunnerNotFoundException::new);
+    }
 
-        return states.get(id);
+    private Optional<Runner> findRunner(long id) {
+        return Optional.ofNullable(getRunners().get(id));
+    }
+
+    private Optional<Runner> findRunner(String name) {
+        return findRunnerId(name)
+                .map(id -> getRunners().get(id));
+    }
+
+    private Optional<Long> findRunnerId(String name) {
+        return runners.values().stream()
+                .filter(runner -> runner.getName().equals(name))
+                .findFirst()
+                .map(Runner::getId);
     }
 
     private void updateState(Long id) {
-        Runner configuration = runners.get(id);
+//        Runner configuration = runners.get(id);
+//
+//        final int waitTime = 1_000;
+//        while (!configuration.running().getAsBoolean()) {
+//            try {
+//                Thread.sleep(waitTime);
+//            } catch (InterruptedException e) {
+//                log.warn("Waiting interrupted!", e);
+//                Thread.currentThread().interrupt();
+//
+//                return;
+//            }
+//        }
 
-        final int waitTime = 1_000;
-        while (!configuration.running().getAsBoolean()) {
-            try {
-                Thread.sleep(waitTime);
-            } catch (InterruptedException e) {
-                log.warn("Waiting interrupted!", e);
-                Thread.currentThread().interrupt();
-
-                return;
-            }
-        }
-
-        states.put(id, RunningState.RUNNING);
+//        states.put(id, RunningState.RUNNING);
     }
 
     private void checkRunnerExistence(Long id) throws RunnerNotFoundException {
         if (!runners.containsKey(id)) {
             throw new RunnerNotFoundException();
         }
+    }
+
+    private void checkRunnerExistence(String name) throws RunnerNotFoundException {
+        if (runners.values().stream()
+                .map(Runner::getConfiguration)
+                .map(RunnerConfiguration::getName)
+                .noneMatch(runnerName -> runnerName.equals(name))) {
+
+            throw new RunnerNotFoundException();
+        }
+    }
+
+    private ConcurrentMap<Long, Runner> getRunners() {
+        return runners;
     }
 }
