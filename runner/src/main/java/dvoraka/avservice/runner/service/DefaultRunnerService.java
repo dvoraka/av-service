@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +19,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 /**
  * Default runner service implementation.
@@ -63,8 +63,10 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public List<Runner> listRunners() {
-        return new ArrayList<>(runners.values());
+    public List<String> listRunners() {
+        return runners.values().stream()
+                .map(Runner::getName)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -82,7 +84,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
     @Override
     public void startRunner(long id) throws RunnerNotFoundException {
-
+        checkRunnerExistence(id);
+        findRunner(id).ifPresent(Runner::start);
     }
 
     @Override
@@ -93,16 +96,12 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
     @Override
     public void stopRunner(long id) throws RunnerNotFoundException {
-
+        checkRunnerExistence(id);
     }
 
     @Override
-    public void stopRunner(String id) throws RunnerNotFoundException {
-        checkRunnerExistence(id);
-
-//        Runner configuration = runners.get(id);
-//        configuration.getServiceRunner().stop();
-//        states.put(id, RunningState.STOPPED);
+    public void stopRunner(String name) throws RunnerNotFoundException {
+        checkRunnerExistence(name);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package dvoraka.avservice.runner.service;
 
-import dvoraka.avservice.runner.Runner;
 import dvoraka.avservice.runner.RunnerAlreadyExistsException;
 import dvoraka.avservice.runner.RunnerConfiguration;
 import dvoraka.avservice.runner.RunnerNotFoundException;
@@ -22,7 +21,7 @@ public interface RunnerService {
      */
     long createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
 
-    List<Runner> listRunners();
+    List<String> listRunners();
 
     void start();
 

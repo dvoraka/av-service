@@ -14,6 +14,8 @@ public class Runner {
 
         this.id = id;
         this.name = configuration.getName();
+
+        this.state = RunningState.NEW;
     }
 
     public RunnerConfiguration getConfiguration() {

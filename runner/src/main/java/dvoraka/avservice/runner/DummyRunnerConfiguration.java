@@ -19,11 +19,12 @@ public class DummyRunnerConfiguration implements RunnerConfiguration {
 
     @Override
     public String getName() {
-        return null;
+        return "dummy runner";
     }
 
     @Override
     public ServiceRunner getServiceRunner() {
+
         return new ServiceRunner() {
             @Override
             public void stop() {
