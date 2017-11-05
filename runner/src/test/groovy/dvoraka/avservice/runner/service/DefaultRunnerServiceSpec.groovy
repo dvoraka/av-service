@@ -4,6 +4,7 @@ import dvoraka.avservice.runner.DummyRunnerConfiguration
 import dvoraka.avservice.runner.RunnerConfiguration
 import dvoraka.avservice.runner.RunnerNotFoundException
 import dvoraka.avservice.runner.RunningState
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -13,6 +14,9 @@ class DefaultRunnerServiceSpec extends Specification {
     DefaultRunnerService service
 
     RunnerConfiguration configuration
+
+    @Shared
+    String unknownName = "aaaaaa"
 
 
     def setup() {
@@ -78,25 +82,25 @@ class DefaultRunnerServiceSpec extends Specification {
             service.getRunnerState(name) == RunningState.STOPPED
     }
 
-    def "start with unknown ID"() {
+    def "start with unknown name"() {
         when:
-            service.startRunner("aaaaaa")
+            service.startRunner(unknownName)
 
         then:
             thrown(RunnerNotFoundException)
     }
 
-    def "stop with unknown ID"() {
+    def "stop with unknown name"() {
         when:
-            service.stopRunner("aaaaaa")
+            service.stopRunner(unknownName)
 
         then:
             thrown(RunnerNotFoundException)
     }
 
-    def "state for unknown ID"() {
+    def "state for unknown name"() {
         when:
-            service.stopRunner("aaaaaa")
+            service.stopRunner(unknownName)
 
         then:
             thrown(RunnerNotFoundException)
