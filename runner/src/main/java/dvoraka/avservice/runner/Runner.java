@@ -34,8 +34,13 @@ public class Runner {
         return state;
     }
 
+    private void setState(RunningState state) {
+        this.state = state;
+    }
+
     public void start() {
         getConfiguration().getServiceRunner().runAsync();
+        setState(RunningState.RUNNING);
     }
 
     public boolean isRunning() {
