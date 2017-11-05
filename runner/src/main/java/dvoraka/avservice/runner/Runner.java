@@ -9,7 +9,7 @@ public class Runner {
     private RunningState state;
 
 
-    public Runner(RunnerConfiguration configuration, long id) {
+    public Runner(RunnerConfiguration configuration) {
         this.configuration = configuration;
 
         this.id = id;

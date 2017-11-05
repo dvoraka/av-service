@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 /**
  * Default runner service implementation.
@@ -29,15 +29,13 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
     private static final Logger log = LogManager.getLogger(DefaultRunnerService.class);
 
-    private final ConcurrentMap<Long, Runner> runners;
-    private final AtomicLong runnerCounter;
+    private final ConcurrentMap<String, Runner> runners;
 
     private final ExecutorService executorService;
 
 
     public DefaultRunnerService() {
         runners = new ConcurrentHashMap<>();
-        runnerCounter = new AtomicLong();
 
         final int threadCount = 8;
         executorService = Executors.newFixedThreadPool(threadCount);
@@ -46,24 +44,22 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     @Override
     public String createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException {
 
-        if (exists(configuration.getName())) {
+        //TODO: synchronize
 
+        if (exists(configuration.getName())) {
             throw new RunnerAlreadyExistsException();
         }
 
-        long id = runnerCounter.getAndIncrement();
-        Runner newRunner = new Runner(configuration, id);
-        runners.put(id, newRunner);
-        log.info("Created new runner with ID: {}...", newRunner.getId());
+        Runner newRunner = new Runner(configuration);
+        runners.put(newRunner.getName(), newRunner);
+        log.info("Created new runner with name: {}...", newRunner.getName());
 
         return newRunner.getName();
     }
 
     @Override
     public List<String> listRunners() {
-        return runners.values().stream()
-                .map(Runner::getName)
-                .collect(Collectors.toList());
+        return new ArrayList<>(runners.keySet());
     }
 
     @Override
@@ -103,26 +99,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
                 .orElseThrow(RunnerNotFoundException::new);
     }
 
-    private Optional<Runner> findRunner(long id) {
-        return Optional.ofNullable(getRunners().get(id));
-    }
-
     private Optional<Runner> findRunner(String name) {
-        return findRunnerId(name)
-                .map(id -> getRunners().get(id));
-    }
-
-    private Optional<Long> findRunnerId(String name) {
-        return getRunners().values().stream()
-                .filter(runner -> runner.getName().equals(name))
-                .findFirst()
-                .map(Runner::getId);
-    }
-
-    private void checkRunnerExistence(Long id) throws RunnerNotFoundException {
-        if (!getRunners().containsKey(id)) {
-            throw new RunnerNotFoundException();
-        }
+        return Optional.ofNullable(getRunners().get(name));
     }
 
     private void checkRunnerExistence(String name) throws RunnerNotFoundException {
@@ -132,12 +110,10 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     private boolean exists(String name) {
-        return getRunners().values().stream()
-                .map(Runner::getName)
-                .anyMatch(runnerName -> runnerName.equals(name));
+        return getRunners().containsKey(name);
     }
 
-    private ConcurrentMap<Long, Runner> getRunners() {
+    private Map<String, Runner> getRunners() {
         return runners;
     }
 }
