@@ -72,6 +72,7 @@ class DefaultRunnerServiceSpec extends Specification {
 
         when:
             service.stopRunner(id)
+            sleep(100)
 
         then:
             service.getRunnerState(id) == RunningState.STOPPED

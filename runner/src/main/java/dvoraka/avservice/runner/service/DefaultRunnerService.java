@@ -97,11 +97,13 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     @Override
     public void stopRunner(long id) throws RunnerNotFoundException {
         checkRunnerExistence(id);
+        findRunner(id).ifPresent(Runner::stop);
     }
 
     @Override
     public void stopRunner(String name) throws RunnerNotFoundException {
         checkRunnerExistence(name);
+        findRunner(name).ifPresent(Runner::stop);
     }
 
     @Override

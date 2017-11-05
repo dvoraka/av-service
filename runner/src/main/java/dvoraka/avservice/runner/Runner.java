@@ -43,6 +43,11 @@ public class Runner {
         setState(RunningState.RUNNING);
     }
 
+    public void stop() {
+        getConfiguration().getServiceRunner().stop();
+        setState(RunningState.STOPPED);
+    }
+
     public boolean isRunning() {
         return getConfiguration().running().getAsBoolean();
     }
