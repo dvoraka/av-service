@@ -13,12 +13,18 @@ public class DummyRunnerConfiguration implements RunnerConfiguration {
 
 
     @Override
-    public String getId() {
-        return "dummy";
+    public long getId() {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return "dummy runner";
     }
 
     @Override
     public ServiceRunner getServiceRunner() {
+
         return new ServiceRunner() {
             @Override
             public void stop() {

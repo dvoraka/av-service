@@ -10,21 +10,29 @@ import java.util.function.BooleanSupplier;
 public interface RunnerConfiguration {
 
     /**
-     * Returns a configuration ID.
+     * Returns a configuration ID. Usually assigned by the runner service.
      *
      * @return the configuration ID
      */
-    String getId();
+    long getId();
+
+    /**
+     * Returns a configuration name.
+     *
+     * @return the configuration name
+     */
+    String getName();
 
     /**
      * Returns a service runner.
      *
      * @return the service runner
+     * @see ServiceRunner
      */
     ServiceRunner getServiceRunner();
 
     /**
-     * Check service running status. The real service check.
+     * Returns a boolean supplier for checking a service running status.
      *
      * @return the boolean supplier
      */
