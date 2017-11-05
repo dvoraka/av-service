@@ -8,9 +8,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Concurrent performance tester.
  */
+//TODO
 @Component
 public class ConcurrentPerformanceTester implements PerformanceTest, ApplicationManagement {
 
@@ -23,7 +26,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
 
     @Autowired
     public ConcurrentPerformanceTester(PerformanceTestProperties testProperties) {
-        this.testProperties = testProperties;
+        this.testProperties = requireNonNull(testProperties);
     }
 
     @Override
