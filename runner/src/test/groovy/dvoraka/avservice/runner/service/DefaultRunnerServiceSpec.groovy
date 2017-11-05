@@ -26,10 +26,10 @@ class DefaultRunnerServiceSpec extends Specification {
 
     def "create runner"() {
         when:
-            long id = service.createRunner(configuration)
+            String name = service.createRunner(configuration)
 
         then:
-            service.getRunnerState(id) == RunningState.NEW
+            service.getRunnerState(name) == RunningState.NEW
     }
 
     def "list configurations"() {
@@ -43,39 +43,39 @@ class DefaultRunnerServiceSpec extends Specification {
 
     def "create runner and start"() {
         when:
-            long id = service.createRunner(configuration)
+            String name = service.createRunner(configuration)
 
         then:
-            service.getRunnerState(id) == RunningState.NEW
+            service.getRunnerState(name) == RunningState.NEW
 
         when:
-            service.startRunner(configuration.getId())
+            service.startRunner(configuration.getName())
             sleep(100)
 
         then:
-            service.getRunnerState(id) == RunningState.RUNNING
+            service.getRunnerState(name) == RunningState.RUNNING
     }
 
     def "create runner, start and stop"() {
         when:
-            long id = service.createRunner(configuration)
+            String name = service.createRunner(configuration)
 
         then:
-            service.getRunnerState(id) == RunningState.NEW
+            service.getRunnerState(name) == RunningState.NEW
 
         when:
-            service.startRunner(id)
+            service.startRunner(name)
             sleep(100)
 
         then:
-            service.getRunnerState(id) == RunningState.RUNNING
+            service.getRunnerState(name) == RunningState.RUNNING
 
         when:
-            service.stopRunner(id)
+            service.stopRunner(name)
             sleep(100)
 
         then:
-            service.getRunnerState(id) == RunningState.STOPPED
+            service.getRunnerState(name) == RunningState.STOPPED
     }
 
     def "start with unknown ID"() {

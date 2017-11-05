@@ -13,13 +13,13 @@ import java.util.List;
 public interface RunnerService {
 
     /**
-     * Creates a runner and returns the runner ID.
+     * Creates a runner and returns the runner name.
      *
      * @param configuration the runner configuration
-     * @return the runner ID
+     * @return the runner name
      * @throws RunnerAlreadyExistsException if runner already exists
      */
-    long createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
+    String createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
 
     List<String> listRunners();
 
@@ -27,13 +27,11 @@ public interface RunnerService {
 
     void stop();
 
-    void startRunner(long id) throws RunnerNotFoundException;
-
     void startRunner(String name) throws RunnerNotFoundException;
-
-    void stopRunner(long id) throws RunnerNotFoundException;
 
     void stopRunner(String name) throws RunnerNotFoundException;
 
-    RunningState getRunnerState(Long id) throws RunnerNotFoundException;
+    long getRunnerCount();
+
+    RunningState getRunnerState(String name) throws RunnerNotFoundException;
 }

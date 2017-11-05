@@ -44,7 +44,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public long createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException {
+    public String createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException {
 
         if (exists(configuration.getName())) {
 
@@ -56,7 +56,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
         runners.put(id, newRunner);
         log.info("Created new runner with ID: {}...", newRunner.getId());
 
-        return id;
+        return newRunner.getName();
     }
 
     @Override
@@ -80,21 +80,9 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public void startRunner(long id) throws RunnerNotFoundException {
-        checkRunnerExistence(id);
-        findRunner(id).ifPresent(Runner::start);
-    }
-
-    @Override
     public void startRunner(String name) throws RunnerNotFoundException {
         checkRunnerExistence(name);
         findRunner(name).ifPresent(Runner::start);
-    }
-
-    @Override
-    public void stopRunner(long id) throws RunnerNotFoundException {
-        checkRunnerExistence(id);
-        findRunner(id).ifPresent(Runner::stop);
     }
 
     @Override
@@ -104,8 +92,13 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public RunningState getRunnerState(Long id) throws RunnerNotFoundException {
-        return findRunner(id)
+    public long getRunnerCount() {
+        return getRunners().size();
+    }
+
+    @Override
+    public RunningState getRunnerState(String name) throws RunnerNotFoundException {
+        return findRunner(name)
                 .map(Runner::getState)
                 .orElseThrow(RunnerNotFoundException::new);
     }
