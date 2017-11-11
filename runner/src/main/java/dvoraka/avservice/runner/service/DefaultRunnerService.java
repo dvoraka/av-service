@@ -80,6 +80,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     public void startRunner(String name) throws RunnerNotFoundException {
         checkRunnerExistence(name);
         findRunner(name).ifPresent(Runner::start);
+        //TODO: wait for runner in different thread
     }
 
     @Override
