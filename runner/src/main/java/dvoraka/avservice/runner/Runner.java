@@ -4,7 +4,6 @@ public class Runner {
 
     private RunnerConfiguration configuration;
 
-    private long id;
     private String name;
     private RunningState state;
 
@@ -12,7 +11,6 @@ public class Runner {
     public Runner(RunnerConfiguration configuration) {
         this.configuration = configuration;
 
-        this.id = id;
         this.name = configuration.getName();
 
         this.state = RunningState.NEW;
@@ -20,10 +18,6 @@ public class Runner {
 
     public RunnerConfiguration getConfiguration() {
         return configuration;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {
@@ -40,7 +34,7 @@ public class Runner {
 
     public void start() {
         getConfiguration().getServiceRunner().runAsync();
-        setState(RunningState.RUNNING);
+        setState(RunningState.STARTING);
     }
 
     public void stop() {

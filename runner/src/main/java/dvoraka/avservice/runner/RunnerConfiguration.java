@@ -10,13 +10,6 @@ import java.util.function.BooleanSupplier;
 public interface RunnerConfiguration {
 
     /**
-     * Returns a configuration ID. Usually assigned by the runner service.
-     *
-     * @return the configuration ID
-     */
-    long getId();
-
-    /**
      * Returns a configuration name.
      *
      * @return the configuration name

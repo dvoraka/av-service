@@ -9,29 +9,24 @@ import java.util.function.BooleanSupplier;
  */
 public class DefaultRunnerConfiguration implements RunnerConfiguration {
 
-    private final long configurationId;
+    private final String name;
     private final ServiceRunner serviceRunner;
     private final BooleanSupplier supplier;
 
 
     public DefaultRunnerConfiguration(
-            long configurationId,
+            String name,
             ServiceRunner serviceRunner,
             BooleanSupplier supplier
     ) {
-        this.configurationId = configurationId;
+        this.name = name;
         this.serviceRunner = serviceRunner;
         this.supplier = supplier;
     }
 
     @Override
-    public long getId() {
-        return configurationId;
-    }
-
-    @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override

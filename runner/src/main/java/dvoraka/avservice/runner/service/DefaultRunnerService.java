@@ -99,6 +99,11 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
                 .orElseThrow(RunnerNotFoundException::new);
     }
 
+    @Override
+    public void waitForRunner(String name) {
+        //TODO
+    }
+
     private Optional<Runner> findRunner(String name) {
         return Optional.ofNullable(getRunners().get(name));
     }

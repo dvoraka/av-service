@@ -13,11 +13,6 @@ public class DummyRunnerConfiguration implements RunnerConfiguration {
 
 
     @Override
-    public long getId() {
-        return 0;
-    }
-
-    @Override
     public String getName() {
         return "dummy runner";
     }

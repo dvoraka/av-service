@@ -4,10 +4,12 @@ import dvoraka.avservice.runner.DummyRunnerConfiguration
 import dvoraka.avservice.runner.RunnerConfiguration
 import dvoraka.avservice.runner.RunnerNotFoundException
 import dvoraka.avservice.runner.RunningState
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
+@Ignore("WIP")
 class DefaultRunnerServiceSpec extends Specification {
 
     @Subject

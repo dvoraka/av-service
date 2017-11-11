@@ -34,4 +34,11 @@ public interface RunnerService {
     long getRunnerCount();
 
     RunningState getRunnerState(String name) throws RunnerNotFoundException;
+
+    /**
+     * Blocks until a runner is running.
+     *
+     * @param name the runner name
+     */
+    void waitForRunner(String name);
 }
