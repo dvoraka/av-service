@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -36,8 +37,10 @@ public class SecurityRestConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // user for testing for now
-        auth.inMemoryAuthentication().withUser("test").password("test").roles("USER");
-        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("USER", "ADMIN");
+        auth.inMemoryAuthentication().withUser(User.withDefaultPasswordEncoder()
+                .username("test").password("test").roles("USER"));
+        auth.inMemoryAuthentication().withUser(User.withDefaultPasswordEncoder()
+                .username("admin").password("admin").roles("USER", "ADMIN"));
 
         auth.userDetailsService(userDetailsService());
     }
