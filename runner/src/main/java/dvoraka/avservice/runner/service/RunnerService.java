@@ -40,5 +40,5 @@ public interface RunnerService {
      *
      * @param name the runner name
      */
-    void waitForRunner(String name);
+    void waitForRunner(String name) throws RunnerNotFoundException, InterruptedException;
 }

@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Default runner service implementation.
@@ -100,8 +101,17 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public void waitForRunner(String name) {
-        //TODO
+    public void waitForRunner(String name) throws RunnerNotFoundException, InterruptedException {
+        Runner runner = findRunner(name)
+                .orElseThrow(RunnerNotFoundException::new);
+        RunnerConfiguration configuration = runner.getConfiguration();
+
+        final int sleepTime = 250;
+        while (!configuration.running().getAsBoolean()) {
+            TimeUnit.MILLISECONDS.sleep(sleepTime);
+        }
+
+        runner.setState(RunningState.RUNNING);
     }
 
     private Optional<Runner> findRunner(String name) {

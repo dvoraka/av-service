@@ -28,7 +28,7 @@ public class Runner {
         return state;
     }
 
-    private void setState(RunningState state) {
+    public void setState(RunningState state) {
         this.state = state;
     }
 
