@@ -33,6 +33,10 @@ public class Runner {
     }
 
     public void start() {
+        if (!(getState() == RunningState.NEW || getState() == RunningState.STOPPED)) {
+            return;
+        }
+
         getConfiguration().getServiceRunner().runAsync();
         setState(RunningState.STARTING);
     }
