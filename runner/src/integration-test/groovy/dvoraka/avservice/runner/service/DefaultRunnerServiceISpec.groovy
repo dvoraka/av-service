@@ -12,15 +12,18 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Stepwise
 import spock.lang.Subject
 
+@Stepwise
 @ContextConfiguration(classes = [ClientConfig.class])
-@ActiveProfiles(['client', 'file-client', 'jms', 'check', 'checker', 'no-db'])
+@ActiveProfiles(['client', 'file-client', 'jms', 'checker', 'no-db'])
 @DirtiesContext
 class DefaultRunnerServiceISpec extends Specification {
 
     @Subject
-    DefaultRunnerService service
+    @Shared
+    DefaultRunnerService service = new DefaultRunnerService()
 
     @Autowired
     Checker checker
@@ -28,17 +31,15 @@ class DefaultRunnerServiceISpec extends Specification {
     @Shared
     String runnerName = 'jmsFileServerRunner'
 
-    RunnerConfiguration configuration
+    RunnerConfiguration configuration = new DefaultRunnerConfiguration(
+            runnerName,
+            new JmsFileServerRunner(),
+            { checker.check() }
+    )
 
 
-    def setup() {
-        service = new DefaultRunnerService()
-
-        configuration = new DefaultRunnerConfiguration(
-                runnerName,
-                new JmsFileServerRunner(),
-                { checker.check() }
-        )
+    def cleanupSpec() {
+        service.stop()
     }
 
     def "add configuration"() {
@@ -48,14 +49,7 @@ class DefaultRunnerServiceISpec extends Specification {
             service.getRunnerState(runnerName) == RunningState.NEW
     }
 
-    def "add and run configuration"() {
-        when:
-            service.createRunner(configuration)
-
-        then:
-            service.getRunnerCount() == 1
-            service.getRunnerState(runnerName) == RunningState.NEW
-
+    def "run configuration"() {
         when:
             service.startRunner(runnerName)
 
@@ -67,5 +61,14 @@ class DefaultRunnerServiceISpec extends Specification {
 
         then:
             service.getRunnerState(runnerName) == RunningState.RUNNING
+    }
+
+    def "start runner and run check"() {
+        when:
+            service.startRunner(runnerName)
+            service.waitForStart(runnerName)
+
+        then:
+            checker.check()
     }
 }
