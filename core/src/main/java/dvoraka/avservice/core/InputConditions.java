@@ -77,4 +77,13 @@ public final class InputConditions implements BiPredicate<AvMessage, AvMessage> 
             return new InputConditions(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return "InputConditions{" +
+                "allowedOriginalTypes=" + allowedOriginalTypes +
+                ", allowedLastTypes=" + allowedLastTypes +
+                ", conditions=" + conditions +
+                '}';
+    }
 }
