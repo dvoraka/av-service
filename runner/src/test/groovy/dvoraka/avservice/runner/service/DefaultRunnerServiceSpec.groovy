@@ -57,7 +57,7 @@ class DefaultRunnerServiceSpec extends Specification {
             sleep(100)
 
         then:
-            service.waitForRunner(configuration.getName())
+            service.waitForStart(configuration.getName())
             service.getRunnerState(name) == RunningState.RUNNING
     }
 
@@ -73,7 +73,7 @@ class DefaultRunnerServiceSpec extends Specification {
             sleep(100)
 
         then:
-            service.waitForRunner(configuration.getName())
+            service.waitForStart(configuration.getName())
             service.getRunnerState(name) == RunningState.RUNNING
 
         when:

@@ -80,7 +80,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     public void startRunner(String name) throws RunnerNotFoundException {
         checkRunnerExistence(name);
         findRunner(name).ifPresent(Runner::start);
-        //TODO: wait for runner in different thread
+        executorService.submit(() -> waitForStartInt(name));
     }
 
     @Override
@@ -101,8 +101,18 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
                 .orElseThrow(RunnerNotFoundException::new);
     }
 
+    private void waitForStartInt(String name) {
+        try {
+            waitForStart(name);
+        } catch (RunnerNotFoundException e) {
+            log.warn("Runner not found: {}", name);
+        } catch (InterruptedException e) {
+            log.warn("Waiting for {} start interrupted!", name);
+        }
+    }
+
     @Override
-    public void waitForRunner(String name) throws RunnerNotFoundException, InterruptedException {
+    public void waitForStart(String name) throws RunnerNotFoundException, InterruptedException {
         Runner runner = findRunner(name)
                 .orElseThrow(RunnerNotFoundException::new);
         RunnerConfiguration configuration = runner.getConfiguration();
