@@ -16,6 +16,7 @@
 
     <logger name="org.springframework" level="WARN" additivity="false">
         <appender-ref ref="TCP"/>
+        <!--<appender-ref ref="STDOUT"/>-->
     </logger>
 
     <logger name="org.hibernate" level="WARN" additivity="false">
