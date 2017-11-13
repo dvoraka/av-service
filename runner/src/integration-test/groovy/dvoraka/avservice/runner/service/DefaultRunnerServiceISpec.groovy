@@ -33,18 +33,20 @@ class DefaultRunnerServiceISpec extends Specification {
     @Shared
     String runnerName = 'jmsFileServerRunner'
 
-    RunnerConfiguration configuration = new DefaultRunnerConfiguration(
-            runnerName,
-            new JmsFileServerRunner(),
-            { checker.check() }
-    )
-
 
     def cleanupSpec() {
         service.stop()
     }
 
     def "add configuration"() {
+        setup:
+            println checker
+            RunnerConfiguration configuration = new DefaultRunnerConfiguration(
+                    runnerName,
+                    new JmsFileServerRunner(),
+                    { checker.check() }
+            )
+
         expect:
             service.createRunner(configuration) == runnerName
             service.getRunnerCount() == 1

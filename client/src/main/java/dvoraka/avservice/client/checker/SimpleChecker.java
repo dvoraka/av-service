@@ -52,6 +52,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
         component.sendAvMessage(message);
     }
 
+    //TODO: add a timeout for the infinite loop
     @Override
     public AvMessage receiveMessage(String correlationId) throws MessageNotFoundException {
         List<AvMessage> savedMessages = new ArrayList<>(QUEUE_CAPACITY);
