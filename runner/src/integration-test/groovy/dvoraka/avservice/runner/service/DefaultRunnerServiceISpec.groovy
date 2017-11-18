@@ -10,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Subject
 
-@Ignore("WIP")
 @Stepwise
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['client', 'file-client', 'jms', 'checker', 'no-db'])
@@ -40,7 +38,6 @@ class DefaultRunnerServiceISpec extends Specification {
 
     def "add configuration"() {
         setup:
-            println checker
             RunnerConfiguration configuration = new DefaultRunnerConfiguration(
                     runnerName,
                     new JmsFileServerRunner(),
