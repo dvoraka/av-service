@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class SimpleChecker implements Checker, AvMessageListener {
 
-    private final NetworkComponent component;
+    private final NetworkComponent networkComponent;
 
     private static final Logger log = LogManager.getLogger(SimpleChecker.class.getName());
 
@@ -37,43 +37,50 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
 
     @Autowired
-    public SimpleChecker(NetworkComponent component) {
-        this(component, QUEUE_CAPACITY);
+    public SimpleChecker(NetworkComponent networkComponent) {
+        this(networkComponent, QUEUE_CAPACITY);
     }
 
-    public SimpleChecker(NetworkComponent component, int queueSize) {
-        this.component = requireNonNull(component);
-        this.component.addAvMessageListener(this);
+    public SimpleChecker(NetworkComponent networkComponent, int queueSize) {
+        this.networkComponent = requireNonNull(networkComponent);
+        this.networkComponent.addAvMessageListener(this);
         queue = new ArrayBlockingQueue<>(queueSize);
     }
 
     @Override
     public void sendAvMessage(AvMessage message) {
-        component.sendAvMessage(message);
+        networkComponent.sendAvMessage(message);
     }
 
-    //TODO: add a timeout for the infinite loop
     @Override
     public AvMessage receiveMessage(String correlationId) throws MessageNotFoundException {
         List<AvMessage> savedMessages = new ArrayList<>(QUEUE_CAPACITY);
 
+        long start = System.currentTimeMillis();
         AvMessage message;
         while (true) {
             try {
+                if (System.currentTimeMillis() - start > MAX_TIMEOUT) {
+                    returnMessagesToQueue(savedMessages);
+
+                    throw new MessageNotFoundException();
+                }
+
                 message = queue.poll(MAX_TIMEOUT, TimeUnit.MILLISECONDS);
                 if (message == null) {
+                    returnMessagesToQueue(savedMessages);
+
                     throw new MessageNotFoundException();
                 }
 
                 if (message.getCorrelationId().equals(correlationId)) {
-
                     returnMessagesToQueue(savedMessages);
-                    savedMessages.clear();
 
                     return message;
-                } else {
-                    savedMessages.add(message);
                 }
+
+                savedMessages.add(message);
+
             } catch (InterruptedException e) {
                 log.warn("Waiting interrupted!", e);
                 Thread.currentThread().interrupt();
