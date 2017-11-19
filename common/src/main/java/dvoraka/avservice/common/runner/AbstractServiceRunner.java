@@ -31,6 +31,8 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
      */
     @Override
     public void run() {
+        log.info("Runner starting...");
+
         AnnotationConfigApplicationContext context = applicationContext();
         ServiceManagement service = context.getBean(runClass());
         service.start();
@@ -39,6 +41,7 @@ public abstract class AbstractServiceRunner extends AbstractAppRunner implements
         setStopped(false);
 
         log.info("Runner started.");
+
         try {
             waitForKey();
         } catch (IOException e) {

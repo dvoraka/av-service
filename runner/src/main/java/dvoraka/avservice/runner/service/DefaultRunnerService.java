@@ -53,7 +53,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
         Runner newRunner = new Runner(configuration);
         runners.put(newRunner.getName(), newRunner);
-        log.info("Created new runner with name: {}...", newRunner.getName());
+        log.info("Created new runner with name: {}", newRunner.getName());
 
         return newRunner.getName();
     }
@@ -80,7 +80,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     public void startRunner(String name) throws RunnerNotFoundException {
         checkRunnerExistence(name);
         findRunner(name).ifPresent(Runner::start);
-        executorService.submit(() -> waitForStartInt(name));
+        //TODO:
+//        executorService.submit(() -> waitForStartInt(name));
     }
 
     @Override

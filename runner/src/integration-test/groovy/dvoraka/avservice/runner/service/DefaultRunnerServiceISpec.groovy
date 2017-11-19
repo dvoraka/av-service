@@ -38,6 +38,7 @@ class DefaultRunnerServiceISpec extends Specification {
 
     def "add configuration"() {
         setup:
+            JmsFileServerRunner.setTestRun(false)
             RunnerConfiguration configuration = new DefaultRunnerConfiguration(
                     runnerName,
                     new JmsFileServerRunner(),

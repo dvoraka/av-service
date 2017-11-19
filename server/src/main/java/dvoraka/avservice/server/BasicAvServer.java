@@ -52,7 +52,7 @@ public class BasicAvServer implements AvServer {
 
     @Override
     public void start() {
-        log.info("Server started.");
+        log.info("Server starting...");
         setStopped(false);
         setStarted(true);
 
@@ -60,19 +60,19 @@ public class BasicAvServer implements AvServer {
         messageProcessor.addProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(true);
-        log.info("Server is running.");
+        log.info("Server started.");
     }
 
     @Override
     public void stop() {
-        log.info("Server stopped.");
+        log.info("Server stopping...");
         setStopped(true);
 
         networkComponent.removeAvMessageListener(this);
         messageProcessor.removeProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(false);
-        log.info("Server has stopped");
+        log.info("Server stopped.");
     }
 
     @Override
