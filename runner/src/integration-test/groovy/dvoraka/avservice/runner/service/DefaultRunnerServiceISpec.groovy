@@ -5,6 +5,7 @@ import dvoraka.avservice.client.configuration.ClientConfig
 import dvoraka.avservice.runner.DefaultRunnerConfiguration
 import dvoraka.avservice.runner.RunnerConfiguration
 import dvoraka.avservice.runner.RunningState
+import dvoraka.avservice.runner.configuration.RunnerConfig
 import dvoraka.avservice.runner.server.jms.JmsFileServerRunner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
@@ -16,14 +17,14 @@ import spock.lang.Stepwise
 import spock.lang.Subject
 
 @Stepwise
-@ContextConfiguration(classes = [ClientConfig.class])
+@ContextConfiguration(classes = [ClientConfig.class, RunnerConfig.class])
 @ActiveProfiles(['client', 'file-client', 'jms', 'checker', 'no-db'])
 @DirtiesContext
 class DefaultRunnerServiceISpec extends Specification {
 
     @Subject
-    @Shared
-    DefaultRunnerService service = new DefaultRunnerService()
+    @Autowired
+    RunnerService service
 
     @Autowired
     Checker checker
@@ -31,10 +32,6 @@ class DefaultRunnerServiceISpec extends Specification {
     @Shared
     String runnerName = 'jmsFileServerRunner'
 
-
-    def cleanupSpec() {
-        service.stop()
-    }
 
     def "add configuration"() {
         setup:
