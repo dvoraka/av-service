@@ -73,6 +73,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     @PreDestroy
     public void stop() {
         final int waitTime = 5;
+        stopAllRunners();
         shutdownAndAwaitTermination(executorService, waitTime, log);
     }
 
@@ -106,7 +107,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
         try {
             waitForStart(name);
         } catch (RunnerNotFoundException e) {
-            log.warn("Runner not found: {}", name);
+            log.warn("Runner {} not found!", name);
         } catch (InterruptedException e) {
             log.warn("Waiting for {} start interrupted!", name);
         }
@@ -142,5 +143,20 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
     private Map<String, Runner> getRunners() {
         return runners;
+    }
+
+    private void stopAllRunners() {
+        log.info("Stopping all runners...");
+
+        for (String runnerName : listRunners()) {
+            try {
+                log.debug("Stopping {}...", runnerName);
+                stopRunner(runnerName);
+            } catch (RunnerNotFoundException e) {
+                log.warn("Runner {} not found!", runnerName);
+            }
+        }
+
+        log.info("Stopping done.");
     }
 }
