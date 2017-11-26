@@ -41,9 +41,9 @@ class CheckerISpec extends Specification implements RunnerConfigurationHelper {
 
         if (!runnerService.exists(runnerConfiguration.getName())) {
             runnerService.createRunner(runnerConfiguration)
+            runnerService.startRunner(runnerConfiguration.getName())
         }
 
-        runnerService.startRunner(runnerConfiguration.getName())
         runnerService.waitForStart(runnerConfiguration.getName())
     }
 
