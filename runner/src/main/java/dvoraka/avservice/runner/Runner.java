@@ -1,17 +1,23 @@
 package dvoraka.avservice.runner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.function.BooleanSupplier;
+
+import static java.util.Objects.requireNonNull;
+
 public class Runner {
 
-    private RunnerConfiguration configuration;
+    private static final Logger log = LogManager.getLogger(Runner.class);
 
-    private String name;
+    private final RunnerConfiguration configuration;
+
     private RunningState state;
 
 
     public Runner(RunnerConfiguration configuration) {
-        this.configuration = configuration;
-
-        this.name = configuration.getName();
+        this.configuration = requireNonNull(configuration);
 
         this.state = RunningState.NEW;
     }
@@ -21,7 +27,7 @@ public class Runner {
     }
 
     public String getName() {
-        return name;
+        return getConfiguration().getName();
     }
 
     public RunningState getState() {
@@ -34,10 +40,14 @@ public class Runner {
 
     public void start() {
         if (!(getState() == RunningState.NEW || getState() == RunningState.STOPPED)) {
+            log.info("Runner already started.");
+
             return;
         }
 
+        log.info("Starting runner...");
         getConfiguration().getServiceRunner().runAsync();
+
         setState(RunningState.STARTING);
     }
 
@@ -47,6 +57,8 @@ public class Runner {
     }
 
     public boolean isRunning() {
-        return getConfiguration().getChecker().getAsBoolean();
+        BooleanSupplier checker = getConfiguration().getChecker();
+
+        return checker != null && checker.getAsBoolean();
     }
 }
