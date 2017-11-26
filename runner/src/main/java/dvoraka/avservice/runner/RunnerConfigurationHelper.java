@@ -2,7 +2,7 @@ package dvoraka.avservice.runner;
 
 import dvoraka.avservice.runner.server.jms.JmsFileServerRunner;
 
-public interface ConfigurationHelper {
+public interface RunnerConfigurationHelper {
 
     default RunnerConfiguration jmsFileServerConfiguration() {
 

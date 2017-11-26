@@ -2,7 +2,7 @@ package dvoraka.avservice.runner.service
 
 import dvoraka.avservice.client.checker.Checker
 import dvoraka.avservice.client.configuration.ClientConfig
-import dvoraka.avservice.runner.ConfigurationHelper
+import dvoraka.avservice.runner.RunnerConfigurationHelper
 import dvoraka.avservice.runner.RunnerConfiguration
 import dvoraka.avservice.runner.RunningState
 import dvoraka.avservice.runner.configuration.RunnerConfig
@@ -19,7 +19,7 @@ import spock.lang.Subject
 @ContextConfiguration(classes = [ClientConfig.class, RunnerConfig.class])
 @ActiveProfiles(['client', 'file-client', 'jms', 'checker', 'no-db'])
 @DirtiesContext
-class DefaultRunnerServiceISpec extends Specification implements ConfigurationHelper {
+class DefaultRunnerServiceISpec extends Specification implements RunnerConfigurationHelper {
 
     @Subject
     @Autowired
