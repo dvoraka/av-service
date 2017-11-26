@@ -1,4 +1,4 @@
 /**
- * Common exception classes.
+ * Common exceptions.
  */
 package dvoraka.avservice.common.exception;

@@ -1,4 +1,4 @@
-package dvoraka.avservice.runner;
+package dvoraka.avservice.runner.exception;
 
 /**
  * Signaling runner with a given ID already exists.

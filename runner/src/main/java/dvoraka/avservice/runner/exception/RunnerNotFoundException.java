@@ -1,4 +1,4 @@
-package dvoraka.avservice.runner;
+package dvoraka.avservice.runner.exception;
 
 /**
  * Runner not found exception.

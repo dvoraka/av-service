@@ -2,8 +2,8 @@ package dvoraka.avservice.runner.service
 
 import dvoraka.avservice.runner.DummyRunnerConfiguration
 import dvoraka.avservice.runner.RunnerConfiguration
-import dvoraka.avservice.runner.RunnerNotFoundException
 import dvoraka.avservice.runner.RunningState
+import dvoraka.avservice.runner.exception.RunnerNotFoundException
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
