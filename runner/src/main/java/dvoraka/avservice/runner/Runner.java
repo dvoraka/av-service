@@ -57,8 +57,14 @@ public class Runner {
     }
 
     public boolean isRunning() {
-        BooleanSupplier checker = getConfiguration().getChecker();
 
-        return checker != null && checker.getAsBoolean();
+        BooleanSupplier checker = getConfiguration().getChecker();
+        if (checker == null) {
+            log.warn("Checker is null!");
+
+            return false;
+        }
+
+        return checker.getAsBoolean();
     }
 }
