@@ -23,6 +23,8 @@ public interface RunnerService {
 
     List<String> listRunners();
 
+    boolean exists(String runnerName);
+
     void start();
 
     void stop();

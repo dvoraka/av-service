@@ -3,7 +3,9 @@ package dvoraka.avservice.client.checker
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.exception.MessageNotFoundException
-import dvoraka.avservice.common.runner.ServiceRunner
+import dvoraka.avservice.runner.RunnerConfiguration
+import dvoraka.avservice.runner.RunnerConfigurationHelper
+import dvoraka.avservice.runner.service.RunnerService
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
 import spock.lang.Shared
@@ -13,25 +15,36 @@ import spock.lang.Specification
  * Checker spec base.
  */
 @Ignore('base class')
-class CheckerISpec extends Specification {
+class CheckerISpec extends Specification implements RunnerConfigurationHelper {
 
     @Autowired
     Checker checker
 
+    @Autowired
+    RunnerService runnerService
+
     @Shared
-    ServiceRunner runner
+    RunnerConfiguration runnerConfiguration
 
 
     def setupSpec() {
-        // initialize and start runner
+        System.setProperty('itest', 'itest')
+
+        // initialize runner configuration
     }
 
     def cleanupSpec() {
-        runner.stop()
-        sleep(2_000)
     }
 
     def setup() {
+        runnerConfiguration.updateChecker(checker)
+
+        if (!runnerService.exists(runnerConfiguration.getName())) {
+            runnerService.createRunner(runnerConfiguration)
+        }
+
+        runnerService.startRunner(runnerConfiguration.getName())
+        runnerService.waitForStart(runnerConfiguration.getName())
     }
 
     def "send and receive normal message"() {

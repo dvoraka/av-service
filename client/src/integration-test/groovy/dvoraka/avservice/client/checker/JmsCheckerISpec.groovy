@@ -5,6 +5,7 @@ import dvoraka.avservice.runner.server.jms.JmsCheckServerRunner
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 
 /**
  * JMS AV checker spec.
@@ -12,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration
 @ContextConfiguration(classes = [ClientConfig.class])
 @ActiveProfiles(['client', 'jms', 'file-client', 'checker', 'no-db'])
 @DirtiesContext
+@Ignore
 class JmsCheckerISpec extends CheckerISpec {
 
     def setupSpec() {

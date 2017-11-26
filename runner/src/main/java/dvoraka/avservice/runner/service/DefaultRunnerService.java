@@ -135,7 +135,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
         }
     }
 
-    private boolean exists(String name) {
+    @Override
+    public boolean exists(String name) {
         return getRunners().containsKey(name);
     }
 
