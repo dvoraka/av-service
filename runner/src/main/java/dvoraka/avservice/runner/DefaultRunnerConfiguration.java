@@ -4,6 +4,8 @@ import dvoraka.avservice.common.runner.ServiceRunner;
 
 import java.util.function.BooleanSupplier;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Default runner configuration implementation.
  */
@@ -19,8 +21,8 @@ public class DefaultRunnerConfiguration implements RunnerConfiguration {
             ServiceRunner serviceRunner,
             BooleanSupplier supplier
     ) {
-        this.name = name;
-        this.serviceRunner = serviceRunner;
+        this.name = requireNonNull(name);
+        this.serviceRunner = requireNonNull(serviceRunner);
         this.supplier = supplier;
     }
 
