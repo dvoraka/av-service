@@ -7,7 +7,7 @@ import java.util.concurrent.CancellationException
 /**
  * Example spec.
  */
-class AvCheckExampleSpec extends Specification {
+class AvCheckExampleISpec extends Specification {
 
     def "run example"() {
         when:
