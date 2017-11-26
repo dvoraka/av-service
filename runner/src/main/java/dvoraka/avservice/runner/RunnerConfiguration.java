@@ -25,9 +25,11 @@ public interface RunnerConfiguration {
     ServiceRunner getServiceRunner();
 
     /**
-     * Returns a boolean supplier for checking a service running status.
+     * Returns a checker for checking a service running status.
      *
-     * @return the boolean supplier
+     * @return the checker
      */
     BooleanSupplier running();
+
+    void updateChecker(BooleanSupplier checker);
 }

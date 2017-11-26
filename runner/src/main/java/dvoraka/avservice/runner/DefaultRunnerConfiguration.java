@@ -13,17 +13,17 @@ public class DefaultRunnerConfiguration implements RunnerConfiguration {
 
     private final String name;
     private final ServiceRunner serviceRunner;
-    private final BooleanSupplier supplier;
+    private BooleanSupplier checker;
 
 
     public DefaultRunnerConfiguration(
             String name,
             ServiceRunner serviceRunner,
-            BooleanSupplier supplier
+            BooleanSupplier checker
     ) {
         this.name = requireNonNull(name);
         this.serviceRunner = requireNonNull(serviceRunner);
-        this.supplier = supplier;
+        this.checker = checker;
     }
 
     @Override
@@ -38,6 +38,11 @@ public class DefaultRunnerConfiguration implements RunnerConfiguration {
 
     @Override
     public BooleanSupplier running() {
-        return supplier;
+        return checker;
+    }
+
+    @Override
+    public void updateChecker(BooleanSupplier checker) {
+        this.checker = requireNonNull(checker);
     }
 }
