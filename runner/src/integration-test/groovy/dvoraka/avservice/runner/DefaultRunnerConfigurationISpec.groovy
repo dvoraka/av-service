@@ -41,14 +41,14 @@ class DefaultRunnerConfigurationISpec extends Specification {
             )
 
         expect:
-            !configuration.running().getAsBoolean()
+            !configuration.getChecker().getAsBoolean()
 
         when:
             configuration.getServiceRunner().runAsync()
             sleep(5_000)
 
         then:
-            configuration.running().getAsBoolean()
+            configuration.getChecker().getAsBoolean()
 
         cleanup:
             configuration.getServiceRunner().stop()

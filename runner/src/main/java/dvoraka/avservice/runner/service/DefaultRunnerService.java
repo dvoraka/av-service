@@ -120,7 +120,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
         RunnerConfiguration configuration = runner.getConfiguration();
 
         final int sleepTime = 250;
-        while (!configuration.running().getAsBoolean()) {
+        while (!configuration.getChecker().getAsBoolean()) {
             TimeUnit.MILLISECONDS.sleep(sleepTime);
         }
 

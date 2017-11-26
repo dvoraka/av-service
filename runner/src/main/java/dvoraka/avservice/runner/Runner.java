@@ -47,6 +47,6 @@ public class Runner {
     }
 
     public boolean isRunning() {
-        return getConfiguration().running().getAsBoolean();
+        return getConfiguration().getChecker().getAsBoolean();
     }
 }

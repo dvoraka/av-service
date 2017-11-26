@@ -37,7 +37,7 @@ public class DefaultRunnerConfiguration implements RunnerConfiguration {
     }
 
     @Override
-    public BooleanSupplier running() {
+    public BooleanSupplier getChecker() {
         return checker;
     }
 

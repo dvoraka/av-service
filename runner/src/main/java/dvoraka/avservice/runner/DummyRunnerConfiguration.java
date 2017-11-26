@@ -44,7 +44,7 @@ public class DummyRunnerConfiguration implements RunnerConfiguration {
     }
 
     @Override
-    public BooleanSupplier running() {
+    public BooleanSupplier getChecker() {
         return () -> true;
     }
 

@@ -29,7 +29,12 @@ public interface RunnerConfiguration {
      *
      * @return the checker
      */
-    BooleanSupplier running();
+    BooleanSupplier getChecker();
 
+    /**
+     * Updates a checker.
+     *
+     * @param checker new checker
+     */
     void updateChecker(BooleanSupplier checker);
 }
