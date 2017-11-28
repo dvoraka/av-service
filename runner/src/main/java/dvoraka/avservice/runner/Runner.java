@@ -1,5 +1,7 @@
 package dvoraka.avservice.runner;
 
+import dvoraka.avservice.runner.service.DefaultRunnerService;
+import dvoraka.avservice.runner.service.RunnerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,6 +9,11 @@ import java.util.function.BooleanSupplier;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Data structure for {@link DefaultRunnerService}.
+ *
+ * @see RunnerService
+ */
 public class Runner {
 
     private static final Logger log = LogManager.getLogger(Runner.class);
