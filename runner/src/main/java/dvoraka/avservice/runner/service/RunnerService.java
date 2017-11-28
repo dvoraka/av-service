@@ -24,7 +24,7 @@ public interface RunnerService {
     String createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException;
 
     /**
-     * Lists names of all service runners.
+     * Lists names of all runners.
      *
      * @return the list of names
      */
@@ -48,18 +48,44 @@ public interface RunnerService {
      */
     void stop();
 
+    /**
+     * Starts a runner with a given name.
+     *
+     * @param name the runner name
+     * @throws RunnerNotFoundException if runner doesn't exist
+     */
     void startRunner(String name) throws RunnerNotFoundException;
 
+    /**
+     * Stops a runner with a given name.
+     *
+     * @param name the runner name
+     * @throws RunnerNotFoundException if runner doesn't exist
+     */
     void stopRunner(String name) throws RunnerNotFoundException;
 
+    /**
+     * Returns a runner count.
+     *
+     * @return the runner count
+     */
     long getRunnerCount();
 
+    /**
+     * Returns a runner state.
+     *
+     * @param name the runner name
+     * @return the state
+     * @throws RunnerNotFoundException if runner doesn't exist
+     */
     RunningState getRunnerState(String name) throws RunnerNotFoundException;
 
     /**
      * Blocks until a runner is running.
      *
      * @param name the runner name
+     * @throws RunnerNotFoundException if runner doesn't exist
+     * @throws InterruptedException    if waiting is interrupted
      */
     void waitForStart(String name) throws RunnerNotFoundException, InterruptedException;
 }
