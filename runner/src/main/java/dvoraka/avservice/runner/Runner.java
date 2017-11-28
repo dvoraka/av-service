@@ -1,5 +1,6 @@
 package dvoraka.avservice.runner;
 
+import dvoraka.avservice.runner.runnerconfiguration.RunnerConfiguration;
 import dvoraka.avservice.runner.service.DefaultRunnerService;
 import dvoraka.avservice.runner.service.RunnerService;
 import org.apache.logging.log4j.LogManager;

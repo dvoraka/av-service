@@ -3,9 +3,9 @@ package dvoraka.avservice.runner.service
 import dvoraka.avservice.client.checker.Checker
 import dvoraka.avservice.client.configuration.ClientConfig
 import dvoraka.avservice.runner.RunnerConfigurationHelper
-import dvoraka.avservice.runner.RunnerConfiguration
 import dvoraka.avservice.runner.RunningState
 import dvoraka.avservice.runner.configuration.RunnerConfig
+import dvoraka.avservice.runner.runnerconfiguration.RunnerConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles

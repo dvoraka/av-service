@@ -1,4 +1,4 @@
-package dvoraka.avservice.runner;
+package dvoraka.avservice.runner.runnerconfiguration;
 
 import dvoraka.avservice.common.runner.ServiceRunner;
 

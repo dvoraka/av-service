@@ -3,6 +3,7 @@ package dvoraka.avservice.runner
 import dvoraka.avservice.client.checker.Checker
 import dvoraka.avservice.client.configuration.ClientConfig
 import dvoraka.avservice.common.runner.ServiceRunner
+import dvoraka.avservice.runner.runnerconfiguration.DefaultRunnerConfiguration
 import dvoraka.avservice.runner.server.amqp.AmqpCheckServerRunner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext

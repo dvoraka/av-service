@@ -3,8 +3,8 @@ package dvoraka.avservice.client.checker
 import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.exception.MessageNotFoundException
-import dvoraka.avservice.runner.RunnerConfiguration
 import dvoraka.avservice.runner.RunnerConfigurationHelper
+import dvoraka.avservice.runner.runnerconfiguration.RunnerConfiguration
 import dvoraka.avservice.runner.service.RunnerService
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
