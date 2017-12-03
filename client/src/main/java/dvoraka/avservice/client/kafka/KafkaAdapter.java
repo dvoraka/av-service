@@ -7,6 +7,8 @@ import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -27,7 +29,7 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
     private final KafkaTemplate<String, AvMessage> kafkaTemplate;
     private final MessageInfoService messageInfoService;
 
-//    private static final Logger log = LogManager.getLogger(KafkaAdapter.class);
+    private static final Logger log = LogManager.getLogger(KafkaAdapter.class);
 
     private final List<AvMessageListener> listeners;
 
@@ -48,19 +50,25 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
     }
 
     @Override
-    public void sendAvMessage(AvMessage message) {
-        kafkaTemplate.send(topic, message);
-        messageInfoService.save(message, InfoSource.KAFKA_ADAPTER_OUT, serviceId);
-    }
-
-    @Override
     public void onMessage(ConsumerRecord<String, AvMessage> record) {
         requireNonNull(record, "Record must not be null!");
+        log.debug("On message: {}", record);
+
         AvMessage avMessage = record.value();
 
         messageInfoService.save(avMessage, InfoSource.KAFKA_ADAPTER_IN, serviceId);
 
         notifyListeners(listeners, avMessage);
+    }
+
+    @Override
+    public void sendAvMessage(AvMessage message) {
+        requireNonNull(message, "Message must not be null!");
+        log.debug("Send: {}", message);
+
+        kafkaTemplate.send(topic, message);
+
+        messageInfoService.save(message, InfoSource.KAFKA_ADAPTER_OUT, serviceId);
     }
 
     @Override
