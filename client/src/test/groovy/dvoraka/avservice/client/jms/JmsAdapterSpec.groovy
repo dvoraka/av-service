@@ -9,6 +9,7 @@ import org.springframework.jms.IllegalStateException
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.converter.MessageConversionException
 import org.springframework.jms.support.converter.MessageConverter
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -23,12 +24,15 @@ class JmsAdapterSpec extends Specification {
     JmsAdapter component
 
     JmsTemplate jmsTemplate
-    String destination
     MessageConverter converter
+
+    @Shared
+    String destination = "TEST-DESTINATION"
+    @Shared
+    String testServiceId = 'testservice-1'
 
 
     def setup() {
-        destination = "TEST-DESTINATION"
         MessageInfoService messageInfoService = Mock()
 
         converter = Mock()
@@ -36,7 +40,7 @@ class JmsAdapterSpec extends Specification {
         jmsTemplate = Mock()
         jmsTemplate.getMessageConverter() >> converter
 
-        component = new JmsAdapter(destination, "TEST1", jmsTemplate, messageInfoService)
+        component = new JmsAdapter(destination, testServiceId, jmsTemplate, messageInfoService)
     }
 
     def "on message"() {
@@ -217,6 +221,11 @@ class JmsAdapterSpec extends Specification {
 
         then:
             thrown(UnsupportedOperationException)
+    }
+
+    def "check service ID"() {
+        expect:
+            component.getServiceId() == testServiceId
     }
 
     AvMessageListener getAvMessageListener() {
