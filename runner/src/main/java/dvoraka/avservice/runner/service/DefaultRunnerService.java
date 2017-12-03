@@ -43,9 +43,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public String createRunner(RunnerConfiguration configuration) throws RunnerAlreadyExistsException {
-
-        //TODO: synchronize
+    public synchronized String createRunner(RunnerConfiguration configuration)
+            throws RunnerAlreadyExistsException {
 
         if (exists(configuration.getName())) {
             throw new RunnerAlreadyExistsException();
