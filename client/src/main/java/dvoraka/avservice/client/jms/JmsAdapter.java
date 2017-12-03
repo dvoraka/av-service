@@ -58,6 +58,7 @@ public class JmsAdapter implements NetworkComponent, AvMessageHelper {
     @Override
     public void onMessage(Message message) {
         requireNonNull(message, "Message must not be null!");
+        log.debug("On message: {}", message);
 
         AvMessage avMessage;
         try {
@@ -75,6 +76,7 @@ public class JmsAdapter implements NetworkComponent, AvMessageHelper {
     @Override
     public void sendAvMessage(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
+        log.debug("Send: {}", message);
 
         try {
             jmsTemplate.convertAndSend(destination, message);
