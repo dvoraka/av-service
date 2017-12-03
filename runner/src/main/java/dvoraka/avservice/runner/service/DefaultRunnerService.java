@@ -81,8 +81,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     public void startRunner(String name) throws RunnerNotFoundException {
         checkRunnerExistence(name);
         findRunner(name).ifPresent(Runner::start);
-        //TODO:
-//        executorService.submit(() -> waitForStartInt(name));
+        executorService.submit(() -> waitForStartInt(name));
     }
 
     @Override
@@ -119,6 +118,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
         final int sleepTime = 250;
         while (!runner.isRunning()) {
+            log.debug("Waiting for {}...", name);
             TimeUnit.MILLISECONDS.sleep(sleepTime);
         }
 
