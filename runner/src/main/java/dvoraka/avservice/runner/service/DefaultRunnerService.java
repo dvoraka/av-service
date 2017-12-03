@@ -112,8 +112,14 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     }
 
     @Override
-    public void waitForStart(String name) throws RunnerNotFoundException, InterruptedException {
+    public synchronized void waitForStart(String name)
+            throws RunnerNotFoundException, InterruptedException {
+
         Runner runner = findRunner(name).orElseThrow(RunnerNotFoundException::new);
+
+        if (runner.getState() == RunningState.RUNNING) {
+            return;
+        }
 
         final int sleepTime = 250;
         while (!runner.isRunning()) {
