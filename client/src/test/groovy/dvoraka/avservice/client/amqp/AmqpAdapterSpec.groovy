@@ -11,6 +11,7 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.support.converter.MessageConversionException
 import org.springframework.amqp.support.converter.MessageConverter
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -26,7 +27,10 @@ class AmqpAdapterSpec extends Specification {
     AvMessageMapper messageMapper
     MessageConverter converter
 
+    @Shared
     String testExchange = 'TEST-EXCHANGE'
+    @Shared
+    String testServiceId = 'testservice-1'
 
 
     def setup() {
@@ -39,7 +43,7 @@ class AmqpAdapterSpec extends Specification {
         rabbitTemplate = Mock()
         rabbitTemplate.getMessageConverter() >> converter
 
-        component = new AmqpAdapter(testExchange, "TEST1", rabbitTemplate, infoService)
+        component = new AmqpAdapter(testExchange, testServiceId, rabbitTemplate, infoService)
 
         messageMapper = new AvMessageMapper()
     }
@@ -225,6 +229,11 @@ class AmqpAdapterSpec extends Specification {
 
         then:
             thrown(UnsupportedOperationException)
+    }
+
+    def "check service ID"() {
+        expect:
+            component.getServiceId() == testServiceId
     }
 
     AvMessageListener getAvMessageListener() {
