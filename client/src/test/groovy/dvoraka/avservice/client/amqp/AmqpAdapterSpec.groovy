@@ -16,7 +16,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 /**
- * AMQP component test.
+ * AMQP adapter test.
  */
 class AmqpAdapterSpec extends Specification {
 

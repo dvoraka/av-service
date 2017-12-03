@@ -16,7 +16,7 @@ import spock.lang.Subject
 import javax.jms.Message
 
 /**
- * JMS component test.
+ * JMS adapter test.
  */
 class JmsAdapterSpec extends Specification {
 
