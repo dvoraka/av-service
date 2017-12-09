@@ -185,7 +185,7 @@ class JmsAdapterSpec extends Specification {
             observers == component.listenersCount()
     }
 
-    def "remove observers from different threads"() {
+    def "remove listeners from different threads"() {
         given:
             int observers = 50
 

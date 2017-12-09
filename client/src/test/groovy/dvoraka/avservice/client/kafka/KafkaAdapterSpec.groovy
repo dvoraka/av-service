@@ -2,11 +2,11 @@ package dvoraka.avservice.client.kafka
 
 import dvoraka.avservice.common.AvMessageListener
 import dvoraka.avservice.common.Utils
-import dvoraka.avservice.common.amqp.AvMessageMapper
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.db.repository.db.DbMessageInfoRepository
 import dvoraka.avservice.db.service.DbMessageInfoService
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.springframework.amqp.core.Message
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.messaging.converter.MessageConverter
 import spock.lang.Shared
@@ -22,7 +22,6 @@ class KafkaAdapterSpec extends Specification {
     KafkaAdapter component
 
     KafkaTemplate<String, AvMessage> kafkaTemplate
-    AvMessageMapper messageMapper
     MessageConverter converter
 
     @Shared
@@ -59,7 +58,124 @@ class KafkaAdapterSpec extends Specification {
             1 * listener.onAvMessage(message)
     }
 
-    //TODO: add tests
+    def "on message with null"() {
+        when:
+            component.onMessage((ConsumerRecord) null)
+
+        then:
+            thrown(NullPointerException)
+    }
+
+    def "send null message"() {
+        when:
+            component.sendAvMessage(null)
+
+        then:
+            thrown(NullPointerException)
+    }
+
+    def "send normal message"() {
+        given:
+            AvMessage message = Utils.genMessage()
+
+        when:
+            component.sendAvMessage(message)
+
+        then:
+            1 * kafkaTemplate.send(testTopic, message)
+    }
+
+    def "add listeners"() {
+        when:
+            component.addAvMessageListener(getAvMessageListener())
+            component.addAvMessageListener(getAvMessageListener())
+
+        then:
+            component.listenersCount() == 2
+    }
+
+    def "remove listeners"() {
+        given:
+            AvMessageListener listener1 = getAvMessageListener()
+            AvMessageListener listener2 = getAvMessageListener()
+
+        when:
+            component.addAvMessageListener(listener1)
+            component.addAvMessageListener(listener2)
+
+        then:
+            component.listenersCount() == 2
+
+        when:
+            component.removeAvMessageListener(listener1)
+            component.removeAvMessageListener(listener2)
+
+        then:
+            component.listenersCount() == 0
+    }
+
+    def "add listeners from diff threads"() {
+        given:
+            int observers = 50
+
+            Runnable addListener = {
+                component.addAvMessageListener(getAvMessageListener())
+            }
+
+            Thread[] threads = new Thread[observers]
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new Thread(addListener)
+            }
+
+        when:
+            threads.each {
+                it.start()
+            }
+            threads.each {
+                it.join()
+            }
+
+        then:
+            observers == component.listenersCount()
+    }
+
+    def "remove listeners from different threads"() {
+        given:
+            int observers = 50
+
+            AvMessageListener messageListener = getAvMessageListener()
+            Runnable removeListener = {
+                component.removeAvMessageListener(messageListener)
+            }
+
+            Thread[] threads = new Thread[observers]
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new Thread(removeListener)
+            }
+
+            observers.times {
+                component.addAvMessageListener(messageListener)
+            }
+
+        when:
+            threads.each {
+                it.start()
+            }
+            threads.each {
+                it.join()
+            }
+
+        then:
+            component.listenersCount() == 0
+    }
+
+    def "run wrong onMessage"() {
+        when:
+            component.onMessage((Message) null)
+
+        then:
+            thrown(UnsupportedOperationException)
+    }
 
     def "check service ID"() {
         expect:

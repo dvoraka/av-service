@@ -85,4 +85,8 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
     public void removeAvMessageListener(AvMessageListener listener) {
         listeners.remove(listener);
     }
+
+    public int listenersCount() {
+        return listeners.size();
+    }
 }
