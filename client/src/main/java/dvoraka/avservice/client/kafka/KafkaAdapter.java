@@ -72,11 +72,6 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
     }
 
     @Override
-    public String getServiceId() {
-        return serviceId;
-    }
-
-    @Override
     public void addAvMessageListener(AvMessageListener listener) {
         listeners.add(listener);
     }
@@ -86,7 +81,13 @@ public class KafkaAdapter implements NetworkComponent, AvMessageHelper {
         listeners.remove(listener);
     }
 
-    public int listenersCount() {
+    @Override
+    public int getListenerCount() {
         return listeners.size();
+    }
+
+    @Override
+    public String getServiceId() {
+        return serviceId;
     }
 }

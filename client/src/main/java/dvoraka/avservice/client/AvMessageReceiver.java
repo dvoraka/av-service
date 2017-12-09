@@ -21,5 +21,10 @@ public interface AvMessageReceiver {
      */
     void removeAvMessageListener(AvMessageListener listener);
 
-    //TODO: add get listener count method
+    /**
+     * Returns a listener count.
+     *
+     * @return the listener count
+     */
+    int getListenerCount();
 }

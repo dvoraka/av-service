@@ -102,7 +102,8 @@ public class JmsAdapter implements NetworkComponent, AvMessageHelper {
         listeners.remove(listener);
     }
 
-    public int listenersCount() {
+    @Override
+    public int getListenerCount() {
         return listeners.size();
     }
 

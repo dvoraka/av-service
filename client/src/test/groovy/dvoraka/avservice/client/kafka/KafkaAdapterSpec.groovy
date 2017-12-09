@@ -91,7 +91,7 @@ class KafkaAdapterSpec extends Specification {
             component.addAvMessageListener(getAvMessageListener())
 
         then:
-            component.listenersCount() == 2
+            component.getListenerCount() == 2
     }
 
     def "remove listeners"() {
@@ -104,14 +104,14 @@ class KafkaAdapterSpec extends Specification {
             component.addAvMessageListener(listener2)
 
         then:
-            component.listenersCount() == 2
+            component.getListenerCount() == 2
 
         when:
             component.removeAvMessageListener(listener1)
             component.removeAvMessageListener(listener2)
 
         then:
-            component.listenersCount() == 0
+            component.getListenerCount() == 0
     }
 
     def "add listeners from diff threads"() {
@@ -136,7 +136,7 @@ class KafkaAdapterSpec extends Specification {
             }
 
         then:
-            observers == component.listenersCount()
+            observers == component.getListenerCount()
     }
 
     def "remove listeners from different threads"() {
@@ -166,7 +166,7 @@ class KafkaAdapterSpec extends Specification {
             }
 
         then:
-            component.listenersCount() == 0
+            component.getListenerCount() == 0
     }
 
     def "run wrong onMessage"() {
