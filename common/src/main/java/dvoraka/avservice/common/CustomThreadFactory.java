@@ -3,23 +3,26 @@ package dvoraka.avservice.common;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Custom thread factory.
  */
-public class CustomThreadFactory implements ThreadFactory {
+public final class CustomThreadFactory implements ThreadFactory {
 
-    private String poolName;
-    private AtomicLong counter = new AtomicLong(0);
+    private final String poolName;
+    private final AtomicLong counter;
 
 
     /**
-     * Creates a custom thread factory with a given name. Every thread will have this name
+     * Creates a custom thread factory with a given base name. Every thread will have this name
      * and a different number starting with 0 as a suffix.
      *
-     * @param name the name
+     * @param name the thread name
      */
     public CustomThreadFactory(String name) {
-        poolName = name;
+        poolName = requireNonNull(name);
+        counter = new AtomicLong();
     }
 
     @Override
