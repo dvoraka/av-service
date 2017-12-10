@@ -1,4 +1,4 @@
-package dvoraka.avservice.client;
+package dvoraka.avservice.client.util;
 
 /**
  * Cleaner for full/dirty queues.

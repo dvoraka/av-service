@@ -1,9 +1,9 @@
 package dvoraka.avservice.client.configuration.replication;
 
-import dvoraka.avservice.client.QueueCleaner;
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.client.amqp.AmqpQueueCleaner;
 import dvoraka.avservice.client.amqp.AmqpReplicationComponent;
+import dvoraka.avservice.client.util.QueueCleaner;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;

@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.configuration.file;
 
-import dvoraka.avservice.client.QueueCleaner;
 import dvoraka.avservice.client.jms.JmsQueueCleaner;
+import dvoraka.avservice.client.util.QueueCleaner;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

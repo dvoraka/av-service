@@ -1,6 +1,7 @@
 package dvoraka.avservice.client
 
 import dvoraka.avservice.client.configuration.ClientConfig
+import dvoraka.avservice.client.util.QueueCleaner
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource

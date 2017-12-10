@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.jms;
 
-import dvoraka.avservice.client.QueueCleaner;
+import dvoraka.avservice.client.util.QueueCleaner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;

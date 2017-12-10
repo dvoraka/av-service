@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.amqp;
 
-import dvoraka.avservice.client.QueueCleaner;
+import dvoraka.avservice.client.util.QueueCleaner;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

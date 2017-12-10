@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.configuration.file;
 
-import dvoraka.avservice.client.QueueCleaner;
 import dvoraka.avservice.client.amqp.AmqpQueueCleaner;
+import dvoraka.avservice.client.util.QueueCleaner;
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.common.amqp.AvMessageMapper;
 import org.springframework.amqp.core.AmqpAdmin;
