@@ -81,7 +81,7 @@ public class DefaultReplicationResponseClient implements
 
         // initialize service in a different thread
         CompletableFuture.runAsync(this::initializeCache)
-                .thenRun(() -> replicationComponent.addReplicationMessageListener(this))
+                .thenRun(() -> replicationComponent.addMessageListener(this))
                 .thenRunAsync(this::checkTransport)
                 .thenRun(() -> log.info("Running."));
     }
@@ -101,7 +101,7 @@ public class DefaultReplicationResponseClient implements
 
         log.info("Stop ({}).", nodeId);
 
-        replicationComponent.removeReplicationMessageListener(this);
+        replicationComponent.removeMessageListener(this);
 
         if (cacheManager != null) {
             cacheManager.close();

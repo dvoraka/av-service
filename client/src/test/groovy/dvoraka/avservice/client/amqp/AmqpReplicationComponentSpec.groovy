@@ -43,7 +43,7 @@ class AmqpReplicationComponentSpec extends Specification implements
     def "on message"() {
         given:
             ReplicationMessageListener listener = Mock()
-            component.addReplicationMessageListener(listener)
+            component.addMessageListener(listener)
 
             Message amqpMsg = new Message(new byte[0], new MessageProperties())
             ReplicationMessage message = new DefaultReplicationMessage.Builder(null).build()
@@ -60,7 +60,7 @@ class AmqpReplicationComponentSpec extends Specification implements
     def "on message with conversion exception"() {
         given:
             ReplicationMessageListener listener = Mock()
-            component.addReplicationMessageListener(listener)
+            component.addMessageListener(listener)
 
             Message amqpMsg = new Message(new byte[0], new MessageProperties())
             converter.fromMessage(amqpMsg) >> { throw new MessageConversionException('Error') }
@@ -76,7 +76,7 @@ class AmqpReplicationComponentSpec extends Specification implements
     def "on message without listener"() {
         given:
             ReplicationMessageListener listener = Mock()
-            component.addReplicationMessageListener(listener)
+            component.addMessageListener(listener)
 
             Message amqpMsg = new Message(new byte[0], new MessageProperties())
             ReplicationMessage message = new DefaultReplicationMessage.Builder(null).build()
@@ -84,7 +84,7 @@ class AmqpReplicationComponentSpec extends Specification implements
             converter.fromMessage(amqpMsg) >> message
 
         when:
-            component.removeReplicationMessageListener(listener)
+            component.removeMessageListener(listener)
             component.onMessage(amqpMsg)
 
         then:

@@ -76,12 +76,17 @@ public class AmqpReplicationComponent implements ReplicationComponent {
     }
 
     @Override
-    public void addReplicationMessageListener(ReplicationMessageListener listener) {
+    public void addMessageListener(ReplicationMessageListener listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removeReplicationMessageListener(ReplicationMessageListener listener) {
+    public void removeMessageListener(ReplicationMessageListener listener) {
         listeners.remove(listener);
+    }
+
+    @Override
+    public int getListenerCount() {
+        return listeners.size();
     }
 }

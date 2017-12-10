@@ -1,12 +1,11 @@
 package dvoraka.avservice.client;
 
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
-import dvoraka.avservice.common.listener.ReplicationMessageListener;
 
 /**
  * Component for sending and receiving replication messages.
  */
-public interface ReplicationComponent extends MessageListenerAdapter {
+public interface ReplicationComponent extends MessageListenerAdapter, ReplicationMessageReceiver {
 
     /**
      * Sends a replication message.
@@ -14,18 +13,4 @@ public interface ReplicationComponent extends MessageListenerAdapter {
      * @param message the message
      */
     void sendMessage(ReplicationMessage message);
-
-    /**
-     * Adds a message listener.
-     *
-     * @param listener the listener
-     */
-    void addReplicationMessageListener(ReplicationMessageListener listener);
-
-    /**
-     * Removes a message listener.
-     *
-     * @param listener the listener
-     */
-    void removeReplicationMessageListener(ReplicationMessageListener listener);
 }
