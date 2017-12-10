@@ -48,7 +48,7 @@ class KafkaAdapterSpec extends Specification {
             AvMessageListener listener = Mock()
             AvMessage message = Utils.genMessage()
 
-            component.addAvMessageListener(listener)
+            component.addMessageListener(listener)
 
         when:
             component.onMessage(new ConsumerRecord<String, AvMessage>(
@@ -87,8 +87,8 @@ class KafkaAdapterSpec extends Specification {
 
     def "add listeners"() {
         when:
-            component.addAvMessageListener(getAvMessageListener())
-            component.addAvMessageListener(getAvMessageListener())
+            component.addMessageListener(getAvMessageListener())
+            component.addMessageListener(getAvMessageListener())
 
         then:
             component.getListenerCount() == 2
@@ -100,15 +100,15 @@ class KafkaAdapterSpec extends Specification {
             AvMessageListener listener2 = getAvMessageListener()
 
         when:
-            component.addAvMessageListener(listener1)
-            component.addAvMessageListener(listener2)
+            component.addMessageListener(listener1)
+            component.addMessageListener(listener2)
 
         then:
             component.getListenerCount() == 2
 
         when:
-            component.removeAvMessageListener(listener1)
-            component.removeAvMessageListener(listener2)
+            component.removeMessageListener(listener1)
+            component.removeMessageListener(listener2)
 
         then:
             component.getListenerCount() == 0
@@ -119,7 +119,7 @@ class KafkaAdapterSpec extends Specification {
             int observers = 50
 
             Runnable addListener = {
-                component.addAvMessageListener(getAvMessageListener())
+                component.addMessageListener(getAvMessageListener())
             }
 
             Thread[] threads = new Thread[observers]
@@ -145,7 +145,7 @@ class KafkaAdapterSpec extends Specification {
 
             AvMessageListener messageListener = getAvMessageListener()
             Runnable removeListener = {
-                component.removeAvMessageListener(messageListener)
+                component.removeMessageListener(messageListener)
             }
 
             Thread[] threads = new Thread[observers]
@@ -154,7 +154,7 @@ class KafkaAdapterSpec extends Specification {
             }
 
             observers.times {
-                component.addAvMessageListener(messageListener)
+                component.addMessageListener(messageListener)
             }
 
         when:

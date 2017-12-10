@@ -49,7 +49,7 @@ class JmsAdapterSpec extends Specification {
             AvMessage message = Utils.genMessage()
             converter.fromMessage(_) >> message
 
-            component.addAvMessageListener(listener)
+            component.addMessageListener(listener)
 
         when:
             component.onMessage(new ActiveMQMessage())
@@ -65,7 +65,7 @@ class JmsAdapterSpec extends Specification {
                 throw new MessageConversionException("TEST")
             }
 
-            component.addAvMessageListener(listener)
+            component.addMessageListener(listener)
 
         when:
             component.onMessage(new ActiveMQMessage())
@@ -133,8 +133,8 @@ class JmsAdapterSpec extends Specification {
 
     def "add listeners"() {
         when:
-            component.addAvMessageListener(getAvMessageListener())
-            component.addAvMessageListener(getAvMessageListener())
+            component.addMessageListener(getAvMessageListener())
+            component.addMessageListener(getAvMessageListener())
 
         then:
             component.getListenerCount() == 2
@@ -146,15 +146,15 @@ class JmsAdapterSpec extends Specification {
             AvMessageListener listener2 = getAvMessageListener()
 
         when:
-            component.addAvMessageListener(listener1)
-            component.addAvMessageListener(listener2)
+            component.addMessageListener(listener1)
+            component.addMessageListener(listener2)
 
         then:
             component.getListenerCount() == 2
 
         when:
-            component.removeAvMessageListener(listener1)
-            component.removeAvMessageListener(listener2)
+            component.removeMessageListener(listener1)
+            component.removeMessageListener(listener2)
 
         then:
             component.getListenerCount() == 0
@@ -165,7 +165,7 @@ class JmsAdapterSpec extends Specification {
             int observers = 50
 
             Runnable addListener = {
-                component.addAvMessageListener(getAvMessageListener())
+                component.addMessageListener(getAvMessageListener())
             }
 
             Thread[] threads = new Thread[observers]
@@ -191,7 +191,7 @@ class JmsAdapterSpec extends Specification {
 
             AvMessageListener messageListener = getAvMessageListener()
             Runnable removeListener = {
-                component.removeAvMessageListener(messageListener)
+                component.removeMessageListener(messageListener)
             }
 
             Thread[] threads = new Thread[observers]
@@ -200,7 +200,7 @@ class JmsAdapterSpec extends Specification {
             }
 
             observers.times {
-                component.addAvMessageListener(messageListener)
+                component.addMessageListener(messageListener)
             }
 
         when:

@@ -50,8 +50,8 @@ public class ServerComponentBridge implements ServiceManagement {
         if (!isRunning()) {
             setRunning(true);
 
-            inComponent.addAvMessageListener(inListener);
-            outComponent.addAvMessageListener(outListener);
+            inComponent.addMessageListener(inListener);
+            outComponent.addMessageListener(outListener);
         }
     }
 
@@ -63,8 +63,8 @@ public class ServerComponentBridge implements ServiceManagement {
         setRunning(false);
         setStarted(false);
 
-        inComponent.removeAvMessageListener(inListener);
-        outComponent.removeAvMessageListener(outListener);
+        inComponent.removeMessageListener(inListener);
+        outComponent.removeMessageListener(outListener);
         log.debug("Bridge has stopped");
     }
 

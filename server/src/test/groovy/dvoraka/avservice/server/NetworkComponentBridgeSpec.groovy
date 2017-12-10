@@ -57,8 +57,8 @@ class NetworkComponentBridgeSpec extends Specification {
             bridge.isStarted()
             !bridge.isStopped()
 
-            1 * inComponent.addAvMessageListener(_)
-            1 * outComponent.addAvMessageListener(_)
+            1 * inComponent.addMessageListener(_)
+            1 * outComponent.addMessageListener(_)
 
         when:
             bridge.stop()
@@ -68,8 +68,8 @@ class NetworkComponentBridgeSpec extends Specification {
             !bridge.isStarted()
             bridge.isStopped()
 
-            1 * inComponent.removeAvMessageListener(_)
-            1 * outComponent.removeAvMessageListener(_)
+            1 * inComponent.removeMessageListener(_)
+            1 * outComponent.removeMessageListener(_)
     }
 
     def "start and start"() {
@@ -99,8 +99,8 @@ class NetworkComponentBridgeSpec extends Specification {
             bridge.isStarted()
             !bridge.isStopped()
 
-            1 * inComponent.addAvMessageListener(_)
-            1 * outComponent.addAvMessageListener(_)
+            1 * inComponent.addMessageListener(_)
+            1 * outComponent.addMessageListener(_)
 
         when:
             bridge.restart()
@@ -110,9 +110,9 @@ class NetworkComponentBridgeSpec extends Specification {
             bridge.isStarted()
             !bridge.isStopped()
 
-            1 * inComponent.removeAvMessageListener(_)
-            1 * outComponent.removeAvMessageListener(_)
-            1 * inComponent.addAvMessageListener(_)
-            1 * outComponent.addAvMessageListener(_)
+            1 * inComponent.removeMessageListener(_)
+            1 * outComponent.removeMessageListener(_)
+            1 * inComponent.addMessageListener(_)
+            1 * outComponent.addMessageListener(_)
     }
 }

@@ -40,26 +40,26 @@ class DefaultResponseClientSpec extends Specification {
 
         then:
             client.isStarted()
-            1 * serverComponent.addAvMessageListener(_)
+            1 * serverComponent.addMessageListener(_)
 
         when: "start again"
             client.start()
 
         then:
-            0 * serverComponent.addAvMessageListener(_)
+            0 * serverComponent.addMessageListener(_)
 
         when:
             client.stop()
 
         then:
             !client.isStarted()
-            1 * serverComponent.removeAvMessageListener(_)
+            1 * serverComponent.removeMessageListener(_)
 
         when: "stop again"
             client.stop()
 
         then:
-            0 * serverComponent.removeAvMessageListener(_)
+            0 * serverComponent.removeMessageListener(_)
     }
 
     def "get response before start"() {

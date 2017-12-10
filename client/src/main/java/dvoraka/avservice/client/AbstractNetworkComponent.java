@@ -22,12 +22,12 @@ public abstract class AbstractNetworkComponent implements NetworkComponent {
     }
 
     @Override
-    public void addAvMessageListener(AvMessageListener listener) {
+    public void addMessageListener(AvMessageListener listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removeAvMessageListener(AvMessageListener listener) {
+    public void removeMessageListener(AvMessageListener listener) {
         listeners.remove(listener);
     }
 

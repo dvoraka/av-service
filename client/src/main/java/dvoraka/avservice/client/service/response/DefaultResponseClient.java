@@ -66,7 +66,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
         log.info("Start.");
         initializeCache();
-        networkComponent.addAvMessageListener(this);
+        networkComponent.addMessageListener(this);
         setStarted(true);
     }
 
@@ -79,7 +79,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
         log.info("Stop.");
         setStarted(false);
-        networkComponent.removeAvMessageListener(this);
+        networkComponent.removeMessageListener(this);
         cacheManager.close();
     }
 

@@ -54,7 +54,7 @@ class AmqpAdapterSpec extends Specification {
             AvMessage message = Utils.genMessage()
             Message amqpMsg = messageMapper.transform(message)
 
-            component.addAvMessageListener(listener)
+            component.addMessageListener(listener)
 
         when:
             component.onMessage(amqpMsg)
@@ -70,7 +70,7 @@ class AmqpAdapterSpec extends Specification {
             Message amqpMsg = messageMapper.transform(message)
             amqpMsg.getMessageProperties().setType(null)
 
-            component.addAvMessageListener(listener)
+            component.addMessageListener(listener)
 
         when:
             component.onMessage(amqpMsg)
@@ -141,8 +141,8 @@ class AmqpAdapterSpec extends Specification {
 
     def "add listeners"() {
         when:
-            component.addAvMessageListener(getAvMessageListener())
-            component.addAvMessageListener(getAvMessageListener())
+            component.addMessageListener(getAvMessageListener())
+            component.addMessageListener(getAvMessageListener())
 
         then:
             component.getListenerCount() == 2
@@ -154,15 +154,15 @@ class AmqpAdapterSpec extends Specification {
             AvMessageListener listener2 = getAvMessageListener()
 
         when:
-            component.addAvMessageListener(listener1)
-            component.addAvMessageListener(listener2)
+            component.addMessageListener(listener1)
+            component.addMessageListener(listener2)
 
         then:
             component.getListenerCount() == 2
 
         when:
-            component.removeAvMessageListener(listener1)
-            component.removeAvMessageListener(listener2)
+            component.removeMessageListener(listener1)
+            component.removeMessageListener(listener2)
 
         then:
             component.getListenerCount() == 0
@@ -173,7 +173,7 @@ class AmqpAdapterSpec extends Specification {
             int observers = 50
 
             Runnable addListener = {
-                component.addAvMessageListener(getAvMessageListener())
+                component.addMessageListener(getAvMessageListener())
             }
 
             Thread[] threads = new Thread[observers]
@@ -199,7 +199,7 @@ class AmqpAdapterSpec extends Specification {
 
             AvMessageListener messageListener = getAvMessageListener()
             Runnable removeListener = {
-                component.removeAvMessageListener(messageListener)
+                component.removeMessageListener(messageListener)
             }
 
             Thread[] threads = new Thread[observers]
@@ -208,7 +208,7 @@ class AmqpAdapterSpec extends Specification {
             }
 
             observers.times {
-                component.addAvMessageListener(messageListener)
+                component.addMessageListener(messageListener)
             }
 
         when:

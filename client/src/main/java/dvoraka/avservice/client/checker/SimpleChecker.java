@@ -43,7 +43,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     public SimpleChecker(NetworkComponent networkComponent, int queueSize) {
         this.networkComponent = requireNonNull(networkComponent);
-        this.networkComponent.addAvMessageListener(this);
+        this.networkComponent.addMessageListener(this);
         queue = new ArrayBlockingQueue<>(queueSize);
     }
 

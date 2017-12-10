@@ -56,7 +56,7 @@ public class BasicAvServer implements AvServer {
         setStopped(false);
         setStarted(true);
 
-        networkComponent.addAvMessageListener(this);
+        networkComponent.addMessageListener(this);
         messageProcessor.addProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(true);
@@ -68,7 +68,7 @@ public class BasicAvServer implements AvServer {
         log.info("Server stopping...");
         setStopped(true);
 
-        networkComponent.removeAvMessageListener(this);
+        networkComponent.removeMessageListener(this);
         messageProcessor.removeProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(false);
