@@ -42,7 +42,7 @@ class FileMessageProcessorSpec extends Specification {
 
         then:
             1 * fileService.saveFile(_)
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "save message failed"() {
@@ -56,7 +56,7 @@ class FileMessageProcessorSpec extends Specification {
             1 * fileService.saveFile(_) >> {
                 throw new FileServiceException()
             }
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "load message"() {
@@ -68,7 +68,7 @@ class FileMessageProcessorSpec extends Specification {
 
         then:
             1 * fileService.loadFile(_) >> message
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "load message failed"() {
@@ -82,7 +82,7 @@ class FileMessageProcessorSpec extends Specification {
             1 * fileService.loadFile(_) >> {
                 throw new FileServiceException()
             }
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "update message"() {
@@ -94,7 +94,7 @@ class FileMessageProcessorSpec extends Specification {
 
         then:
             1 * fileService.updateFile(_)
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "update message failed"() {
@@ -108,7 +108,7 @@ class FileMessageProcessorSpec extends Specification {
             1 * fileService.updateFile(_) >> {
                 throw new FileServiceException()
             }
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "delete message"() {
@@ -120,7 +120,7 @@ class FileMessageProcessorSpec extends Specification {
 
         then:
             1 * fileService.deleteFile(_)
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "delete message failed"() {
@@ -134,7 +134,7 @@ class FileMessageProcessorSpec extends Specification {
             1 * fileService.deleteFile(_) >> {
                 throw new FileServiceException()
             }
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "unknown message"() {
@@ -146,7 +146,7 @@ class FileMessageProcessorSpec extends Specification {
 
         then:
             0 * fileService._
-            0 * listener.onAvMessage(_)
+            0 * listener.onMessage(_)
     }
 
     def "message status for unknown message"() {

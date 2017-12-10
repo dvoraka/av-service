@@ -19,7 +19,7 @@ public interface AvMessageHelper {
      * @param message   the message
      */
     default void notifyListeners(Iterable<AvMessageListener> listeners, AvMessage message) {
-        listeners.forEach(listener -> listener.onAvMessage(message));
+        listeners.forEach(listener -> listener.onMessage(message));
     }
 
     /**

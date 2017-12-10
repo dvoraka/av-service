@@ -70,7 +70,7 @@ class LocalRestServiceSpec extends Specification {
 
         when:
             strategy.start()
-            strategy.onAvMessage(response)
+            strategy.onMessage(response)
 
         then:
             conditions.eventually {

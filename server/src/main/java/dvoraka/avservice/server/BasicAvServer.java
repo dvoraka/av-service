@@ -95,7 +95,7 @@ public class BasicAvServer implements AvServer {
     }
 
     @Override
-    public void onAvMessage(AvMessage message) {
+    public void onMessage(AvMessage message) {
         messageInfoService.save(message, MESSAGE_SOURCE, serviceId);
         messageProcessor.sendMessage(message);
     }
@@ -115,7 +115,7 @@ public class BasicAvServer implements AvServer {
 
     class ProcessedAvMessageListener implements AvMessageListener {
         @Override
-        public void onAvMessage(AvMessage message) {
+        public void onMessage(AvMessage message) {
             sendAvMessage(message);
         }
     }

@@ -32,8 +32,8 @@ class AvMessageHelperSpec extends Specification {
             helper.notifyListeners(listeners, message)
 
         then:
-            1 * listener1.onAvMessage(message)
-            1 * listener2.onAvMessage(message)
+            1 * listener1.onMessage(message)
+            1 * listener2.onMessage(message)
     }
 
     def "prepare response"() {

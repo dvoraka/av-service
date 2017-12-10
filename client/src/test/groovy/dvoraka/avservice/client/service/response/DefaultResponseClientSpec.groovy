@@ -84,7 +84,7 @@ class DefaultResponseClientSpec extends Specification {
 
         when:
             client.start()
-            client.onAvMessage(response)
+            client.onMessage(response)
 
         then:
             client.getResponse(response.getCorrelationId()) == response

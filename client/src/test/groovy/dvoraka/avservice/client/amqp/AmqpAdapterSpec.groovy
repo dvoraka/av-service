@@ -60,7 +60,7 @@ class AmqpAdapterSpec extends Specification {
             component.onMessage(amqpMsg)
 
         then:
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "on message with conversion exception"() {
@@ -79,7 +79,7 @@ class AmqpAdapterSpec extends Specification {
             converter.fromMessage(amqpMsg) >> {
                 throw new MessageConversionException("TEST conversion")
             }
-            0 * listener.onAvMessage(_)
+            0 * listener.onMessage(_)
     }
 
     def "on message with null"() {
@@ -239,7 +239,7 @@ class AmqpAdapterSpec extends Specification {
     AvMessageListener getAvMessageListener() {
         return new AvMessageListener() {
             @Override
-            void onAvMessage(AvMessage message) {
+            void onMessage(AvMessage message) {
             }
         }
     }

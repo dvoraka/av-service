@@ -7,11 +7,4 @@ import dvoraka.avservice.common.data.replication.ReplicationMessage;
  */
 @FunctionalInterface
 public interface ReplicationMessageListener extends MessageListener<ReplicationMessage> {
-
-    /**
-     * Receives replication messages.
-     *
-     * @param message the message
-     */
-    void onMessage(ReplicationMessage message);
 }

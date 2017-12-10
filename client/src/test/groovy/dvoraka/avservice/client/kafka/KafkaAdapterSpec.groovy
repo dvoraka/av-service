@@ -55,7 +55,7 @@ class KafkaAdapterSpec extends Specification {
                     'testTopic', 0, 0, null, message))
 
         then:
-            1 * listener.onAvMessage(message)
+            1 * listener.onMessage(message)
     }
 
     def "on message with null"() {
@@ -185,7 +185,7 @@ class KafkaAdapterSpec extends Specification {
     AvMessageListener getAvMessageListener() {
         return new AvMessageListener() {
             @Override
-            void onAvMessage(AvMessage message) {
+            void onMessage(AvMessage message) {
             }
         }
     }

@@ -130,7 +130,7 @@ public class CompositeMessageProcessor implements MessageProcessor, AvMessageLis
     }
 
     @Override
-    public void onAvMessage(AvMessage message) {
+    public void onMessage(AvMessage message) {
         try {
             if (getActualMessage() != null
                     && message.getCorrelationId().equals(getActualMessage().getId())) {

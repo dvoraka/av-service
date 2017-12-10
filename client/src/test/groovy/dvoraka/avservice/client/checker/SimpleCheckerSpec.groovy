@@ -36,10 +36,10 @@ class SimpleCheckerSpec extends Specification {
             new Thread(
                     {
                         messages.each {
-                            checker.onAvMessage(it)
+                            checker.onMessage(it)
                         }
                         // 3rd message
-                        checker.onAvMessage(message)
+                        checker.onMessage(message)
                     }
             ).start()
 

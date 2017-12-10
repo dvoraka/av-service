@@ -124,7 +124,7 @@ public class LocalRestService implements RestService, AvMessageListener {
     }
 
     @Override
-    public void onAvMessage(AvMessage message) {
+    public void onMessage(AvMessage message) {
         messageCache.put(message.getCorrelationId(), message);
         log.debug("Saving message: " + message.getId());
     }

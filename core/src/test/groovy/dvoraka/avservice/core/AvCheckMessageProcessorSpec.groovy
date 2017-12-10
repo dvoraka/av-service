@@ -79,7 +79,7 @@ class AvCheckMessageProcessorSpec extends Specification {
             AvMessage response = null
             AvMessageListener messageListener = new AvMessageListener() {
                 @Override
-                void onAvMessage(AvMessage message) {
+                void onMessage(AvMessage message) {
                     response = message
                 }
             }

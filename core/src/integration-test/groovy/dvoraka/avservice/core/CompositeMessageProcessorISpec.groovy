@@ -39,7 +39,7 @@ class CompositeMessageProcessorISpec extends Specification {
         queue = new ArrayBlockingQueue<>(10)
         listener = new AvMessageListener() {
             @Override
-            void onAvMessage(AvMessage message) {
+            void onMessage(AvMessage message) {
                 queue.put(message)
             }
         }

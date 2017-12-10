@@ -141,7 +141,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
     }
 
     @Override
-    public void onAvMessage(AvMessage response) {
+    public void onMessage(AvMessage response) {
         log.debug("On message: {}", response);
         messageCache.put(response.getCorrelationId(), response);
         messageInfoService.save(response, InfoSource.RESPONSE_CACHE, serviceId);

@@ -134,7 +134,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
     }
 
     @Override
-    public void onAvMessage(AvMessage message) {
+    public void onMessage(AvMessage message) {
         try {
             queue.put(message);
         } catch (InterruptedException e) {

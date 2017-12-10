@@ -55,7 +55,7 @@ class JmsAdapterSpec extends Specification {
             component.onMessage(new ActiveMQMessage())
 
         then:
-            1 * listener.onAvMessage(message)
+            1 * listener.onMessage(message)
     }
 
     def "on message with bad message"() {
@@ -71,7 +71,7 @@ class JmsAdapterSpec extends Specification {
             component.onMessage(new ActiveMQMessage())
 
         then:
-            0 * listener.onAvMessage((AvMessage) _)
+            0 * listener.onMessage((AvMessage) _)
     }
 
     def "on message with null"() {
@@ -231,7 +231,7 @@ class JmsAdapterSpec extends Specification {
     AvMessageListener getAvMessageListener() {
         return new AvMessageListener() {
             @Override
-            void onAvMessage(AvMessage message) {
+            void onMessage(AvMessage message) {
 
             }
         }

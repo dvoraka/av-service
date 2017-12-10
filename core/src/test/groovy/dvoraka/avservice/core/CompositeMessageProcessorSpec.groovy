@@ -106,7 +106,7 @@ class CompositeMessageProcessorSpec extends Specification {
 
         then:
             1 * avService._
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
 
             0 * fileService._
     }
@@ -120,10 +120,10 @@ class CompositeMessageProcessorSpec extends Specification {
 
         then:
             1 * avService._ >> Utils.OK_VIRUS_INFO
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
 
             1 * fileService.saveFile(_)
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "send update message"() {
@@ -135,10 +135,10 @@ class CompositeMessageProcessorSpec extends Specification {
 
         then:
             1 * avService._ >> Utils.OK_VIRUS_INFO
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
 
             1 * fileService.updateFile(_)
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "send load message"() {
@@ -152,7 +152,7 @@ class CompositeMessageProcessorSpec extends Specification {
             0 * avService._
 
             1 * fileService.loadFile(_) >> Utils.genFileMessage()
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "send delete message"() {
@@ -166,7 +166,7 @@ class CompositeMessageProcessorSpec extends Specification {
             0 * avService._
 
             1 * fileService.deleteFile(_)
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
     }
 
     def "message status for unknown ID"() {
@@ -182,13 +182,13 @@ class CompositeMessageProcessorSpec extends Specification {
             processor.sendMessage(saveMessage)
 
         then:
-            1 * listener.onAvMessage(_)
+            1 * listener.onMessage(_)
 
         when:
             processor.setInputFilter({ msg -> msg.getType() == MessageType.FILE_LOAD })
             processor.sendMessage(saveMessage)
 
         then:
-            0 * listener.onAvMessage(_)
+            0 * listener.onMessage(_)
     }
 }
