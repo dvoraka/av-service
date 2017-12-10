@@ -12,9 +12,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractNetworkComponent implements NetworkComponent {
 
-    private final List<AvMessageListener> listeners;
-
     protected final Logger log = LogManager.getLogger(this.getClass());
+
+    private final List<AvMessageListener> listeners;
 
 
     protected AbstractNetworkComponent() {
