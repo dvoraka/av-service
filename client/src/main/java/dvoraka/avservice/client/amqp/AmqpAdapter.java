@@ -1,13 +1,10 @@
 package dvoraka.avservice.client.amqp;
 
-import dvoraka.avservice.client.NetworkComponent;
-import dvoraka.avservice.common.AvMessageListener;
+import dvoraka.avservice.client.AbstractNetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.db.service.MessageInfoService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,26 +13,21 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import static java.util.Objects.requireNonNull;
 
 /**
  * AMQP network component adapter.
  */
 @Component
-public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
+public class AmqpAdapter extends AbstractNetworkComponent implements AvMessageHelper {
 
     private final String responseExchange;
     private final String serviceId;
     private final RabbitTemplate rabbitTemplate;
     private final MessageInfoService messageInfoService;
 
-    private static final Logger log = LogManager.getLogger(AmqpAdapter.class);
     public static final String ROUTING_KEY = "ROUTINGKEY";
 
-    private final List<AvMessageListener> listeners;
     private final MessageConverter messageConverter;
 
 
@@ -51,8 +43,6 @@ public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
         this.rabbitTemplate = requireNonNull(rabbitTemplate);
         this.messageInfoService = requireNonNull(messageInfoService);
         messageConverter = requireNonNull(rabbitTemplate.getMessageConverter());
-
-        listeners = new CopyOnWriteArrayList<>();
     }
 
     @Override
@@ -70,7 +60,7 @@ public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
             return;
         }
 
-        notifyListeners(listeners, avMessage);
+        notifyListeners(getListeners(), avMessage);
     }
 
     @Override
@@ -90,21 +80,6 @@ public class AmqpAdapter implements NetworkComponent, AvMessageHelper {
         } catch (AmqpException e) {
             log.warn("Message send problem!", e);
         }
-    }
-
-    @Override
-    public void addAvMessageListener(AvMessageListener listener) {
-        listeners.add(listener);
-    }
-
-    @Override
-    public void removeAvMessageListener(AvMessageListener listener) {
-        listeners.remove(listener);
-    }
-
-    @Override
-    public int getListenerCount() {
-        return listeners.size();
     }
 
     @Override
