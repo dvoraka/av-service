@@ -1,6 +1,5 @@
 package dvoraka.avservice.common.replication
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.Command
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
@@ -8,6 +7,7 @@ import dvoraka.avservice.common.data.replication.MessageRouting
 import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.data.replication.ReplicationStatus
 import dvoraka.avservice.common.helper.replication.ReplicationHelper
+import dvoraka.avservice.common.util.Utils
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject

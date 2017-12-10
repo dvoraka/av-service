@@ -3,7 +3,7 @@ package dvoraka.avservice.common.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import dvoraka.avservice.common.Utils;
+import dvoraka.avservice.common.util.Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

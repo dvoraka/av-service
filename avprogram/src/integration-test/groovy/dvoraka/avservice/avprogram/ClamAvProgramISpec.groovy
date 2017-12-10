@@ -1,9 +1,9 @@
 package dvoraka.avservice.avprogram
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.ScanException
 import dvoraka.avservice.common.service.CachingService
 import dvoraka.avservice.common.service.DefaultCachingService
+import dvoraka.avservice.common.util.Utils
 import spock.lang.Shared
 import spock.lang.Specification
 

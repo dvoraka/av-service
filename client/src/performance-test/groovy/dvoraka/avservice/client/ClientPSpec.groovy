@@ -1,8 +1,8 @@
 package dvoraka.avservice.client
 
 import dvoraka.avservice.client.service.AvServiceClient
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.util.Utils
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
 import spock.lang.Shared

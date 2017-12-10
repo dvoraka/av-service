@@ -2,8 +2,8 @@ package dvoraka.avservice.client.service
 
 import dvoraka.avservice.client.NetworkComponent
 import dvoraka.avservice.client.service.response.ResponseClient
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
+import dvoraka.avservice.common.util.Utils
 import spock.lang.Specification
 import spock.lang.Subject
 

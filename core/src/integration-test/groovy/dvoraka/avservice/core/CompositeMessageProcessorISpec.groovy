@@ -1,10 +1,10 @@
 package dvoraka.avservice.core
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.listener.AvMessageListener
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.core.configuration.CoreConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext

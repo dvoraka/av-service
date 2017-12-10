@@ -1,6 +1,7 @@
 package dvoraka.avservice.avprogram.service;
 
 import dvoraka.avservice.common.exception.ScanException;
+import dvoraka.avservice.common.util.Utils;
 
 import java.io.File;
 
@@ -21,7 +22,7 @@ public interface AvService {
     /**
      * Scans bytes and returns result as a string.
      * <p>
-     * Value of {@link dvoraka.avservice.common.Utils#OK_VIRUS_INFO} is used
+     * Value of {@link Utils#OK_VIRUS_INFO} is used
      * for the OK response string.
      *
      * @param bytes the bytes to scan

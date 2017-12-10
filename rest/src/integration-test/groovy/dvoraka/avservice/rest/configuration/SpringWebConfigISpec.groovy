@@ -1,6 +1,6 @@
 package dvoraka.avservice.rest.configuration
 
-import dvoraka.avservice.common.SpringUtils
+import dvoraka.avservice.common.util.SpringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
 import org.springframework.security.core.userdetails.UserDetailsService

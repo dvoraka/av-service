@@ -1,8 +1,8 @@
 package dvoraka.avservice.client.checker
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.exception.MessageNotFoundException
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.runner.RunnerConfigurationHelper
 import dvoraka.avservice.runner.runnerconfiguration.RunnerConfiguration
 import dvoraka.avservice.runner.service.RunnerService

@@ -3,7 +3,6 @@ package dvoraka.avservice.storage.replication
 import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.Command
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
@@ -13,6 +12,7 @@ import dvoraka.avservice.common.data.replication.ReplicationStatus
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.helper.WaitingHelper
 import dvoraka.avservice.common.helper.replication.ReplicationHelper
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

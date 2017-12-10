@@ -1,10 +1,10 @@
 package dvoraka.avservice.client.checker
 
 import dvoraka.avservice.client.NetworkComponent
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.exception.MessageNotFoundException
+import dvoraka.avservice.common.util.Utils
 import spock.lang.Specification
 import spock.lang.Subject
 

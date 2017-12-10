@@ -2,11 +2,11 @@ package dvoraka.avservice.client.checker;
 
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
-import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.service.ApplicationManagement;
 import dvoraka.avservice.common.testing.PerformanceTest;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
+import dvoraka.avservice.common.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

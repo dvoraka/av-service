@@ -1,9 +1,9 @@
 package dvoraka.avservice.storage.service
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.helper.FileServiceHelper
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.storage.exception.ExistingFileException
 import dvoraka.avservice.storage.exception.FileNotFoundException
 import org.springframework.beans.factory.annotation.Autowired

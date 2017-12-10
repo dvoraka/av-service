@@ -1,9 +1,9 @@
 package dvoraka.avservice.rest.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.rest.service.RestService
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions

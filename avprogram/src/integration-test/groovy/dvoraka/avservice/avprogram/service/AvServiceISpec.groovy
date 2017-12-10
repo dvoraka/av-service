@@ -1,7 +1,7 @@
 package dvoraka.avservice.avprogram.service
 
 import dvoraka.avservice.avprogram.configuration.AvProgramConfig
-import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.util.Utils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration

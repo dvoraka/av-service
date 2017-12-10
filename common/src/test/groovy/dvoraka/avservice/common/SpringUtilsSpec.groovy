@@ -1,5 +1,6 @@
 package dvoraka.avservice.common
 
+import dvoraka.avservice.common.util.SpringUtils
 import org.springframework.context.ApplicationContext
 import spock.lang.Specification
 import spock.lang.Subject

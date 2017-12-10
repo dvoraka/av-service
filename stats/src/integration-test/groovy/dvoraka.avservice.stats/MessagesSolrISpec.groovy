@@ -1,9 +1,9 @@
 package dvoraka.avservice.stats
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageInfo
 import dvoraka.avservice.common.data.InfoSource
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.db.service.MessageInfoService
 import dvoraka.avservice.stats.configuration.StatsSolrConfig
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,9 +1,9 @@
 package dvoraka.avservice.rest.controller;
 
-import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.common.util.Utils;
 import dvoraka.avservice.rest.service.RestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

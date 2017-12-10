@@ -1,6 +1,6 @@
 package dvoraka.avservice.avprogram
 
-import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.util.Utils
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll

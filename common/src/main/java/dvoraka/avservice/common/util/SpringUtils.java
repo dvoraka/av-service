@@ -1,4 +1,4 @@
-package dvoraka.avservice.common;
+package dvoraka.avservice.common.util;
 
 import org.springframework.context.ApplicationContext;
 

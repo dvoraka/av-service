@@ -1,9 +1,9 @@
 package dvoraka.avservice.core.configuration;
 
 import dvoraka.avservice.avprogram.service.AvService;
-import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.common.util.Utils;
 import dvoraka.avservice.core.AvCheckMessageProcessor;
 import dvoraka.avservice.core.CompositeMessageProcessor;
 import dvoraka.avservice.core.FileMessageProcessor;

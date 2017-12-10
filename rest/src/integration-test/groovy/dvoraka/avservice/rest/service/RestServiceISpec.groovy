@@ -1,11 +1,11 @@
 package dvoraka.avservice.rest.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.data.MessageStatus
 import dvoraka.avservice.common.data.MessageType
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.rest.controller.CheckController
 import dvoraka.avservice.rest.controller.FileController
 import org.springframework.beans.factory.annotation.Autowired

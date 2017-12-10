@@ -1,9 +1,9 @@
 package dvoraka.avservice.client.amqp
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.amqp.AvMessageMapper
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.listener.AvMessageListener
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.db.repository.db.DbMessageInfoRepository
 import dvoraka.avservice.db.service.DbMessageInfoService
 import org.springframework.amqp.AmqpException

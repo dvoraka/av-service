@@ -1,8 +1,8 @@
 package dvoraka.avservice.db.service
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessageInfo
 import dvoraka.avservice.common.data.InfoSource
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.db.model.MessageInfo
 import dvoraka.avservice.db.repository.db.DbMessageInfoRepository
 import spock.lang.Specification

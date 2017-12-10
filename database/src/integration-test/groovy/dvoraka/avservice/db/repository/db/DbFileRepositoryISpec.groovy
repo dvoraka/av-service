@@ -1,7 +1,7 @@
 package dvoraka.avservice.db.repository.db
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.db.configuration.DatabaseConfig
 import dvoraka.avservice.db.model.FileEntity
 import org.springframework.beans.factory.annotation.Autowired

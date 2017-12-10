@@ -3,9 +3,9 @@ package dvoraka.avservice.rest.service
 import dvoraka.avservice.client.service.AvServiceClient
 import dvoraka.avservice.client.service.FileServiceClient
 import dvoraka.avservice.client.service.response.ResponseClient
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.MessageStatus
+import dvoraka.avservice.common.util.Utils
 import spock.lang.Specification
 import spock.lang.Subject
 

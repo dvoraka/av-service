@@ -1,9 +1,9 @@
 package dvoraka.avservice.avprogram.service
 
 import dvoraka.avservice.avprogram.AvProgram
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.exception.FileSizeException
 import dvoraka.avservice.common.exception.ScanException
+import dvoraka.avservice.common.util.Utils
 import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets

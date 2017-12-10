@@ -1,9 +1,9 @@
 package dvoraka.avservice.avprogram;
 
-import dvoraka.avservice.common.Utils;
 import dvoraka.avservice.common.exception.ScanException;
 import dvoraka.avservice.common.service.CachingService;
 import dvoraka.avservice.common.socket.SocketPool;
+import dvoraka.avservice.common.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package dvoraka.avservice.storage.replication
 
-import dvoraka.avservice.common.Utils
 import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.helper.WaitingHelper
+import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.storage.configuration.StorageConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext

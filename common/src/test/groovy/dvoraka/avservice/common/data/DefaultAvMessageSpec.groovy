@@ -1,6 +1,6 @@
 package dvoraka.avservice.common.data
 
-import dvoraka.avservice.common.Utils
+import dvoraka.avservice.common.util.Utils
 import nl.jqno.equalsverifier.EqualsVerifier
 import nl.jqno.equalsverifier.Warning
 import spock.lang.Specification

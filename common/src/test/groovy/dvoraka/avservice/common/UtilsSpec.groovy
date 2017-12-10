@@ -4,6 +4,7 @@ import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.AvMessageInfo
 import dvoraka.avservice.common.data.InfoSource
 import dvoraka.avservice.common.data.MessageType
+import dvoraka.avservice.common.util.Utils
 import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
