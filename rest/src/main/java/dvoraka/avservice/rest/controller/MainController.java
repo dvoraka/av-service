@@ -4,7 +4,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.data.MessageType;
-import dvoraka.avservice.common.util.Utils;
+import dvoraka.avservice.common.helper.UuidHelper;
 import dvoraka.avservice.rest.service.RestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
  * AV REST main controller.
  */
 @RestController
-public class MainController {
+public class MainController implements UuidHelper {
 
     private final RestService avRestService;
 
@@ -79,7 +79,7 @@ public class MainController {
     @GetMapping("/gen-msg")
     public AvMessage generateMessage() {
         final int dataSize = 10;
-        return new DefaultAvMessage.Builder(Utils.genUuidString())
+        return new DefaultAvMessage.Builder(genUuidStr())
                 .virusInfo("NO-INFO")
                 .correlationId("CORRELATION-ID")
                 .data(new byte[dataSize])

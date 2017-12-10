@@ -3,7 +3,7 @@ package dvoraka.avservice.rest.controller;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.common.data.MessageType;
-import dvoraka.avservice.common.util.Utils;
+import dvoraka.avservice.common.helper.UuidHelper;
 import dvoraka.avservice.rest.service.RestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  */
 @RestController
 @RequestMapping(MAPPING)
-public class FileController {
+public class FileController implements UuidHelper {
 
     private final RestService restService;
 
@@ -68,7 +68,7 @@ public class FileController {
     public ResponseEntity<AvMessage> loadFile(@PathVariable String filename, Principal principal) {
         log.debug("Load file: {}, principal: {}", filename, principal);
 
-        AvMessage fileRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+        AvMessage fileRequest = new DefaultAvMessage.Builder(genUuidStr())
                 .filename(filename)
                 .owner(principal.getName())
                 .type(MessageType.FILE_LOAD)
@@ -116,7 +116,7 @@ public class FileController {
     public ResponseEntity<Void> deleteFile(@PathVariable String filename, Principal principal) {
         log.debug("Delete file: {}, principal: {}", filename, principal);
 
-        AvMessage fileRequest = new DefaultAvMessage.Builder(Utils.genUuidString())
+        AvMessage fileRequest = new DefaultAvMessage.Builder(genUuidStr())
                 .filename(filename)
                 .owner(principal.getName())
                 .type(MessageType.FILE_DELETE)

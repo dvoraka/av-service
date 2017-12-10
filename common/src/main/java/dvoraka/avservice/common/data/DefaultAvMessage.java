@@ -3,7 +3,7 @@ package dvoraka.avservice.common.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import dvoraka.avservice.common.util.Utils;
+import dvoraka.avservice.common.helper.UuidHelper;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
  * Default AV message implementation.
  */
 @JsonDeserialize(builder = DefaultAvMessage.Builder.class)
-public final class DefaultAvMessage implements AvMessage {
+public final class DefaultAvMessage implements AvMessage, UuidHelper {
 
     private final String id;
     private final String correlationId;
@@ -77,7 +77,7 @@ public final class DefaultAvMessage implements AvMessage {
 
     @Override
     public AvMessage createCheckResponse(String virusInfo) {
-        return new Builder(Utils.genUuidString())
+        return new Builder(genUuidStr())
                 .correlationId(this.getId())
                 .virusInfo(virusInfo)
                 .type(MessageType.RESPONSE)
@@ -86,7 +86,7 @@ public final class DefaultAvMessage implements AvMessage {
 
     @Override
     public AvMessage createErrorResponse(String errorMessage) {
-        return new Builder(Utils.genUuidString())
+        return new Builder(genUuidStr())
                 .correlationId(this.getId())
                 .type(MessageType.RESPONSE_ERROR)
                 .data(errorMessage.getBytes(StandardCharsets.UTF_8))
@@ -95,7 +95,7 @@ public final class DefaultAvMessage implements AvMessage {
 
     @Override
     public AvMessage createFileMessage(byte[] data, MessageType type) {
-        return new Builder(Utils.genUuidString())
+        return new Builder(genUuidStr())
                 .correlationId(this.getId())
                 .filename(this.getFilename())
                 .owner(this.getOwner())
