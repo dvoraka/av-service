@@ -35,4 +35,8 @@ public abstract class AbstractNetworkComponent implements NetworkComponent {
     public int getListenerCount() {
         return listeners.size();
     }
+
+    protected List<AvMessageListener> getListeners() {
+        return listeners;
+    }
 }
