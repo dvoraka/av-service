@@ -1,6 +1,6 @@
 package dvoraka.avservice.client;
 
-import dvoraka.avservice.common.AvMessageListener;
+import dvoraka.avservice.common.listener.AvMessageListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

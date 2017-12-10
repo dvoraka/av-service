@@ -1,9 +1,9 @@
 package dvoraka.avservice.client.amqp;
 
 import dvoraka.avservice.client.ReplicationComponent;
-import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
+import dvoraka.avservice.common.listener.ReplicationMessageListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.Message;

@@ -1,9 +1,9 @@
 package dvoraka.avservice.rest.service;
 
 import dvoraka.avservice.client.AvMessageFuture;
-import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.MessageStatus;
+import dvoraka.avservice.common.listener.AvMessageListener;
 import dvoraka.avservice.core.MessageProcessor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

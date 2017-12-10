@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service.response;
 
-import dvoraka.avservice.common.ReplicationMessageListener;
+import dvoraka.avservice.common.listener.ReplicationMessageListener;
 import dvoraka.avservice.common.service.ServiceStatus;
 
 import java.util.Optional;

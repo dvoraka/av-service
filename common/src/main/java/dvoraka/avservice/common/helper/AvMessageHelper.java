@@ -1,7 +1,7 @@
 package dvoraka.avservice.common.helper;
 
-import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
+import dvoraka.avservice.common.listener.AvMessageListener;
 
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;

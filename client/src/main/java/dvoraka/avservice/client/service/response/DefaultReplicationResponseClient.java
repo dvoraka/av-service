@@ -1,11 +1,11 @@
 package dvoraka.avservice.client.service.response;
 
 import dvoraka.avservice.client.ReplicationComponent;
-import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.helper.replication.ReplicationHelper;
+import dvoraka.avservice.common.listener.ReplicationMessageListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ehcache.Cache;

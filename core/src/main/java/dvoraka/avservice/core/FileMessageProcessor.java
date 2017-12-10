@@ -1,10 +1,10 @@
 package dvoraka.avservice.core;
 
-import dvoraka.avservice.common.AvMessageListener;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageStatus;
 import dvoraka.avservice.common.data.MessageType;
+import dvoraka.avservice.common.listener.AvMessageListener;
 import dvoraka.avservice.common.service.BasicMessageStatusStorage;
 import dvoraka.avservice.common.service.MessageStatusStorage;
 import dvoraka.avservice.storage.exception.FileServiceException;

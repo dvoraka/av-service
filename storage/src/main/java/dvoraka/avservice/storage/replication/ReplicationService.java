@@ -1,9 +1,9 @@
 package dvoraka.avservice.storage.replication;
 
-import dvoraka.avservice.common.ReplicationMessageListener;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
 import dvoraka.avservice.common.helper.ExecutorServiceHelper;
+import dvoraka.avservice.common.listener.ReplicationMessageListener;
 import dvoraka.avservice.common.service.ServiceStatus;
 import dvoraka.avservice.storage.service.FileService;
 

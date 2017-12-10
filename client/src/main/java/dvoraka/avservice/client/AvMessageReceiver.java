@@ -1,6 +1,6 @@
 package dvoraka.avservice.client;
 
-import dvoraka.avservice.common.AvMessageListener;
+import dvoraka.avservice.common.listener.AvMessageListener;
 
 /**
  * Interface for AV message receiving.
