@@ -50,7 +50,7 @@ public class KafkaAdapter extends AbstractNetworkComponent implements AvMessageH
     }
 
     @Override
-    public void sendAvMessage(AvMessage message) {
+    public void sendMessage(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
         log.debug("Send: {}", message);
 

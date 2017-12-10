@@ -109,14 +109,14 @@ public class BasicAvServer implements AvServer {
     }
 
     @Override
-    public void sendAvMessage(AvMessage message) {
-        networkComponent.sendAvMessage(message);
+    public void sendMessage(AvMessage message) {
+        networkComponent.sendMessage(message);
     }
 
     class ProcessedAvMessageListener implements AvMessageListener {
         @Override
         public void onMessage(AvMessage message) {
-            sendAvMessage(message);
+            sendMessage(message);
         }
     }
 }

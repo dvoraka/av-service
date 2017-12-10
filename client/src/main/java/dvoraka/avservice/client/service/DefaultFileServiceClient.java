@@ -28,7 +28,7 @@ public class DefaultFileServiceClient implements FileServiceClient {
     }
 
     private void sendMessage(AvMessage message) {
-        networkComponent.sendAvMessage(message);
+        networkComponent.sendMessage(message);
     }
 
     @Override

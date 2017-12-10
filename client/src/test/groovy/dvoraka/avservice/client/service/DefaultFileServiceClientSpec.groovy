@@ -30,7 +30,7 @@ class DefaultFileServiceClientSpec extends Specification {
             service.saveFile(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * serverComponent.sendMessage(message)
     }
 
     def "save file with bad type"() {
@@ -52,7 +52,7 @@ class DefaultFileServiceClientSpec extends Specification {
             service.loadFile(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * serverComponent.sendMessage(message)
     }
 
     def "load file with bad type"() {
@@ -74,7 +74,7 @@ class DefaultFileServiceClientSpec extends Specification {
             service.updateFile(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * serverComponent.sendMessage(message)
     }
 
     def "update file with bad type"() {
@@ -96,7 +96,7 @@ class DefaultFileServiceClientSpec extends Specification {
             service.deleteFile(message)
 
         then:
-            1 * serverComponent.sendAvMessage(message)
+            1 * serverComponent.sendMessage(message)
     }
 
     def "delete file with bad type"() {

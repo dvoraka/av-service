@@ -43,7 +43,7 @@ public class DefaultAvServiceClient implements AvServiceClient {
             throw new IllegalArgumentException(BAD_TYPE);
         }
 
-        networkComponent.sendAvMessage(message);
+        networkComponent.sendMessage(message);
 
         return new AvMessageResponseFuture(responseClient, message.getId());
     }

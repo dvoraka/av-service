@@ -64,7 +64,7 @@ public class AmqpAdapter extends AbstractNetworkComponent implements AvMessageHe
     }
 
     @Override
-    public void sendAvMessage(AvMessage message) {
+    public void sendMessage(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
         log.debug("Send: {}", message);
 

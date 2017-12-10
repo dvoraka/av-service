@@ -38,8 +38,8 @@ public class ServerComponentBridge implements ServiceManagement {
             throw new IllegalArgumentException("Components must not be the same!");
         }
 
-        inListener = outComponent::sendAvMessage;
-        outListener = inComponent::sendAvMessage;
+        inListener = outComponent::sendMessage;
+        outListener = inComponent::sendMessage;
     }
 
     @Override
