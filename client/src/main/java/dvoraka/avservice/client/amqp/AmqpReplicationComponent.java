@@ -89,4 +89,9 @@ public class AmqpReplicationComponent implements ReplicationComponent {
     public int getListenerCount() {
         return listeners.size();
     }
+
+    @Override
+    public String getServiceId() {
+        return nodeId;
+    }
 }
