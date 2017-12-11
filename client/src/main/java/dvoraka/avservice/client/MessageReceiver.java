@@ -3,6 +3,12 @@ package dvoraka.avservice.client;
 import dvoraka.avservice.common.data.Message;
 import dvoraka.avservice.common.listener.MessageListener;
 
+/**
+ * Interface for generic message receiving.
+ *
+ * @param <M> the message type
+ * @param <L> the listener type
+ */
 public interface MessageReceiver<M extends Message, L extends MessageListener<M>> {
 
     /**

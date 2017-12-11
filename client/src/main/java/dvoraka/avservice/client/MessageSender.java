@@ -2,6 +2,11 @@ package dvoraka.avservice.client;
 
 import dvoraka.avservice.common.data.Message;
 
+/**
+ * Interface for generic message sending.
+ *
+ * @param <M> the message type
+ */
 public interface MessageSender<M extends Message> {
 
     /**

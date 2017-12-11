@@ -11,6 +11,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Abstract base class for network components.
+ *
+ * @param <M> the message type
+ * @param <L> the listener type
  */
 public abstract class AbstractNetworkComponent<M extends Message, L extends MessageListener<M>>
         implements GenericNetworkComponent<M, L>, MessageHelper {
