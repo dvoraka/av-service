@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.configuration.file;
 
-import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.amqp.AmqpAdapter;
+import dvoraka.avservice.client.transport.AvNetworkComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

@@ -1,12 +1,12 @@
 package dvoraka.avservice.client.configuration.file;
 
-import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.DefaultAvServiceClient;
 import dvoraka.avservice.client.service.DefaultFileServiceClient;
 import dvoraka.avservice.client.service.FileServiceClient;
 import dvoraka.avservice.client.service.response.DefaultResponseClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
+import dvoraka.avservice.client.transport.AvNetworkComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

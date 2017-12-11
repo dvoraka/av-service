@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.configuration.amqp;
 
-import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.amqp.AmqpAdapter;
+import dvoraka.avservice.client.transport.AvNetworkComponent;
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.common.amqp.AvMessageMapper;
 import dvoraka.avservice.db.service.MessageInfoService;

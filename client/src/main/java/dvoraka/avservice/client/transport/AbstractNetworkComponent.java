@@ -1,4 +1,4 @@
-package dvoraka.avservice.client;
+package dvoraka.avservice.client.transport;
 
 import dvoraka.avservice.common.data.Message;
 import dvoraka.avservice.common.helper.MessageHelper;

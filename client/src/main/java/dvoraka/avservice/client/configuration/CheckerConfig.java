@@ -1,10 +1,10 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.checker.CheckApp;
 import dvoraka.avservice.client.checker.Checker;
 import dvoraka.avservice.client.checker.PerformanceTester;
 import dvoraka.avservice.client.checker.SimpleChecker;
+import dvoraka.avservice.client.transport.AvNetworkComponent;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

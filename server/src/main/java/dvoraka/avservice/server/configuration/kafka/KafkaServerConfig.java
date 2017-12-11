@@ -1,7 +1,7 @@
 package dvoraka.avservice.server.configuration.kafka;
 
-import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.kafka.KafkaAdapter;
+import dvoraka.avservice.client.transport.AvNetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.DefaultAvMessage;
 import dvoraka.avservice.db.service.MessageInfoService;

@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.checker;
 
-import dvoraka.avservice.client.AvMessageSender;
+import dvoraka.avservice.client.send.AvMessageSender;
 
 import java.util.function.BooleanSupplier;
 

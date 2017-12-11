@@ -1,5 +1,6 @@
 package dvoraka.avservice.client
 
+import dvoraka.avservice.client.transport.AvNetworkComponent
 import dvoraka.avservice.client.util.QueueCleaner
 import dvoraka.avservice.common.util.Utils
 import org.springframework.beans.factory.annotation.Autowired

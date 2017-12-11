@@ -1,4 +1,4 @@
-package dvoraka.avservice.client;
+package dvoraka.avservice.client.receive;
 
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.listener.ReplicationMessageListener;

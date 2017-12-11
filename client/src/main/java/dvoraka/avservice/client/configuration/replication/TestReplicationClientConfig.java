@@ -1,10 +1,10 @@
 package dvoraka.avservice.client.configuration.replication;
 
-import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.client.service.DefaultReplicationServiceClient;
 import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.DefaultReplicationResponseClient;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
+import dvoraka.avservice.client.transport.ReplicationComponent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

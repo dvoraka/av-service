@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service.response;
 
-import dvoraka.avservice.client.ReplicationComponent;
+import dvoraka.avservice.client.transport.ReplicationComponent;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;

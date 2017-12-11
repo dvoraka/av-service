@@ -1,5 +1,8 @@
-package dvoraka.avservice.client;
+package dvoraka.avservice.client.transport;
 
+import dvoraka.avservice.client.MessageListenerAdapter;
+import dvoraka.avservice.client.receive.MessageReceiver;
+import dvoraka.avservice.client.send.MessageSender;
 import dvoraka.avservice.common.data.Message;
 import dvoraka.avservice.common.listener.MessageListener;
 

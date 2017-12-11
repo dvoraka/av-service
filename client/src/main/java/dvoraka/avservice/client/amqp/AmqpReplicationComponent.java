@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.amqp;
 
-import dvoraka.avservice.client.AbstractNetworkComponent;
-import dvoraka.avservice.client.ReplicationComponent;
+import dvoraka.avservice.client.transport.AbstractNetworkComponent;
+import dvoraka.avservice.client.transport.ReplicationComponent;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.helper.MessageHelper;

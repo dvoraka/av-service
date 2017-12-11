@@ -1,4 +1,4 @@
-package dvoraka.avservice.client;
+package dvoraka.avservice.client.send;
 
 import dvoraka.avservice.common.data.AvMessage;
 

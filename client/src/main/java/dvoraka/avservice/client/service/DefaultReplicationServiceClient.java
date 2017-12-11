@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service;
 
-import dvoraka.avservice.client.ReplicationComponent;
+import dvoraka.avservice.client.transport.ReplicationComponent;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

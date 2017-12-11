@@ -1,6 +1,6 @@
 package dvoraka.avservice.server
 
-import dvoraka.avservice.client.AvNetworkComponent
+import dvoraka.avservice.client.transport.AvNetworkComponent
 import spock.lang.Specification
 import spock.lang.Subject
 

@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.configuration.file;
 
-import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.jms.JmsAdapter;
+import dvoraka.avservice.client.transport.AvNetworkComponent;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
