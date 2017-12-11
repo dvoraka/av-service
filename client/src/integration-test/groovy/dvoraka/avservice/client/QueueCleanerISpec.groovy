@@ -17,7 +17,7 @@ class QueueCleanerISpec extends Specification {
     QueueCleaner queueCleaner
 
     @Autowired
-    AvNetworkComponent networkComponent
+    AvNetworkComponent avNetworkComponent
 
     @Value('${avservice.amqp.fileQueue}')
     String queueName
@@ -26,7 +26,7 @@ class QueueCleanerISpec extends Specification {
     def "fill and clean queue"() {
         given:
             10.times {
-                networkComponent.sendMessage(Utils.genMessage())
+                avNetworkComponent.sendMessage(Utils.genMessage())
             }
 
         when:
