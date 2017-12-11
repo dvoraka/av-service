@@ -4,6 +4,7 @@ import dvoraka.avservice.client.AbstractNetworkComponent;
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
+import dvoraka.avservice.common.helper.MessageHelper;
 import dvoraka.avservice.common.listener.ReplicationMessageListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class AmqpReplicationComponent
         extends AbstractNetworkComponent<ReplicationMessage, ReplicationMessageListener>
-        implements ReplicationComponent {
+        implements ReplicationComponent, MessageHelper {
 
     private final RabbitTemplate rabbitTemplate;
     private final String nodeId;
@@ -60,7 +61,7 @@ public class AmqpReplicationComponent
             return;
         }
 
-        getListeners().forEach(listener -> listener.onMessage(replicationMessage));
+        notifyListeners(getListeners(), replicationMessage);
     }
 
     @Override

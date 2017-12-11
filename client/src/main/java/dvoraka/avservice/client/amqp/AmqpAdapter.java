@@ -4,7 +4,6 @@ import dvoraka.avservice.client.AbstractNetworkComponent;
 import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.InfoSource;
-import dvoraka.avservice.common.helper.AvMessageHelper;
 import dvoraka.avservice.common.listener.AvMessageListener;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.amqp.AmqpException;
@@ -22,7 +21,7 @@ import static java.util.Objects.requireNonNull;
  */
 @Component
 public class AmqpAdapter extends AbstractNetworkComponent<AvMessage, AvMessageListener>
-        implements NetworkComponent, AvMessageHelper {
+        implements NetworkComponent {
 
     private final String responseExchange;
     private final String serviceId;

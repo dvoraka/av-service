@@ -1,7 +1,6 @@
 package dvoraka.avservice.common.helper;
 
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.listener.AvMessageListener;
 
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -10,17 +9,7 @@ import java.util.stream.Stream;
 /**
  * Helper interface for AV messages.
  */
-public interface AvMessageHelper {
-
-    /**
-     * Notifies a message to all listeners.
-     *
-     * @param listeners the listeners
-     * @param message   the message
-     */
-    default void notifyListeners(Iterable<AvMessageListener> listeners, AvMessage message) {
-        listeners.forEach(listener -> listener.onMessage(message));
-    }
+public interface AvMessageHelper extends MessageHelper {
 
     /**
      * Prepares a check response with an info.
