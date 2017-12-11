@@ -1,6 +1,7 @@
 package dvoraka.avservice.client;
 
-import dvoraka.avservice.common.listener.AvMessageListener;
+import dvoraka.avservice.common.data.Message;
+import dvoraka.avservice.common.listener.MessageListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,11 +11,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * Abstract base class for network components.
  */
-public abstract class AbstractNetworkComponent implements NetworkComponent {
+public abstract class AbstractNetworkComponent<M extends Message, L extends MessageListener<M>>
+        implements CommonNetworkComponent<M, L> {
 
     protected final Logger log = LogManager.getLogger(this.getClass());
 
-    private final List<AvMessageListener> listeners;
+    private final List<L> listeners;
 
 
     protected AbstractNetworkComponent() {
@@ -22,12 +24,12 @@ public abstract class AbstractNetworkComponent implements NetworkComponent {
     }
 
     @Override
-    public void addMessageListener(AvMessageListener listener) {
+    public void addMessageListener(L listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removeMessageListener(AvMessageListener listener) {
+    public void removeMessageListener(L listener) {
         listeners.remove(listener);
     }
 
@@ -36,7 +38,7 @@ public abstract class AbstractNetworkComponent implements NetworkComponent {
         return listeners.size();
     }
 
-    protected List<AvMessageListener> getListeners() {
+    protected List<L> getListeners() {
         return listeners;
     }
 }

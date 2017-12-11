@@ -1,9 +1,11 @@
 package dvoraka.avservice.client.jms;
 
 import dvoraka.avservice.client.AbstractNetworkComponent;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.helper.AvMessageHelper;
+import dvoraka.avservice.common.listener.AvMessageListener;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
@@ -21,7 +23,8 @@ import static java.util.Objects.requireNonNull;
  * JMS network component adapter.
  */
 @Component
-public class JmsAdapter extends AbstractNetworkComponent implements AvMessageHelper {
+public class JmsAdapter extends AbstractNetworkComponent<AvMessage, AvMessageListener>
+        implements NetworkComponent, AvMessageHelper {
 
     private final JmsTemplate jmsTemplate;
     private final MessageInfoService messageInfoService;

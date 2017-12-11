@@ -1,9 +1,11 @@
 package dvoraka.avservice.client.kafka;
 
 import dvoraka.avservice.client.AbstractNetworkComponent;
+import dvoraka.avservice.client.NetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.helper.AvMessageHelper;
+import dvoraka.avservice.common.listener.AvMessageListener;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,8 @@ import static java.util.Objects.requireNonNull;
  * Kafka network component adapter.
  */
 @Component
-public class KafkaAdapter extends AbstractNetworkComponent implements AvMessageHelper {
+public class KafkaAdapter extends AbstractNetworkComponent<AvMessage, AvMessageListener>
+        implements NetworkComponent, AvMessageHelper {
 
     private final String topic;
     private final String serviceId;
