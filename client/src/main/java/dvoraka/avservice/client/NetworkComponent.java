@@ -6,5 +6,5 @@ import dvoraka.avservice.common.listener.AvMessageListener;
 /**
  * Network component for sending and receiving AV messages.
  */
-public interface NetworkComponent extends CommonNetworkComponent<AvMessage, AvMessageListener> {
+public interface NetworkComponent extends GenericNetworkComponent<AvMessage, AvMessageListener> {
 }

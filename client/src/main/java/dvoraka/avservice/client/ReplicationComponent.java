@@ -7,5 +7,5 @@ import dvoraka.avservice.common.listener.ReplicationMessageListener;
  * Component for sending and receiving replication messages.
  */
 public interface ReplicationComponent extends
-        CommonNetworkComponent<ReplicationMessage, ReplicationMessageListener> {
+        GenericNetworkComponent<ReplicationMessage, ReplicationMessageListener> {
 }

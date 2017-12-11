@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Abstract base class for network components.
  */
 public abstract class AbstractNetworkComponent<M extends Message, L extends MessageListener<M>>
-        implements CommonNetworkComponent<M, L> {
+        implements GenericNetworkComponent<M, L> {
 
     protected final Logger log = LogManager.getLogger(this.getClass());
 
