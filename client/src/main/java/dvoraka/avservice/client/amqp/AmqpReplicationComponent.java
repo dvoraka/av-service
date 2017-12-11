@@ -1,5 +1,6 @@
 package dvoraka.avservice.client.amqp;
 
+import dvoraka.avservice.client.AbstractNetworkComponent;
 import dvoraka.avservice.client.ReplicationComponent;
 import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
@@ -13,16 +14,15 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
-
 import static java.util.Objects.requireNonNull;
 
 /**
  * AMQP component for the replication service.
  */
 @Component
-public class AmqpReplicationComponent implements ReplicationComponent {
+public class AmqpReplicationComponent
+        extends AbstractNetworkComponent<ReplicationMessage, ReplicationMessageListener>
+        implements ReplicationComponent {
 
     private final RabbitTemplate rabbitTemplate;
     private final String nodeId;
@@ -31,7 +31,6 @@ public class AmqpReplicationComponent implements ReplicationComponent {
     private static final Logger log = LogManager.getLogger(AmqpReplicationComponent.class);
 
     private final MessageConverter messageConverter;
-    private final Set<ReplicationMessageListener> listeners;
 
 
     @Autowired
@@ -45,7 +44,6 @@ public class AmqpReplicationComponent implements ReplicationComponent {
         this.broadcastKey = requireNonNull(broadcastKey);
 
         messageConverter = requireNonNull(rabbitTemplate.getMessageConverter());
-        listeners = new CopyOnWriteArraySet<>();
     }
 
     @Override
@@ -62,7 +60,7 @@ public class AmqpReplicationComponent implements ReplicationComponent {
             return;
         }
 
-        listeners.forEach(listener -> listener.onMessage(replicationMessage));
+        getListeners().forEach(listener -> listener.onMessage(replicationMessage));
     }
 
     @Override
@@ -73,21 +71,6 @@ public class AmqpReplicationComponent implements ReplicationComponent {
         } else {
             rabbitTemplate.convertAndSend(message.getToId(), message);
         }
-    }
-
-    @Override
-    public void addMessageListener(ReplicationMessageListener listener) {
-        listeners.add(listener);
-    }
-
-    @Override
-    public void removeMessageListener(ReplicationMessageListener listener) {
-        listeners.remove(listener);
-    }
-
-    @Override
-    public int getListenerCount() {
-        return listeners.size();
     }
 
     @Override
