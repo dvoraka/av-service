@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.amqp;
 
 import dvoraka.avservice.client.AbstractNetworkComponent;
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.listener.AvMessageListener;
@@ -21,7 +21,7 @@ import static java.util.Objects.requireNonNull;
  */
 @Component
 public class AmqpAdapter extends AbstractNetworkComponent<AvMessage, AvMessageListener>
-        implements NetworkComponent {
+        implements AvNetworkComponent {
 
     private final String responseExchange;
     private final String serviceId;

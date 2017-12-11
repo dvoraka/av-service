@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.configuration.file;
 
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.DefaultAvServiceClient;
 import dvoraka.avservice.client.service.DefaultFileServiceClient;
@@ -32,22 +32,22 @@ public class FileClientConfig {
 
     @Bean
     public AvServiceClient avServiceClient(
-            NetworkComponent networkComponent,
+            AvNetworkComponent avNetworkComponent,
             ResponseClient responseClient
     ) {
-        return new DefaultAvServiceClient(networkComponent, responseClient);
+        return new DefaultAvServiceClient(avNetworkComponent, responseClient);
     }
 
     @Bean
-    public FileServiceClient fileServiceClient(NetworkComponent networkComponent) {
-        return new DefaultFileServiceClient(networkComponent);
+    public FileServiceClient fileServiceClient(AvNetworkComponent avNetworkComponent) {
+        return new DefaultFileServiceClient(avNetworkComponent);
     }
 
     @Bean
     public ResponseClient responseClient(
-            NetworkComponent networkComponent,
+            AvNetworkComponent avNetworkComponent,
             MessageInfoService messageInfoService
     ) {
-        return new DefaultResponseClient(networkComponent, messageInfoService);
+        return new DefaultResponseClient(avNetworkComponent, messageInfoService);
     }
 }

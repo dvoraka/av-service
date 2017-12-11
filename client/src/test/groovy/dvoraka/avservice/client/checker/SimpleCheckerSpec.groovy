@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.checker
 
-import dvoraka.avservice.client.NetworkComponent
+import dvoraka.avservice.client.AvNetworkComponent
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.data.DefaultAvMessage
 import dvoraka.avservice.common.exception.MessageNotFoundException
@@ -19,7 +19,7 @@ class SimpleCheckerSpec extends Specification {
 
     def "full queue overflow"() {
         given:
-            NetworkComponent serverComponent = Mock()
+            AvNetworkComponent serverComponent = Mock()
             checker = new SimpleChecker(serverComponent, 1)
 
             List<AvMessage> messages = []
@@ -57,7 +57,7 @@ class SimpleCheckerSpec extends Specification {
 
     def "check with troubles"() {
         given:
-            checker = Spy(constructorArgs: [Mock(NetworkComponent)])
+            checker = Spy(constructorArgs: [Mock(AvNetworkComponent)])
             checker.receiveMessage(_) >>
                     Utils.genMessage().createCheckResponse(Utils.OK_VIRUS_INFO) >>
                     { throw new MessageNotFoundException() }

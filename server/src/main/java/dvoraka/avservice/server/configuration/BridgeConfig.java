@@ -1,8 +1,8 @@
 package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.db.configuration.DatabaseConfig;
-import dvoraka.avservice.server.ServerComponentBridge;
+import dvoraka.avservice.server.AvNetworkComponentBridge;
 import dvoraka.avservice.server.configuration.amqp.AmqpBridgeOutputConfig;
 import dvoraka.avservice.server.configuration.amqp.AmqpCommonServerConfig;
 import dvoraka.avservice.server.configuration.amqp.AmqpServerConfig;
@@ -38,10 +38,10 @@ import org.springframework.context.annotation.PropertySource;
 public class BridgeConfig {
 
     @Bean
-    public ServerComponentBridge componentBridge(
-            NetworkComponent fileNetworkComponent,
-            NetworkComponent outComponent
+    public AvNetworkComponentBridge componentBridge(
+            AvNetworkComponent fileAvNetworkComponent,
+            AvNetworkComponent outComponent
     ) {
-        return new ServerComponentBridge(fileNetworkComponent, outComponent);
+        return new AvNetworkComponentBridge(fileAvNetworkComponent, outComponent);
     }
 }

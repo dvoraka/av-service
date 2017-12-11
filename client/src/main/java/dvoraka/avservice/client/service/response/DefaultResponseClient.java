@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service.response;
 
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.listener.AvMessageListener;
@@ -31,7 +31,7 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class DefaultResponseClient implements ResponseClient, AvMessageListener {
 
-    private final NetworkComponent networkComponent;
+    private final AvNetworkComponent avNetworkComponent;
     private final MessageInfoService messageInfoService;
 
     private static final Logger log = LogManager.getLogger(DefaultResponseClient.class);
@@ -49,12 +49,12 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
     @Autowired
     public DefaultResponseClient(
-            NetworkComponent networkComponent,
+            AvNetworkComponent avNetworkComponent,
             MessageInfoService messageInfoService
     ) {
-        this.networkComponent = requireNonNull(networkComponent);
+        this.avNetworkComponent = requireNonNull(avNetworkComponent);
         this.messageInfoService = requireNonNull(messageInfoService);
-        serviceId = requireNonNull(networkComponent.getServiceId());
+        serviceId = requireNonNull(avNetworkComponent.getServiceId());
     }
 
     @PostConstruct
@@ -66,7 +66,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
         log.info("Start.");
         initializeCache();
-        networkComponent.addMessageListener(this);
+        avNetworkComponent.addMessageListener(this);
         setStarted(true);
     }
 
@@ -79,7 +79,7 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
 
         log.info("Stop.");
         setStarted(false);
-        networkComponent.removeMessageListener(this);
+        avNetworkComponent.removeMessageListener(this);
         cacheManager.close();
     }
 

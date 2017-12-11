@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.service.response
 
-import dvoraka.avservice.client.NetworkComponent
+import dvoraka.avservice.client.AvNetworkComponent
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.util.Utils
 import dvoraka.avservice.db.service.MessageInfoService
@@ -16,7 +16,7 @@ class DefaultResponseClientSpec extends Specification {
     @Subject
     DefaultResponseClient client
 
-    NetworkComponent serverComponent
+    AvNetworkComponent serverComponent
     MessageInfoService messageInfoService
 
     @Shared

@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration;
 
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.core.MessageProcessor;
 import dvoraka.avservice.core.configuration.CoreConfig;
 import dvoraka.avservice.db.service.MessageInfoService;
@@ -46,13 +46,13 @@ public class ServerConfig {
 
     @Bean
     public AvServer fileServer(
-            NetworkComponent fileNetworkComponent,
+            AvNetworkComponent fileAvNetworkComponent,
             MessageProcessor messageProcessor,
             MessageInfoService messageInfoService
     ) {
         return new BasicAvServer(
                 serviceId,
-                fileNetworkComponent,
+                fileAvNetworkComponent,
                 messageProcessor,
                 messageInfoService
         );

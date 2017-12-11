@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.amqp;
 
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.amqp.AmqpAdapter;
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.common.amqp.AvMessageMapper;
@@ -36,7 +36,7 @@ public class AmqpServerConfig {
 
 
     @Bean
-    public NetworkComponent fileNetworkComponent(
+    public AvNetworkComponent fileNetworkComponent(
             RabbitTemplate fileServerRabbitTemplate,
             MessageInfoService messageInfoService
     ) {
@@ -67,8 +67,8 @@ public class AmqpServerConfig {
     }
 
     @Bean
-    public MessageListener fileServerMessageListener(NetworkComponent fileNetworkComponent) {
-        return fileNetworkComponent;
+    public MessageListener fileServerMessageListener(AvNetworkComponent fileAvNetworkComponent) {
+        return fileAvNetworkComponent;
     }
 
     @Bean

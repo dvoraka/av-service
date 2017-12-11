@@ -1,26 +1,23 @@
 package dvoraka.avservice.server
 
-import dvoraka.avservice.client.NetworkComponent
+import dvoraka.avservice.client.AvNetworkComponent
 import spock.lang.Specification
 import spock.lang.Subject
 
-/**
- * Server component bridge spec.
- */
 class NetworkComponentBridgeSpec extends Specification {
 
     @Subject
-    ServerComponentBridge bridge
+    AvNetworkComponentBridge bridge
 
-    NetworkComponent inComponent
-    NetworkComponent outComponent
+    AvNetworkComponent inComponent
+    AvNetworkComponent outComponent
 
 
     def setup() {
         inComponent = Mock()
         outComponent = Mock()
 
-        bridge = new ServerComponentBridge(inComponent, outComponent)
+        bridge = new AvNetworkComponentBridge(inComponent, outComponent)
     }
 
     def "constructor with same components"() {
@@ -29,7 +26,7 @@ class NetworkComponentBridgeSpec extends Specification {
             outComponent = inComponent
 
         when:
-            new ServerComponentBridge(inComponent, outComponent)
+            new AvNetworkComponentBridge(inComponent, outComponent)
 
         then:
             thrown(IllegalArgumentException)
@@ -37,7 +34,7 @@ class NetworkComponentBridgeSpec extends Specification {
 
     def "constructor with nulls"() {
         when:
-            new ServerComponentBridge(null, null)
+            new AvNetworkComponentBridge(null, null)
 
         then:
             thrown(NullPointerException)

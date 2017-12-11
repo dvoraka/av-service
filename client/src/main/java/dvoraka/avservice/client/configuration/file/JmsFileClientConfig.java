@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.configuration.file;
 
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.jms.JmsAdapter;
 import dvoraka.avservice.db.service.MessageInfoService;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +30,7 @@ public class JmsFileClientConfig {
 
 
     @Bean
-    public NetworkComponent networkComponent(
+    public AvNetworkComponent avNetworkComponent(
             JmsTemplate jmsTemplate,
             MessageInfoService messageInfoService
     ) {
@@ -38,8 +38,8 @@ public class JmsFileClientConfig {
     }
 
     @Bean
-    public MessageListener messageListener(NetworkComponent networkComponent) {
-        return networkComponent;
+    public MessageListener messageListener(AvNetworkComponent avNetworkComponent) {
+        return avNetworkComponent;
     }
 
     @Bean

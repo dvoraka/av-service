@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.service;
 
 import dvoraka.avservice.client.AvMessageFuture;
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.client.service.response.AvMessageResponseFuture;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.data.AvMessage;
@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 public class DefaultAvServiceClient implements AvServiceClient {
 
-    private final NetworkComponent networkComponent;
+    private final AvNetworkComponent avNetworkComponent;
     private final ResponseClient responseClient;
 
     private static final Logger log = LogManager.getLogger(DefaultAvServiceClient.class);
@@ -29,10 +29,10 @@ public class DefaultAvServiceClient implements AvServiceClient {
 
     @Autowired
     public DefaultAvServiceClient(
-            NetworkComponent networkComponent,
+            AvNetworkComponent avNetworkComponent,
             ResponseClient responseClient
     ) {
-        this.networkComponent = requireNonNull(networkComponent);
+        this.avNetworkComponent = requireNonNull(avNetworkComponent);
         this.responseClient = requireNonNull(responseClient);
     }
 
@@ -43,7 +43,7 @@ public class DefaultAvServiceClient implements AvServiceClient {
             throw new IllegalArgumentException(BAD_TYPE);
         }
 
-        networkComponent.sendMessage(message);
+        avNetworkComponent.sendMessage(message);
 
         return new AvMessageResponseFuture(responseClient, message.getId());
     }

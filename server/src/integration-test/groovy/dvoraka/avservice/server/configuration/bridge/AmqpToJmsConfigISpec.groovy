@@ -1,6 +1,6 @@
 package dvoraka.avservice.server.configuration.bridge
 
-import dvoraka.avservice.server.ServerComponentBridge
+import dvoraka.avservice.server.AvNetworkComponentBridge
 import dvoraka.avservice.server.configuration.BridgeConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
@@ -17,7 +17,7 @@ import spock.lang.Specification
 class AmqpToJmsConfigISpec extends Specification {
 
     @Autowired
-    ServerComponentBridge bridge
+    AvNetworkComponentBridge bridge
 
 
     def "test"() {

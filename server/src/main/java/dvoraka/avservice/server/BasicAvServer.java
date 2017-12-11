@@ -1,6 +1,6 @@
 package dvoraka.avservice.server;
 
-import dvoraka.avservice.client.NetworkComponent;
+import dvoraka.avservice.client.AvNetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.data.InfoSource;
 import dvoraka.avservice.common.listener.AvMessageListener;
@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
 @Service
 public class BasicAvServer implements AvServer {
 
-    private final NetworkComponent networkComponent;
+    private final AvNetworkComponent avNetworkComponent;
     private final MessageProcessor messageProcessor;
     private final MessageInfoService messageInfoService;
 
@@ -38,12 +38,12 @@ public class BasicAvServer implements AvServer {
     @Autowired
     public BasicAvServer(
             String serviceId,
-            NetworkComponent networkComponent,
+            AvNetworkComponent avNetworkComponent,
             MessageProcessor messageProcessor,
             MessageInfoService messageInfoService
     ) {
         this.serviceId = requireNonNull(serviceId);
-        this.networkComponent = requireNonNull(networkComponent);
+        this.avNetworkComponent = requireNonNull(avNetworkComponent);
         this.messageProcessor = requireNonNull(messageProcessor);
         this.messageInfoService = requireNonNull(messageInfoService);
 
@@ -56,7 +56,7 @@ public class BasicAvServer implements AvServer {
         setStopped(false);
         setStarted(true);
 
-        networkComponent.addMessageListener(this);
+        avNetworkComponent.addMessageListener(this);
         messageProcessor.addProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(true);
@@ -68,7 +68,7 @@ public class BasicAvServer implements AvServer {
         log.info("Server stopping...");
         setStopped(true);
 
-        networkComponent.removeMessageListener(this);
+        avNetworkComponent.removeMessageListener(this);
         messageProcessor.removeProcessedAVMessageListener(processedAvMessageListener);
 
         setRunning(false);
@@ -110,7 +110,7 @@ public class BasicAvServer implements AvServer {
 
     @Override
     public void sendMessage(AvMessage message) {
-        networkComponent.sendMessage(message);
+        avNetworkComponent.sendMessage(message);
     }
 
     class ProcessedAvMessageListener implements AvMessageListener {
