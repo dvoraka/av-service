@@ -36,7 +36,7 @@ public class AmqpServerConfig {
 
 
     @Bean
-    public AvNetworkComponent fileNetworkComponent(
+    public AvNetworkComponent fileAvNetworkComponent(
             RabbitTemplate fileServerRabbitTemplate,
             MessageInfoService messageInfoService
     ) {

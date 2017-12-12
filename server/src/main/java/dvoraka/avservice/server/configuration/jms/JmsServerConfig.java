@@ -35,7 +35,7 @@ public class JmsServerConfig {
 
 
     @Bean
-    public AvNetworkComponent fileNetworkComponent(
+    public AvNetworkComponent fileAvNetworkComponent(
             JmsTemplate fileServerJmsTemplate,
             MessageInfoService messageInfoService
     ) {
