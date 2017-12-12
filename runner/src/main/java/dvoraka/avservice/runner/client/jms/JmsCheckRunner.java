@@ -6,14 +6,12 @@ import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
 import dvoraka.avservice.common.service.ApplicationManagement;
 
-import java.io.IOException;
-
 /**
  * JMS check runner.
  */
 public class JmsCheckRunner extends AbstractAppRunner {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         AppRunner runner = new JmsCheckRunner();
         runner.run();
     }

@@ -6,14 +6,12 @@ import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.AvNetworkComponentBridge;
 import dvoraka.avservice.server.configuration.BridgeConfig;
 
-import java.io.IOException;
-
 /**
  * AMQP to JMS bridge runner.
  */
 public class AmqpToJmsBridgeRunner extends AbstractServiceRunner {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ServiceRunner runner = new AmqpToJmsBridgeRunner();
         runner.run();
     }
