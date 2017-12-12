@@ -6,14 +6,12 @@ import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.configuration.ServerConfig;
 
-import java.io.IOException;
-
 /**
  * Amqp file server with replication runner.
  */
 public class AmqpFileServerReplicationRunner extends AbstractServiceRunner {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ServiceRunner runner = new AmqpFileServerReplicationRunner();
         runner.run();
     }

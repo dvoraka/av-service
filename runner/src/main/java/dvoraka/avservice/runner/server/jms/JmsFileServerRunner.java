@@ -6,14 +6,12 @@ import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.server.BasicAvServer;
 import dvoraka.avservice.server.configuration.ServerConfig;
 
-import java.io.IOException;
-
 /**
  * JMS file server runner.
  */
 public class JmsFileServerRunner extends AbstractServiceRunner {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ServiceRunner runner = new JmsFileServerRunner();
         runner.run();
     }
