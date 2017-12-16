@@ -8,12 +8,14 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
     private final long msgCount;
     private final boolean sendOnly;
     private final long maxRate;
+    private final int threadCount;
 
 
     private DefaultPerformanceTestProperties(Builder builder) {
         this.msgCount = builder.msgCount;
         this.sendOnly = builder.sendOnly;
         this.maxRate = builder.maxRate;
+        this.threadCount = builder.threadCount;
     }
 
     @Override
@@ -32,12 +34,17 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
     }
 
     @Override
-    @SuppressWarnings("checkstyle:OperatorWrap")
+    public int getThreadCount() {
+        return threadCount;
+    }
+
+    @Override
     public String toString() {
-        return "DefaultPerformanceTestProperties {" +
+        return "DefaultPerformanceTestProperties{" +
                 "msgCount=" + msgCount +
                 ", sendOnly=" + sendOnly +
                 ", maxRate=" + maxRate +
+                ", threadCount=" + threadCount +
                 '}';
     }
 
@@ -49,12 +56,14 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
         private long msgCount;
         private boolean sendOnly;
         private long maxRate;
+        private int threadCount;
 
 
         public Builder() {
             this.msgCount = 1;
             this.sendOnly = false;
             this.maxRate = 0;
+            this.threadCount = 1;
         }
 
         public Builder msgCount(long msgCount) {
@@ -69,6 +78,11 @@ public final class DefaultPerformanceTestProperties implements PerformanceTestPr
 
         public Builder maxRate(long maxRate) {
             this.maxRate = maxRate;
+            return this;
+        }
+
+        public Builder threadCount(int threadCount) {
+            this.threadCount = threadCount;
             return this;
         }
 

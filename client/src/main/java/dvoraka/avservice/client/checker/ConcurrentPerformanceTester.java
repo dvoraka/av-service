@@ -5,6 +5,7 @@ import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.service.ApplicationManagement;
 import dvoraka.avservice.common.testing.PerformanceTest;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
+import dvoraka.avservice.common.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,6 +31,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
     private static final Logger log = LogManager.getLogger(ConcurrentPerformanceTester.class);
 
     private final ConcurrentMap<String, Boolean> messages;
+    private final ExecutorService executorService;
 
     private volatile boolean running;
 
@@ -41,6 +45,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
         this.testProperties = requireNonNull(testProperties);
 
         messages = new ConcurrentHashMap<>();
+        executorService = Executors.newFixedThreadPool(testProperties.getThreadCount());
     }
 
     @Override
@@ -50,6 +55,11 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
         avNetworkComponent.addMessageListener(this::onMessage);
 
         final long messageCount = testProperties.getMsgCount();
+        log.info("Load test start for " + messageCount + " messages...");
+
+        for (int i = 0; i < messageCount; i++) {
+            executorService.execute(this::sendTestingMessage);
+        }
     }
 
     @Override
@@ -64,6 +74,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
 
     @Override
     public void run() {
+        start();
     }
 
     @Override
@@ -76,7 +87,15 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
         return false;
     }
 
+    private void sendTestingMessage() {
+        AvMessage message = Utils.genInfectedMessage();
+        avNetworkComponent.sendMessage(message);
+
+        messages.put(message.getId(), true);
+    }
+
     private void onMessage(AvMessage message) {
 
+        System.out.println("Receive: " + message);
     }
 }
