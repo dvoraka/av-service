@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class AmqpBufferedLoadTestRunner extends AbstractAppRunner {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         AppRunner runner = new AmqpBufferedLoadTestRunner();
         runner.run();
     }

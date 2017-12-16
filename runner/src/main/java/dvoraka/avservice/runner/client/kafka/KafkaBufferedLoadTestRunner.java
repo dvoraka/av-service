@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class KafkaBufferedLoadTestRunner extends AbstractAppRunner {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         AppRunner runner = new KafkaBufferedLoadTestRunner();
         runner.run();
     }

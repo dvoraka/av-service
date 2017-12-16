@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class KafkaCheckRunner extends AbstractAppRunner {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         AppRunner runner = new KafkaCheckRunner();
         runner.run();
     }
