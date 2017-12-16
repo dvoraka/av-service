@@ -20,6 +20,7 @@ class ConcurrentPerformanceTesterISpec extends Specification {
 
     def setupSpec() {
         System.setProperty('avservice.perf.msgCount', '10000')
+        System.setProperty('avservice.perf.threadCount', '4')
     }
 
     def "run test"() {

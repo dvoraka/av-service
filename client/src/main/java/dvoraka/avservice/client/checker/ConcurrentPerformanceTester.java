@@ -22,6 +22,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Concurrent performance tester.
  */
+//TODO: complete
 @Component
 public class ConcurrentPerformanceTester implements PerformanceTest, ApplicationManagement {
 
@@ -46,7 +47,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
         this.testProperties = requireNonNull(testProperties);
 
         messages = new ConcurrentHashMap<>();
-        executorService = Executors.newFixedThreadPool(8);//testProperties.getThreadCount());
+        executorService = Executors.newFixedThreadPool(testProperties.getThreadCount());
         counter = new AtomicLong();
     }
 
@@ -101,6 +102,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
     }
 
     private void sendTestingMessage() {
+        //TODO: use normal and infected messages
         AvMessage message = Utils.genInfectedMessage();
         avNetworkComponent.sendMessage(message);
 

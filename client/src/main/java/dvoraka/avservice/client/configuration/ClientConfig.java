@@ -38,6 +38,8 @@ public class ClientConfig {
     private boolean sendOnly;
     @Value("${avservice.perf.maxRate}")
     private long maxRate;
+    @Value("${avservice.perf.threadCount}")
+    private int threadCount;
 
 
     @Bean
@@ -46,6 +48,7 @@ public class ClientConfig {
                 .msgCount(msgCount)
                 .sendOnly(sendOnly)
                 .maxRate(maxRate)
+                .threadCount(threadCount)
                 .build();
     }
 }
