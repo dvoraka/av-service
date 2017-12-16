@@ -15,13 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static java.util.Objects.requireNonNull;
 
 /**
  * Concurrent performance tester.
  */
-//TODO
 @Component
 public class ConcurrentPerformanceTester implements PerformanceTest, ApplicationManagement {
 
@@ -32,6 +32,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
 
     private final ConcurrentMap<String, Boolean> messages;
     private final ExecutorService executorService;
+    private final AtomicLong counter;
 
     private volatile boolean running;
 
@@ -45,7 +46,8 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
         this.testProperties = requireNonNull(testProperties);
 
         messages = new ConcurrentHashMap<>();
-        executorService = Executors.newFixedThreadPool(testProperties.getThreadCount());
+        executorService = Executors.newFixedThreadPool(8);//testProperties.getThreadCount());
+        counter = new AtomicLong();
     }
 
     @Override
@@ -59,6 +61,17 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
 
         for (int i = 0; i < messageCount; i++) {
             executorService.execute(this::sendTestingMessage);
+        }
+
+        while (counter.get() != messageCount) {
+            try {
+                log.debug("Waiting...");
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                log.warn("Test interrupted!", e);
+                Thread.currentThread().interrupt();
+                return;
+            }
         }
     }
 
@@ -96,6 +109,17 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
 
     private void onMessage(AvMessage message) {
 
-        System.out.println("Receive: " + message);
+        if (messages.containsKey(message.getCorrelationId())) {
+            if (Utils.OK_VIRUS_INFO.equals(message.getVirusInfo())
+                    && !messages.get(message.getCorrelationId())) {
+
+                counter.getAndIncrement();
+
+            } else if (!Utils.OK_VIRUS_INFO.equals(message.getVirusInfo())
+                    && messages.get(message.getCorrelationId())) {
+
+                counter.getAndIncrement();
+            }
+        }
     }
 }
