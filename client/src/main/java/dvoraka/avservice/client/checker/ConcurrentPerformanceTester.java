@@ -29,9 +29,12 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
     private final AvNetworkComponent avNetworkComponent;
     private final PerformanceTestProperties testProperties;
 
-    private final ConcurrentMap<String, Boolean> messages;
+    private final ConcurrentMap<String, Boolean> sentMessageInfo;
     private final ExecutorService executorService;
     private final AtomicLong counter;
+
+    private int timeout;
+    private long lastMsgReceivedTime;
 
 
     @Autowired
@@ -42,27 +45,39 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
         this.avNetworkComponent = requireNonNull(avNetworkComponent);
         this.testProperties = requireNonNull(testProperties);
 
-        messages = new ConcurrentHashMap<>();
+        sentMessageInfo = new ConcurrentHashMap<>();
         executorService = Executors.newFixedThreadPool(testProperties.getThreadCount());
         counter = new AtomicLong();
+
+        timeout = 3_000;
     }
 
     @Override
     public void start() {
         setRunning(true);
 
+        final long msgCount = testProperties.getMsgCount();
+        log.info("Load test start for " + msgCount + " messages...");
+
         avNetworkComponent.addMessageListener(this::onMessage);
 
-        final long messageCount = testProperties.getMsgCount();
-        log.info("Load test start for " + messageCount + " messages...");
-
         long start = System.currentTimeMillis();
-        for (int i = 0; i < messageCount; i++) {
+        for (int i = 0; i < msgCount; i++) {
             executorService.execute(this::sendTestingMessage);
         }
 
-        while (counter.get() != messageCount) {
+        lastMsgReceivedTime = System.currentTimeMillis();
+        while (counter.get() != msgCount) {
             try {
+                if (System.currentTimeMillis() - lastMsgReceivedTime > getTimeout()) {
+                    log.warn("Test timeout!");
+                    setPassed(false);
+                    setRunning(false);
+                    setDone(true);
+
+                    return;
+                }
+
                 log.debug("Waiting...");
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -75,11 +90,11 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
         long duration = System.currentTimeMillis() - start;
         log.info("Load test end.");
 
-        float durationSeconds = duration / 1_000.0f;
-//        setResult(loops / durationSeconds);
+        float durationSeconds = duration / MS_PER_SECOND;
+        setResult(msgCount / durationSeconds);
 
         log.info("Duration: " + durationSeconds + " s");
-        log.info("Messages: " + (messageCount / durationSeconds) + "/s");
+        log.info("Messages: " + (msgCount / durationSeconds) + "/s");
 
         setRunning(false);
         setDone(true);
@@ -96,22 +111,32 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
         AvMessage message = Utils.genInfectedMessage();
         avNetworkComponent.sendMessage(message);
 
-        messages.put(message.getId(), true);
+        sentMessageInfo.put(message.getId(), true);
     }
 
     private void onMessage(AvMessage message) {
 
-        if (messages.containsKey(message.getCorrelationId())) {
+        if (sentMessageInfo.containsKey(message.getCorrelationId())) {
             if (Utils.OK_VIRUS_INFO.equals(message.getVirusInfo())
-                    && !messages.get(message.getCorrelationId())) {
+                    && !sentMessageInfo.get(message.getCorrelationId())) {
 
                 counter.getAndIncrement();
 
             } else if (!Utils.OK_VIRUS_INFO.equals(message.getVirusInfo())
-                    && messages.get(message.getCorrelationId())) {
+                    && sentMessageInfo.get(message.getCorrelationId())) {
 
                 counter.getAndIncrement();
             }
+
+            lastMsgReceivedTime = System.currentTimeMillis();
         }
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }

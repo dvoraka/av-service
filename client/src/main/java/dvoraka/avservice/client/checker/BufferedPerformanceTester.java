@@ -26,7 +26,6 @@ public class BufferedPerformanceTester extends AbstractPerformanceTester {
     private final ResponseClient responseClient;
     private final PerformanceTestProperties testProperties;
 
-    private static final float MS_PER_SECOND = 1_000.0f;
     private static final int DEFAULT_TIMEOUT = 1_000;
 
     private int timeout = DEFAULT_TIMEOUT;
@@ -46,14 +45,15 @@ public class BufferedPerformanceTester extends AbstractPerformanceTester {
     @Override
     public void start() {
         setRunning(true);
-        final long loops = testProperties.getMsgCount();
-        log.info("Load test start for " + loops + " messages...");
+
+        final long msgCount = testProperties.getMsgCount();
+        log.info("Load test start for " + msgCount + " messages...");
 
         final int bufferSize = 6;
-        BlockingQueue<AvMessage> buffer = new ArrayBlockingQueue<>(bufferSize);
+        final BlockingQueue<AvMessage> buffer = new ArrayBlockingQueue<>(bufferSize);
 
         long start = System.currentTimeMillis();
-        for (int loop = 0; loop < loops; loop++) {
+        for (int loop = 0; loop < msgCount; loop++) {
             AvMessage message = Utils.genInfectedMessage();
             try {
                 buffer.offer(message, getTimeout(), TimeUnit.MILLISECONDS);
@@ -80,7 +80,7 @@ public class BufferedPerformanceTester extends AbstractPerformanceTester {
         log.info("Load test end.");
 
         float durationSeconds = duration / MS_PER_SECOND;
-        setResult(loops / durationSeconds);
+        setResult(msgCount / durationSeconds);
 
         log.info("Duration: " + durationSeconds + " s");
         log.info("Messages: " + getResult() + "/s");
