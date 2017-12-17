@@ -60,6 +60,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
         final long messageCount = testProperties.getMsgCount();
         log.info("Load test start for " + messageCount + " messages...");
 
+        long start = System.currentTimeMillis();
         for (int i = 0; i < messageCount; i++) {
             executorService.execute(this::sendTestingMessage);
         }
@@ -74,6 +75,17 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
                 return;
             }
         }
+
+        long duration = System.currentTimeMillis() - start;
+        log.info("Load test end.");
+
+        float durationSeconds = duration / 1_000.0f;
+//        setResult(loops / durationSeconds);
+
+        log.info("Duration: " + durationSeconds + " s");
+        log.info("Messages: " + (messageCount / durationSeconds) + "/s");
+
+        running = false;
     }
 
     @Override
