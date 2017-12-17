@@ -2,12 +2,10 @@ package dvoraka.avservice.client.checker;
 
 import dvoraka.avservice.client.transport.AvNetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.service.ApplicationManagement;
-import dvoraka.avservice.common.testing.PerformanceTest;
+import dvoraka.avservice.common.helper.ExecutorServiceHelper;
+import dvoraka.avservice.common.testing.AbstractPerformanceTester;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.common.util.Utils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,18 +23,15 @@ import static java.util.Objects.requireNonNull;
  */
 //TODO: complete
 @Component
-public class ConcurrentPerformanceTester implements PerformanceTest, ApplicationManagement {
+public class ConcurrentPerformanceTester extends AbstractPerformanceTester
+        implements ExecutorServiceHelper {
 
     private final AvNetworkComponent avNetworkComponent;
     private final PerformanceTestProperties testProperties;
 
-    private static final Logger log = LogManager.getLogger(ConcurrentPerformanceTester.class);
-
     private final ConcurrentMap<String, Boolean> messages;
     private final ExecutorService executorService;
     private final AtomicLong counter;
-
-    private volatile boolean running;
 
 
     @Autowired
@@ -54,7 +49,7 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
 
     @Override
     public void start() {
-        running = true;
+        setRunning(true);
 
         avNetworkComponent.addMessageListener(this::onMessage);
 
@@ -86,37 +81,14 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
         log.info("Duration: " + durationSeconds + " s");
         log.info("Messages: " + (messageCount / durationSeconds) + "/s");
 
-        running = false;
+        setRunning(false);
+        setDone(true);
     }
 
     @PreDestroy
     private void stop() {
-        // stop the executor service
-    }
-
-    @Override
-    public boolean isRunning() {
-        return running;
-    }
-
-    @Override
-    public long getResult() {
-        return 0;
-    }
-
-    @Override
-    public void run() {
-        start();
-    }
-
-    @Override
-    public boolean isDone() {
-        return false;
-    }
-
-    @Override
-    public boolean passed() {
-        return false;
+        final int maxWaitTime = 5;
+        shutdownAndAwaitTermination(executorService, maxWaitTime, log);
     }
 
     private void sendTestingMessage() {
