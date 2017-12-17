@@ -1,24 +1,66 @@
 package dvoraka.avservice.common.testing;
 
+import dvoraka.avservice.common.service.ApplicationManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Base class for performance tests.
  */
-//TODO: implement
-public abstract class AbstractPerformanceTester implements PerformanceTest {
+public abstract class AbstractPerformanceTester implements PerformanceTest, ApplicationManagement {
 
     protected final Logger log = LogManager.getLogger(this.getClass());
 
+    private volatile boolean running;
+    private volatile boolean done;
+
+    private boolean passed;
+    private float result;
+
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    protected void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    /**
+     * Returns messages per second.
+     *
+     * @return messages/second
+     */
+    @Override
+    public long getResult() {
+        return (long) result;
+    }
+
+    protected void setResult(float result) {
+        this.result = result;
+    }
+
+    @Override
+    public void run() {
+        start();
+    }
 
     @Override
     public boolean isDone() {
-        return false;
+        return done;
+    }
+
+    protected void setDone(boolean done) {
+        this.done = done;
     }
 
     @Override
     public boolean passed() {
-        return false;
+        return passed;
+    }
+
+    protected void setPassed(boolean passed) {
+        this.passed = passed;
     }
 }

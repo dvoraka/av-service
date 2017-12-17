@@ -3,12 +3,9 @@ package dvoraka.avservice.client.checker;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.common.data.AvMessage;
-import dvoraka.avservice.common.service.ApplicationManagement;
-import dvoraka.avservice.common.testing.PerformanceTest;
+import dvoraka.avservice.common.testing.AbstractPerformanceTester;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import dvoraka.avservice.common.util.Utils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,22 +20,16 @@ import static java.util.Objects.requireNonNull;
  * Buffered tester prototype for a performance testing.
  */
 @Component
-public class BufferedPerformanceTester implements PerformanceTest, ApplicationManagement {
+public class BufferedPerformanceTester extends AbstractPerformanceTester {
 
     private final AvServiceClient avServiceClient;
     private final ResponseClient responseClient;
     private final PerformanceTestProperties testProperties;
 
-    private static final Logger log = LogManager.getLogger(BufferedPerformanceTester.class);
-
     private static final float MS_PER_SECOND = 1_000.0f;
     private static final int DEFAULT_TIMEOUT = 1_000;
 
-    private volatile boolean running;
-    private volatile boolean passed;
-
     private int timeout = DEFAULT_TIMEOUT;
-    private float result;
 
 
     @Autowired
@@ -54,7 +45,7 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
 
     @Override
     public void start() {
-        running = true;
+        setRunning(true);
         final long loops = testProperties.getMsgCount();
         log.info("Load test start for " + loops + " messages...");
 
@@ -92,10 +83,11 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
         setResult(loops / durationSeconds);
 
         log.info("Duration: " + durationSeconds + " s");
-        log.info("Messages: " + result + "/s");
+        log.info("Messages: " + getResult() + "/s");
 
-        running = false;
-        passed = true;
+        setRunning(false);
+        setDone(true);
+        setPassed(true);
     }
 
     private void getMessage(BlockingQueue<AvMessage> buffer) {
@@ -108,40 +100,6 @@ public class BufferedPerformanceTester implements PerformanceTest, ApplicationMa
             log.warn("Interrupted.", e);
             Thread.currentThread().interrupt();
         }
-    }
-
-    @Override
-    public boolean isRunning() {
-        return running;
-    }
-
-    @Override
-    public void run() {
-        start();
-    }
-
-    @Override
-    public boolean isDone() {
-        return !running && result != 0.0f;
-    }
-
-    @Override
-    public boolean passed() {
-        return passed;
-    }
-
-    private void setResult(float result) {
-        this.result = result;
-    }
-
-    /**
-     * Returns messages per second.
-     *
-     * @return messages/second
-     */
-    @Override
-    public long getResult() {
-        return (long) result;
     }
 
     public int getTimeout() {
