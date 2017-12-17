@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -86,6 +87,11 @@ public class ConcurrentPerformanceTester implements PerformanceTest, Application
         log.info("Messages: " + (messageCount / durationSeconds) + "/s");
 
         running = false;
+    }
+
+    @PreDestroy
+    private void stop() {
+        // stop the executor service
     }
 
     @Override
