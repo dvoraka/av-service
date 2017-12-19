@@ -5,6 +5,7 @@ import dvoraka.avservice.client.checker.ConcurrentPerformanceTester;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.client.transport.AvNetworkComponent;
+import dvoraka.avservice.common.testing.PerformanceTest;
 import dvoraka.avservice.common.testing.PerformanceTestProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Profile;
 public class PerformanceTestConfig {
 
     @Bean
+    @Profile("buffered")
     public BufferedPerformanceTester bufferedPerformanceTester(
             AvServiceClient serviceClient,
             ResponseClient responseClient,
@@ -27,7 +29,8 @@ public class PerformanceTestConfig {
     }
 
     @Bean
-    public ConcurrentPerformanceTester concurrentPerformanceTester(
+    @Profile("concurrent")
+    public PerformanceTest concurrentPerformanceTester(
             AvNetworkComponent avNetworkComponent,
             PerformanceTestProperties performanceTestProperties
     ) {
