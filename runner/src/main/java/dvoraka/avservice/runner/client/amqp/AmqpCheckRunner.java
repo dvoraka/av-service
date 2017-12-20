@@ -6,8 +6,6 @@ import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
 import dvoraka.avservice.common.service.ApplicationManagement;
 
-import java.io.IOException;
-
 /**
  * AMQP check runner.
  */
