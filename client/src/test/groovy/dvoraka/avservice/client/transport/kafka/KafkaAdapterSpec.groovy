@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.kafka
+package dvoraka.avservice.client.transport.kafka
 
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.listener.AvMessageListener

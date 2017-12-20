@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.kafka;
+package dvoraka.avservice.client.transport.kafka;
 
 import dvoraka.avservice.client.transport.AbstractNetworkComponent;
 import dvoraka.avservice.client.transport.AvNetworkComponent;
