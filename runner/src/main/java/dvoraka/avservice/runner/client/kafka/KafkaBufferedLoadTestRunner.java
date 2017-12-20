@@ -18,7 +18,7 @@ public class KafkaBufferedLoadTestRunner extends AbstractAppRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"client", "performance", "kafka", "file-client", "no-db"};
+        return new String[]{"client", "performance", "buffered", "kafka", "file-client", "no-db"};
     }
 
     @Override

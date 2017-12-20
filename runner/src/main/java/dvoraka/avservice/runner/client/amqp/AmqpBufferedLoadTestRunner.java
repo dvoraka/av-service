@@ -18,7 +18,7 @@ public class AmqpBufferedLoadTestRunner extends AbstractAppRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"client", "performance", "amqp", "file-client", "no-db"};
+        return new String[]{"client", "performance", "buffered", "amqp", "file-client", "no-db"};
     }
 
     @Override

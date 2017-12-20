@@ -18,7 +18,7 @@ public class AmqpConcurrentLoadTestRunner extends AbstractAppRunner {
 
     @Override
     protected String[] profiles() {
-        return new String[]{"client", "performance", "amqp", "file-client", "no-db"};
+        return new String[]{"client", "performance", "concurrent", "amqp", "file-client", "no-db"};
     }
 
     @Override
