@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.jms;
+package dvoraka.avservice.client.transport.jms;
 
 import dvoraka.avservice.client.util.QueueCleaner;
 import org.springframework.beans.factory.annotation.Autowired;

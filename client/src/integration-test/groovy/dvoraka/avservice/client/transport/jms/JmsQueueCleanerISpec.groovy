@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.jms
+package dvoraka.avservice.client.transport.jms
 
 import dvoraka.avservice.client.QueueCleanerISpec
 import dvoraka.avservice.client.configuration.ClientConfig
