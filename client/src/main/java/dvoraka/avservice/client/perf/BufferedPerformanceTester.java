@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.checker;
+package dvoraka.avservice.client.perf;
 
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.response.ResponseClient;

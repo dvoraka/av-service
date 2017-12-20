@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.checker
+package dvoraka.avservice.client.perf
 
 import dvoraka.avservice.client.configuration.ClientConfig
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,5 +1,6 @@
-package dvoraka.avservice.client.checker;
+package dvoraka.avservice.client.perf;
 
+import dvoraka.avservice.client.checker.Checker;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
 import dvoraka.avservice.common.service.ApplicationManagement;

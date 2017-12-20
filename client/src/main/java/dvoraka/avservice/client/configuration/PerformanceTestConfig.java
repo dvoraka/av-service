@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.configuration;
 
-import dvoraka.avservice.client.checker.BufferedPerformanceTester;
-import dvoraka.avservice.client.checker.ConcurrentPerformanceTester;
+import dvoraka.avservice.client.perf.BufferedPerformanceTester;
+import dvoraka.avservice.client.perf.ConcurrentPerformanceTester;
 import dvoraka.avservice.client.service.AvServiceClient;
 import dvoraka.avservice.client.service.response.ResponseClient;
 import dvoraka.avservice.client.transport.AvNetworkComponent;

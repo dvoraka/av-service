@@ -1,5 +1,6 @@
 package dvoraka.avservice.client.checker
 
+import dvoraka.avservice.client.perf.BufferedPerformanceTester
 import dvoraka.avservice.client.service.AvServiceClient
 import dvoraka.avservice.client.service.response.ResponseClient
 import dvoraka.avservice.common.testing.PerformanceTestProperties

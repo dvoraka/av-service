@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.configuration
 
-import dvoraka.avservice.client.checker.PerformanceTester
+import dvoraka.avservice.client.perf.PerformanceTester
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles

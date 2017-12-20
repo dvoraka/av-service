@@ -1,5 +1,6 @@
 package dvoraka.avservice.client.checker
 
+import dvoraka.avservice.client.perf.PerformanceTester
 import dvoraka.avservice.common.exception.MessageNotFoundException
 import dvoraka.avservice.common.testing.DefaultPerformanceTestProperties
 import dvoraka.avservice.common.testing.PerformanceTestProperties

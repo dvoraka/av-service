@@ -1,12 +1,10 @@
 package dvoraka.avservice.runner.client.amqp;
 
-import dvoraka.avservice.client.checker.BufferedPerformanceTester;
 import dvoraka.avservice.client.configuration.ClientConfig;
+import dvoraka.avservice.client.perf.BufferedPerformanceTester;
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
 import dvoraka.avservice.common.service.ApplicationManagement;
-
-import java.io.IOException;
 
 /**
  * AMQP buffered load test runner.

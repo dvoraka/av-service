@@ -1,12 +1,10 @@
 package dvoraka.avservice.runner.client.jms;
 
-import dvoraka.avservice.client.checker.PerformanceTester;
 import dvoraka.avservice.client.configuration.ClientConfig;
+import dvoraka.avservice.client.perf.PerformanceTester;
 import dvoraka.avservice.common.runner.AbstractAppRunner;
 import dvoraka.avservice.common.runner.AppRunner;
 import dvoraka.avservice.common.service.ApplicationManagement;
-
-import java.io.IOException;
 
 /**
  * JMS load test runner.

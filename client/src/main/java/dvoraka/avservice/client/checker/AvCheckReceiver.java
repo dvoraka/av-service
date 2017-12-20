@@ -7,7 +7,7 @@ import dvoraka.avservice.common.exception.MessageNotFoundException;
  * Interface for receiving AV messages.
  */
 @FunctionalInterface
-public interface Receiver {
+public interface AvCheckReceiver {
 
     /**
      * Receives an AV message with a given correlationId.
