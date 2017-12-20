@@ -1,6 +1,6 @@
 package dvoraka.avservice.client.configuration.file;
 
-import dvoraka.avservice.client.amqp.AmqpQueueCleaner;
+import dvoraka.avservice.client.transport.amqp.AmqpQueueCleaner;
 import dvoraka.avservice.client.util.QueueCleaner;
 import dvoraka.avservice.common.amqp.AvMessageConverter;
 import dvoraka.avservice.common.amqp.AvMessageMapper;

@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.amqp
+package dvoraka.avservice.client.transport.amqp
 
 import dvoraka.avservice.common.data.replication.DefaultReplicationMessage
 import dvoraka.avservice.common.data.replication.ReplicationMessage

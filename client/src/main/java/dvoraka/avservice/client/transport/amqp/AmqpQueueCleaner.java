@@ -1,4 +1,4 @@
-package dvoraka.avservice.client.amqp;
+package dvoraka.avservice.client.transport.amqp;
 
 import dvoraka.avservice.client.util.QueueCleaner;
 import org.springframework.amqp.core.AmqpTemplate;

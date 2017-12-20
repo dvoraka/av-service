@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.configuration.replication;
 
-import dvoraka.avservice.client.amqp.AmqpReplicationComponent;
 import dvoraka.avservice.client.transport.ReplicationComponent;
+import dvoraka.avservice.client.transport.amqp.AmqpReplicationComponent;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
