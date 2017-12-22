@@ -6,8 +6,21 @@ import dvoraka.avservice.runner.server.amqp.AmqpCheckServerRunner;
 import dvoraka.avservice.runner.server.amqp.AmqpFileServerRunner;
 import dvoraka.avservice.runner.server.jms.JmsCheckServerRunner;
 import dvoraka.avservice.runner.server.jms.JmsFileServerRunner;
+import dvoraka.avservice.runner.server.kafka.KafkaCheckServerRunner;
+import dvoraka.avservice.runner.server.kafka.KafkaFileServerRunner;
 
 public interface RunnerConfigurationHelper {
+
+    default RunnerConfiguration amqpFileServerConfiguration() {
+
+        AmqpFileServerRunner.setTestRun(false);
+
+        return new DefaultRunnerConfiguration(
+                "amqpFileServerRunner",
+                new AmqpFileServerRunner(),
+                null
+        );
+    }
 
     default RunnerConfiguration jmsFileServerConfiguration() {
 
@@ -20,13 +33,24 @@ public interface RunnerConfigurationHelper {
         );
     }
 
-    default RunnerConfiguration amqpFileServerConfiguration() {
+    default RunnerConfiguration kafkaFileServerConfiguration() {
 
-        AmqpFileServerRunner.setTestRun(false);
+        KafkaFileServerRunner.setTestRun(false);
 
         return new DefaultRunnerConfiguration(
-                "amqpFileServerRunner",
-                new AmqpFileServerRunner(),
+                "kafkaFileServerRunner",
+                new KafkaFileServerRunner(),
+                null
+        );
+    }
+
+    default RunnerConfiguration amqpCheckServerConfiguration() {
+
+        AmqpCheckServerRunner.setTestRun(false);
+
+        return new DefaultRunnerConfiguration(
+                "amqpCheckServerRunner",
+                new AmqpCheckServerRunner(),
                 null
         );
     }
@@ -42,13 +66,13 @@ public interface RunnerConfigurationHelper {
         );
     }
 
-    default RunnerConfiguration amqpCheckServerConfiguration() {
+    default RunnerConfiguration kafkaCheckServerConfiguration() {
 
-        AmqpCheckServerRunner.setTestRun(false);
+        KafkaCheckServerRunner.setTestRun(false);
 
         return new DefaultRunnerConfiguration(
-                "amqpCheckServerRunner",
-                new AmqpCheckServerRunner(),
+                "kafkaCheckServerRunner",
+                new KafkaCheckServerRunner(),
                 null
         );
     }
