@@ -44,7 +44,7 @@ public class BufferedPerformanceTester extends AbstractPerformanceTester {
 
     @Override
     public void start() {
-        setRunning(true);
+        startTest();
 
         final long msgCount = testProperties.getMsgCount();
         log.info("Load test start for " + msgCount + " messages...");
@@ -59,6 +59,7 @@ public class BufferedPerformanceTester extends AbstractPerformanceTester {
                 buffer.offer(message, getTimeout(), TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
                 log.warn("Interrupted.", e);
+                failTest();
                 Thread.currentThread().interrupt();
             }
 
@@ -85,9 +86,7 @@ public class BufferedPerformanceTester extends AbstractPerformanceTester {
         log.info("Duration: " + durationSeconds + " s");
         log.info("Messages: " + getResult() + "/s");
 
-        setRunning(false);
-        setDone(true);
-        setPassed(true);
+        passTest();
     }
 
     private void getMessage(BlockingQueue<AvMessage> buffer) {

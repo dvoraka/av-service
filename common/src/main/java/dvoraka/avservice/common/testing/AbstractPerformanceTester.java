@@ -66,4 +66,22 @@ public abstract class AbstractPerformanceTester implements PerformanceTest, Appl
     protected void setPassed(boolean passed) {
         this.passed = passed;
     }
+
+    protected void startTest() {
+        setPassed(false);
+        setDone(false);
+        setRunning(true);
+    }
+
+    protected void passTest() {
+        setRunning(false);
+        setDone(true);
+        setPassed(true);
+    }
+
+    protected void failTest() {
+        setRunning(false);
+        setDone(true);
+        setPassed(false);
+    }
 }

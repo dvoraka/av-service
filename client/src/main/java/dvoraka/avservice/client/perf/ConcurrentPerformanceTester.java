@@ -34,7 +34,7 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
     private final AtomicLong counter;
 
     private int timeout;
-    private long lastMsgReceivedTime;
+    private long lastMsgReceiveTime;
 
 
     @Autowired
@@ -54,7 +54,7 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
 
     @Override
     public void start() {
-        setRunning(true);
+        startTest();
 
         final long msgCount = testProperties.getMsgCount();
         log.info("Load test start for " + msgCount + " messages...");
@@ -66,14 +66,12 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
             executorService.execute(this::sendTestingMessage);
         }
 
-        lastMsgReceivedTime = System.currentTimeMillis();
+        lastMsgReceiveTime = System.currentTimeMillis();
         while (counter.get() != msgCount) {
             try {
-                if (System.currentTimeMillis() - lastMsgReceivedTime > getTimeout()) {
+                if (System.currentTimeMillis() - lastMsgReceiveTime > getTimeout()) {
                     log.warn("Test timeout!");
-                    setPassed(false);
-                    setRunning(false);
-                    setDone(true);
+                    failTest();
 
                     return;
                 }
@@ -83,6 +81,7 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
             } catch (InterruptedException e) {
                 log.warn("Test interrupted!", e);
                 Thread.currentThread().interrupt();
+
                 return;
             }
         }
@@ -96,8 +95,7 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
         log.info("Duration: " + durationSeconds + " s");
         log.info("Messages: " + (msgCount / durationSeconds) + "/s");
 
-        setRunning(false);
-        setDone(true);
+        passTest();
     }
 
     @PreDestroy
@@ -128,7 +126,7 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
                 counter.getAndIncrement();
             }
 
-            lastMsgReceivedTime = System.currentTimeMillis();
+            lastMsgReceiveTime = System.currentTimeMillis();
         }
     }
 
