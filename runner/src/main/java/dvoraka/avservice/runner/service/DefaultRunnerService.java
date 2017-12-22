@@ -30,6 +30,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
     private static final Logger log = LogManager.getLogger(DefaultRunnerService.class);
 
+    private static final int START_TIMEOUT = 20_000;
+
     private final ConcurrentMap<String, Runner> runners;
 
     private final ExecutorService executorService;
@@ -123,7 +125,13 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
             }
 
             final int sleepTime = 250;
+            final long startTime = System.currentTimeMillis();
             while (!runner.isRunning()) {
+
+                if (System.currentTimeMillis() - startTime > START_TIMEOUT) {
+                    throw new InterruptedException("Start timeout!");
+                }
+
                 log.debug("Waiting for {}...", name);
                 TimeUnit.MILLISECONDS.sleep(sleepTime);
             }
