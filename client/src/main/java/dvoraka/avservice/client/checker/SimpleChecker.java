@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
  * for incoming messages but if the buffer is full some messages will be lost. Also foreign
  * messages are consumed and thrown out. It is mainly for an infrastructure testing.
  */
+//TODO: update checking (why queue???)
 @Component
 public class SimpleChecker implements Checker, AvMessageListener {
 
@@ -88,8 +89,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
         }
     }
 
-    private void returnMessagesToQueue(List<AvMessage> messages)
-            throws InterruptedException {
+    private void returnMessagesToQueue(List<AvMessage> messages) throws InterruptedException {
         for (AvMessage msg : messages) {
             if (!queue.offer(msg, MAX_TIMEOUT, TimeUnit.MILLISECONDS)) {
                 log.warn("Lost message: " + msg);
