@@ -10,7 +10,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,14 +31,19 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     private static final long MAX_TIMEOUT = 3_000;
 
-    private final ConcurrentHashMap<String, AvMessage> messages;
+    private final HashMap<String, AvMessage> messages;
+    private final Lock lock;
+    private final Condition newMessage;
 
 
     @Autowired
     public SimpleChecker(AvNetworkComponent avNetworkComponent) {
         this.avNetworkComponent = requireNonNull(avNetworkComponent);
         this.avNetworkComponent.addMessageListener(this);
-        messages = new ConcurrentHashMap<>();
+
+        messages = new HashMap<>();
+        lock = new ReentrantLock();
+        newMessage = lock.newCondition();
     }
 
     @Override
@@ -47,15 +56,27 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
         long start = System.currentTimeMillis();
         while (true) {
-            if (System.currentTimeMillis() - start > MAX_TIMEOUT) {
-                throw new MessageNotFoundException();
-            }
 
-            if (messages.containsKey(correlationId)) {
-                AvMessage message = messages.get(correlationId);
-                messages.remove(correlationId);
+            lock.lock();
+            try {
+                if (messages.containsKey(correlationId)) {
+                    AvMessage message = messages.get(correlationId);
+                    messages.remove(correlationId);
 
-                return message;
+                    return message;
+                }
+
+                if (System.currentTimeMillis() - start > MAX_TIMEOUT) {
+                    throw new MessageNotFoundException();
+                }
+
+                newMessage.await(20, TimeUnit.MILLISECONDS);
+
+            } catch (InterruptedException e) {
+                log.warn("Receiving interrupted!");
+                Thread.currentThread().interrupt();
+            } finally {
+                lock.unlock();
             }
         }
     }
@@ -98,7 +119,13 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public void onMessage(AvMessage message) {
-        messages.put(message.getCorrelationId(), message);
+        lock.lock();
+        try {
+            messages.put(message.getCorrelationId(), message);
+            newMessage.signal();
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
