@@ -17,44 +17,6 @@ class SimpleCheckerSpec extends Specification {
     SimpleChecker checker
 
 
-    def "full queue overflow"() {
-        given:
-            AvNetworkComponent serverComponent = Mock()
-            checker = new SimpleChecker(serverComponent, 1)
-
-            List<AvMessage> messages = []
-            2.times {
-                messages << Utils.genMessage()
-            }
-
-            String corrId = 'X-CID-TEST'
-            AvMessage message = new DefaultAvMessage.Builder(Utils.genUuidString())
-                    .correlationId(corrId)
-                    .build()
-
-        when: "fill the queue"
-            new Thread(
-                    {
-                        messages.each {
-                            checker.onMessage(it)
-                        }
-                        // 3rd message
-                        checker.onMessage(message)
-                    }
-            ).start()
-
-        then: "receiving last message lost some older messages"
-            checker.receiveMessage(corrId) == message
-
-        when: "we want all sent messages"
-            messages.each {
-                checker.receiveMessage(it.getCorrelationId())
-            }
-
-        then: "it is not possible to find them"
-            thrown(MessageNotFoundException)
-    }
-
     def "check with troubles"() {
         given:
             checker = Spy(constructorArgs: [Mock(AvNetworkComponent)])

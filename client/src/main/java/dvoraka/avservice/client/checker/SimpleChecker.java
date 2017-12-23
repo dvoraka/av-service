@@ -10,42 +10,31 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Objects.requireNonNull;
 
 /**
- * Simple checker class for checking if a transport of messages works. Class has a buffer
- * for incoming messages but if the buffer is full some messages will be lost. Also foreign
+ * Simple checker for the checking if a transport of messages works. Foreign
  * messages are consumed and thrown out. It is mainly for an infrastructure testing.
  */
-//TODO: update checking (why queue???)
 @Component
 public class SimpleChecker implements Checker, AvMessageListener {
 
     private final AvNetworkComponent avNetworkComponent;
 
-    private static final Logger log = LogManager.getLogger(SimpleChecker.class.getName());
+    private static final Logger log = LogManager.getLogger(SimpleChecker.class);
 
     private static final long MAX_TIMEOUT = 3_000;
-    private static final int QUEUE_CAPACITY = 10;
 
-    private final BlockingQueue<AvMessage> queue;
+    private final ConcurrentHashMap<String, AvMessage> messages;
 
 
     @Autowired
     public SimpleChecker(AvNetworkComponent avNetworkComponent) {
-        this(avNetworkComponent, QUEUE_CAPACITY);
-    }
-
-    public SimpleChecker(AvNetworkComponent avNetworkComponent, int queueSize) {
         this.avNetworkComponent = requireNonNull(avNetworkComponent);
         this.avNetworkComponent.addMessageListener(this);
-        queue = new ArrayBlockingQueue<>(queueSize);
+        messages = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -55,44 +44,18 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public AvMessage receiveMessage(String correlationId) throws MessageNotFoundException {
-        List<AvMessage> savedMessages = new ArrayList<>(QUEUE_CAPACITY);
 
         long start = System.currentTimeMillis();
-        AvMessage message;
         while (true) {
-            try {
-                if (System.currentTimeMillis() - start > MAX_TIMEOUT) {
-                    returnMessagesToQueue(savedMessages);
-
-                    throw new MessageNotFoundException();
-                }
-
-                message = queue.poll(MAX_TIMEOUT, TimeUnit.MILLISECONDS);
-                if (message == null) {
-                    returnMessagesToQueue(savedMessages);
-
-                    throw new MessageNotFoundException();
-                }
-
-                if (message.getCorrelationId().equals(correlationId)) {
-                    returnMessagesToQueue(savedMessages);
-
-                    return message;
-                }
-
-                savedMessages.add(message);
-
-            } catch (InterruptedException e) {
-                log.warn("Waiting interrupted!", e);
-                Thread.currentThread().interrupt();
+            if (System.currentTimeMillis() - start > MAX_TIMEOUT) {
+                throw new MessageNotFoundException();
             }
-        }
-    }
 
-    private void returnMessagesToQueue(List<AvMessage> messages) throws InterruptedException {
-        for (AvMessage msg : messages) {
-            if (!queue.offer(msg, MAX_TIMEOUT, TimeUnit.MILLISECONDS)) {
-                log.warn("Lost message: " + msg);
+            if (messages.containsKey(correlationId)) {
+                AvMessage message = messages.get(correlationId);
+                messages.remove(correlationId);
+
+                return message;
             }
         }
     }
@@ -135,12 +98,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
 
     @Override
     public void onMessage(AvMessage message) {
-        try {
-            queue.put(message);
-        } catch (InterruptedException e) {
-            log.warn("Waiting interrupted!", e);
-            Thread.currentThread().interrupt();
-        }
+        messages.put(message.getCorrelationId(), message);
     }
 
     @Override
