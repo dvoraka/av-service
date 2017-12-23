@@ -87,6 +87,8 @@ public class SimpleChecker implements Checker, AvMessageListener {
         AvMessage infectedMessage = Utils.genInfectedMessage();
 
         sendMessage(normalMessage);
+        sendMessage(infectedMessage);
+
         try {
             AvMessage receivedMessage = receiveMessage(normalMessage.getId());
 
@@ -98,7 +100,6 @@ public class SimpleChecker implements Checker, AvMessageListener {
             return false;
         }
 
-        sendMessage(infectedMessage);
         try {
             AvMessage receivedMessage = receiveMessage(infectedMessage.getId());
 
