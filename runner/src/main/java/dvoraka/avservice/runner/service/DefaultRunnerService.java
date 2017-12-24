@@ -67,12 +67,14 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     @Override
     @PostConstruct
     public void start() {
-        // do nothing for now
+        log.info("Start.");
     }
 
     @Override
     @PreDestroy
     public void stop() {
+        log.info("Stop.");
+
         final int waitTime = 5;
         stopAllRunners();
         shutdownAndAwaitTermination(executorService, waitTime, log);
@@ -80,6 +82,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
     @Override
     public void startRunner(String name) throws RunnerNotFoundException {
+        log.debug("Start runner: {}", name);
+
         checkRunnerExistence(name);
         findRunner(name).ifPresent(Runner::start);
         executorService.submit(() -> waitForStartInt(name));
@@ -87,6 +91,8 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
 
     @Override
     public void stopRunner(String name) throws RunnerNotFoundException {
+        log.debug("Stop runner: {}", name);
+
         checkRunnerExistence(name);
         findRunner(name).ifPresent(Runner::stop);
     }
@@ -116,6 +122,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
     @Override
     public void waitForStart(String name)
             throws RunnerNotFoundException, InterruptedException {
+        log.debug("Wait for start: {}", name);
 
         Runner runner = findRunner(name).orElseThrow(RunnerNotFoundException::new);
 
@@ -129,6 +136,7 @@ public class DefaultRunnerService implements RunnerService, ExecutorServiceHelpe
             while (!runner.isRunning()) {
 
                 if (System.currentTimeMillis() - startTime > START_TIMEOUT) {
+                    log.warn("Waiting timeout!");
                     throw new InterruptedException("Start timeout!");
                 }
 
