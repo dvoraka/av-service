@@ -3,15 +3,15 @@ package dvoraka.avservice.runner.client.amqp
 import spock.lang.Specification
 
 
-class AmqpLoadTestRunnerISpec extends Specification {
+class AmqpConcurrentLoadTestRunnerISpec extends Specification {
 
     def setupSpec() {
         System.setProperty('avservice.perf.msgCount', '2')
     }
 
-    def "Run AMQP load test runner"() {
+    def "Run AMQP concurrent load test runner"() {
         when:
-            AmqpLoadTestRunner.main([] as String[])
+            AmqpConcurrentLoadTestRunner.main([] as String[])
 
         then:
             notThrown(Exception)

@@ -2,9 +2,7 @@ package dvoraka.avservice.runner.client.amqp
 
 import spock.lang.Specification
 
-/**
- * Test for buffered load test runner.
- */
+
 class AmqpBufferedLoadTestRunnerISpec extends Specification {
 
     def setupSpec() {
