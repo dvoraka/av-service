@@ -13,6 +13,9 @@ task configureEnvironment(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+//
+// AMQP
+//
 task runAmqpCheck(type: JavaExec) {
     description = 'Run AMQP infrastructure check'
     group = "${taskGroupName}"
@@ -28,6 +31,22 @@ task runAmqpLoadTest(type: JavaExec) {
     main = 'dvoraka.avservice.runner.client.amqp.AmqpLoadTestRunner'
     classpath = sourceSets.main.runtimeClasspath
 //    environment('avservice.perf.msgCount', 2)
+}
+
+task runAmqpBufferedLoadTest(type: JavaExec) {
+    description = 'Run AMQP AV check buffered load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.amqp.AmqpBufferedLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runAmqpConcurrentLoadTest(type: JavaExec) {
+    description = 'Run AMQP AV check concurrent load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.amqp.AmqpConcurrentLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
 }
 
 task runAmqpCheckServer(type: JavaExec) {
@@ -87,6 +106,9 @@ task runCustomServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+//
+// JMS
+//
 task runJmsCheck(type: JavaExec) {
     description = 'Run JMS infrastructure check'
     group = "${taskGroupName}"
@@ -101,7 +123,6 @@ task runJmsLoadTest(type: JavaExec) {
 
     main = 'dvoraka.avservice.runner.client.jms.JmsLoadTestRunner'
     classpath = sourceSets.main.runtimeClasspath
-//    environment('avservice.perf.msgCount', 2)
 }
 
 task runJmsCheckServer(type: JavaExec) {
