@@ -125,6 +125,22 @@ task runJmsLoadTest(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task runJmsBufferedLoadTest(type: JavaExec) {
+    description = 'Run JMS AV check buffered load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.jms.JmsBufferedLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runJmsConcurrentLoadTest(type: JavaExec) {
+    description = 'Run JMS AV check concurrent load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.jms.JmsConcurrentLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 task runJmsCheckServer(type: JavaExec) {
     description = 'Run JMS AV check server'
     group = "${taskGroupName}"
