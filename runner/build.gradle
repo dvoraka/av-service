@@ -167,3 +167,56 @@ task runJmsToAmqpBridge(type: JavaExec) {
     standardInput = System.in
     classpath = sourceSets.main.runtimeClasspath
 }
+
+//
+// Kafka
+//
+task runKafkaCheck(type: JavaExec) {
+    description = 'Run Kafka infrastructure check'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.kafka.KafkaCheckRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runKafkaLoadTest(type: JavaExec) {
+    description = 'Run Kafka AV check load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.kafka.KafkaLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runKafkaBufferedLoadTest(type: JavaExec) {
+    description = 'Run Kafka AV check buffered load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.kafka.KafkaBufferedLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runKafkaConcurrentLoadTest(type: JavaExec) {
+    description = 'Run Kafka AV check concurrent load test'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.client.kafka.KafkaConcurrentLoadTestRunner'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runKafkaCheckServer(type: JavaExec) {
+    description = 'Run Kafka AV check server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.kafka.KafkaCheckServerRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runKafkaFileServer(type: JavaExec) {
+    description = 'Run Kafka file server server'
+    group = "${taskGroupName}"
+
+    main = 'dvoraka.avservice.runner.server.kafka.KafkaFileServerRunner'
+    standardInput = System.in
+    classpath = sourceSets.main.runtimeClasspath
+}
