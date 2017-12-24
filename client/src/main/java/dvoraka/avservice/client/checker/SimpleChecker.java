@@ -3,7 +3,6 @@ package dvoraka.avservice.client.checker;
 import dvoraka.avservice.client.transport.AvNetworkComponent;
 import dvoraka.avservice.common.data.AvMessage;
 import dvoraka.avservice.common.exception.MessageNotFoundException;
-import dvoraka.avservice.common.listener.AvMessageListener;
 import dvoraka.avservice.common.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +22,7 @@ import static java.util.Objects.requireNonNull;
  * messages are consumed and thrown out. It is mainly for an infrastructure testing.
  */
 @Component
-public class SimpleChecker implements Checker, AvMessageListener {
+public class SimpleChecker implements Checker {
 
     private final AvNetworkComponent avNetworkComponent;
 
@@ -39,7 +38,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
     @Autowired
     public SimpleChecker(AvNetworkComponent avNetworkComponent) {
         this.avNetworkComponent = requireNonNull(avNetworkComponent);
-        this.avNetworkComponent.addMessageListener(this);
+        this.avNetworkComponent.addMessageListener(this::onMessage);
 
         messages = new HashMap<>();
         lock = new ReentrantLock();
@@ -118,8 +117,7 @@ public class SimpleChecker implements Checker, AvMessageListener {
         return !message.getVirusInfo().equals(Utils.OK_VIRUS_INFO);
     }
 
-    @Override
-    public void onMessage(AvMessage message) {
+    private void onMessage(AvMessage message) {
         lock.lock();
         try {
             messages.put(message.getCorrelationId(), message);
