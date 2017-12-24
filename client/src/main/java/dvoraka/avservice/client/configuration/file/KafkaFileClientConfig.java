@@ -87,6 +87,7 @@ public class KafkaFileClientConfig {
             ThreadPoolTaskScheduler kafkaClientThreadPoolTaskScheduler
     ) {
         ContainerProperties props = new ContainerProperties(resultTopic);
+        // shouldn't be necessary but the default scheduler is not destroyed after shutdown
         props.setScheduler(kafkaClientThreadPoolTaskScheduler);
 
         MessageListenerContainer container = new ConcurrentMessageListenerContainer<>(
