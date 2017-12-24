@@ -111,5 +111,3 @@ public class KafkaServerConfig {
         return props;
     }
 }
-
-

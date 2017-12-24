@@ -24,6 +24,7 @@ import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.kafka.listener.config.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,9 +83,12 @@ public class KafkaFileClientConfig {
     @Bean
     public MessageListenerContainer messageListenerContainer(
             ConsumerFactory<String, DefaultAvMessage> consumerFactory,
-            MessageListener<String, AvMessage> messageListener
+            MessageListener<String, AvMessage> messageListener,
+            ThreadPoolTaskScheduler kafkaClientThreadPoolTaskScheduler
     ) {
         ContainerProperties props = new ContainerProperties(resultTopic);
+        props.setScheduler(kafkaClientThreadPoolTaskScheduler);
+
         MessageListenerContainer container = new ConcurrentMessageListenerContainer<>(
                 consumerFactory,
                 props
@@ -92,6 +96,13 @@ public class KafkaFileClientConfig {
         container.setupMessageListener(messageListener);
 
         return container;
+    }
+
+    @Bean
+    public ThreadPoolTaskScheduler kafkaClientThreadPoolTaskScheduler() {
+        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+
+        return threadPoolTaskScheduler;
     }
 
     @Bean
