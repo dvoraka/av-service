@@ -18,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public abstract class AbstractNetworkComponent<M extends Message, L extends MessageListener<M>>
         implements GenericNetworkComponent<M, L>, MessageHelper {
 
+    @SuppressWarnings("checkstyle:VisibilityModifier")
     protected final Logger log = LogManager.getLogger(this.getClass());
 
     private final Set<L> listeners;

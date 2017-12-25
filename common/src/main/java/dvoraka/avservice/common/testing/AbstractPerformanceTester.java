@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 //TODO: add timeout for tests
 public abstract class AbstractPerformanceTester implements PerformanceTest, ApplicationManagement {
 
+    @SuppressWarnings("checkstyle:VisibilityModifier")
     protected final Logger log = LogManager.getLogger(this.getClass());
 
     protected static final float MS_PER_SECOND = 1_000.0f;

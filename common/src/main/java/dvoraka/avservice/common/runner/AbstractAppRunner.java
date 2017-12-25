@@ -11,7 +11,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public abstract class AbstractAppRunner implements AppRunner {
 
     @SuppressWarnings("checkstyle:VisibilityModifier")
-    protected Logger log = LogManager.getLogger(this.getClass().getName());
+    protected final Logger log = LogManager.getLogger(this.getClass().getName());
 
     /**
      * A system property name for enabling the integration testing profile.
