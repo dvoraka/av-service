@@ -36,8 +36,8 @@ import java.util.Map;
 @Profile("kafka")
 public class KafkaFileClientConfig {
 
-    @Value("${avservice.kafka.broker}")
-    private String broker;
+    @Value("${avservice.kafka.bootstrapServers}")
+    private String bootstrapServers;
 
     @Value("${avservice.kafka.fileTopic}")
     private String fileTopic;
@@ -59,7 +59,7 @@ public class KafkaFileClientConfig {
     @Bean
     public ProducerFactory<String, AvMessage> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, broker);
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
@@ -113,7 +113,7 @@ public class KafkaFileClientConfig {
 
     private Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, broker);
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "client");

@@ -139,7 +139,7 @@ public class ClamAvProgram implements AvProgram {
                 return parseResponse(response);
 
             } catch (IOException e) {
-                log.info(ERROR_MSG, e);
+                log.info(ERROR_MSG + ": {}", e.getMessage());
                 socket.fix();
             } finally {
                 socketPool.returnSocket(socket);
