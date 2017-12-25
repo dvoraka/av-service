@@ -21,13 +21,14 @@ import static java.util.Objects.requireNonNull;
 /**
  * Concurrent performance tester.
  */
-//TODO: complete
 @Component
 public class ConcurrentPerformanceTester extends AbstractPerformanceTester
         implements ExecutorServiceHelper {
 
     private final AvNetworkComponent avNetworkComponent;
     private final PerformanceTestProperties testProperties;
+
+    private static final int DEFAULT_TIMEOUT = 3_000;
 
     private final ConcurrentMap<String, Boolean> sentMessageInfo;
     private final ExecutorService executorService;
@@ -49,7 +50,7 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
         executorService = Executors.newFixedThreadPool(testProperties.getThreadCount());
         counter = new AtomicLong();
 
-        timeout = 3_000;
+        timeout = DEFAULT_TIMEOUT;
     }
 
     @Override
@@ -77,7 +78,8 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
                 }
 
                 log.debug("Waiting...");
-                Thread.sleep(1000);
+                final int sleepTime = 100;
+                Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 log.warn("Test interrupted!", e);
                 Thread.currentThread().interrupt();
@@ -100,16 +102,21 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
 
     @PreDestroy
     private void stop() {
-        final int maxWaitTime = 5;
-        shutdownAndAwaitTermination(executorService, maxWaitTime, log);
+        final int maxWaitTimeS = 5;
+        shutdownAndAwaitTermination(executorService, maxWaitTimeS, log);
     }
 
     private void sendTestingMessage() {
-        //TODO: use normal and infected messages
-        AvMessage message = Utils.genInfectedMessage();
-        avNetworkComponent.sendMessage(message);
+        AvMessage message;
+        if (System.currentTimeMillis() % 2 == 0) {
+            message = Utils.genInfectedMessage();
+            sentMessageInfo.put(message.getId(), true);
+        } else {
+            message = Utils.genMessage();
+            sentMessageInfo.put(message.getId(), false);
+        }
 
-        sentMessageInfo.put(message.getId(), true);
+        avNetworkComponent.sendMessage(message);
     }
 
     private void onMessage(AvMessage message) {
