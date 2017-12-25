@@ -69,7 +69,8 @@ public class SimpleChecker implements Checker {
                     throw new MessageNotFoundException();
                 }
 
-                newMessage.await(20, TimeUnit.MILLISECONDS);
+                final int maxWaitTime = 20;
+                newMessage.await(maxWaitTime, TimeUnit.MILLISECONDS);
 
             } catch (InterruptedException e) {
                 log.warn("Receiving interrupted!");
