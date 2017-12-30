@@ -17,6 +17,7 @@ plugins {
     id 'org.sonarqube' version '2.5'
     // Spring Boot and dependency management
 //    id 'org.springframework.boot' version '1.5.8.RELEASE'
+    id 'com.github.spotbugs' version '1.6.0'
 }
 
 description = 'Anti-virus and file network service'
@@ -29,6 +30,7 @@ allprojects {
     apply plugin: 'groovy'
     apply plugin: 'checkstyle'
     apply plugin: 'findbugs'
+    apply plugin: 'com.github.spotbugs'
     apply plugin: 'pmd'
     apply plugin: 'jacoco'
     apply plugin: 'io.spring.dependency-management'
@@ -231,15 +233,17 @@ allprojects {
         ignoreFailures = true
     }
 
-    findbugs {
-        reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
-        reportLevel = 'medium'
+    spotbugs {
+        reportsDir = file("${project.rootDir}/reports/spotbugsReports/${project.name}")
         sourceSets = [sourceSets.main]
 
-        ignoreFailures = true
+        effort = 'max'
+        reportLevel = 'high'
+
+        ignoreFailures = false
     }
 
-    tasks.withType(FindBugs) {
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
         reports {
             xml.enabled = false
             html.enabled = true
