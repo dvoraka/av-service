@@ -22,9 +22,6 @@ plugins {
 
 description = 'Anti-virus and file network service'
 
-// Temporary overrides for BOMs
-ext['spring-data-releasetrain.version'] = 'Kay-RELEASE'
-
 allprojects {
     apply plugin: 'java'
     apply plugin: 'groovy'
