@@ -17,6 +17,7 @@ plugins {
     id 'org.sonarqube' version '2.5'
     // Spring Boot and dependency management
 //    id 'org.springframework.boot' version '1.5.8.RELEASE'
+    // SpotBugs
     id 'com.github.spotbugs' version '1.6.0'
 }
 
@@ -143,9 +144,6 @@ allprojects {
 
         // MVC & Security
         // Moved to REST module
-
-        // Spring 5 deps
-        compile group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
 
         // Joda time (for Spring Solr)
         compile group: 'joda-time', name: 'joda-time'
