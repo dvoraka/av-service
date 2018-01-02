@@ -139,24 +139,19 @@ allprojects {
         compile('org.springframework.boot:spring-boot-starter-data-jpa')
         // Data Solr
         compile('org.springframework.boot:spring-boot-starter-data-solr')
-        // PostgreSQL
-        compile('org.postgresql:postgresql')
 
         // MVC & Security
         // Moved to REST module
 
         // Joda time (for Spring Solr)
-        compile group: 'joda-time', name: 'joda-time'
-
+        compile('joda-time:joda-time')
         // Ehcache
-        compile("org.ehcache:ehcache")
+        compile('org.ehcache:ehcache')
 
-        // EL
-        compile group: 'javax.el', name: 'javax.el-api'
-        compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
-
+        // PostgreSQL
+        compile('org.postgresql:postgresql')
         // H2 DB
-        compile group: 'com.h2database', name: 'h2'
+        runtime('com.h2database:h2')
 
         //
         // Testing
