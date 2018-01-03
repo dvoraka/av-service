@@ -49,7 +49,7 @@ public class KafkaFileClientConfig {
 
 
     @Bean
-    public AvNetworkComponent serverComponent(
+    public AvNetworkComponent avNetworkComponent(
             KafkaTemplate<String, AvMessage> kafkaTemplate,
             MessageInfoService messageInfoService
     ) {
