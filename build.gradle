@@ -143,13 +143,13 @@ allprojects {
         // MVC & Security
         // Moved to REST module
 
-        // Joda time (for Spring Solr)
-        compile('joda-time:joda-time')
         // Ehcache
         compile('org.ehcache:ehcache')
 
+        // Joda time (for Spring Solr)
+        runtime('joda-time:joda-time')
         // PostgreSQL
-        compile('org.postgresql:postgresql')
+        runtime('org.postgresql:postgresql')
         // H2 DB
         runtime('com.h2database:h2')
 
