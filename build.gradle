@@ -214,7 +214,6 @@ allprojects {
     // Quality tool configurations
     //
     checkstyle {
-        toolVersion = '8.0'
         configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
         reportsDir = file("${project.rootDir}/reports/checkstyle/${project.name}")
         sourceSets = [sourceSets.main]
