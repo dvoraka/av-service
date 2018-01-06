@@ -1,3 +1,13 @@
+## v0.10-RC1 (Jan 6, 2018)
+ * New concurrent performance testing
+ * New runner service for managing runners from runner module
+ * Updated client module
+ * Migration to SpotBugs from FindBugs
+ * Updated simple checker for testing infrastructure
+ * New Kafka runners for all file services
+ * Improved integration tests
+ * Updated Spring to 5 and Spring Boot to latest milestone
+
 ## v0.9 (Oct 29, 2017)
 
 ## v0.9-RC1 (Oct 22, 2017)
