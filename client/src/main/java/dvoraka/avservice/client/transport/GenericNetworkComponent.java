@@ -15,7 +15,7 @@ import dvoraka.avservice.common.listener.MessageListener;
 public interface GenericNetworkComponent<M extends Message, L extends MessageListener<M>> extends
         MessageSender<M>,
         MessageReceiver<M, L>,
-        MessageListenerAdapter {
+        MessageListenerAdapter<M> {
 
     /**
      * Returns a service ID.
