@@ -109,12 +109,20 @@ public class DefaultReplicationService implements
 
     private void scheduleDiscovery() {
         executorService.scheduleWithFixedDelay(
-                this::discoverNeighbours, 0, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
+                this::discoverNeighboursSafe, 0, DISCOVER_DELAY, TimeUnit.MILLISECONDS);
     }
 
     private void waitForOthers() {
         waitUntil(responseClient::isRunning);
         waitUntil(remoteLock::isRunning);
+    }
+
+    private void discoverNeighboursSafe() {
+        try {
+            discoverNeighbours();
+        } catch (Exception e) {
+            log.warn("Discovery failed!", e);
+        }
     }
 
     private void discoverNeighbours() {
@@ -139,6 +147,7 @@ public class DefaultReplicationService implements
             log.debug("Discovered {}: {}", idString, neighbourCount());
         }
 
+        //TODO: if it's stopped it sets running flag again
         if (!isRunning()) {
             setRunning(true);
         }
