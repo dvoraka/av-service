@@ -8,15 +8,15 @@ import java.util.function.BooleanSupplier;
 public interface WaitingHelper {
 
     /**
-     * Blocks until condition is met.
+     * Blocks until a condition is met.
      *
-     * @param until the condition
+     * @param supplier the boolean supplier
      */
-    default void waitUntil(BooleanSupplier until) {
-        final int checkDelay = 10;
-        while (!until.getAsBoolean()) {
+    default void waitUntil(BooleanSupplier supplier) {
+        final int checkDelayMs = 10;
+        while (!supplier.getAsBoolean()) {
             try {
-                Thread.sleep(checkDelay);
+                Thread.sleep(checkDelayMs);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
 
