@@ -90,7 +90,7 @@ public class DefaultReplicationService implements
 
     @PostConstruct
     public void start() {
-        log.info("Starting service ({})...", nodeId);
+        log.info("Starting service {}...", idString);
 
         responseClient.addNoResponseMessageListener(this);
 
@@ -118,7 +118,7 @@ public class DefaultReplicationService implements
     }
 
     private void discoverNeighbours() {
-        log.debug("Discovering neighbours ({})...", nodeId);
+        log.debug("Discovering neighbours {}...", idString);
 
         ReplicationMessage message = createDiscoverRequest(nodeId);
         serviceClient.sendMessage(message);
@@ -132,11 +132,11 @@ public class DefaultReplicationService implements
                 .collect(Collectors.toSet());
 
         if (newNeighbours.isEmpty()) {
-            log.debug("Discovered ({}): none", nodeId);
+            log.debug("Discovered {}: none", idString);
         } else {
             neighbours.clear();
             neighbours.addAll(newNeighbours);
-            log.debug("Discovered ({}): {}", nodeId, neighbourCount());
+            log.debug("Discovered {}: {}", idString, neighbourCount());
         }
 
         if (!isRunning()) {
@@ -226,7 +226,7 @@ public class DefaultReplicationService implements
 
     @Override
     public FileMessage loadFile(FileMessage message) throws FileServiceException {
-        log.debug("Load ({}): {}", nodeId, message);
+        log.debug("Load {}: {}", idString, message);
 
         int neighbours = neighbourCount();
         if (lockFile(message, neighbours)) {
