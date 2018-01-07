@@ -61,6 +61,8 @@ public class DefaultRemoteLock implements
     private int maxResponseTime;
     private volatile boolean running;
 
+    private boolean master;
+
     private final String idString;
 
 
@@ -213,7 +215,12 @@ public class DefaultRemoteLock implements
                 .peek(message -> log.debug("Sequence {}: {}", idString, message))
                 .findFirst()
                 .map(ReplicationMessage::getSequence)
-                .orElse(1L);
+                .orElse((long) NOT_INITIALIZED);
+
+        if (actualSequence == NOT_INITIALIZED) {
+            setMaster(true);
+            actualSequence = 1;
+        }
 
         setSequence(actualSequence);
 
@@ -361,5 +368,13 @@ public class DefaultRemoteLock implements
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    private boolean isMaster() {
+        return master;
+    }
+
+    private void setMaster(boolean master) {
+        this.master = master;
     }
 }

@@ -30,6 +30,13 @@ public interface ReplicationMessage extends FileMessage {
     long getSequence();
 
     /**
+     * Returns a master flag.
+     *
+     * @return the master flag
+     */
+    boolean isMaster();
+
+    /**
      * Returns a message routing type.
      *
      * @return the routing type

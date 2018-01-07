@@ -29,6 +29,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage, File
     private final String fromId;
     private final String toId;
     private final long sequence;
+    private final boolean master;
     private final MessageRouting routing;
     private final ReplicationStatus replicationStatus;
     private final Command command;
@@ -46,6 +47,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage, File
         this.fromId = builder.fromId;
         this.toId = builder.toId;
         this.sequence = builder.sequence;
+        this.master = builder.master;
         this.routing = builder.routing;
         this.replicationStatus = builder.replicationStatus;
         this.command = builder.command;
@@ -94,6 +96,11 @@ public final class DefaultReplicationMessage implements ReplicationMessage, File
     @Override
     public long getSequence() {
         return sequence;
+    }
+
+    @Override
+    public boolean isMaster() {
+        return false;
     }
 
     @Override
@@ -177,6 +184,7 @@ public final class DefaultReplicationMessage implements ReplicationMessage, File
         private String fromId;
         private String toId;
         private long sequence;
+        private boolean master;
         private MessageRouting routing;
         private ReplicationStatus replicationStatus;
         private Command command;
@@ -229,6 +237,11 @@ public final class DefaultReplicationMessage implements ReplicationMessage, File
 
         public Builder sequence(long sequence) {
             this.sequence = sequence;
+            return this;
+        }
+
+        public Builder master(boolean master) {
+            this.master = master;
             return this;
         }
 
