@@ -195,6 +195,11 @@ public class DefaultRemoteLock implements
         return remoteSuccess;
     }
 
+    @Override
+    public void networkChanged() {
+        //TODO: update sync status
+    }
+
     /**
      * Synchronizes the lock with others.
      */

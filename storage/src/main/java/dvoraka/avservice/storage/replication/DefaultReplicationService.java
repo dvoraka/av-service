@@ -143,10 +143,11 @@ public class DefaultReplicationService implements
             log.debug("Neighbours discovered {}: none", idString);
         } else {
 
-            if (newNeighbours.size() != neighbours.size()) {
-                log.info("Neighbour count changed {}: {} to {}",
+            if (!neighbours.equals(newNeighbours)) {
+                log.info("Neighbours changed {}: {} to {}",
                         idString, neighbours.size(), newNeighbours.size());
-                // notify lock about changes
+
+                remoteLock.networkChanged();
             }
 
             // TODO: improve synchronization

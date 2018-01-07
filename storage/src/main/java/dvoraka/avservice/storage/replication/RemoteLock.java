@@ -37,4 +37,6 @@ public interface RemoteLock extends ServiceStatus {
      * @return the unlocking result
      */
     boolean unlockForFile(String filename, String owner, int lockCount);
+
+    void networkChanged();
 }
