@@ -140,11 +140,19 @@ public class DefaultReplicationService implements
                 .collect(Collectors.toSet());
 
         if (newNeighbours.isEmpty()) {
-            log.debug("Discovered {}: none", idString);
+            log.debug("Neighbours discovered {}: none", idString);
         } else {
+
+            if (newNeighbours.size() != neighbours.size()) {
+                log.info("Neighbour count changed {}: {} to {}",
+                        idString, neighbours.size(), newNeighbours.size());
+                // notify lock about changes
+            }
+
+            // TODO: improve synchronization
             neighbours.clear();
             neighbours.addAll(newNeighbours);
-            log.debug("Discovered {}: {}", idString, neighbourCount());
+            log.debug("Neighbours discovered {}: {}", idString, neighbourCount());
         }
 
         //TODO: if it's stopped it sets running flag again
