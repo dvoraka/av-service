@@ -4,7 +4,6 @@ import dvoraka.avservice.client.service.ReplicationServiceClient;
 import dvoraka.avservice.client.service.response.ReplicationMessageList;
 import dvoraka.avservice.client.service.response.ReplicationResponseClient;
 import dvoraka.avservice.common.data.Command;
-import dvoraka.avservice.common.data.replication.MessageRouting;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
 import dvoraka.avservice.common.helper.WaitingHelper;
@@ -293,10 +292,13 @@ public class DefaultRemoteLock implements
 
     @Override
     public void onMessage(ReplicationMessage message) {
+
+        if (!isRunning()) {
+            return;
+        }
+
         // input filtering
-        if (message.getRouting() == MessageRouting.UNICAST
-                || message.getCommand() == Command.DISCOVER
-                || message.getCommand() == Command.EXISTS) {
+        if (isUnicast(message) || isCommand(message, Command.DISCOVER, Command.EXISTS)) {
             return;
         }
 
@@ -304,9 +306,7 @@ public class DefaultRemoteLock implements
 
         switch (message.getCommand()) {
             case SEQUENCE:
-                if (getSequence() != NOT_INITIALIZED) {
-                    serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
-                }
+                sequence(message);
                 break;
 
             case LOCK:
@@ -325,6 +325,10 @@ public class DefaultRemoteLock implements
                 log.debug("Unhandled broadcast command: {}", message.getCommand());
                 break;
         }
+    }
+
+    private void sequence(ReplicationMessage message) {
+        serviceClient.sendMessage(createSequenceReply(message, nodeId, getSequence()));
     }
 
     private void lock(ReplicationMessage message) {

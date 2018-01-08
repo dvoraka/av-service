@@ -118,4 +118,18 @@ public interface ReplicationHelper extends ReplicationServiceHelper, UuidHelper 
                 .toId(fromNode)
                 .build();
     }
+
+    default boolean isUnicast(ReplicationMessage message) {
+        return message.getRouting() == MessageRouting.UNICAST;
+    }
+
+    default boolean isCommand(ReplicationMessage message, Command... commands) {
+        for (Command command : commands) {
+            if (message.getCommand() == command) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
