@@ -196,7 +196,7 @@ public class DefaultRemoteLock implements
 
     @Override
     public void networkChanged() {
-        //TODO: update sync status
+        updateSequence();
     }
 
     /**
@@ -207,6 +207,9 @@ public class DefaultRemoteLock implements
         initializeSequence();
     }
 
+    /**
+     * Initializes sequence before lock start.
+     */
     private void initializeSequence() {
         log.debug("Initializing sequence {}...", idString);
 
@@ -229,6 +232,13 @@ public class DefaultRemoteLock implements
         setSequence(actualSequence);
 
         setRunning(true);
+    }
+
+    /**
+     * Updates sequence after changes on the replication network.
+     */
+    private void updateSequence() {
+        //TODO
     }
 
     private long getSequence() {
