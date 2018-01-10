@@ -305,7 +305,14 @@ public class DefaultRemoteLock implements
 
     @Override
     public void onMessage(ReplicationMessage message) {
+        try {
+            handleOnMessage(message);
+        } catch (Exception e) {
+            log.warn("On message problem!", e);
+        }
+    }
 
+    private void handleOnMessage(ReplicationMessage message) {
         if (!isRunning()) {
             return;
         }
