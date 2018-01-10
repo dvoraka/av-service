@@ -21,11 +21,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
@@ -46,6 +48,7 @@ public class DefaultRemoteLock implements
      * Not initialized value for the sequence counter.
      */
     private static final int NOT_INITIALIZED = -1;
+    private static final int ISOLATED = 1;
     /**
      * Default max response time in ms.
      */
@@ -196,7 +199,7 @@ public class DefaultRemoteLock implements
 
     @Override
     public void networkChanged() {
-        updateSequence();
+//        updateSequence();
     }
 
     /**
@@ -224,13 +227,12 @@ public class DefaultRemoteLock implements
                 .map(ReplicationMessage::getSequence)
                 .orElse((long) NOT_INITIALIZED);
 
-        if (actualSequence == NOT_INITIALIZED) {
+        if (actualSequence != NOT_INITIALIZED) {
+            setSequence(actualSequence);
+        } else {
             log.info("Start in isolated mode {}.", idString);
-            setMaster(true);
-            actualSequence = 1;
+            setIsolatedMode();
         }
-
-        setSequence(actualSequence);
 
         setRunning(true);
     }
@@ -241,7 +243,39 @@ public class DefaultRemoteLock implements
     private void updateSequence() {
         log.info("Updating sequence {}...", idString);
 
+        //TODO: updating should lock the lock
+
+        if (!isRunning()) {
+            log.info("Skip sequence update.");
+            return;
+        }
+
+        if (!isMaster()) {
+            ReplicationMessage request = createSequenceRequest(nodeId);
+            serviceClient.sendMessage(request);
+
+            List<Long> sequences = responseClient.getResponseWait(request.getId(), maxResponseTime)
+                    .orElseGet(ReplicationMessageList::new)
+                    .stream()
+                    .peek(message -> log.info("Sequence from {} {}: {}",
+                            message.getFromId(), idString, message))
+                    .map(ReplicationMessage::getSequence)
+                    .collect(Collectors.toList());
+
+            if (sequences.isEmpty()) {
+                setIsolatedMode();
+            }
+
+        } else {
+            // negotiate the sequence with others
+        }
+
         //TODO
+    }
+
+    private void setIsolatedMode() {
+        setMaster(true);
+        setSequence(ISOLATED);
     }
 
     private long getSequence() {
