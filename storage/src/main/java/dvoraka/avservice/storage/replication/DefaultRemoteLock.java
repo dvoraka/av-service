@@ -211,7 +211,7 @@ public class DefaultRemoteLock implements
      * Initializes sequence before lock start.
      */
     private void initializeSequence() {
-        log.debug("Initializing sequence {}...", idString);
+        log.info("Initializing sequence {}...", idString);
 
         ReplicationMessage request = createSequenceRequest(nodeId);
         serviceClient.sendMessage(request);
@@ -219,12 +219,13 @@ public class DefaultRemoteLock implements
         long actualSequence = responseClient.getResponseWait(request.getId(), maxResponseTime)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
-                .peek(message -> log.debug("Sequence {}: {}", idString, message))
+                .peek(message -> log.info("Sequence {}: {}", idString, message))
                 .findFirst()
                 .map(ReplicationMessage::getSequence)
                 .orElse((long) NOT_INITIALIZED);
 
         if (actualSequence == NOT_INITIALIZED) {
+            log.info("Start in isolated mode {}.", idString);
             setMaster(true);
             actualSequence = 1;
         }
@@ -238,6 +239,8 @@ public class DefaultRemoteLock implements
      * Updates sequence after changes on the replication network.
      */
     private void updateSequence() {
+        log.info("Updating sequence {}...", idString);
+
         //TODO
     }
 
