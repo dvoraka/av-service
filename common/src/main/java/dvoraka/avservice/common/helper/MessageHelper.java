@@ -13,6 +13,8 @@ public interface MessageHelper {
      *
      * @param listeners the listeners
      * @param message   the message
+     * @param <M>       the message type
+     * @param <L>       the listener type
      */
     default <M extends Message, L extends MessageListener<M>>
     void notifyListeners(Iterable<L> listeners, M message) {
