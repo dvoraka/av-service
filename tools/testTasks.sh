@@ -7,6 +7,8 @@ TASKS="
     configureEnvironment
     runAmqpCheck
     runAmqpLoadTest
+    runAmqpBufferedLoadTest
+    runAmqpConcurrentLoadTest
     runAmqpCheckServer
     runAmqpFileServer
     runAmqpFileServerWithReplication
@@ -15,9 +17,17 @@ TASKS="
     runCustomServer
     runJmsCheck
     runJmsLoadTest
+    runJmsBufferedLoadTest
+    runJmsConcurrentLoadTest
     runJmsCheckServer
     runJmsFileServer
     runJmsToAmqpBridge
+    runKafkaCheck
+    runKafkaLoadTest
+    runKafkaBufferedLoadTest
+    runKafkaConcurrentLoadTest
+    runKafkaCheckServer
+    runKafkaFileServer
     "
 SRC_ROOT=".."
 
