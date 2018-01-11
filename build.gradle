@@ -218,7 +218,7 @@ allprojects {
         reportsDir = file("${project.rootDir}/reports/checkstyle/${project.name}")
         sourceSets = [sourceSets.main]
 
-        ignoreFailures = false
+        ignoreFailures = true
     }
 
     spotbugs {
