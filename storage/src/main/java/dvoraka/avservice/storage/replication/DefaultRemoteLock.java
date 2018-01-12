@@ -64,6 +64,7 @@ public class DefaultRemoteLock implements
     private volatile boolean running;
 
     private boolean master;
+    private boolean isolated;
 
     private final String idString;
 
@@ -105,14 +106,22 @@ public class DefaultRemoteLock implements
     }
 
     @Override
-    public boolean lockForFile(String filename, String owner, int lockCount)
-            throws InterruptedException {
+    public boolean lockForFile(String filename, String owner, int lockCount) throws InterruptedException {
+
+        //TODO: why lock count is for remote locks only?
+
+//        if (isIsolated() && lockCount > 1) {
+//            return false;
+//        }
 
         // lock local file if possible
         if (!lockFile(filename, owner)) {
-
             return false;
         }
+
+//        if (isIsolated()) {
+//            return true;
+//        }
 
         // remote locking
         log.debug("Locking {} nodes {}...", lockCount, idString);
@@ -173,8 +182,11 @@ public class DefaultRemoteLock implements
     @Override
     public boolean unlockForFile(String filename, String owner, int lockCount) {
 
-        ReplicationMessage unlockRequest = createUnlockRequest(
-                filename, owner, nodeId, getSequence());
+//        if (isIsolated() && lockCount > 1) {
+//            return false;
+//        }
+
+        ReplicationMessage unlockRequest = createUnlockRequest(filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(unlockRequest);
 
         long successUnlocks = responseClient.getResponseWaitSize(
@@ -275,6 +287,7 @@ public class DefaultRemoteLock implements
 
     private void setIsolatedMode() {
         setMaster(true);
+        setIsolated(true);
         setSequence(ISOLATED);
     }
 
@@ -439,5 +452,13 @@ public class DefaultRemoteLock implements
 
     private void setMaster(boolean master) {
         this.master = master;
+    }
+
+    private boolean isIsolated() {
+        return isolated;
+    }
+
+    private void setIsolated(boolean isolated) {
+        this.isolated = isolated;
     }
 }
