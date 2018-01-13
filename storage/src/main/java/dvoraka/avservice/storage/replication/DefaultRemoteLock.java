@@ -94,7 +94,7 @@ public class DefaultRemoteLock implements
     public void start() {
         log.info("Start ({}). {}", nodeId, this);
         responseClient.addNoResponseMessageListener(this);
-        CompletableFuture.runAsync(this::synchronize);
+        CompletableFuture.runAsync(this::initializeSafe);
     }
 
     @PreDestroy
@@ -210,10 +210,18 @@ public class DefaultRemoteLock implements
 //        updateSequence();
     }
 
+    private void initializeSafe() {
+        try {
+            initialize();
+        } catch (Exception e) {
+            log.error("Initialization failed!", e);
+        }
+    }
+
     /**
-     * Synchronizes the lock with others.
+     * Initializes the lock before start.
      */
-    public void synchronize() {
+    public void initialize() {
         waitUntil(responseClient::isRunning);
         initializeSequence();
     }

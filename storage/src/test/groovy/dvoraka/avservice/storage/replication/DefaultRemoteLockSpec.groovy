@@ -34,6 +34,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
         responseClient = Mock()
         responseClient.isRunning() >> true
+        responseClient.getResponseWait(_, _) >> Optional.empty()
 
         lock = new DefaultRemoteLock(serviceClient, responseClient, nodeId)
     }
@@ -103,7 +104,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
     def "synchronize"() {
         when:
-            lock.synchronize()
+            lock.initialize()
 
         then:
             1 * serviceClient.sendMessage(_)
@@ -129,7 +130,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
     def "on message with sequence request with initialized lock"() {
         when:
-            lock.synchronize()
+            lock.initialize()
             lock.onMessage(createSequenceRequest(nodeId))
 
         then:
