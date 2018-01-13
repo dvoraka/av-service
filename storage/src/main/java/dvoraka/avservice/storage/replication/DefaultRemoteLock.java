@@ -105,49 +105,84 @@ public class DefaultRemoteLock implements
         responseClient.removeNoResponseMessageListener(this);
     }
 
+    private void initializeSafe() {
+        try {
+            initialize();
+        } catch (Exception e) {
+            log.error("Initialization failed!", e);
+        }
+    }
+
+    /**
+     * Initializes the lock before start.
+     */
+    private void initialize() {
+        waitUntil(responseClient::isRunning);
+        initializeSequence();
+    }
+
     @Override
-    public boolean lockForFile(String filename, String owner, int remoteLockCount)
-            throws InterruptedException {
+    public boolean lockForFile(String filename, String owner, int remoteLockCount) {
 
         if (isIsolated() && remoteLockCount > 0) {
             return false;
         }
 
-        // lock local file
-        if (!lockFile(filename, owner)) {
+        if (!lockLocalFile(filename, owner)) {
             return false;
         }
 
-        // remote locking
-        log.debug("Locking {} nodes {}...", remoteLockCount, idString);
-        //TODO: unlocking looks unsafe
-        lockingLock.lockInterruptibly();
-
-        final int retryCount = 2;
-        for (int i = 0; i <= retryCount; i++) {
-
-            String id = sendLockRequest(filename, owner);
-            final long successLocks = getLockResponse(id, remoteLockCount);
-
-            if (successLocks == remoteLockCount) {
-                incSequence();
-                log.debug("Remote locking success {}.", idString);
-                lockingLock.unlock();
-
-                return true;
-            } else if (successLocks > (remoteLockCount / 2)) {
-                sendForceUnlockRequest(filename, owner);
-            } else {
-                break;
-            }
+        if (isIsolated() && remoteLockCount == 0) {
+            return true;
         }
 
-        log.warn("Remote locking failed {}.", idString);
-        lockingLock.unlock();
+        if (remoteLockForFile(filename, owner, remoteLockCount)) {
+            return true;
+        }
+
         try {
-            unlockFile(filename, owner);
+            unlockLocalFile(filename, owner);
         } catch (FileNotLockedException e) {
             log.warn(UNLOCKING_FAILED, e);
+        }
+
+        return false;
+    }
+
+    private boolean remoteLockForFile(String filename, String owner, int remoteLockCount) {
+        log.debug("Locking {} nodes {}...", remoteLockCount, idString);
+
+        try {
+            lockingLock.lockInterruptibly();
+        } catch (InterruptedException e) {
+            log.warn("Remote locking interrupted {}.", idString);
+            Thread.currentThread().interrupt();
+
+            return false;
+        }
+
+        try {
+            final int retryCount = 2;
+            for (int i = 0; i <= retryCount; i++) {
+
+                String id = sendLockRequest(filename, owner);
+                final long successLocks = getLockResponse(id, remoteLockCount);
+
+                if (successLocks == remoteLockCount) {
+
+                    incSequence();
+                    log.debug("Remote locking success {}.", idString);
+
+                    return true;
+
+                } else if (successLocks > (remoteLockCount / 2)) {
+                    sendForceUnlockRequest(filename, owner);
+                } else {
+                    break;
+                }
+            }
+        } finally {
+            lockingLock.unlock();
         }
 
         return false;
@@ -195,7 +230,7 @@ public class DefaultRemoteLock implements
         boolean remoteSuccess = (successUnlocks == lockCount);
 
         try {
-            unlockFile(filename, owner);
+            unlockLocalFile(filename, owner);
         } catch (FileNotLockedException e) {
             log.warn("Local file was not locked " + idString + "!", e);
 
@@ -208,22 +243,6 @@ public class DefaultRemoteLock implements
     @Override
     public void networkChanged() {
 //        updateSequence();
-    }
-
-    private void initializeSafe() {
-        try {
-            initialize();
-        } catch (Exception e) {
-            log.error("Initialization failed!", e);
-        }
-    }
-
-    /**
-     * Initializes the lock before start.
-     */
-    private void initialize() {
-        waitUntil(responseClient::isRunning);
-        initializeSequence();
     }
 
     /**
@@ -300,7 +319,7 @@ public class DefaultRemoteLock implements
     }
 
     private void setSequence(long sequence) {
-        log.debug("Setting sequence {}: {}", idString, sequence);
+        log.info("Setting sequence {}: {}", idString, sequence);
         this.sequence.set(sequence);
     }
 
@@ -312,7 +331,7 @@ public class DefaultRemoteLock implements
         return lockedFiles.contains(hash(filename, owner));
     }
 
-    private boolean lockFile(String filename, String owner) {
+    private boolean lockLocalFile(String filename, String owner) {
         log.debug("Locking {}: {}, {}", idString, filename, owner);
 
         synchronized (lockedFiles) {
@@ -330,7 +349,7 @@ public class DefaultRemoteLock implements
         }
     }
 
-    private void unlockFile(String filename, String owner) throws FileNotLockedException {
+    private void unlockLocalFile(String filename, String owner) throws FileNotLockedException {
         log.debug("Unlocking {}: {}, {}", idString, filename, owner);
 
         synchronized (lockedFiles) {
@@ -405,7 +424,7 @@ public class DefaultRemoteLock implements
     private void lock(ReplicationMessage message) {
         if (getSequence() == message.getSequence() && lockingLock.tryLock()) {
 
-            if (lockFile(message.getFilename(), message.getOwner())) {
+            if (lockLocalFile(message.getFilename(), message.getOwner())) {
                 incSequence();
                 lockingLock.unlock();
                 serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
@@ -421,7 +440,7 @@ public class DefaultRemoteLock implements
 
     private void unlock(ReplicationMessage message) {
         try {
-            unlockFile(message.getFilename(), message.getOwner());
+            unlockLocalFile(message.getFilename(), message.getOwner());
             serviceClient.sendMessage(createUnlockSuccessReply(message, nodeId));
         } catch (FileNotLockedException e) {
             log.warn("Unlocking failed " + idString + ".", e);
@@ -434,7 +453,7 @@ public class DefaultRemoteLock implements
             log.warn("Force unlock {}: {}, {}",
                     idString, message.getFilename(), message.getOwner());
             try {
-                unlockFile(message.getFilename(), message.getOwner());
+                unlockLocalFile(message.getFilename(), message.getOwner());
             } catch (FileNotLockedException e) {
                 log.warn("Force unlock failed " + idString + ".", e);
             }
