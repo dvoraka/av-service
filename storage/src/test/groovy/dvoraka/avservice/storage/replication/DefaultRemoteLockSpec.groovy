@@ -171,6 +171,31 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper, 
             1 * serviceClient.sendMessage(_)
     }
 
+    def "on message with force unlock request for locked file"() {
+        setup:
+            startLock()
+
+        expect:
+            lock.onMessage(createLockRequest(testFilename, testOwner, nodeId, 1))
+
+        when:
+            lock.onMessage(createForceUnlockRequest(testFilename, testOwner, nodeId, 1))
+
+        then:
+            0 * serviceClient.sendMessage(_)
+    }
+
+    def "set max response time"() {
+        given:
+            int maxTime = 1234
+
+        when:
+            lock.setMaxResponseTime(maxTime)
+
+        then:
+            lock.getMaxResponseTime() == maxTime
+    }
+
     ReplicationMessageList genLockResponse() {
         ReplicationMessage lockRequest = createLockRequest(
                 testFilename, testOwner, nodeId, 1)
