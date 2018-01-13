@@ -4,6 +4,7 @@ import dvoraka.avservice.client.service.ReplicationServiceClient
 import dvoraka.avservice.client.service.response.ReplicationMessageList
 import dvoraka.avservice.client.service.response.ReplicationResponseClient
 import dvoraka.avservice.common.data.replication.ReplicationMessage
+import dvoraka.avservice.common.helper.WaitingHelper
 import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import spock.lang.Shared
 import spock.lang.Specification
@@ -11,7 +12,7 @@ import spock.lang.Subject
 import spock.util.concurrent.PollingConditions
 
 
-class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
+class DefaultRemoteLockSpec extends Specification implements ReplicationHelper, WaitingHelper {
 
     @Subject
     DefaultRemoteLock lock
@@ -83,7 +84,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
             result
     }
 
-    def "lock file and get lower lock count"() {
+    def "lock file with lower lock count"() {
         when:
             boolean result = lock.lockForFile('test', 'test', 2)
 
@@ -100,16 +101,6 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
         then:
             1 * serviceClient.sendMessage(_)
             1 * responseClient.getResponseWaitSize(_, _, _) >> Optional.empty()
-    }
-
-    def "synchronize"() {
-        when:
-            lock.initialize()
-
-        then:
-            1 * serviceClient.sendMessage(_)
-            1 * responseClient.getResponseWait(_, _) >> Optional.of(genSequenceResponse())
-            1 * responseClient.isRunning() >> true
     }
 
     def "on message with unicast message"() {
@@ -130,7 +121,8 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
     def "on message with sequence request with initialized lock"() {
         when:
-            lock.initialize()
+            lock.start()
+            waitUntil({ lock.isRunning() })
             lock.onMessage(createSequenceRequest(nodeId))
 
         then:
@@ -144,7 +136,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
             lock.onMessage(createSequenceRequest(nodeId))
 
         then:
-            0 * serviceClient.sendMessage(_)
+            0 * _
     }
 
     //TODO: needs started lock

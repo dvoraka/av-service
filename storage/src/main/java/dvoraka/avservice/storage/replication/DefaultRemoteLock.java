@@ -221,7 +221,7 @@ public class DefaultRemoteLock implements
     /**
      * Initializes the lock before start.
      */
-    public void initialize() {
+    private void initialize() {
         waitUntil(responseClient::isRunning);
         initializeSequence();
     }
