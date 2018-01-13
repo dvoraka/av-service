@@ -18,15 +18,15 @@ public interface RemoteLock extends ServiceStatus {
     void stop();
 
     /**
-     * Locks a file with a given count and return a result.
+     * Locks a file on a given remote node count nodes. Local file is locked too.
      *
      * @param filename  the filename
      * @param owner     the owner
-     * @param lockCount the lock count
+     * @param remoteLockCount the remote lock count
      * @return the locking result
      * @throws InterruptedException if locking is interrupted
      */
-    boolean lockForFile(String filename, String owner, int lockCount) throws InterruptedException;
+    boolean lockForFile(String filename, String owner, int remoteLockCount) throws InterruptedException;
 
     /**
      * Unlocks a file.

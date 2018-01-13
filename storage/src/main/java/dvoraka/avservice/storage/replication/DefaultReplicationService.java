@@ -166,6 +166,10 @@ public class DefaultReplicationService implements
         return neighbours.size();
     }
 
+    public int nodeCount() {
+        return neighbourCount() + 1;
+    }
+
     @Override
     public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Save {}: {}", idString, message);

@@ -106,39 +106,36 @@ public class DefaultRemoteLock implements
     }
 
     @Override
-    public boolean lockForFile(String filename, String owner, int lockCount) throws InterruptedException {
+    public boolean lockForFile(String filename, String owner, int remoteLockCount)
+            throws InterruptedException {
 
-        //TODO: why lock count is for remote locks only?
+        if (isIsolated() && remoteLockCount > 0) {
+            return false;
+        }
 
-//        if (isIsolated() && lockCount > 1) {
-//            return false;
-//        }
-
-        // lock local file if possible
+        // lock local file
         if (!lockFile(filename, owner)) {
             return false;
         }
 
-//        if (isIsolated()) {
-//            return true;
-//        }
-
         // remote locking
-        log.debug("Locking {} nodes {}...", lockCount, idString);
+        log.debug("Locking {} nodes {}...", remoteLockCount, idString);
+        //TODO: unlocking looks unsafe
         lockingLock.lockInterruptibly();
 
         final int retryCount = 2;
         for (int i = 0; i <= retryCount; i++) {
-            String id = sendLockRequest(filename, owner);
-            long successLocks = getLockResponse(id, lockCount);
 
-            if (successLocks == lockCount) {
+            String id = sendLockRequest(filename, owner);
+            final long successLocks = getLockResponse(id, remoteLockCount);
+
+            if (successLocks == remoteLockCount) {
                 incSequence();
                 log.debug("Remote locking success {}.", idString);
                 lockingLock.unlock();
 
                 return true;
-            } else if (successLocks > (lockCount / 2)) {
+            } else if (successLocks > (remoteLockCount / 2)) {
                 sendForceUnlockRequest(filename, owner);
             } else {
                 break;
@@ -171,8 +168,7 @@ public class DefaultRemoteLock implements
     }
 
     private long getLockResponse(String messageId, int lockCount) {
-        return responseClient.getResponseWaitSize(
-                messageId, maxResponseTime, lockCount)
+        return responseClient.getResponseWaitSize(messageId, maxResponseTime, lockCount)
                 .orElseGet(ReplicationMessageList::new)
                 .stream()
                 .filter(message -> message.getReplicationStatus() == ReplicationStatus.READY)
