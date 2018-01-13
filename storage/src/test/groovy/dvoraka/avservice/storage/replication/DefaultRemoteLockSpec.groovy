@@ -120,15 +120,14 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper, 
     }
 
     def "on message with sequence request with initialized lock"() {
+        setup:
+            startLock()
+
         when:
-            lock.start()
-            waitUntil({ lock.isRunning() })
             lock.onMessage(createSequenceRequest(nodeId))
 
         then:
-            1 * responseClient.isRunning() >> true
-            1 * responseClient.getResponseWait(_, _) >> Optional.of(genSequenceResponse())
-            2 * serviceClient.sendMessage(_)
+            1 * serviceClient.sendMessage(_)
     }
 
     def "on message with sequence request without initialized lock"() {
@@ -139,30 +138,38 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper, 
             0 * _
     }
 
-    //TODO: needs started lock
-//    def "on message with lock request with wrong sequence"() {
-//        when:
-//            lock.onMessage(createLockRequest(testFilename, testOwner, nodeId, 1))
-//
-//        then:
-//            1 * serviceClient.sendMessage(_)
-//    }
-//
-//    def "on message with lock request with right sequence"() {
-//        when:
-//            lock.onMessage(createLockRequest(testFilename, testOwner, nodeId, 0))
-//
-//        then:
-//            1 * serviceClient.sendMessage(_)
-//    }
-//
-//    def "on message with unlock request"() {
-//        when:
-//            lock.onMessage(createUnlockRequest(testFilename, testOwner, nodeId, 1))
-//
-//        then:
-//            1 * serviceClient.sendMessage(_)
-//    }
+    def "on message with lock request with wrong sequence"() {
+        setup:
+            startLock()
+
+        when:
+            lock.onMessage(createLockRequest(testFilename, testOwner, nodeId, 99))
+
+        then:
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message with lock request with right sequence"() {
+        setup:
+            startLock()
+
+        when:
+            lock.onMessage(createLockRequest(testFilename, testOwner, nodeId, 1))
+
+        then:
+            1 * serviceClient.sendMessage(_)
+    }
+
+    def "on message with unlock request"() {
+        setup:
+            startLock()
+
+        when:
+            lock.onMessage(createUnlockRequest(testFilename, testOwner, nodeId, 1))
+
+        then:
+            1 * serviceClient.sendMessage(_)
+    }
 
     ReplicationMessageList genLockResponse() {
         ReplicationMessage lockRequest = createLockRequest(
@@ -181,5 +188,10 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper, 
         messageList.add(seqReply)
 
         return messageList
+    }
+
+    void startLock() {
+        lock.start()
+        waitUntil({ lock.isRunning() })
     }
 }
