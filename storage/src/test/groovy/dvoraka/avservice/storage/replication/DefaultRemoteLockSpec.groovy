@@ -8,10 +8,9 @@ import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.util.concurrent.PollingConditions
 
-/**
- * DefaultRemoteLock spec.
- */
+
 class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
     @Subject
@@ -26,11 +25,16 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
     String testFilename = 'testFilename'
     @Shared
     String testOwner = 'testOwner'
+    @Shared
+    PollingConditions pollingConditions = new PollingConditions(timeout: 3)
 
 
     def setup() {
         serviceClient = Mock()
+
         responseClient = Mock()
+        responseClient.isRunning() >> true
+        responseClient.getResponseWait(_, _) >> Optional.empty()
 
         lock = new DefaultRemoteLock(serviceClient, responseClient, nodeId)
     }
@@ -41,6 +45,10 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
         then:
             1 * responseClient.addNoResponseMessageListener(_)
+
+            pollingConditions.eventually {
+                lock.isRunning()
+            }
     }
 
     def "stop"() {
@@ -49,6 +57,10 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
         then:
             1 * responseClient.removeNoResponseMessageListener(_)
+
+            pollingConditions.eventually {
+                !lock.isRunning()
+            }
     }
 
     def "lock file unsuccessfully"() {
@@ -92,7 +104,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
     def "synchronize"() {
         when:
-            lock.synchronize()
+            lock.initialize()
 
         then:
             1 * serviceClient.sendMessage(_)
@@ -118,7 +130,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper {
 
     def "on message with sequence request with initialized lock"() {
         when:
-            lock.synchronize()
+            lock.initialize()
             lock.onMessage(createSequenceRequest(nodeId))
 
         then:
