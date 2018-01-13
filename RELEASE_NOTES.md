@@ -1,3 +1,5 @@
+## v0.10 (Jan 13, 2018)
+
 ## v0.10-RC1 (Jan 6, 2018)
  * New concurrent performance testing
  * New runner service for managing runners from runner module
