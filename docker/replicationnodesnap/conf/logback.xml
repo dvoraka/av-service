@@ -9,7 +9,7 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
-    <logger name="dvoraka.avservice" level="INFO" additivity="false">
+    <logger name="dvoraka.avservice" level="DEBUG" additivity="false">
         <appender-ref ref="TCP"/>
     </logger>
 
