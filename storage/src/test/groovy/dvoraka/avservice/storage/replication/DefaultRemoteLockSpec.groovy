@@ -69,7 +69,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper, 
             boolean result = lock.lockForFile('test', 'test', 5)
 
         then:
-            1 * serviceClient.sendMessage(_)
+            2 * serviceClient.sendMessage(_) // request and force unlock
             1 * responseClient.getResponseWaitSize(_, _, _) >> Optional.empty()
             !result
     }
@@ -89,7 +89,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper, 
             boolean result = lock.lockForFile('test', 'test', 2)
 
         then:
-            1 * serviceClient.sendMessage(_)
+            2 * serviceClient.sendMessage(_) // request and force unlock
             1 * responseClient.getResponseWaitSize(_, _, _) >> Optional.of(genLockResponse())
             !result
     }

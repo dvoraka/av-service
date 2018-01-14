@@ -171,7 +171,7 @@ public class DefaultRemoteLock implements
 
                 return true;
             } else {
-                //TODO: unlock locked remote nodes
+                sendForceUnlockRequest(filename, owner);
             }
         } finally {
             lockingLock.unlock();
@@ -189,8 +189,8 @@ public class DefaultRemoteLock implements
 
     private void sendForceUnlockRequest(String filename, String owner) {
         log.warn("Sending force unlock request {}...", idString);
-        ReplicationMessage forceUnlockRequest = createForceUnlockRequest(
-                filename, owner, nodeId, getSequence());
+        ReplicationMessage forceUnlockRequest =
+                createForceUnlockRequest(filename, owner, nodeId, getSequence());
         serviceClient.sendMessage(forceUnlockRequest);
     }
 
@@ -439,15 +439,20 @@ public class DefaultRemoteLock implements
         }
     }
 
+    /**
+     * Unlocks file after failed operations.
+     *
+     * @param message the unlock message
+     */
     private void forceUnlock(ReplicationMessage message) {
-        if (isLocalFileLocked(message.getFilename(), message.getOwner())) {
-            log.warn("Force unlock {}: {}, {}",
-                    idString, message.getFilename(), message.getOwner());
-            try {
-                unlockLocalFile(message.getFilename(), message.getOwner());
-            } catch (FileNotLockedException e) {
-                log.warn("Force unlock failed " + idString + ".", e);
-            }
+        //TODO: check who locked the file and maybe check locking lock too
+
+        log.warn("Force unlock from {} {}: {}, {}",
+                message.getFromId(), idString, message.getFilename(), message.getOwner());
+        try {
+            unlockLocalFile(message.getFilename(), message.getOwner());
+        } catch (FileNotLockedException e) {
+            log.warn("Force unlock failed " + idString + ".", e);
         }
     }
 
