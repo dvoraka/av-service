@@ -162,18 +162,16 @@ public class DefaultRemoteLock implements
         }
 
         try {
-            final int retryCount = 2;
-            for (int i = 0; i <= retryCount; i++) {
+            String id = sendLockRequest(filename, owner);
+            final long successLocks = getLockResponse(id, remoteLockCount);
 
-                String id = sendLockRequest(filename, owner);
-                final long successLocks = getLockResponse(id, remoteLockCount);
+            if (successLocks == remoteLockCount) {
+                incSequence();
+                log.debug("Remote locking success {}.", idString);
 
-                if (successLocks == remoteLockCount) {
-                    incSequence();
-                    log.debug("Remote locking success {}.", idString);
-
-                    return true;
-                }
+                return true;
+            } else {
+                //TODO: unlock locked remote nodes
             }
         } finally {
             lockingLock.unlock();
