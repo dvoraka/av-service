@@ -20,9 +20,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
@@ -56,7 +56,7 @@ public class DefaultRemoteLock implements
     private static final String UNLOCKING_FAILED = "Unlocking failed!";
 
     private final AtomicLong sequence;
-    private final Set<String> lockedFiles;
+    private final Map<String, Boolean> lockedFiles;
     private final Lock lockingLock;
     private final HashingService hashingService;
 
@@ -80,7 +80,7 @@ public class DefaultRemoteLock implements
         this.nodeId = requireNonNull(nodeId);
 
         sequence = new AtomicLong(NOT_INITIALIZED);
-        lockedFiles = new HashSet<>();
+        lockedFiles = new HashMap<>();
         lockingLock = new ReentrantLock();
         hashingService = new Md5HashingService();
 
@@ -128,7 +128,7 @@ public class DefaultRemoteLock implements
             return false;
         }
 
-        if (!lockLocalFile(filename, owner)) {
+        if (!lockLocalFile(filename, owner, true)) {
             return false;
         }
 
@@ -320,10 +320,10 @@ public class DefaultRemoteLock implements
     }
 
     private boolean isLocalFileLocked(String filename, String owner) {
-        return lockedFiles.contains(hash(filename, owner));
+        return lockedFiles.containsKey(hash(filename, owner));
     }
 
-    private boolean lockLocalFile(String filename, String owner) {
+    private boolean lockLocalFile(String filename, String owner, boolean localLock) {
         log.debug("Locking {}: {}, {}", idString, filename, owner);
 
         synchronized (lockedFiles) {
@@ -334,7 +334,7 @@ public class DefaultRemoteLock implements
                 return false;
             } else {
                 log.debug("Lock success {}: {}, {}", idString, filename, owner);
-                lockedFiles.add(hash(filename, owner));
+                lockedFiles.put(hash(filename, owner), localLock);
 
                 return true;
             }
@@ -345,7 +345,7 @@ public class DefaultRemoteLock implements
         log.debug("Unlocking {}: {}, {}", idString, filename, owner);
 
         synchronized (lockedFiles) {
-            if (!lockedFiles.remove(hash(filename, owner))) {
+            if (lockedFiles.remove(hash(filename, owner)) == null) {
                 throw new FileNotLockedException();
             }
         }
@@ -416,7 +416,9 @@ public class DefaultRemoteLock implements
     private void lock(ReplicationMessage message) {
         if (getSequence() == message.getSequence()) {
 
-            if (lockingLock.tryLock() && lockLocalFile(message.getFilename(), message.getOwner())) {
+            if (lockingLock.tryLock()
+                    && lockLocalFile(message.getFilename(), message.getOwner(), false)) {
+
                 incSequence();
                 lockingLock.unlock();
                 serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
