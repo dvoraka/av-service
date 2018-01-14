@@ -169,16 +169,10 @@ public class DefaultRemoteLock implements
                 final long successLocks = getLockResponse(id, remoteLockCount);
 
                 if (successLocks == remoteLockCount) {
-
                     incSequence();
                     log.debug("Remote locking success {}.", idString);
 
                     return true;
-
-                } else if (successLocks > (remoteLockCount / 2)) {
-                    sendForceUnlockRequest(filename, owner);
-                } else {
-                    break;
                 }
             }
         } finally {
@@ -327,7 +321,7 @@ public class DefaultRemoteLock implements
         sequence.getAndIncrement();
     }
 
-    private boolean isFileLocked(String filename, String owner) {
+    private boolean isLocalFileLocked(String filename, String owner) {
         return lockedFiles.contains(hash(filename, owner));
     }
 
@@ -335,7 +329,7 @@ public class DefaultRemoteLock implements
         log.debug("Locking {}: {}, {}", idString, filename, owner);
 
         synchronized (lockedFiles) {
-            if (isFileLocked(filename, owner)) {
+            if (isLocalFileLocked(filename, owner)) {
                 log.debug("File is already locked {}: {}, {}",
                         idString, filename, owner);
 
@@ -422,14 +416,13 @@ public class DefaultRemoteLock implements
     }
 
     private void lock(ReplicationMessage message) {
-        if (getSequence() == message.getSequence() && lockingLock.tryLock()) {
+        if (getSequence() == message.getSequence()) {
 
-            if (lockLocalFile(message.getFilename(), message.getOwner())) {
+            if (lockingLock.tryLock() && lockLocalFile(message.getFilename(), message.getOwner())) {
                 incSequence();
                 lockingLock.unlock();
                 serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
             } else {
-                lockingLock.unlock();
                 serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
             }
         } else {
@@ -449,7 +442,7 @@ public class DefaultRemoteLock implements
     }
 
     private void forceUnlock(ReplicationMessage message) {
-        if (isFileLocked(message.getFilename(), message.getOwner())) {
+        if (isLocalFileLocked(message.getFilename(), message.getOwner())) {
             log.warn("Force unlock {}: {}, {}",
                     idString, message.getFilename(), message.getOwner());
             try {
