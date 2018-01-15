@@ -211,6 +211,7 @@ class ReplicationServiceISpec extends Specification implements FileServiceHelper
             service.deleteFile(fileDeleteMessage(saveMessage))
     }
 
+    @Ignore
     def "save 5 MB file"() {
         given:
             int size = 1000 * 1000 * 5
