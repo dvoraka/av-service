@@ -328,8 +328,7 @@ public class DefaultRemoteLock implements
 
         synchronized (lockedFiles) {
             if (isLocalFileLocked(filename, owner)) {
-                log.debug("File is already locked {}: {}, {}",
-                        idString, filename, owner);
+                log.debug("File is already locked {}: {}, {}", idString, filename, owner);
 
                 return false;
             } else {
@@ -414,19 +413,27 @@ public class DefaultRemoteLock implements
     }
 
     private void lock(ReplicationMessage message) {
-        if (getSequence() == message.getSequence()) {
+        log.debug("Locking {}: {}, {}...", idString, message.getFilename(), message.getOwner());
 
-            if (lockingLock.tryLock()
-                    && lockLocalFile(message.getFilename(), message.getOwner(), false)) {
+        if (getSequence() != message.getSequence()) {
+            log.debug("Bad sequence {}: {}", idString, message.getSequence());
+            serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
 
-                incSequence();
+            return;
+        }
+
+        if (lockingLock.tryLock()) {
+            try {
+                if (lockLocalFile(message.getFilename(), message.getOwner(), false)) {
+                    incSequence();
+                    log.info("Lock success {}.", idString);
+                    serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
+                }
+            } finally {
                 lockingLock.unlock();
-                serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
-            } else {
-                serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
             }
         } else {
-            log.debug("Bad sequence {}: {}", idString, message.getSequence());
+            log.debug("Can't acquire lock {}.", idString);
             serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
         }
     }
