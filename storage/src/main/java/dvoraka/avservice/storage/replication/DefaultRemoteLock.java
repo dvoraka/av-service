@@ -324,7 +324,6 @@ public class DefaultRemoteLock implements
     }
 
     private boolean lockLocalFile(String filename, String owner, boolean localLock) {
-        log.debug("Locking {}: {}, {}", idString, filename, owner);
 
         synchronized (lockedFiles) {
             if (isLocalFileLocked(filename, owner)) {
