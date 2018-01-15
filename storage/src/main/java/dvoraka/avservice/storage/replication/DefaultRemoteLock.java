@@ -426,8 +426,9 @@ public class DefaultRemoteLock implements
             try {
                 if (lockLocalFile(message.getFilename(), message.getOwner(), false)) {
                     incSequence();
-                    log.info("Lock success {}.", idString);
                     serviceClient.sendMessage(createLockSuccessReply(message, nodeId));
+                } else {
+                    serviceClient.sendMessage(createLockFailedReply(message, getSequence(), nodeId));
                 }
             } finally {
                 lockingLock.unlock();
