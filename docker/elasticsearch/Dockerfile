@@ -1,7 +1,7 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:5.4.1
 MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
-ENV ES_JAVA_OPTS="-Xms256m -Xmx256m"
+ENV ES_JAVA_OPTS="-Xms512m -Xmx512m"
 
 COPY conf/elasticsearch.yml /usr/share/elasticsearch/config/
 
