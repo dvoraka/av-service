@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.0.M7'
+        springBootVersion = '2.0.0.RC1'
     }
     repositories {
         mavenCentral()
@@ -109,7 +109,7 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('org.springframework.boot:spring-boot-starter-parent:2.0.0.M7')
+            mavenBom('org.springframework.boot:spring-boot-starter-parent:2.0.0.RC1')
         }
     }
 
