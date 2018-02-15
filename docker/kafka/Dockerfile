@@ -7,14 +7,15 @@ ENV SCALA_VERSION 2.12
 ENV KAFKA_VERSION 1.0.0
 ENV KAFKA_HOME /opt/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION"
 
-RUN apt-get update && \
-    apt-get install -y zookeeper wget supervisor dnsutils && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get clean
+RUN apt-get update \
+    && apt-get install -y zookeeper wget supervisor dnsutils \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN wget -q http://apache.mirrors.spacedump.net/kafka/"$KAFKA_VERSION"/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz -O /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz && \
-    tar xfz /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz -C /opt && \
-    rm /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz
+RUN wget -q http://apache.mirrors.spacedump.net/kafka/"$KAFKA_VERSION"/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz \
+        -O /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz \
+    && tar xfz /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz -C /opt \
+    && rm /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz
 
 #TODO: probably replace
 ADD scripts/start-kafka.sh /usr/bin/start-kafka.sh
