@@ -8,7 +8,10 @@ ENV KAFKA_VERSION 1.0.0
 ENV KAFKA_HOME /opt/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION"
 
 RUN apt-get update \
-    && apt-get install -y zookeeper wget supervisor dnsutils \
+    && apt-get -y install \
+        zookeeper \
+        wget \
+        supervisor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
