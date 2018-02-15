@@ -4,6 +4,7 @@ import dvoraka.avservice.client.configuration.ClientConfig
 import dvoraka.avservice.client.transport.AvNetworkComponent
 import dvoraka.avservice.common.data.AvMessage
 import dvoraka.avservice.common.listener.AvMessageListener
+import dvoraka.avservice.common.util.Utils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -31,5 +32,10 @@ class KafkaAdapterISpec extends Specification {
     def "consume"() {
         expect:
             sleep(6_000)
+    }
+
+    def "send"() {
+        expect:
+            avNetworkComponent.sendMessage(Utils.genFileMessage())
     }
 }
