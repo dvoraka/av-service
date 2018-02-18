@@ -1,0 +1,14 @@
+FROM debian:stretch
+
+MAINTAINER dvoraka <alen.dvorak@gmail.com>
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update \
+    && apt-get -y install zookeeper \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+EXPOSE 2181
+
+CMD ["/usr/share/zookeeper/bin/zkServer.sh", "start-foreground"]
