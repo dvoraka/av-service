@@ -32,5 +32,4 @@ COPY conf/avservice.properties ${USER_HOME}/${PROJECT_ROOT}/common/src/main/reso
 COPY conf/logback.xml ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
 COPY conf/gradle.properties ${USER_HOME}/${PROJECT_ROOT}/
 
-
 CMD ["./gradlew", "-q", "runAmqpReplicationService"]

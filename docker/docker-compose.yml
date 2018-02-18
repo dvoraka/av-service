@@ -68,6 +68,7 @@ services:
       - zookeeper-dev
     image: "kafka-dev-server"
     network_mode: "host"
+    restart: on-failure
 #
 #  # Replication node1000
 #  replication-node-1000:

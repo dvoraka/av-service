@@ -11,7 +11,6 @@ RUN apt-get update \
     && apt-get -y install \
         openjdk-8-jre-headless \
         wget \
-        supervisor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -20,14 +19,11 @@ RUN wget -q http://apache.mirrors.spacedump.net/kafka/"$KAFKA_VERSION"/kafka_"$S
     && tar xfz /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz -C /opt \
     && rm /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz
 
-#TODO: probably replace
-ADD scripts/start-kafka.sh /usr/bin/start-kafka.sh
-# Supervisor config
-ADD supervisor/kafka.conf /etc/supervisor/conf.d/
+COPY scripts/start-kafka.sh /usr/bin/start-kafka.sh
 
 COPY conf/server.properties $KAFKA_HOME/config/
 COPY conf/log4j.properties $KAFKA_HOME/config/
 
 EXPOSE 9099
 
-CMD ["supervisord", "-n"]
+CMD ["start-kafka.sh"]

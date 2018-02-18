@@ -32,5 +32,4 @@ RUN git checkout v"${VERSION}" \
 COPY conf/avservice.properties ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
 COPY conf/logback.xml ${USER_HOME}/${PROJECT_ROOT}/common/src/main/resources/
 
-
 CMD ["./gradlew", "-q", "runAmqpReplicationService"]
