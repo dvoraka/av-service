@@ -9,6 +9,9 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+COPY conf/zoo.cfg /etc/zookeeper/conf/
+COPY conf/log4j.properties /etc/zookeeper/conf/
+
 EXPOSE 2181
 
 CMD ["/usr/share/zookeeper/bin/zkServer.sh", "start-foreground"]
