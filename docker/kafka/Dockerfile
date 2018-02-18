@@ -9,6 +9,7 @@ ENV KAFKA_HOME /opt/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION"
 
 RUN apt-get update \
     && apt-get -y install \
+        openjdk-8-jre-headless \
         wget \
         supervisor \
     && apt-get clean \
