@@ -55,9 +55,17 @@ services:
 #    image: "solr-dev-server"
 #    network_mode: "host"
 #
+  # ZooKeeper
+  zookeeper-dev:
+    build: ./zookeeper
+    image: "zookeeper-dev-server"
+    network_mode: "host"
+
   # Kafka
   kafka-dev:
     build: ./kafka
+    depends_on:
+      - zookeeper-dev
     image: "kafka-dev-server"
     network_mode: "host"
 #
