@@ -1,5 +1,4 @@
 FROM debian:stretch
-
 MAINTAINER dvoraka <alen.dvorak@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
