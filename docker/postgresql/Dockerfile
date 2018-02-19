@@ -13,6 +13,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY conf/pg_hba.conf /etc/postgresql/$PG_VERSION/main/
+COPY scripts/start-postgres.sh /usr/bin/
 
 RUN mkdir -p /var/run/postgresql/"$PG_VERSION"-main.pg_stat_tmp
 RUN chown -R postgres:postgres /var/run/postgresql/"$PG_VERSION"-main.pg_stat_tmp
@@ -27,5 +28,4 @@ RUN /etc/init.d/postgresql start \
 
 EXPOSE 5432
 
-CMD /usr/lib/postgresql/${PG_VERSION}/bin/postgres \
-    -c config_file=/etc/postgresql/${PG_VERSION}/main/postgresql.conf
+CMD ["start-postgres.sh"]
