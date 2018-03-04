@@ -1,26 +1,13 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-//buildscript {
-//    ext {
-//        springBootVersion = '2.0.0.RELEASE'
-//    }
-//    repositories {
-//        mavenCentral()
-//        maven { url "https://repo.spring.io/snapshot" }
-//        maven { url "https://repo.spring.io/milestone" }
-//    }
-//    dependencies {
-//        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-//    }
-//}
 
 plugins {
     // SonarQube
-    id 'org.sonarqube' version '2.5'
+    id 'org.sonarqube' version '2.6.2'
     // Spring Boot and dependency management
     id 'org.springframework.boot' version '2.0.0.RELEASE' apply false
     // SpotBugs
-    id 'com.github.spotbugs' version '1.6.0'
+    id 'com.github.spotbugs' version '1.6.1'
 }
 
 description = 'Anti-virus and file network service'
