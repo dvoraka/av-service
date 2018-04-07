@@ -5,7 +5,7 @@ plugins {
     // SonarQube
     id 'org.sonarqube' version '2.6.2'
     // Spring Boot and dependency management
-    id 'org.springframework.boot' version '2.0.0.RELEASE' apply false
+    id 'org.springframework.boot' version '2.0.1.RELEASE' apply false
     // SpotBugs
     id 'com.github.spotbugs' version '1.6.1'
 }
