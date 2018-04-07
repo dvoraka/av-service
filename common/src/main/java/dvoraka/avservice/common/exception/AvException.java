@@ -12,6 +12,10 @@ public class AvException extends ServiceException {
         super(message);
     }
 
+    public AvException(Throwable cause) {
+        super(cause);
+    }
+
     public AvException(String message, Throwable cause) {
         super(message, cause);
     }

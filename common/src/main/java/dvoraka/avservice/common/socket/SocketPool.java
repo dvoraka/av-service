@@ -1,5 +1,6 @@
 package dvoraka.avservice.common.socket;
 
+import dvoraka.avservice.common.exception.SocketInitializationFailed;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -128,7 +129,7 @@ public class SocketPool implements SocketFactory {
             this.socketFactory = requireNonNull(socketFactory);
         }
 
-        private void initialize() {
+        private void initialize() throws SocketInitializationFailed {
             if (socket == null) {
                 log.debug("Initializing socket...");
 
@@ -137,6 +138,9 @@ public class SocketPool implements SocketFactory {
 
                 try {
                     socket = socketFactory.createSocket(host, port);
+                    if (socket == null) {
+                        throw new SocketInitializationFailed("Can't create socket!");
+                    }
 
                     outputStream = socket.getOutputStream();
                     outputStream.write("nIDSESSION\n".getBytes("UTF-8"));
@@ -163,16 +167,21 @@ public class SocketPool implements SocketFactory {
                 }
             }
             socket = null;
-            initialize();
+
+            try {
+                initialize();
+            } catch (SocketInitializationFailed ignore) {
+                // can't fix
+            }
         }
 
-        public OutputStream getOutputStream() {
+        public OutputStream getOutputStream() throws SocketInitializationFailed {
             initialize();
 
             return outputStream;
         }
 
-        public BufferedReader getBufferedReader() {
+        public BufferedReader getBufferedReader() throws SocketInitializationFailed {
             initialize();
 
             return reader;
@@ -192,7 +201,7 @@ public class SocketPool implements SocketFactory {
                 getBufferedReader().close();
                 getOutputStream().close();
                 socket.close();
-            } catch (IOException e) {
+            } catch (IOException | SocketInitializationFailed e) {
                 log.warn("Release socket problem!", e);
             }
         }

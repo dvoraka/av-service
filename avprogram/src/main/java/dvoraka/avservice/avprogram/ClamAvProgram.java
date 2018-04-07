@@ -1,6 +1,7 @@
 package dvoraka.avservice.avprogram;
 
 import dvoraka.avservice.common.exception.ScanException;
+import dvoraka.avservice.common.exception.SocketInitializationFailed;
 import dvoraka.avservice.common.service.CachingService;
 import dvoraka.avservice.common.socket.SocketPool;
 import dvoraka.avservice.common.util.Utils;
@@ -129,16 +130,16 @@ public class ClamAvProgram implements AvProgram {
         for (int i = 0; i < maxAttempts; i++) {
 
             SocketPool.SocketWrapper socket = socketPool.getSocket();
-            OutputStream outStream = socket.getOutputStream();
-            BufferedReader in = socket.getBufferedReader();
-
             try {
+                OutputStream outStream = socket.getOutputStream();
+                BufferedReader in = socket.getBufferedReader();
+
                 sendBytes(bytes, outStream);
                 String response = in.readLine();
 
                 return parseResponse(response);
 
-            } catch (IOException e) {
+            } catch (IOException | SocketInitializationFailed e) {
                 log.info(ERROR_MSG + ": {}", e.getMessage());
                 socket.fix();
             } finally {
