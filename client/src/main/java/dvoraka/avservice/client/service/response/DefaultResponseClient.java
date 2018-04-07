@@ -12,14 +12,14 @@ import org.ehcache.CacheManager;
 import org.ehcache.config.CacheConfiguration;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.expiry.Duration;
-import org.ehcache.expiry.Expirations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -98,8 +98,8 @@ public class DefaultResponseClient implements ResponseClient, AvMessageListener 
                         String.class,
                         AvMessage.class,
                         ResourcePoolsBuilder.heap(heapEntries))
-                .withExpiry(Expirations.timeToLiveExpiration(
-                        new Duration(CACHE_TIMEOUT, TimeUnit.MILLISECONDS)))
+                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(
+                        Duration.ofMillis(CACHE_TIMEOUT)))
                 .build();
     }
 
