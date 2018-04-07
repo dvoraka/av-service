@@ -37,10 +37,16 @@ public class SecurityRestConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // user for testing for now
-        auth.inMemoryAuthentication().withUser(User.withDefaultPasswordEncoder()
-                .username("test").password("test").roles("USER"));
-        auth.inMemoryAuthentication().withUser(User.withDefaultPasswordEncoder()
-                .username("admin").password("admin").roles("USER", "ADMIN"));
+        auth.inMemoryAuthentication().withUser(User
+                .withUsername("test")
+                .password("{bcrypt}$2a$10$a4ppmQyKfWb9.NbB8In42eYTQINkqct.AOAOvEeG4Rj051oVKmA5q")
+                .roles("USER")
+                .build());
+        auth.inMemoryAuthentication().withUser(User
+                .withUsername("admin")
+                .password("{bcrypt}$2a$10$ildtDVnwCObMw9KE2PVYtecuvPUm131/OD1L.BQr1jIal8zlM/6vC")
+                .roles("USER", "ADMIN")
+                .build());
 
         auth.userDetailsService(userDetailsService());
     }
