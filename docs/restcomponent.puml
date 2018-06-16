@@ -4,6 +4,7 @@ title REST interface
 
 interface "HTTP" as http
 interface "message broker" as broker
+interface "message broker (replication)" as broker2
 
 
 package "REST" {
@@ -50,8 +51,16 @@ broker -- [core 3]
 [core 2] -- [File service 2]
 [core 3] -- [File service 3]
 
+[AV service 1] -- [ClamAV 1]
+[AV service 2] -- [ClamAV 2]
+[AV service 3] -- [ClamAV 3]
+
 [File service 1] -- [database 1]
 [File service 2] -- [database 2]
 [File service 3] -- [database 3]
+
+[File service 1] -- broker2
+[File service 2] -- broker2
+[File service 3] -- broker2
 
 @enduml
