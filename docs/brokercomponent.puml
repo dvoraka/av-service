@@ -26,6 +26,16 @@ package "core node 3" {
     [file service 3]
 }
 
+package "replication service 1" {
+    [file service 4]
+    [database 4]
+}
+
+package "replication service 2" {
+    [file service 5]
+    [database 5]
+}
+
 broker2 -- [bridge 1]
 broker3 -- [bridge 2]
 
