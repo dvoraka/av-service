@@ -55,5 +55,10 @@ broker -- [core 3]
 [file service 1] -- broker4
 [file service 2] -- broker4
 [file service 3] -- broker4
+[file service 4] -up- broker4
+[file service 5] -up- broker4
+
+[file service 4] -left- [database 4]
+[file service 5] - [database 5]
 
 @enduml
