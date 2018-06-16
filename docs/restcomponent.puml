@@ -1,0 +1,57 @@
+@startuml
+
+title REST interface
+
+interface "HTTP" as http
+interface "message broker" as broker
+
+
+package "REST" {
+    [REST 1]
+    [REST 2]
+    [REST 3]
+}
+
+package "core node 1" {
+    [core 1]
+    [AV service 1]
+    [File service 1]
+}
+
+package "core node 2" {
+    [core 2]
+    [AV service 2]
+    [File service 2]
+}
+
+package "core node 3" {
+    [core 3]
+    [AV service 3]
+    [File service 3]
+}
+
+http -- [REST 1]
+http -- [REST 2]
+http -- [REST 3]
+
+[REST 1] -- broker
+[REST 2] -- broker
+[REST 3] -- broker
+
+broker -- [core 1]
+broker -- [core 2]
+broker -- [core 3]
+
+[core 1] -- [AV service 1]
+[core 2] -- [AV service 2]
+[core 3] -- [AV service 3]
+
+[core 1] -- [File service 1]
+[core 2] -- [File service 2]
+[core 3] -- [File service 3]
+
+[File service 1] -- [database 1]
+[File service 2] -- [database 2]
+[File service 3] -- [database 3]
+
+@enduml
