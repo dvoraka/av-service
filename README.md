@@ -60,6 +60,9 @@ Release [NOTES](RELEASE_NOTES.md)
  * REST load balancer
  * AMQP 1.0 support
 
+### Overview
+![REST component diagram](/docs/restcomponent.png)
+
 ### Used components
  * **ClamAV** - open source anti-virus engine
  * **RabbitMQ** - open source message broker used for AMQP
