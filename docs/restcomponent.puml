@@ -7,9 +7,9 @@ interface "message broker" as broker
 
 
 package "REST" {
-    [REST 1]
-    [REST 2]
     [REST 3]
+    [REST 2]
+    [REST 1]
 }
 
 package "core node 1" {

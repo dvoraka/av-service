@@ -30,6 +30,7 @@ can find something else for you
  * [Release notes](#release-notes)
  * [Features](#features)
  * [Planned features](#planned-features)
+ * [Overview](#overview)
  * [Used components](#used-components)
  * [How to send a message](#how-to-send-a-message-for-anti-virus-check)
  * [Installation](#installation)
@@ -61,6 +62,7 @@ Release [NOTES](RELEASE_NOTES.md)
  * AMQP 1.0 support
 
 ### Overview
+##### REST configuration
 ![REST component diagram](/docs/restcomponent.png)
 
 ### Used components
