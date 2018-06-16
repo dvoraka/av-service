@@ -1,0 +1,26 @@
+@startuml
+
+title Local REST interface
+
+interface "HTTP" as http
+
+
+package "core node" {
+    [REST]
+    [core]
+    [AV service]
+    [file service]
+}
+
+http -- [REST]
+
+[REST] -- [core]
+
+[core] -- [AV service]
+[core] -- [file service]
+
+[AV service] -- [ClamAV]
+
+[file service] -- [database]
+
+@enduml

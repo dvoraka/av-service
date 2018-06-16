@@ -62,11 +62,14 @@ Release [NOTES](RELEASE_NOTES.md)
  * AMQP 1.0 support
 
 ### Overview
-##### Remote REST configuration
+##### Remote REST configuration with file replication
 ![Remote REST component diagram](/docs/remoterestcomponent.png)
 
-##### Broker connection configuration
+##### Broker connection configuration with file replication
 ![Broker connection component diagram](/docs/brokercomponent.png)
+
+##### Local REST connection configuration
+![Local REST component diagram](/docs/localrestcomponent.png)
 
 ### Used components
  * **ClamAV** - open source anti-virus engine
