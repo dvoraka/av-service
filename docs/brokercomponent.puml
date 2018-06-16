@@ -1,0 +1,59 @@
+@startuml
+
+title Broker interface
+
+interface "message broker" as broker
+interface "message broker 2" as broker2
+interface "message broker 3" as broker3
+interface "message broker\n(file replication)" as broker4
+
+
+package "core node 1" {
+    [core 1]
+    [AV service 1]
+    [file service 1]
+}
+
+package "core node 2" {
+    [core 2]
+    [AV service 2]
+    [file service 2]
+}
+
+package "core node 3" {
+    [core 3]
+    [AV service 3]
+    [file service 3]
+}
+
+broker2 -- [bridge 1]
+broker3 -- [bridge 2]
+
+[bridge 1] - broker
+[bridge 2] -left- broker
+
+broker -- [core 1]
+broker -- [core 2]
+broker -- [core 3]
+
+[core 1] -- [AV service 1]
+[core 2] -- [AV service 2]
+[core 3] -- [AV service 3]
+
+[core 1] -- [file service 1]
+[core 2] -- [file service 2]
+[core 3] -- [file service 3]
+
+[AV service 1] -- [ClamAV 1]
+[AV service 2] -- [ClamAV 2]
+[AV service 3] -- [ClamAV 3]
+
+[file service 1] -- [database 1]
+[file service 2] -- [database 2]
+[file service 3] -- [database 3]
+
+[file service 1] -- broker4
+[file service 2] -- broker4
+[file service 3] -- broker4
+
+@enduml

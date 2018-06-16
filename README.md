@@ -65,6 +65,9 @@ Release [NOTES](RELEASE_NOTES.md)
 ##### Remote REST configuration
 ![Remote REST component diagram](/docs/remoterestcomponent.png)
 
+##### Broker connection configuration
+![Broker connection component diagram](/docs/brokercomponent.png)
+
 ### Used components
  * **ClamAV** - open source anti-virus engine
  * **RabbitMQ** - open source message broker used for AMQP
