@@ -1,6 +1,6 @@
 @startuml
 
-title REST interface
+title Remote REST interface
 
 interface "HTTP" as http
 interface "message broker" as broker

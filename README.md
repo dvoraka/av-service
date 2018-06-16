@@ -62,8 +62,8 @@ Release [NOTES](RELEASE_NOTES.md)
  * AMQP 1.0 support
 
 ### Overview
-##### REST configuration
-![REST component diagram](/docs/restcomponent.png)
+##### Remote REST configuration
+![Remote REST component diagram](/docs/remoterestcomponent.png)
 
 ### Used components
  * **ClamAV** - open source anti-virus engine
