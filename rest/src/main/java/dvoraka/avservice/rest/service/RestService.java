@@ -9,8 +9,7 @@ import dvoraka.avservice.common.data.MessageStatus;
 /**
  * Main REST service.
  */
-public interface RestService
-        extends AvServiceClient, FileServiceClient, ResponseProvider<AvMessage> {
+public interface RestService extends AvServiceClient, FileServiceClient, ResponseProvider<AvMessage> {
 
     /**
      * Returns a message status.

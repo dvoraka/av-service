@@ -1,4 +1,4 @@
 /**
- * Core anti-virus infrastructure.
+ * Core infrastructure.
  */
 package dvoraka.avservice.core;
