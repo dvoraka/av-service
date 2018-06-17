@@ -1,0 +1,29 @@
+@startuml
+
+title Remote REST interface detail
+
+interface "HTTP" as http
+interface "message broker" as broker
+
+
+http -- [MainController]
+http -- [CheckController]
+http -- [FileController]
+
+[MainController] -- [RestService]
+[CheckController] -- [RestService]
+[FileController] -- [RestService]
+
+[RestService] -- [AvServiceClient]
+[RestService] -- [FileServiceClient]
+[RestService] -- [ResponseClient]
+
+[AvServiceClient] -- [AvNetworkComponent]
+[AvServiceClient] - [ResponseClient]
+
+[FileServiceClient] -- [AvNetworkComponent]
+[ResponseClient] -- [AvNetworkComponent]
+
+[AvNetworkComponent] -- broker
+
+@enduml
