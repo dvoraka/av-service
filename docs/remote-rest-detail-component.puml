@@ -5,6 +5,7 @@ title Remote REST interface detail
 interface "HTTP" as http
 interface "message broker" as broker
 
+
 package "MessageProcessor" {
     [CompositeMessageProcessor]
     [AvCheckMessageProcessor]
