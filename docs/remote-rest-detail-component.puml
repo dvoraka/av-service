@@ -5,6 +5,11 @@ title Remote REST interface detail
 interface "HTTP" as http
 interface "message broker" as broker
 
+package "MessageProcessor" {
+    [CompositeMessageProcessor]
+    [AvCheckMessageProcessor]
+    [FileMessageProcessor]
+}
 
 http -- [MainController]
 http -- [CheckController]
@@ -25,5 +30,18 @@ http -- [FileController]
 [ResponseClient] -- [AvNetworkComponent]
 
 [AvNetworkComponent] -- broker
+
+[AvNetworkComponent 2] -up- broker
+
+[AvServer] -up- [AvNetworkComponent 2]
+[AvServer] -- [CompositeMessageProcessor]
+
+[CompositeMessageProcessor] - [AvCheckMessageProcessor]
+[CompositeMessageProcessor] -left- [FileMessageProcessor]
+
+[FileMessageProcessor] -- [FileService]
+[AvCheckMessageProcessor] -- [AvService]
+
+[AvService] -- [AvProgram]
 
 @enduml
