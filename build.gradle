@@ -13,14 +13,14 @@ plugins {
 description = 'Project for anti-virus service'
 
 allprojects {
-    apply plugin: 'java'
-    apply plugin: 'groovy'
     apply plugin: 'checkstyle'
     apply plugin: 'com.github.spotbugs'
-    apply plugin: 'pmd'
-    apply plugin: 'jacoco'
-    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'groovy'
     apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
+    apply plugin: 'java'
+    apply plugin: 'pmd'
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
