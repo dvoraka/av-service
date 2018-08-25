@@ -4,10 +4,10 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     // SonarQube
-    id 'org.sonarqube' version '2.5'
+    id 'org.sonarqube' version '2.6.2'
     // Spring Boot and dependency management
     id 'org.springframework.boot' version '2.0.4.RELEASE' apply false
-    id 'com.github.spotbugs' version '1.4'
+    id 'com.github.spotbugs' version '1.6.2'
 }
 
 description = 'Project for anti-virus service'
@@ -131,9 +131,6 @@ allprojects {
         // MVC & Security
         // Moved to REST module
 
-        // Spring 5 deps
-        compile group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
-
         // Joda time (for Spring Solr)
         compile group: 'joda-time', name: 'joda-time'
 
@@ -202,7 +199,7 @@ allprojects {
     // Quality tool configurations
     //
     checkstyle {
-        toolVersion = '7.3'
+//        toolVersion = '7.3'
         configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
         reportsDir = file("${project.rootDir}/reports/checkstyle/${project.name}")
         sourceSets = [sourceSets.main]
