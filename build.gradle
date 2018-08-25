@@ -30,15 +30,15 @@ allprojects {
     ext {
         taskGroupName = 'AV-service'
         // Log4j version
-        log4jVersion = '2.9.1'
+        log4jVersion = '2.10.0'
         // Logstash Logback encoder version
-        logstashLogbackVersion = '4.11'
+        logstashLogbackVersion = '5.2'
         // Spock version
         spockVersion = '1.1-groovy-2.4'
         // Cglib nodep version
-        cglibVersion = '3.2.5'
+        cglibVersion = '3.2.7'
         // Equals verifier version
-        equalsVerifierVersion = '2.3.3'
+        equalsVerifierVersion = '2.5.2'
     }
 
     repositories {
