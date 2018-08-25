@@ -1,5 +1,6 @@
 *.swp
 *.log
+
 .gradle/
 
 # Idea
@@ -7,6 +8,7 @@
 *.iml
 
 build/
+out/
 classes/
 reports/
 
