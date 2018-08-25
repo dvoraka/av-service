@@ -1,35 +1,22 @@
-buildscript {
-    ext {
-        springBootVersion = '2.0.0.RC2'
-    }
-    repositories {
-        mavenCentral()
-        maven { url "https://repo.spring.io/snapshot" }
-        maven { url "https://repo.spring.io/milestone" }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
-}
+import com.github.spotbugs.SpotBugsTask
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 
 plugins {
     // SonarQube
     id 'org.sonarqube' version '2.5'
-//    // Spring Boot and dependency management
-//    id 'org.springframework.boot' version '1.5.3.RELEASE'
+    // Spring Boot and dependency management
+    id 'org.springframework.boot' version '2.0.0.RELEASE' apply false
     id 'com.github.spotbugs' version '1.4'
 }
 
 description = 'Project for anti-virus service'
 
-// Temporary overrides for BOMs
-ext['spring-data-releasetrain.version'] = 'Kay-RELEASE'
-
 allprojects {
     apply plugin: 'java'
     apply plugin: 'groovy'
     apply plugin: 'checkstyle'
-    apply plugin: 'findbugs'
+    apply plugin: 'com.github.spotbugs'
     apply plugin: 'pmd'
     apply plugin: 'jacoco'
     apply plugin: 'io.spring.dependency-management'
@@ -56,18 +43,18 @@ allprojects {
     repositories {
         mavenCentral()
 
-        // Spring snapshots
-        maven {
-            url "http://repo.spring.io/snapshot"
-        }
-        // Spring milestones
-        maven {
-            url "http://repo.spring.io/milestone"
-        }
-        // Spring libs milestones
-        maven {
-            url "http://repo.spring.io/libs-milestone"
-        }
+//        // Spring snapshots
+//        maven {
+//            url "http://repo.spring.io/snapshot"
+//        }
+//        // Spring milestones
+//        maven {
+//            url "http://repo.spring.io/milestone"
+//        }
+//        // Spring libs milestones
+//        maven {
+//            url "http://repo.spring.io/libs-milestone"
+//        }
     }
 
     sourceSets {
@@ -110,7 +97,7 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom('org.springframework.boot:spring-boot-starter-parent:2.0.0.RC2')
+            mavenBom(SpringBootPlugin.BOM_COORDINATES)
         }
     }
 
@@ -223,27 +210,21 @@ allprojects {
         ignoreFailures = false
     }
 
-    findbugs {
-        reportsDir = file("${project.rootDir}/reports/findbugsReports/${project.name}")
-        reportLevel = 'medium'
+    spotbugs {
+        reportsDir = file("${project.rootDir}/reports/spotbugsReports/${project.name}")
         sourceSets = [sourceSets.main]
 
-        ignoreFailures = true
+        effort = 'max'
+        reportLevel = 'high'
+
+        ignoreFailures = false
     }
 
-    tasks.withType(FindBugs) {
+    tasks.withType(SpotBugsTask) {
         reports {
             xml.enabled = false
             html.enabled = true
         }
-    }
-
-    spotbugs {
-        reportsDir = file("${project.rootDir}/reports/spotbugsReports/${project.name}")
-        reportLevel = 'medium'
-//        sourceSets = [sourceSets.main]
-
-        ignoreFailures = false
     }
 
     pmd {
