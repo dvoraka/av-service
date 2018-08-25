@@ -273,8 +273,10 @@ allprojects {
 
     check.dependsOn integrationTest
     check.dependsOn jacocoTestReport
+    check.dependsOn javadoc
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.2.1'
+    distributionType = Wrapper.DistributionType.ALL
 }
