@@ -83,9 +83,9 @@ public class ClamAvProgram implements AvProgram {
     /**
      * New checking prototype.
      *
-     * @param bytes
-     * @return
-     * @throws IOException
+     * @param bytes the bytes to scan
+     * @return the scan info
+     * @throws IOException if socket problem occurs
      */
     public String scanBytesNew(byte[] bytes) throws IOException {
         Objects.requireNonNull(bytes);

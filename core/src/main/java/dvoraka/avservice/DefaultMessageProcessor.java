@@ -62,8 +62,10 @@ public class DefaultMessageProcessor implements MessageProcessor {
     /**
      * Creates a processor with a given thread count and service ID.
      *
-     * @param threadCount the processing thread count
-     * @param serviceId   the service ID string
+     * @param threadCount        the processing thread count
+     * @param serviceId          the service ID string
+     * @param avService          the anti-virus service
+     * @param messageInfoService the message info service
      */
     @Autowired
     public DefaultMessageProcessor(
