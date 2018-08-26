@@ -118,8 +118,8 @@ public class ClamAvProgram implements AvProgram {
     /**
      * New checking prototype.
      *
-     * @param bytes bytes for scan
-     * @return the virus info
+     * @param bytes the bytes to scan
+     * @return the scan info
      * @throws ScanException if scan fails
      * @see ClamAvProgram#scanBytesWithInfo(byte[])
      */
@@ -237,7 +237,7 @@ public class ClamAvProgram implements AvProgram {
 
     private void sendBytes(byte[] bytes, OutputStream outStream) throws IOException {
         // write bytes
-        outStream.write("nINSTREAM\n".getBytes("UTF-8"));
+        outStream.write("nINSTREAM\n".getBytes(DEFAULT_CHARSET));
         outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
         outStream.write(bytes);
 
