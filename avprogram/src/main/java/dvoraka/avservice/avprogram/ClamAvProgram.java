@@ -95,7 +95,7 @@ public class ClamAvProgram implements AvProgram {
         BufferedReader in = socket.getBufferedReader();
 
         // send bytes
-        outStream.write("nINSTREAM\n".getBytes("UTF-8"));
+        outStream.write("nINSTREAM\n".getBytes(DEFAULT_CHARSET));
         outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
         outStream.write(bytes);
 
@@ -163,7 +163,7 @@ public class ClamAvProgram implements AvProgram {
                 BufferedReader in = new BufferedReader(inReader)
         ) {
             // send bytes
-            outStream.write("nINSTREAM\n".getBytes("UTF-8"));
+            outStream.write("nINSTREAM\n".getBytes(DEFAULT_CHARSET));
             outStream.write(intBytes(bytes.length, CHUNK_LENGTH_BYTE_SIZE));
             outStream.write(bytes);
 
