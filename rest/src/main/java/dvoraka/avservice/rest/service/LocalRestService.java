@@ -53,7 +53,9 @@ public class LocalRestService implements RestService, AvMessageListener {
 
         return CacheConfigurationBuilder
                 .newCacheConfigurationBuilder(
-                        String.class, AvMessage.class, ResourcePoolsBuilder.heap(heapEntries))
+                        String.class,
+                        AvMessage.class,
+                        ResourcePoolsBuilder.heap(heapEntries))
                 .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(
                         Duration.ofMillis(expirationTime)))
                 .build();
