@@ -11,15 +11,14 @@ import org.ehcache.CacheManager;
 import org.ehcache.config.CacheConfiguration;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.expiry.Duration;
-import org.ehcache.expiry.Expirations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * Local REST strategy. Uses directly the message processor.
@@ -46,9 +45,11 @@ public class LocalRestStrategy implements RestStrategy, AvMessageListener {
         final long heapEntries = 10;
         CacheConfiguration<String, AvMessage> configuration = CacheConfigurationBuilder
                 .newCacheConfigurationBuilder(
-                        String.class, AvMessage.class, ResourcePoolsBuilder.heap(heapEntries))
-                .withExpiry(Expirations.timeToLiveExpiration(
-                        new Duration(expirationTime, TimeUnit.MILLISECONDS)))
+                        String.class,
+                        AvMessage.class,
+                        ResourcePoolsBuilder.heap(heapEntries))
+                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(
+                        Duration.ofMillis(expirationTime)))
                 .build();
 
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
