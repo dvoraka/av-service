@@ -1,3 +1,9 @@
+## v0.5.3 (Aug 26, 2018)
+ * Spring Boot 2.0.4
+ * Updated libraries
+ * Tuned build configuration
+ * Improved docs
+
 ## v0.10 (Jan 13, 2018)
 
 ## v0.10-RC1 (Jan 6, 2018)
