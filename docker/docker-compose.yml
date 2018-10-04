@@ -76,8 +76,8 @@ services:
     image: "mongo-dev-server"
     network_mode: "host"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME: docker
-      - MONGO_INITDB_ROOT_PASSWORD: docker
+      - MONGO_INITDB_ROOT_USERNAME=docker
+      - MONGO_INITDB_ROOT_PASSWORD=docker
 
   # Replication node1000
   replication-node-1000:
