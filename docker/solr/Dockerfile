@@ -1,5 +1,5 @@
 FROM solr:6.6.2
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 ENV SOLR_HOME=/opt/solr/server/solr/
 

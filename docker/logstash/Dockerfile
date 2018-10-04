@@ -1,5 +1,5 @@
 FROM docker.elastic.co/logstash/logstash:5.4.1
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 COPY conf/av-service.conf /etc/logstash/conf.d/
 

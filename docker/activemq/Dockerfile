@@ -1,5 +1,5 @@
 FROM openjdk:8u102-jre
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 ARG AMQ_NAME=activemq
 ARG AMQ_VERSION=5.14.1

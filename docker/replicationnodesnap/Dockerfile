@@ -5,7 +5,7 @@
 #
 
 FROM debian:stretch
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 ENV USER_HOME /home/user
 ENV PROJECT_ROOT av-service

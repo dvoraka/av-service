@@ -1,5 +1,5 @@
 FROM debian:stretch
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 ENV PG_VERSION=9.6
 ENV PG_DATA=/var/lib/postgresql/$PG_VERSION/main

@@ -2,7 +2,7 @@
 # Example Docker configuration for service running.
 
 FROM debian:stretch
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 ARG VERSION=0.6
 

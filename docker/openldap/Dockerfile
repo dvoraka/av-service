@@ -1,5 +1,5 @@
 FROM debian:stretch
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \

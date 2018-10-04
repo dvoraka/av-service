@@ -1,5 +1,5 @@
 FROM debian:stretch
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV SCALA_VERSION 2.12

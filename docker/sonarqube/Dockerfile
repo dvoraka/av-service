@@ -1,5 +1,5 @@
 FROM sonarqube:6.2
-MAINTAINER dvoraka <alen.dvorak@gmail.com>
+LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 EXPOSE 9000
 
