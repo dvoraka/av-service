@@ -4,7 +4,7 @@ LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
-    && apt-get -y install zookeeper \
+    && apt-get --no-install-recommends -y install zookeeper \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
