@@ -30,7 +30,7 @@ before_script:
 
 script:
   - sudo netstat -lnp46
-  - ./gradlew check
+  - ./gradlew -info check
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
