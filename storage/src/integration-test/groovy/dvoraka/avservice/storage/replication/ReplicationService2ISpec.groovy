@@ -20,6 +20,7 @@ import org.springframework.context.annotation.PropertySource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
@@ -34,6 +35,8 @@ import spock.lang.Stepwise
 @ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
+//TODO: #318
+@Ignore
 class ReplicationService2ISpec extends Specification
         implements ReplicationHelper, FileServiceHelper, WaitingHelper {
 

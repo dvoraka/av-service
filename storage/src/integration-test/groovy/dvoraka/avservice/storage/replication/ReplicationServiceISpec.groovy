@@ -27,6 +27,8 @@ import java.util.concurrent.Semaphore
 @ContextConfiguration(classes = [StorageConfig.class])
 @ActiveProfiles(['storage', 'storage-check', 'replication', 'client', 'amqp', 'no-db'])
 @DirtiesContext
+//TODO: #318
+@Ignore
 class ReplicationServiceISpec extends Specification implements FileServiceHelper, WaitingHelper {
 
     @Autowired

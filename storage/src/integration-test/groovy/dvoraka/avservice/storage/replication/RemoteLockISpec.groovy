@@ -31,6 +31,8 @@ import spock.lang.Specification
 @ActiveProfiles(['storage', 'replication-test', 'client', 'amqp', 'no-db'])
 @PropertySource('classpath:avservice.properties')
 @DirtiesContext
+//TODO: #318
+@Ignore
 class RemoteLockISpec extends Specification
         implements ReplicationHelper, FileServiceHelper, WaitingHelper {
 
