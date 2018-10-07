@@ -8,7 +8,7 @@ plugins {
     // Spring Boot and dependency management
     id 'org.springframework.boot' version '2.0.5.RELEASE' apply false
     // SpotBugs
-    id 'com.github.spotbugs' version '1.6.2'
+    id 'com.github.spotbugs' version '1.6.4'
 }
 
 description = 'Anti-virus and file network service'
@@ -280,6 +280,6 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.9'
+    gradleVersion = '4.10.2'
     distributionType = Wrapper.DistributionType.ALL
 }
