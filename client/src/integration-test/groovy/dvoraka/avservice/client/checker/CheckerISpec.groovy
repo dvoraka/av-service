@@ -28,6 +28,7 @@ class CheckerISpec extends Specification implements RunnerConfigurationHelper {
 
 
     def setupSpec() {
+        sleep(5_000)
         System.setProperty('itest', 'itest')
 
         // initialize runner configuration
