@@ -88,7 +88,7 @@ public class AmqpBridgeOutputConfig {
     ) {
         RabbitTemplate template = new RabbitTemplate(outConnectionFactory);
         template.setReceiveTimeout(listeningTimeout);
-        template.setQueue(resultQueue);
+        template.setDefaultReceiveQueue(resultQueue);
         template.setMessageConverter(outMessageConverter);
 
         return template;
