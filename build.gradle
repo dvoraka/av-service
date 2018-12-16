@@ -279,7 +279,7 @@ allprojects {
     check.dependsOn javadoc
 }
 
-task wrapper(type: Wrapper) {
+wrapper() {
     gradleVersion = '4.10.2'
     distributionType = Wrapper.DistributionType.ALL
 }
