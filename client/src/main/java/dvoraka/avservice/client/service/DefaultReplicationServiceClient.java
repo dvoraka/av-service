@@ -41,6 +41,6 @@ public class DefaultReplicationServiceClient implements ReplicationServiceClient
             return;
         }
 
-        replicationComponent.sendMessage(message);
+        replicationComponent.send(message);
     }
 }

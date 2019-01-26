@@ -33,7 +33,7 @@ class DefaultAvServiceClientSpec extends Specification {
             client.checkMessage(message)
 
         then:
-            1 * serverComponent.sendMessage(message)
+            1 * serverComponent.send(message)
     }
 
     def "check message with incorrect type"() {
@@ -44,7 +44,7 @@ class DefaultAvServiceClientSpec extends Specification {
             client.checkMessage(message)
 
         then:
-            0 * serverComponent.sendMessage(message)
+            0 * serverComponent.send(message)
             thrown(IllegalArgumentException)
     }
 }

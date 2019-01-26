@@ -116,7 +116,7 @@ public class ConcurrentPerformanceTester extends AbstractPerformanceTester
             sentMessageInfo.put(message.getId(), false);
         }
 
-        avNetworkComponent.sendMessage(message);
+        avNetworkComponent.send(message);
     }
 
     private void onMessage(AvMessage message) {

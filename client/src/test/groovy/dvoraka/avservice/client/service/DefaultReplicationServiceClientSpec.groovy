@@ -31,7 +31,7 @@ class DefaultReplicationServiceClientSpec extends Specification implements Repli
             client.sendMessage(message)
 
         then:
-            1 * replicationComponent.sendMessage(message)
+            1 * replicationComponent.send(message)
     }
 
     def "send message with incorrect ID"() {
@@ -42,6 +42,6 @@ class DefaultReplicationServiceClientSpec extends Specification implements Repli
             client.sendMessage(message)
 
         then:
-            0 * replicationComponent.sendMessage(message)
+            0 * replicationComponent.send(message)
     }
 }

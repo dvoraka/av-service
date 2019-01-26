@@ -53,7 +53,7 @@ public class PerformanceTester implements PerformanceTest, ApplicationManagement
         long maxRateCounter = start;
         for (int i = 0; i < loops; i++) {
             AvMessage message = Utils.genInfectedMessage();
-            checker.sendMessage(message);
+            checker.send(message);
             try {
                 checker.receiveMessage(message.getId());
             } catch (MessageNotFoundException e) {

@@ -93,12 +93,12 @@ class AmqpReplicationComponentSpec extends Specification implements
 
     def "send message"() {
         when:
-            component.sendMessage(createDiscoverRequest(nodeId))
+            component.send(createDiscoverRequest(nodeId))
 
         then:
             1 * rabbitTemplate._
         when:
-            component.sendMessage(createSuccessResponse(
+            component.send(createSuccessResponse(
                     createSaveMessage(
                             fileSaveMessage('test', 'test', null),
                             nodeId,

@@ -53,7 +53,7 @@ class CheckerISpec extends Specification implements RunnerConfigurationHelper {
             AvMessage message = Utils.genMessage()
 
         when:
-            checker.sendMessage(message)
+            checker.send(message)
             AvMessage receivedMessage = checker.receiveMessage(message.getId())
 
         then:
@@ -66,7 +66,7 @@ class CheckerISpec extends Specification implements RunnerConfigurationHelper {
             AvMessage message = Utils.genInfectedMessage()
 
         when:
-            checker.sendMessage(message)
+            checker.send(message)
             AvMessage receivedMessage = checker.receiveMessage(message.getId())
 
         then:
@@ -80,9 +80,9 @@ class CheckerISpec extends Specification implements RunnerConfigurationHelper {
             AvMessage message = Utils.genInfectedMessage()
 
         when:
-            checker.sendMessage(message)
+            checker.send(message)
             count.times {
-                checker.sendMessage(Utils.genMessage())
+                checker.send(Utils.genMessage())
             }
             AvMessage resultMessage = checker.receiveMessage(message.getId())
 

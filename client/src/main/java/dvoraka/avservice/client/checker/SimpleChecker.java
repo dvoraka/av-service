@@ -46,8 +46,8 @@ public class SimpleChecker implements Checker {
     }
 
     @Override
-    public void sendMessage(AvMessage message) {
-        avNetworkComponent.sendMessage(message);
+    public void send(AvMessage message) {
+        avNetworkComponent.send(message);
     }
 
     @Override
@@ -86,8 +86,8 @@ public class SimpleChecker implements Checker {
         AvMessage normalMessage = Utils.genMessage();
         AvMessage infectedMessage = Utils.genInfectedMessage();
 
-        sendMessage(normalMessage);
-        sendMessage(infectedMessage);
+        send(normalMessage);
+        send(infectedMessage);
 
         try {
             AvMessage receivedMessage = receiveMessage(normalMessage.getId());

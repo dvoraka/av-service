@@ -26,7 +26,7 @@ class QueueCleanerISpec extends Specification {
     def "fill and clean queue"() {
         given:
             10.times {
-                avNetworkComponent.sendMessage(Utils.genMessage())
+                avNetworkComponent.send(Utils.genMessage())
             }
 
         when:

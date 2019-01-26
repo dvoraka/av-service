@@ -139,7 +139,7 @@ public class DefaultReplicationResponseClient implements
 
         while (!isRunning() && isStarted()) {
             ReplicationMessage diagnosticsMsg = createDiagnosticsMessage(nodeId);
-            replicationComponent.sendMessage(diagnosticsMsg);
+            replicationComponent.send(diagnosticsMsg);
 
             Optional<ReplicationMessageList> response =
                     getResponseWait(diagnosticsMsg.getId(), responseTime);

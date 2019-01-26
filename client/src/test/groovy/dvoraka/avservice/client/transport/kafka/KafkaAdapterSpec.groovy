@@ -68,7 +68,7 @@ class KafkaAdapterSpec extends Specification {
 
     def "send null message"() {
         when:
-            component.sendMessage((AvMessage) null)
+            component.send((AvMessage) null)
 
         then:
             thrown(NullPointerException)
@@ -79,7 +79,7 @@ class KafkaAdapterSpec extends Specification {
             AvMessage message = Utils.genMessage()
 
         when:
-            component.sendMessage(message)
+            component.send(message)
 
         then:
             1 * kafkaTemplate.send(testTopic, message)

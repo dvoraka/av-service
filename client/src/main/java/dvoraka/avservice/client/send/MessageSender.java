@@ -7,6 +7,7 @@ import dvoraka.avservice.common.data.Message;
  *
  * @param <M> the message type
  */
+@FunctionalInterface
 public interface MessageSender<M extends Message> {
 
     /**
@@ -14,5 +15,5 @@ public interface MessageSender<M extends Message> {
      *
      * @param message the message
      */
-    void sendMessage(M message);
+    void send(M message);
 }

@@ -36,6 +36,6 @@ class KafkaAdapterISpec extends Specification {
 
     def "send"() {
         expect:
-            avNetworkComponent.sendMessage(Utils.genFileMessage())
+            avNetworkComponent.send(Utils.genFileMessage())
     }
 }

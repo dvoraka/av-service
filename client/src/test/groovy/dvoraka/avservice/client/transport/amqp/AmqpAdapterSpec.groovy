@@ -92,7 +92,7 @@ class AmqpAdapterSpec extends Specification {
 
     def "send null message"() {
         when:
-            component.sendMessage((AvMessage) null)
+            component.send((AvMessage) null)
 
         then:
             thrown(NullPointerException)
@@ -103,7 +103,7 @@ class AmqpAdapterSpec extends Specification {
             AvMessage message = Utils.genMessage()
 
         when:
-            component.sendMessage(message)
+            component.send(message)
 
         then:
             1 * rabbitTemplate.convertAndSend(_, _, _)
@@ -114,7 +114,7 @@ class AmqpAdapterSpec extends Specification {
             AvMessage message = Utils.genMessage()
 
         when:
-            component.sendMessage(message)
+            component.send(message)
 
         then:
             1 * rabbitTemplate.convertAndSend(testExchange, _ as String, message) >> {
@@ -133,7 +133,7 @@ class AmqpAdapterSpec extends Specification {
             }
 
         when:
-            component.sendMessage(message)
+            component.send(message)
 
         then:
             notThrown(Exception)

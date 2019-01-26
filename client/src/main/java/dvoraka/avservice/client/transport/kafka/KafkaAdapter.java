@@ -52,7 +52,7 @@ public class KafkaAdapter extends AbstractNetworkComponent<AvMessage, AvMessageL
     }
 
     @Override
-    public void sendMessage(AvMessage message) {
+    public void send(AvMessage message) {
         requireNonNull(message, "Message must not be null!");
         log.debug("Send: {}", message);
 

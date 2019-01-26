@@ -65,7 +65,7 @@ public class AmqpReplicationComponent
     }
 
     @Override
-    public void sendMessage(ReplicationMessage message) {
+    public void send(ReplicationMessage message) {
         log.debug("Send ({}): {}", nodeId, message);
         if (message.getRouting() == MessageRouting.BROADCAST) {
             rabbitTemplate.convertAndSend(broadcastKey, message);

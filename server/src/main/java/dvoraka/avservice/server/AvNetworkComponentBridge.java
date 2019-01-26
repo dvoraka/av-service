@@ -38,8 +38,8 @@ public class AvNetworkComponentBridge implements ServiceManagement {
             throw new IllegalArgumentException("Components must not be the same!");
         }
 
-        inListener = outComponent::sendMessage;
-        outListener = inComponent::sendMessage;
+        inListener = outComponent::send;
+        outListener = inComponent::send;
     }
 
     @Override
