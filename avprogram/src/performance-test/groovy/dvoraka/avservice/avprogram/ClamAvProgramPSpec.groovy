@@ -23,7 +23,7 @@ class ClamAvProgramPSpec extends Specification {
                 ClamAvProgram.HOST,
                 ClamAvProgram.PORT,
                 ClamAvProgram.MAX_ARRAY_SIZE,
-                true
+                10
         )
     }
 
