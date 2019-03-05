@@ -231,7 +231,7 @@ allprojects {
         reportsDir = file("${project.rootDir}/reports/pmd/${project.name}")
         sourceSets = [sourceSets.main]
 
-        ignoreFailures = false
+        ignoreFailures = true
     }
 
     jacoco {
@@ -280,6 +280,6 @@ allprojects {
 }
 
 wrapper() {
-    gradleVersion = '5.0'
+    gradleVersion = '5.2.1'
     distributionType = Wrapper.DistributionType.ALL
 }
