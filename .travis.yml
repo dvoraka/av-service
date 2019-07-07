@@ -30,7 +30,8 @@ before_script:
 
 script:
   - sudo netstat -lnp46
-  - echo "\n" | nc localhost 3310
+  - docker ps
+  - echo \n | nc localhost 3310
   - ./gradlew -info check
 
 after_success:
