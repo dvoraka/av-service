@@ -1,5 +1,6 @@
 package dvoraka.avservice.storage.replication;
 
+import dvoraka.avservice.client.transport.ReplicationComponent;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
@@ -9,6 +10,13 @@ import dvoraka.avservice.storage.exception.FileServiceException;
  * New replication service.
  */
 public class NewReplicationService implements ReplicationService {
+
+    private final ReplicationComponent component;
+
+
+    public NewReplicationService(ReplicationComponent component) {
+        this.component = component;
+    }
 
     @Override
     public ReplicationStatus getStatus(FileMessage message) {
