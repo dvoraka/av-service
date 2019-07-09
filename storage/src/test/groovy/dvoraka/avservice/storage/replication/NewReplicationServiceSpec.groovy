@@ -16,7 +16,7 @@ class NewReplicationServiceSpec extends Specification {
 
 
     def setup() {
-        component1 = new TestingReplicationAdapter()
+        component1 = new TestingReplicationAdapter(broker, nodeId, broadcastKey)
         service1 = new NewReplicationService(component1)
     }
 
