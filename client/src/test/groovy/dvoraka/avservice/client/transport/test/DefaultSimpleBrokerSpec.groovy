@@ -18,4 +18,11 @@ class DefaultSimpleBrokerSpec extends Specification implements ReplicationHelper
         expect:
             broker.send("queue", createDiscoverRequest("node ID"))
     }
+
+    def "register and send message"() {
+        setup:
+            broker.addMessageListener({ msg -> println msg }, "test")
+        expect:
+            broker.send("test", createDiscoverRequest("node ID"))
+    }
 }
