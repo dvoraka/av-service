@@ -1,7 +1,7 @@
 package dvoraka.avservice.storage.replication
 
 import dvoraka.avservice.client.transport.ReplicationComponent
-import dvoraka.avservice.client.transport.test.TestingReplicationComponent
+import dvoraka.avservice.client.transport.test.TestingReplicationAdapter
 import spock.lang.Specification
 
 class NewReplicationServiceSpec extends Specification {
@@ -16,7 +16,7 @@ class NewReplicationServiceSpec extends Specification {
 
 
     def setup() {
-        component1 = new TestingReplicationComponent()
+        component1 = new TestingReplicationAdapter()
         service1 = new NewReplicationService(component1)
     }
 

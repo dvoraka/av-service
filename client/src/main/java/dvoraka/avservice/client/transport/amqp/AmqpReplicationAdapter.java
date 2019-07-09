@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 import static java.util.Objects.requireNonNull;
 
 /**
- * AMQP component for the replication service.
+ * AMQP adapter for the replication service.
  */
 @Component
-public class AmqpReplicationComponent
+public class AmqpReplicationAdapter
         extends AbstractNetworkComponent<ReplicationMessage, ReplicationMessageListener>
         implements ReplicationComponent, MessageHelper {
 
@@ -29,13 +29,13 @@ public class AmqpReplicationComponent
     private final String nodeId;
     private final String broadcastKey;
 
-    private static final Logger log = LogManager.getLogger(AmqpReplicationComponent.class);
+    private static final Logger log = LogManager.getLogger(AmqpReplicationAdapter.class);
 
     private final MessageConverter messageConverter;
 
 
     @Autowired
-    public AmqpReplicationComponent(
+    public AmqpReplicationAdapter(
             RabbitTemplate rabbitTemplate,
             String nodeId,
             String broadcastKey

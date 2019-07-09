@@ -18,11 +18,11 @@ import spock.lang.Subject
 /**
  * AmqpReplicationComponent spec.
  */
-class AmqpReplicationComponentSpec extends Specification implements
+class AmqpReplicationAdapterSpec extends Specification implements
         ReplicationHelper, ReplicationServiceHelper, FileServiceHelper {
 
     @Subject
-    AmqpReplicationComponent component
+    AmqpReplicationAdapter component
 
     RabbitTemplate rabbitTemplate
     MessageConverter converter
@@ -37,7 +37,7 @@ class AmqpReplicationComponentSpec extends Specification implements
         rabbitTemplate = Mock()
         rabbitTemplate.getMessageConverter() >> converter
 
-        component = new AmqpReplicationComponent(rabbitTemplate, nodeId, 'broadcast')
+        component = new AmqpReplicationAdapter(rabbitTemplate, nodeId, 'broadcast')
     }
 
     def "on message"() {

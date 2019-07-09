@@ -1,7 +1,7 @@
 package dvoraka.avservice.client.configuration.replication;
 
 import dvoraka.avservice.client.transport.ReplicationComponent;
-import dvoraka.avservice.client.transport.amqp.AmqpReplicationComponent;
+import dvoraka.avservice.client.transport.amqp.AmqpReplicationAdapter;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -54,7 +54,7 @@ public class AmqpTestReplicationClientConfig {
 
     @Bean
     public ReplicationComponent replicationComponent(RabbitTemplate replicationRabbitTemplate) {
-        return new AmqpReplicationComponent(replicationRabbitTemplate, testNodeId, broadcastKey);
+        return new AmqpReplicationAdapter(replicationRabbitTemplate, testNodeId, broadcastKey);
     }
 
     @Bean

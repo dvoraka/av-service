@@ -9,13 +9,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Testing component for the replication service.
+ * Testing adapter for the replication service.
  */
-public class TestingReplicationComponent
+public class TestingReplicationAdapter
         extends AbstractNetworkComponent<ReplicationMessage, ReplicationMessageListener>
         implements ReplicationComponent, MessageHelper {
 
-    private static final Logger log = LogManager.getLogger(TestingReplicationComponent.class);
+    private static final Logger log = LogManager.getLogger(TestingReplicationAdapter.class);
 
 
     @Override
