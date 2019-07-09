@@ -142,6 +142,10 @@ allprojects {
         // H2 DB
         runtime('com.h2database:h2')
 
+        // Lombok
+        compileOnly('org.projectlombok:lombok')
+        annotationProcessor('org.projectlombok:lombok')
+
         //
         // Testing
         //
