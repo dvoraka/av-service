@@ -36,7 +36,7 @@ public class TestingReplicationAdapter
 
     @Override
     public String getServiceId() {
-        return null;
+        return nodeId;
     }
 
     @Override
