@@ -5,10 +5,11 @@ import dvoraka.avservice.client.transport.test.DefaultSimpleBroker
 import dvoraka.avservice.client.transport.test.SimpleBroker
 import dvoraka.avservice.client.transport.test.TestingReplicationAdapter
 import dvoraka.avservice.common.data.replication.ReplicationMessage
+import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import spock.lang.Shared
 import spock.lang.Specification
 
-class NewReplicationServiceSpec extends Specification {
+class NewReplicationServiceSpec extends Specification implements ReplicationHelper {
 
     @Shared
     String nodeId1 = "testNode1"
@@ -33,10 +34,12 @@ class NewReplicationServiceSpec extends Specification {
         service1 = new NewReplicationService(component1)
 
         broker.addMessageListener(component1, nodeId1)
+
+        broker.addMessageListener(component1, broadcastKey)
     }
 
     def "test"() {
         expect:
-            component1
+            component1.send(createDiscoverRequest(nodeId1))
     }
 }

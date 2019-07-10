@@ -48,4 +48,9 @@ public class TestingReplicationAdapter
             broker.send(message.getToId(), message);
         }
     }
+
+    @Override
+    public void onMessage(ReplicationMessage message) {
+        log.debug("On message ({}): {}", nodeId, message);
+    }
 }
