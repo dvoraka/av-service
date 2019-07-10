@@ -107,6 +107,18 @@ public class DefaultReplicationService implements
         shutdownAndAwaitTermination(executorService, TERM_TIME, log);
     }
 
+    @Override
+    public boolean isStarted() {
+        //TODO
+        return false;
+    }
+
+    @Override
+    public boolean isStopped() {
+        //TODO
+        return false;
+    }
+
     private void scheduleDiscovery() {
         executorService.scheduleWithFixedDelay(
                 this::discoverNeighboursSafe, 0, DISCOVER_DELAY, TimeUnit.MILLISECONDS);

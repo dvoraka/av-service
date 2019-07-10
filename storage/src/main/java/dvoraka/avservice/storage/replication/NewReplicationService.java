@@ -44,7 +44,27 @@ public class NewReplicationService implements ReplicationService {
     }
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
+
+    @Override
     public boolean isRunning() {
+        return false;
+    }
+
+    @Override
+    public boolean isStarted() {
+        return false;
+    }
+
+    @Override
+    public boolean isStopped() {
         return false;
     }
 

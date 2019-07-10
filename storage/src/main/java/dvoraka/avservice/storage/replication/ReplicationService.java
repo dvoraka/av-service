@@ -4,7 +4,7 @@ import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
 import dvoraka.avservice.common.helper.ExecutorServiceHelper;
 import dvoraka.avservice.common.listener.ReplicationMessageListener;
-import dvoraka.avservice.common.service.ServiceStatus;
+import dvoraka.avservice.common.service.ServiceManagement;
 import dvoraka.avservice.storage.service.FileService;
 
 /**
@@ -14,7 +14,7 @@ public interface ReplicationService extends
         FileService,
         ExecutorServiceHelper,
         ReplicationMessageListener,
-        ServiceStatus {
+        ServiceManagement {
 
     /**
      * Returns a status for the file.
