@@ -11,6 +11,10 @@ import dvoraka.avservice.storage.service.FileService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -121,5 +125,18 @@ public class NewReplicationService implements ReplicationService {
 
     private boolean localCopyExists(String filename, String owner) {
         return fileService.exists(filename, owner);
+    }
+
+    private Future<Set<ReplicationMessage>> waitForResponses(String corrId, int count, int maxTime,
+                                             Consumer<Set<ReplicationMessage>> callback) {
+
+        return CompletableFuture.supplyAsync(() -> {
+
+            // check responses until max time
+
+            // call callback if entered
+
+            return null;
+        });
     }
 }
