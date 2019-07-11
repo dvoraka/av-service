@@ -114,4 +114,12 @@ public class NewReplicationService implements ReplicationService {
     public boolean exists(String filename, String owner) {
         return false;
     }
+
+    private boolean localCopyExists(FileMessage message) {
+        return localCopyExists(message.getFilename(), message.getOwner());
+    }
+
+    private boolean localCopyExists(String filename, String owner) {
+        return fileService.exists(filename, owner);
+    }
 }
