@@ -6,6 +6,8 @@ import dvoraka.avservice.client.transport.test.SimpleBroker
 import dvoraka.avservice.client.transport.test.TestingReplicationAdapter
 import dvoraka.avservice.common.data.replication.ReplicationMessage
 import dvoraka.avservice.common.helper.replication.ReplicationHelper
+import dvoraka.avservice.storage.service.DummyFileService
+import dvoraka.avservice.storage.service.FileService
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -24,9 +26,13 @@ class NewReplicationServiceSpec extends Specification implements ReplicationHelp
     ReplicationService service2
     ReplicationService service3
 
-    ReplicationComponent component1
+    TestingReplicationAdapter component1
     ReplicationComponent component2
     ReplicationComponent component3
+
+    FileService fileService1
+    FileService fileService2
+    FileService fileService3
 
     SimpleBroker<ReplicationMessage> broker
 
@@ -34,12 +40,16 @@ class NewReplicationServiceSpec extends Specification implements ReplicationHelp
     def setup() {
         broker = new DefaultSimpleBroker()
 
+        fileService1 = new DummyFileService()
+        fileService2 = new DummyFileService()
+        fileService3 = new DummyFileService()
+
         component1 = new TestingReplicationAdapter(broker, nodeId1, broadcastKey)
-        service1 = new NewReplicationService(component1)
+        service1 = new NewReplicationService(fileService1, component1)
         component2 = new TestingReplicationAdapter(broker, nodeId2, broadcastKey)
-        service2 = new NewReplicationService(component2)
+        service2 = new NewReplicationService(fileService2, component2)
         component3 = new TestingReplicationAdapter(broker, nodeId3, broadcastKey)
-        service3 = new NewReplicationService(component3)
+        service3 = new NewReplicationService(fileService3, component3)
 
         broker.addMessageListener(component1, component1.getServiceId())
         broker.addMessageListener(component2, component2.getServiceId())

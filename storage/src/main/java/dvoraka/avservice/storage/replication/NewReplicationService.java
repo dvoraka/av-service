@@ -4,18 +4,50 @@ import dvoraka.avservice.client.transport.ReplicationComponent;
 import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
+import dvoraka.avservice.common.listener.ReplicationMessageListener;
+import dvoraka.avservice.common.service.TimedStorage;
 import dvoraka.avservice.storage.exception.FileServiceException;
+import dvoraka.avservice.storage.service.FileService;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * New replication service.
  */
 public class NewReplicationService implements ReplicationService {
 
+    private final FileService fileService;
     private final ReplicationComponent component;
 
+    private final TimedStorage<String> openFiles;
 
-    public NewReplicationService(ReplicationComponent component) {
-        this.component = component;
+    private volatile boolean running;
+    private final ReplicationMessageListener messageListener;
+
+
+    public NewReplicationService(FileService fileService, ReplicationComponent component) {
+        this.fileService = requireNonNull(fileService);
+        this.component = requireNonNull(component);
+
+        openFiles = new TimedStorage<>();
+        messageListener = this;
+    }
+
+    @PostConstruct
+    @Override
+    public void start() {
+        component.addMessageListener(messageListener);
+        running = true;
+    }
+
+    @PreDestroy
+    @Override
+    public void stop() {
+        component.removeMessageListener(messageListener);
+        running = false;
     }
 
     @Override
@@ -44,18 +76,8 @@ public class NewReplicationService implements ReplicationService {
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
     public boolean isRunning() {
-        return false;
+        return running;
     }
 
     @Override
