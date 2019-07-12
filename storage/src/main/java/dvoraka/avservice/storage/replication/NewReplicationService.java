@@ -96,7 +96,28 @@ public class NewReplicationService implements ReplicationService {
 
     @Override
     public void saveFile(FileMessage message) throws FileServiceException {
+        // sync version by design
 
+        // check local copy
+        // - exception
+
+        // send file to remote nodes
+
+        // save local copy and prepare undo
+
+        // check remote responses
+        // - send remote rollback
+        // - local undo
+        // - exception
+
+        // send remote commit
+
+        // check remote responses
+        // - send remote rollback
+        // - local undo
+        // - exception
+
+        // commit local copy
     }
 
     @Override
