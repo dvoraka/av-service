@@ -27,7 +27,19 @@ public class ResponseLatch<M extends Message> {
         }
     }
 
+    public void done() {
+        latch.countDown();
+    }
+
     public String getCorrelationID() {
         return correlationID;
+    }
+
+    public void setResponses(Set<M> responses) {
+        this.responses = responses;
+    }
+
+    public Set<M> getResponses() {
+        return responses;
     }
 }
