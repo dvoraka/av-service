@@ -1,6 +1,7 @@
 package dvoraka.avservice.storage.replication;
 
 import dvoraka.avservice.common.data.Message;
+import dvoraka.avservice.storage.replication.exception.NoResponseException;
 
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -19,11 +20,16 @@ public class ResponseLatch<M extends Message> {
         latch = new CountDownLatch(1);
     }
 
-    public void await(long timeout) {
+    public void await(long timeout) throws NoResponseException {
         try {
-            latch.await(timeout, TimeUnit.MILLISECONDS);
+            boolean status = latch.await(timeout, TimeUnit.MILLISECONDS);
+
+            if (!status) {
+                throw new NoResponseException();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
+            throw new NoResponseException();
         }
     }
 
