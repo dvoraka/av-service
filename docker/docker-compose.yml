@@ -84,7 +84,7 @@ services:
     build: ./replicationnodesnap
     depends_on:
       - rabbitmq-dev
-      - logstash-dev
+#      - logstash-dev
     image: "replication-node"
     network_mode: "host"
     environment:
