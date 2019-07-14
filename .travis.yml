@@ -29,9 +29,8 @@ before_script:
   - ./gradlew configureEnvironment
 
 script:
-  - sudo netstat -lnp46
+  - sudo netstat -ln
   - docker ps
-  - echo \n | nc localhost 3310
   - ./gradlew -info check
 
 after_success:
