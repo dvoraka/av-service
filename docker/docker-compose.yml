@@ -21,26 +21,26 @@ services:
     network_mode: "host"
 
   # Kibana
-  kibana-dev:
-    build: ./kibana
-    depends_on:
-      - elasticsearch-dev
-    image: "kibana-dev-server"
-    network_mode: "host"
+#  kibana-dev:
+#    build: ./kibana
+#    depends_on:
+#      - elasticsearch-dev
+#    image: "kibana-dev-server"
+#    network_mode: "host"
 
   # Elasticsearch
-  elasticsearch-dev:
-    build: ./elasticsearch
-    image: "elasticsearch-dev-server"
-    network_mode: "host"
+#  elasticsearch-dev:
+#    build: ./elasticsearch
+#    image: "elasticsearch-dev-server"
+#    network_mode: "host"
 
   # Logstash
-  logstash-dev:
-    build: ./logstash
-    depends_on:
-      - elasticsearch-dev
-    image: "logstash-dev-server"
-    network_mode: "host"
+#  logstash-dev:
+#    build: ./logstash
+#    depends_on:
+#      - elasticsearch-dev
+#    image: "logstash-dev-server"
+#    network_mode: "host"
 
   # PostgreSQL
   postgresql-dev:
@@ -83,7 +83,7 @@ services:
     build: ./replicationnodesnap
     depends_on:
       - rabbitmq-dev
-      - logstash-dev
+#      - logstash-dev
     image: "replication-node"
     network_mode: "host"
     environment:
