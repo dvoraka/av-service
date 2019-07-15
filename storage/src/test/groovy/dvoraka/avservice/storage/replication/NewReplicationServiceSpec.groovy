@@ -58,6 +58,10 @@ class NewReplicationServiceSpec extends Specification implements ReplicationHelp
         broker.addMessageListener(component1, broadcastKey)
         broker.addMessageListener(component2, broadcastKey)
         broker.addMessageListener(component3, broadcastKey)
+
+        service1.start()
+        service2.start()
+        service3.start()
     }
 
     def "test"() {

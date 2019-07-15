@@ -8,6 +8,7 @@ import dvoraka.avservice.common.listener.ReplicationMessageListener;
 import dvoraka.avservice.common.service.TimedStorage;
 import dvoraka.avservice.storage.exception.FileServiceException;
 import dvoraka.avservice.storage.service.FileService;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -21,10 +22,13 @@ import static java.util.Objects.requireNonNull;
 /**
  * New replication service.
  */
+@Slf4j
 public class NewReplicationService implements ReplicationService {
 
     private final FileService fileService;
     private final ReplicationComponent component;
+
+    private final String nodeId;
 
     private final TimedStorage<String> openFiles;
 
@@ -38,6 +42,7 @@ public class NewReplicationService implements ReplicationService {
 
         openFiles = new TimedStorage<>();
         messageListener = this;
+        nodeId = "node ID";
     }
 
     @PostConstruct
@@ -76,7 +81,7 @@ public class NewReplicationService implements ReplicationService {
 
     @Override
     public void onMessage(ReplicationMessage message) {
-
+        log.debug("On message ({}): {}", nodeId, message);
     }
 
     @Override
@@ -92,6 +97,10 @@ public class NewReplicationService implements ReplicationService {
     @Override
     public boolean isStopped() {
         return false;
+    }
+
+    public String getNodeId() {
+        return nodeId;
     }
 
     @Override
@@ -149,7 +158,7 @@ public class NewReplicationService implements ReplicationService {
     }
 
     private Future<Set<ReplicationMessage>> waitForResponses(String corrId, int count, int maxTime,
-                                             Consumer<Set<ReplicationMessage>> callback) {
+                                                             Consumer<Set<ReplicationMessage>> callback) {
 
         return CompletableFuture.supplyAsync(() -> {
 

@@ -52,5 +52,6 @@ public class TestingReplicationAdapter
     @Override
     public void onMessage(ReplicationMessage message) {
         log.debug("On message ({}): {}", nodeId, message);
+        getListeners().forEach(listener -> listener.onMessage(message));
     }
 }
