@@ -42,7 +42,7 @@ public class NewReplicationService implements ReplicationService {
 
         openFiles = new TimedStorage<>();
         messageListener = this;
-        nodeId = "node ID";
+        nodeId = this.component.getServiceId();
     }
 
     @PostConstruct
