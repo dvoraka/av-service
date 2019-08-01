@@ -81,6 +81,12 @@ public class NewReplicationService implements ReplicationService {
 
     @Override
     public void onMessage(ReplicationMessage message) {
+
+        // filter out our messages (here for now)
+        if (message.getFromId().equals(nodeId)) {
+            return;
+        }
+
         log.debug("On message ({}): {}", nodeId, message);
     }
 
