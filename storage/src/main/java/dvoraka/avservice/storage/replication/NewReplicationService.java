@@ -6,6 +6,7 @@ import dvoraka.avservice.common.data.replication.ReplicationMessage;
 import dvoraka.avservice.common.data.replication.ReplicationStatus;
 import dvoraka.avservice.common.listener.ReplicationMessageListener;
 import dvoraka.avservice.common.service.TimedStorage;
+import dvoraka.avservice.storage.exception.FileAlreadyExistsException;
 import dvoraka.avservice.storage.exception.FileServiceException;
 import dvoraka.avservice.storage.service.FileService;
 import lombok.extern.slf4j.Slf4j;
@@ -114,7 +115,9 @@ public class NewReplicationService implements ReplicationService {
         // sync version by design
 
         // check local copy
-        // - exception
+        if (localCopyExists(message)) {
+            throw new FileAlreadyExistsException();
+        }
 
         // send file to remote nodes
 
