@@ -1,7 +1,7 @@
 package dvoraka.avservice.storage.service;
 
 import dvoraka.avservice.common.data.FileMessage;
-import dvoraka.avservice.storage.exception.ExistingFileException;
+import dvoraka.avservice.storage.exception.FileAlreadyExistsException;
 import dvoraka.avservice.storage.exception.FileNotFoundException;
 import dvoraka.avservice.storage.exception.FileServiceException;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ public interface FileService {
      * Saves a file from a message.
      *
      * @param message the save request/message
-     * @throws ExistingFileException if the file already exists
+     * @throws FileAlreadyExistsException if the file already exists
      * @throws FileServiceException  if other service problem occurs
      */
     void saveFile(FileMessage message) throws FileServiceException;

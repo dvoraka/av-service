@@ -10,7 +10,7 @@ import dvoraka.avservice.common.data.replication.ReplicationStatus
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.helper.replication.ReplicationHelper
 import dvoraka.avservice.common.util.Utils
-import dvoraka.avservice.storage.exception.ExistingFileException
+import dvoraka.avservice.storage.exception.FileAlreadyExistsException
 import dvoraka.avservice.storage.exception.FileNotFoundException
 import dvoraka.avservice.storage.exception.FileServiceException
 import dvoraka.avservice.storage.replication.exception.LockCountNotMatchException
@@ -149,7 +149,7 @@ class DefaultReplicationServiceSpec extends Specification
             service.saveFile(message)
 
         then:
-            thrown(ExistingFileException)
+            thrown(FileAlreadyExistsException)
     }
 
     def "save with existing remote file"() {
@@ -167,7 +167,7 @@ class DefaultReplicationServiceSpec extends Specification
             1 * remoteLock.lockForFile(message.getFilename(), message.getOwner(), 0) >> true
             1 * remoteLock.unlockForFile(message.getFilename(), message.getOwner(), 0)
 
-            thrown(ExistingFileException)
+            thrown(FileAlreadyExistsException)
     }
 
     def "load with existing local file"() {

@@ -4,7 +4,7 @@ import dvoraka.avservice.common.data.FileMessage
 import dvoraka.avservice.common.data.MessageType
 import dvoraka.avservice.common.helper.FileServiceHelper
 import dvoraka.avservice.common.util.Utils
-import dvoraka.avservice.storage.exception.ExistingFileException
+import dvoraka.avservice.storage.exception.FileAlreadyExistsException
 import dvoraka.avservice.storage.exception.FileNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Ignore
@@ -70,7 +70,7 @@ class FileServiceISpec extends Specification implements FileServiceHelper {
             service.saveFile(saveMessage)
 
         then:
-            thrown(ExistingFileException)
+            thrown(FileAlreadyExistsException)
     }
 
     def "save and load file"() {

@@ -10,7 +10,7 @@ import dvoraka.avservice.common.data.replication.ReplicationStatus;
 import dvoraka.avservice.common.helper.FileServiceHelper;
 import dvoraka.avservice.common.helper.WaitingHelper;
 import dvoraka.avservice.common.helper.replication.ReplicationHelper;
-import dvoraka.avservice.storage.exception.ExistingFileException;
+import dvoraka.avservice.storage.exception.FileAlreadyExistsException;
 import dvoraka.avservice.storage.exception.FileNotFoundException;
 import dvoraka.avservice.storage.exception.FileServiceException;
 import dvoraka.avservice.storage.replication.exception.CannotAcquireLockException;
@@ -193,14 +193,14 @@ public class DefaultReplicationService implements
         log.debug("Setting max save time to {} {}", maxSaveTime, idString);
 
         if (localCopyExists(message)) {
-            throw new ExistingFileException();
+            throw new FileAlreadyExistsException();
         }
 
         int neighbourCount = neighbourCount();
         if (lockFile(message, neighbourCount)) {
             try {
                 if (exists(message)) {
-                    throw new ExistingFileException();
+                    throw new FileAlreadyExistsException();
                 } else {
                     log.debug("Saving locally {}...", idString);
                     fileService.saveFile(message);

@@ -5,7 +5,7 @@ import dvoraka.avservice.common.data.FileMessage;
 import dvoraka.avservice.common.data.MessageType;
 import dvoraka.avservice.db.model.FileEntity;
 import dvoraka.avservice.db.repository.db.DbFileRepository;
-import dvoraka.avservice.storage.exception.ExistingFileException;
+import dvoraka.avservice.storage.exception.FileAlreadyExistsException;
 import dvoraka.avservice.storage.exception.FileNotFoundException;
 import dvoraka.avservice.storage.exception.FileServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +38,7 @@ public class DbFileService implements FileService {
     }
 
     @Override
-    @Transactional(rollbackFor = ExistingFileException.class)
+    @Transactional(rollbackFor = FileAlreadyExistsException.class)
     public void saveFile(FileMessage message) throws FileServiceException {
         log.debug("Saving: " + message);
 
@@ -46,7 +46,7 @@ public class DbFileService implements FileService {
             repository.save(buildFile(message));
         } catch (DataIntegrityViolationException e) {
             log.warn("Saving problem.", e);
-            throw new ExistingFileException();
+            throw new FileAlreadyExistsException();
         }
     }
 
