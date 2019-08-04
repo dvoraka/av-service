@@ -92,10 +92,10 @@ public class NewReplicationService implements ReplicationService, ReplicationHel
     private void discoverNeighbours() {
         log.debug("Discovering neighbours {}...", idString);
 
+        ReplicationMessage discoveryRequest = createDiscoveryRequest(nodeId);
+        component.send(discoveryRequest);
+
         // old code
-//        ReplicationMessage message = createDiscoverRequest(nodeId);
-//        serviceClient.sendMessage(message);
-//
 //        Set<String> newNeighbours = responseClient
 //                .getResponseWait(message.getId(), maxResponseTime, maxResponseTime)
 //                .orElseGet(ReplicationMessageList::new)
