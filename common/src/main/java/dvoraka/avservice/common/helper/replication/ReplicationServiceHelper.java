@@ -70,7 +70,7 @@ public interface ReplicationServiceHelper {
                 .build();
     }
 
-    default ReplicationMessage createDiscoverRequest(String nodeId) {
+    default ReplicationMessage createDiscoveryRequest(String nodeId) {
         return new DefaultReplicationMessage.Builder(null)
                 .type(MessageType.REPLICATION_SERVICE)
                 .routing(MessageRouting.BROADCAST)

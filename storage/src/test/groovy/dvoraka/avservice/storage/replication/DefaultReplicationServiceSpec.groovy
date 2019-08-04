@@ -81,7 +81,7 @@ class DefaultReplicationServiceSpec extends Specification
 
             1 * responseClient.getResponseWait(_, _, _) >> replicationList(
                     createDiscoverReply(
-                            createDiscoverRequest(nodeId), otherNodeId))
+                            createDiscoveryRequest(nodeId), otherNodeId))
     }
 
     def "stop"() {
@@ -288,7 +288,7 @@ class DefaultReplicationServiceSpec extends Specification
 
     def "on message - discover"() {
         given:
-            ReplicationMessage discoverRequest = createDiscoverRequest(nodeId)
+            ReplicationMessage discoverRequest = createDiscoveryRequest(nodeId)
 
         when:
             service.onMessage(discoverRequest)

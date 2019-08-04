@@ -140,7 +140,7 @@ public class DefaultReplicationService implements
     private void discoverNeighbours() {
         log.debug("Discovering neighbours {}...", idString);
 
-        ReplicationMessage message = createDiscoverRequest(nodeId);
+        ReplicationMessage message = createDiscoveryRequest(nodeId);
         serviceClient.sendMessage(message);
 
         Set<String> newNeighbours = responseClient

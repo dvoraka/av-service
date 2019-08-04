@@ -22,7 +22,7 @@ class ReplicationMessageListSpec extends Specification implements ReplicationHel
             messages.size() == 0
 
         when:
-            messages.add(createDiscoverRequest('node ID'))
+            messages.add(createDiscoveryRequest('node ID'))
 
         then:
             messages.size() == 1
@@ -33,8 +33,8 @@ class ReplicationMessageListSpec extends Specification implements ReplicationHel
             messages.size() == 0
 
         when:
-            messages.add(createDiscoverRequest('node ID'))
-            messages.add(createDiscoverRequest('node ID'))
+            messages.add(createDiscoveryRequest('node ID'))
+            messages.add(createDiscoveryRequest('node ID'))
 
         then:
             messages.stream().count() == 2

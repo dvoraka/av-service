@@ -25,7 +25,7 @@ class DefaultReplicationServiceClientSpec extends Specification implements Repli
 
     def "send message"() {
         given:
-            ReplicationMessage message = createDiscoverRequest(nodeId)
+            ReplicationMessage message = createDiscoveryRequest(nodeId)
 
         when:
             client.sendMessage(message)
@@ -36,7 +36,7 @@ class DefaultReplicationServiceClientSpec extends Specification implements Repli
 
     def "send message with incorrect ID"() {
         given:
-            ReplicationMessage message = createDiscoverRequest('other ID')
+            ReplicationMessage message = createDiscoveryRequest('other ID')
 
         when:
             client.sendMessage(message)

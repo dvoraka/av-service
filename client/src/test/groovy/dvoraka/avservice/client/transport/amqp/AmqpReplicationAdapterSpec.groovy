@@ -93,7 +93,7 @@ class AmqpReplicationAdapterSpec extends Specification implements
 
     def "send message"() {
         when:
-            component.send(createDiscoverRequest(nodeId))
+            component.send(createDiscoveryRequest(nodeId))
 
         then:
             1 * rabbitTemplate._

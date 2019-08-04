@@ -81,7 +81,7 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
 
     def "processing message - response"() {
         given:
-            ReplicationMessage request = createDiscoverRequest(nodeId)
+            ReplicationMessage request = createDiscoveryRequest(nodeId)
             ReplicationMessage reply = createDiscoverReply(request, 'otherId')
 
         when:
@@ -93,7 +93,7 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
 
     def "processing message - 2 responses"() {
         given:
-            ReplicationMessage request = createDiscoverRequest(nodeId)
+            ReplicationMessage request = createDiscoveryRequest(nodeId)
             ReplicationMessage reply = createDiscoverReply(request, 'otherId')
 
         when:
@@ -106,7 +106,7 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
 
     def "processing message - own message"() {
         given:
-            ReplicationMessage request = createDiscoverRequest(nodeId)
+            ReplicationMessage request = createDiscoveryRequest(nodeId)
 
         when:
             client.onMessage(request)
@@ -118,7 +118,7 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
     def "processing message - message for different node"() {
         given:
             ReplicationMessage request = createDiscoverReply(
-                    createDiscoverRequest('otherId'), 'otherId')
+                    createDiscoveryRequest('otherId'), 'otherId')
 
         when:
             client.onMessage(request)
@@ -130,7 +130,7 @@ class DefaultReplicationResponseClientSpec extends Specification implements Repl
     def "add and remove no response listener"() {
         given:
             ReplicationMessageListener listener = Mock()
-            ReplicationMessage request = createDiscoverRequest('otherId')
+            ReplicationMessage request = createDiscoveryRequest('otherId')
 
         when:
             client.addNoResponseMessageListener(listener)

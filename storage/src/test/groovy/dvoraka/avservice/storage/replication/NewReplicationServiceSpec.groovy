@@ -66,6 +66,6 @@ class NewReplicationServiceSpec extends Specification implements ReplicationHelp
 
     def "test"() {
         expect:
-            component1.send(createDiscoverRequest(nodeId1))
+            component1.send(createDiscoveryRequest(nodeId1))
     }
 }

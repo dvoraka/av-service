@@ -105,7 +105,7 @@ class DefaultRemoteLockSpec extends Specification implements ReplicationHelper, 
 
     def "on message with unicast message"() {
         when:
-            lock.onMessage(createDiscoverReply(createDiscoverRequest(nodeId), nodeId))
+            lock.onMessage(createDiscoverReply(createDiscoveryRequest(nodeId), nodeId))
 
         then:
             0 * _

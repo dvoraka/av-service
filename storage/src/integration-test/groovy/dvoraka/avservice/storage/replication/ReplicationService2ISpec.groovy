@@ -80,7 +80,7 @@ class ReplicationService2ISpec extends Specification
 
     def "discovery testing"() {
         given:
-            ReplicationMessage request = createDiscoverRequest(nodeId)
+            ReplicationMessage request = createDiscoveryRequest(nodeId)
 
         when: "send discovery request"
             client.sendMessage(request)

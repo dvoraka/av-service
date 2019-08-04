@@ -80,7 +80,7 @@ class ReplicationServiceHelperSpec extends Specification {
 
     def "discover request"() {
         when:
-            result = helper.createDiscoverRequest(testId)
+            result = helper.createDiscoveryRequest(testId)
 
         then:
             result.getCommand() == Command.DISCOVER
@@ -94,7 +94,7 @@ class ReplicationServiceHelperSpec extends Specification {
 
     def "discover reply"() {
         when:
-            ReplicationMessage request = helper.createDiscoverRequest(testId)
+            ReplicationMessage request = helper.createDiscoveryRequest(testId)
             result = helper.createDiscoverReply(request, otherId)
 
         then:
