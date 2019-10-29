@@ -146,6 +146,10 @@ allprojects {
         compileOnly('org.projectlombok:lombok')
         annotationProcessor('org.projectlombok:lombok')
 
+        // Development tools
+        annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
+        compile('org.springframework.boot:spring-boot-devtools')
+
         //
         // Testing
         //
