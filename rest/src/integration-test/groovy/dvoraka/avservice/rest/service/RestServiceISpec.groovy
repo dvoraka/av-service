@@ -10,12 +10,7 @@ import dvoraka.avservice.rest.controller.CheckController
 import dvoraka.avservice.rest.controller.FileController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
+import org.springframework.http.*
 import org.springframework.test.util.ReflectionTestUtils
 import spock.lang.Ignore
 import spock.lang.Specification
@@ -180,7 +175,7 @@ class RestServiceISpec extends Specification {
 
         when:
             HttpEntity<Void> response = restTemplate.exchange(
-                    filePath + message.getFilename(),
+                    filePath,
                     HttpMethod.PUT,
                     requestEntity,
                     Void.class)
@@ -261,7 +256,7 @@ class RestServiceISpec extends Specification {
             Arrays.equals(message.getData(), loaded.getData())
 
         when: "update and load"
-            restTemplate.put(filePath + message.getFilename(), updateMessage)
+            restTemplate.put(filePath, updateMessage)
             sleep(1000)
 
             messageResponseEntity = restTemplate

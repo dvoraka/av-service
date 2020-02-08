@@ -98,7 +98,7 @@ public class FileController implements UuidHelper {
                 fileRequest.createErrorResponse("Load timed out."), HttpStatus.OK);
     }
 
-    @PutMapping("/{filename}")
+    @PutMapping("/")
     public ResponseEntity<Void> updateFile(
             @RequestBody DefaultAvMessage fileMessage, Principal principal) {
 
