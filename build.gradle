@@ -34,7 +34,7 @@ allprojects {
         // Logstash Logback encoder version
         logstashLogbackVersion = '5.2'
         // Spock version
-        spockVersion = '1.1-groovy-2.4'
+        spockVersion = '1.2-groovy-2.4'
         // Cglib nodep version
         cglibVersion = '3.2.7'
         // Equals verifier version
