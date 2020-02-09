@@ -107,13 +107,13 @@ allprojects {
         // Logging
         //
         // Log4j API
-        compile('org.apache.logging.log4j:log4j-api')
+        implementation('org.apache.logging.log4j:log4j-api')
         // Log4j to SLF4J
-        compile("org.apache.logging.log4j:log4j-to-slf4j:${log4jVersion}")
+        implementation("org.apache.logging.log4j:log4j-to-slf4j:${log4jVersion}")
         // JCL to SLF4J & Logback
-        compile('org.springframework.boot:spring-boot-starter-logging')
+        implementation('org.springframework.boot:spring-boot-starter-logging')
         // Logstash encoder
-        compile("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
+        implementation("net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
 
         //
         // Spring
