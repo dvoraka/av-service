@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:buster
 LABEL maintainer="dvoraka <alen.dvorak@gmail.com>"
 
 RUN apt-get update \
