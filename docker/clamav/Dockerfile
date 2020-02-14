@@ -10,7 +10,7 @@ RUN apt-get update \
 
 COPY conf/clamd.conf /etc/clamav/
 
-RUN freshclam
+#RUN freshclam
 
 EXPOSE 3310
 
